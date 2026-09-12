@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
+import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
+import com.amirrezahadipoor.herodefense.gameplay.EnemyWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
@@ -22,6 +25,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private EnemyMovementSystem enemyMovementSystem;
+    private EnemyWaveSpawner enemyWaveSpawner;
     private HeroAnimationController heroAnimationController;
     private HeroAutoAttackSystem heroAutoAttackSystem;
     private HeroProgressionSystem heroProgressionSystem;
@@ -36,6 +41,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void create() {
         flow = new GameFlowController();
+        enemyMovementSystem = new EnemyMovementSystem();
+        enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
@@ -147,6 +154,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.MENU
                     && worldX >= 120f && worldX <= 600f
                     && worldY >= 150f && worldY <= 310f) {
+                    if (gameState.livingEnemyCount() == 0) {
+                        enemyWaveSpawner.spawnRegularEnemies(
+                            gameState,
+                            gameState.waveNumber,
+                            enemyWaveSpawner.regularCountForWave(gameState.waveNumber)
+                        );
+                    }
                     flow.transitionTo(GameScreenState.PLAYING);
                     return true;
                 }
@@ -169,6 +183,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         float simulationDelta = deltaSeconds * gameState.simulationSpeed;
         gameState.anchorHeroAtArenaCenter();
         heroAnimationController.update(gameState.hero, simulationDelta);
+        enemyMovementSystem.update(gameState, simulationDelta);
         heroAutoAttackSystem.update(gameState, simulationDelta);
         simulationSeconds += simulationDelta;
     }
