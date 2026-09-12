@@ -74,7 +74,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Implement auto-attack against the nearest/first enemy in range; derive interval from Agility.
 - [x] Roll Dodge against every incoming hit before applying damage.
 - [x] Drive Blender-rendered Idle/Attack/Hit/Death frames from real gameplay state.
-- [ ] Implement XP and leveling to level 100; grant one touch-allocated talent point each level.
+- [x] Implement XP and leveling to level 100; grant one touch-allocated talent point each level.
 
 ## Phase 4 — Enemies & Continuous Waves
 

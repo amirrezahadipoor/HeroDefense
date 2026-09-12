@@ -9,8 +9,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
+import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
+import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
@@ -21,6 +24,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameFlowController flow;
     private HeroAnimationController heroAnimationController;
     private HeroAutoAttackSystem heroAutoAttackSystem;
+    private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
@@ -34,6 +38,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         flow = new GameFlowController();
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
+        heroProgressionSystem = new HeroProgressionSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         camera = new OrthographicCamera();
@@ -71,6 +76,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     public GameState gameState() {
         return gameState;
+    }
+
+    /** Awards kill XP and opens the touch allocation overlay whenever a level is gained. */
+    public int grantHeroExperience(int experience) {
+        int levelsGained = heroProgressionSystem.grantExperience(gameState, experience);
+        if (levelsGained > 0 && flow.state() == GameScreenState.PLAYING) {
+            flow.transitionTo(GameScreenState.LEVEL_UP);
+            saveNow();
+        }
+        return levelsGained;
     }
 
     @Override
@@ -117,6 +132,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             @Override
             public boolean onTouchUp(float worldX, float worldY, int pointer, boolean isTap) {
                 if (!isTap) {
+                    return true;
+                }
+                if (flow.state() == GameScreenState.LEVEL_UP) {
+                    HeroStat selectedStat = LevelUpTouchLayout.statAt(worldX, worldY);
+                    if (heroProgressionSystem.allocateTalentPoint(gameState, selectedStat)) {
+                        saveNow();
+                        if (gameState.unspentTalentPoints == 0) {
+                            flow.transitionTo(GameScreenState.PLAYING);
+                        }
+                    }
                     return true;
                 }
                 if (flow.state() == GameScreenState.MENU
