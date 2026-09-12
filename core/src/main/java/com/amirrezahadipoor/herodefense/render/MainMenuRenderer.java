@@ -22,6 +22,7 @@ public final class MainMenuRenderer implements AutoCloseable {
         SpriteBatch batch,
         Matrix4 projection,
         boolean continueAvailable,
+        int coins,
         UiIconRenderer icons
     ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -30,6 +31,10 @@ public final class MainMenuRenderer implements AutoCloseable {
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(0.025f, 0.065f, 0.065f, 0.98f);
         shapes.rect(0f, 0f, 720f, 1280f);
+        shapes.setColor(0.06f, 0.14f, 0.13f, 0.96f);
+        shapes.rect(492f, 1160f, 198f, 80f);
+        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
+        shapes.rect(492f, 1234f, 198f, 6f);
         button(690f, true);
         button(500f, continueAvailable);
         button(310f, true);
@@ -39,6 +44,9 @@ public final class MainMenuRenderer implements AutoCloseable {
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("F2D58A"));
+        icons.draw(batch, "coin", 504f, 1173f, 52f);
+        font.getData().setScale(1.15f);
+        font.draw(batch, coinTotalLabel(coins), 563f, 1211f);
         font.getData().setScale(2.1f);
         font.draw(batch, "Hero Defense", 195f, 1080f);
         font.getData().setScale(1.15f);
@@ -54,6 +62,10 @@ public final class MainMenuRenderer implements AutoCloseable {
         font.setColor(Color.valueOf("F3E4BC"));
         font.draw(batch, "Settings", 276f, 398f);
         batch.end();
+    }
+
+    static String coinTotalLabel(int coins) {
+        return "$ " + Math.max(0, coins);
     }
 
     private void button(float y, boolean enabled) {

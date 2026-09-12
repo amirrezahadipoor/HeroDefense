@@ -707,7 +707,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             hudRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
         }
         if (flow.state() == GameScreenState.MENU) {
-            mainMenuRenderer.draw(spriteBatch, camera.combined, continueAvailable, uiIconRenderer);
+            mainMenuRenderer.draw(
+                spriteBatch,
+                camera.combined,
+                continueAvailable,
+                gameState.coins,
+                uiIconRenderer
+            );
         } else if (flow.state() == GameScreenState.SETTINGS) {
             settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings, uiIconRenderer);
         } else if (flow.state() == GameScreenState.LEVEL_UP) {

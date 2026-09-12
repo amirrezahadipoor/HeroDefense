@@ -61,7 +61,7 @@ public final class HudRenderer implements AutoCloseable {
         icons.draw(batch, "shop", 387f, 46f, 58f);
         font.draw(batch, "HP " + Math.round(state.hero.health) + "/" + Math.round(state.hero.maxHealth), 80f, 1223f);
         font.draw(batch, state.waveNumber + "/" + GameState.FINAL_WAVE, 92f, 1128f);
-        font.draw(batch, Integer.toString(state.coins), 272f, 1128f);
+        font.draw(batch, "$ " + Math.max(0, state.coins), 272f, 1128f);
         font.draw(batch, Math.round(state.simulationSpeed) + "x", 492f, 1128f);
         font.draw(batch, "Bag", 275f, 88f);
         font.draw(batch, "Shop", 452f, 88f);
