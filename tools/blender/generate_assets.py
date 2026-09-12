@@ -44,7 +44,9 @@ from hd_pipeline.models import MATERIALS, add_equipment_variant, build_character
 from hd_pipeline.rig import author_standard_actions, stack_actions_for_single_render  # noqa: E402
 from hd_pipeline.scene import (  # noqa: E402
     apply_alpha_outline,
+    configure_equipment_overlay_renderer,
     configure_scene,
+    make_fitted_icon,
     pack_grid,
     reset_scene,
     triangle_count,
@@ -212,16 +214,18 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
         reset_scene()
         MATERIALS.clear()
         scene = configure_scene("character", frame_root)
+        configure_equipment_overlay_renderer(scene)
         hero = build_hero()
-        actions = author_standard_actions(hero.armature, key)
         for obj in hero.render_objects:
-            obj.hide_render = True
+            bpy.data.objects.remove(obj, do_unlink=True)
         equipment_objects = add_equipment_variant(
             hero.armature,
             item["visualSlot"],
             item_index,
             TIER_COLORS[item["tier"]],
+            item.get("visualKind"),
         )
+        actions = author_standard_actions(hero.armature, key)
         if ISOLATED_RENDERING:
             frame_paths = {}
             for clip, count in CLIPS.items():
@@ -238,6 +242,8 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
                         "visualSlot": item["visualSlot"],
                         "variantIndex": item_index,
                         "tierColor": TIER_COLORS[item["tier"]],
+                        "visualKind": item.get("visualKind"),
+                        "samples": 1,
                     })
                     frame_paths[clip].append(target)
         else:
@@ -254,17 +260,23 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
         width, height, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE["character"])
         atlas_path = sprite_directory / f"{item['id']}.atlas"
         _write_libgdx_atlas(atlas_path, sheet_path.name, width, height, regions)
+        icon_directory = output / "icons"
+        icon_directory.mkdir(parents=True, exist_ok=True)
+        icon_path = icon_directory / f"equipment_{item['id']}.png"
+        make_fitted_icon(frame_paths["idle"][0], icon_path, FRAME_SIZE["item"], 8)
         entry = {
             "key": key,
             "family": "equipment",
             "itemId": item["id"],
             "slot": item["slot"],
             "visualSlot": item["visualSlot"],
+            "visualKind": item.get("visualKind", item["visualSlot"]),
             "tier": item["tier"],
             "frameClass": "character",
             "frameSize": FRAME_SIZE["character"],
             "sheet": _relative(sheet_path, output),
             "atlas": _relative(atlas_path, output),
+            "icon": _relative(icon_path, output),
             "clips": regions,
             "triangles": triangle_count(equipment_objects),
             "armature": hero.armature.name,
@@ -360,26 +372,32 @@ def render_static_model(
     return entry
 
 
-def render_environment(output: Path) -> list[dict]:
+def render_environment(output: Path, only: set[str]) -> list[dict]:
     entries = []
     for variant in range(3):
-        entries.append(render_static_model(
-            f"ground_tile_{variant}", "environment", "environment",
-            lambda value=variant: build_ground_tile(value), output,
-            {"assetKind": "ground", "variant": variant},
-        ))
+        key = f"ground_tile_{variant}"
+        if not only or key in only:
+            entries.append(render_static_model(
+                key, "environment", "environment",
+                lambda value=variant: build_ground_tile(value), output,
+                {"assetKind": "ground", "variant": variant},
+            ))
     for variant in range(3):
-        entries.append(render_static_model(
-            f"crystal_prop_{variant}", "environment", "environment",
-            lambda value=variant: build_crystal_prop(value), output,
-            {"assetKind": "crystal", "variant": variant},
-        ))
+        key = f"crystal_prop_{variant}"
+        if not only or key in only:
+            entries.append(render_static_model(
+                key, "environment", "environment",
+                lambda value=variant: build_crystal_prop(value), output,
+                {"assetKind": "crystal", "variant": variant},
+            ))
     for tier in range(1, 7):
-        entries.append(render_static_model(
-            f"health_potion_{tier}", "icons", "item",
-            lambda value=tier: build_potion_icon(value), output,
-            {"assetKind": "potion", "tier": tier},
-        ))
+        key = f"health_potion_{tier}"
+        if not only or key in only:
+            entries.append(render_static_model(
+                key, "icons", "item",
+                lambda value=tier: build_potion_icon(value), output,
+                {"assetKind": "potion", "tier": tier},
+            ))
     return entries
 
 
@@ -423,6 +441,11 @@ def _execute_frame_worker(payload_path: Path) -> None:
     reset_scene()
     MATERIALS.clear()
     scene = configure_scene(payload["frameClass"], output.parent)
+    if payload["kind"] == "equipment":
+        configure_equipment_overlay_renderer(scene)
+    if "samples" in payload:
+        scene.eevee.taa_render_samples = int(payload["samples"])
+        scene.eevee.taa_samples = int(payload["samples"])
     frame = int(payload.get("frame", 1))
 
     if payload["kind"] == "character":
@@ -431,16 +454,17 @@ def _execute_frame_worker(payload_path: Path) -> None:
         model.armature.animation_data.action = actions[payload["clip"]]
     elif payload["kind"] == "equipment":
         hero = build_hero()
-        actions = author_standard_actions(hero.armature, payload["key"])
-        hero.armature.animation_data.action = actions[payload["clip"]]
         for obj in hero.render_objects:
-            obj.hide_render = True
+            bpy.data.objects.remove(obj, do_unlink=True)
         add_equipment_variant(
             hero.armature,
             payload["visualSlot"],
             int(payload["variantIndex"]),
             payload["tierColor"],
+            payload.get("visualKind"),
         )
+        actions = author_standard_actions(hero.armature, payload["key"])
+        hero.armature.animation_data.action = actions[payload["clip"]]
     elif payload["kind"] == "tree":
         build_world_tree(bool(payload["damaged"]))
     elif payload["kind"] == "static":
@@ -492,7 +516,7 @@ def main() -> None:
     if args.batch in {"equipment", "all"}:
         generated.extend(render_equipment(args.catalog.resolve(), output, args.keep_frames, only))
     if args.batch in {"environment", "all"}:
-        generated.extend(render_environment(output))
+        generated.extend(render_environment(output, only))
 
     by_key = {entry["key"]: entry for entry in existing}
     by_key.update({entry["key"]: entry for entry in generated})

@@ -185,6 +185,26 @@ def _configure_freestyle(scene: bpy.types.Scene) -> None:
     line_set.select_material_boundary = False
 
 
+def configure_equipment_overlay_renderer(scene: bpy.types.Scene) -> None:
+    """Use Blender's low-memory studio renderer for transparent gear-only layers.
+
+    Base character sheets remain EEVEE toon renders. Gear overlays contain only a
+    handful of flat-shaded polygons and retain the locked camera, base palette,
+    alpha outline, and armature evaluation while avoiding a Mesa EEVEE leak that
+    affects nearly empty transparent scenes.
+    """
+    scene.render.engine = "BLENDER_WORKBENCH"
+    shading = scene.display.shading
+    shading.light = "STUDIO"
+    shading.color_type = "MATERIAL"
+    shading.show_shadows = True
+    shading.show_cavity = True
+    shading.cavity_type = "WORLD"
+    shading.show_specular_highlight = False
+    shading.show_object_outline = False
+    scene.render.film_transparent = True
+
+
 def add_contact_shadow(material: bpy.types.Material) -> bpy.types.Object:
     bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=0.75, depth=0.015, location=(0.0, 0.08, 0.012))
     shadow = bpy.context.object
@@ -229,6 +249,45 @@ def apply_alpha_outline(path: Path, radius: int = 3) -> None:
     image.file_format = "PNG"
     image.save()
     bpy.data.images.remove(image)
+
+
+def make_fitted_icon(source_path: Path, output_path: Path, size: int = 96, padding: int = 8) -> None:
+    """Fit nontransparent source pixels into a square inventory icon."""
+    source_image = bpy.data.images.load(str(source_path), check_existing=False)
+    source_width, source_height = source_image.size
+    source = array("f", [0.0]) * (source_width * source_height * 4)
+    source_image.pixels.foreach_get(source)
+    opaque_indices = [index for index in range(source_width * source_height) if source[index * 4 + 3] > 0.02]
+    if not opaque_indices:
+        bpy.data.images.remove(source_image)
+        raise RuntimeError(f"Cannot create icon from empty frame: {source_path}")
+    xs = [index % source_width for index in opaque_indices]
+    ys = [index // source_width for index in opaque_indices]
+    minimum_x, maximum_x = min(xs), max(xs)
+    minimum_y, maximum_y = min(ys), max(ys)
+    content_width = maximum_x - minimum_x + 1
+    content_height = maximum_y - minimum_y + 1
+    available = size - padding * 2
+    scale = min(available / content_width, available / content_height)
+    fitted_width = max(1, int(round(content_width * scale)))
+    fitted_height = max(1, int(round(content_height * scale)))
+    offset_x = (size - fitted_width) // 2
+    offset_y = (size - fitted_height) // 2
+    destination = array("f", [0.0]) * (size * size * 4)
+    for y in range(fitted_height):
+        source_y = minimum_y + min(content_height - 1, int(y / scale))
+        for x in range(fitted_width):
+            source_x = minimum_x + min(content_width - 1, int(x / scale))
+            source_start = (source_y * source_width + source_x) * 4
+            destination_start = ((offset_y + y) * size + offset_x + x) * 4
+            destination[destination_start:destination_start + 4] = source[source_start:source_start + 4]
+    icon = bpy.data.images.new(output_path.stem, width=size, height=size, alpha=True, float_buffer=False)
+    icon.pixels.foreach_set(destination)
+    icon.filepath_raw = str(output_path)
+    icon.file_format = "PNG"
+    icon.save()
+    bpy.data.images.remove(icon)
+    bpy.data.images.remove(source_image)
 
 
 def triangle_count(objects: Iterable[bpy.types.Object]) -> int:

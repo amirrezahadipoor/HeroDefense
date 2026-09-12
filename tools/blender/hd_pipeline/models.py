@@ -191,11 +191,17 @@ def build_hero() -> BuiltModel:
 
 
 def _add_bow(armature, objects, wood, gold) -> None:
-    x = 0.83
-    for index, (a, b) in enumerate((((x, -0.10, 0.45), (x, -0.13, 0.93)), ((x, -0.13, 0.93), (x, -0.09, 1.42)))):
-        part = add_cylinder_between(f"starter_bow_{index}", a, b, 0.035, wood, 6)
+    points = (
+        (0.82, -0.10, 0.42),
+        (1.06, -0.11, 0.66),
+        (1.13, -0.12, 0.94),
+        (1.06, -0.11, 1.22),
+        (0.82, -0.09, 1.48),
+    )
+    for index, (start, end) in enumerate(zip(points, points[1:])):
+        part = add_cylinder_between(f"starter_bow_{index}", start, end, 0.035, wood, 6)
         _bone_part(part, armature, "weapon_socket", objects)
-    string = add_cylinder_between("starter_bow_string", (x, -0.10, 0.45), (x, -0.09, 1.42), 0.008, gold, 5)
+    string = add_cylinder_between("starter_bow_string", points[0], points[-1], 0.008, gold, 5)
     _bone_part(string, armature, "weapon_socket", objects)
 
 
@@ -418,6 +424,7 @@ def add_equipment_variant(
     slot: str,
     variant_index: int,
     tier_color: str,
+    visual_kind: str | None = None,
 ) -> list[bpy.types.Object]:
     """Attach a deterministic equipment mesh to the stable Hero socket bones."""
     material = MATERIALS.get(f"equipment_{slot}_{variant_index}", tier_color, slot in {"weapon", "helmet", "armor"})
@@ -425,13 +432,30 @@ def add_equipment_variant(
     objects: list[bpy.types.Object] = []
     motif = variant_index % 4
     if slot == "weapon":
-        if motif % 2 == 0:
-            shaft = add_cylinder_between(f"weapon_{variant_index}_shaft", (0.82, -0.10, 0.42), (0.82, -0.08, 1.65), 0.045, dark, 6)
-            blade = add_cone(f"weapon_{variant_index}_blade", (0.82, -0.08, 1.78), 0.18 + motif * 0.02, 0, 0.50, material, 4)
-            for obj in (shaft, blade):
-                _bone_part(obj, armature, "weapon_socket", objects)
-        else:
+        kind = visual_kind or ("bow" if motif in {0, 3} else "spear")
+        if kind == "bow":
             _add_bow(armature, objects, material, dark)
+        else:
+            shaft_top = 1.48 if kind == "sword" else 1.72
+            shaft = add_cylinder_between(
+                f"weapon_{variant_index}_shaft", (0.82, -0.10, 0.42),
+                (0.82, -0.08, shaft_top), 0.045, dark, 6,
+            )
+            _bone_part(shaft, armature, "weapon_socket", objects)
+            if kind == "axe":
+                blade = add_cube(
+                    f"weapon_{variant_index}_axe", (0.96, -0.08, 1.62),
+                    (0.34, 0.10, 0.28), material, 0.035,
+                )
+            else:
+                blade_depth = 0.55 if kind in {"spear", "glaive"} else 0.48
+                blade = add_cone(
+                    f"weapon_{variant_index}_{kind}",
+                    (0.82, -0.08, shaft_top + blade_depth * 0.46),
+                    0.24 if kind == "glaive" else 0.18,
+                    0, blade_depth, material, 4,
+                )
+            _bone_part(blade, armature, "weapon_socket", objects)
     elif slot == "helmet":
         crown = add_cone(f"helmet_{variant_index}", (0, 0, 2.05), 0.35 + motif * 0.025, 0.05, 0.48 + motif * 0.04, material, 6 + motif)
         _bone_part(crown, armature, "helmet_socket", objects)

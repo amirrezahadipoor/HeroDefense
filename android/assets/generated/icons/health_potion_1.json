@@ -1,0 +1,21 @@
+{
+  "clips": {
+    "idle": [
+      {
+        "height": 96,
+        "index": 0,
+        "width": 96,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "icons",
+  "frameClass": "item",
+  "frameSize": 96,
+  "heal_icon": true,
+  "key": "health_potion_1",
+  "sheet": "icons/health_potion_1.png",
+  "tier": 1,
+  "triangles": 272
+}

@@ -19,7 +19,7 @@ CAMERA_SCALE = {
 CAMERA_SHIFT_Y = {
     "character": 0.0,
     "boss": 0.06,
-    "item": 0.0,
+    "item": -0.12,
     "tree": 0.12,
     "environment": 0.0,
 }

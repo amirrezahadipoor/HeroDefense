@@ -133,8 +133,10 @@ def build_potion_icon(tier: int) -> BuiltModel:
     cork = MATERIALS.get("potion_cork", "#8B6138")
     gold = MATERIALS.get("potion_gold", PALETTE["hero_gold"], True)
     objects = [
-        add_ico("potion_bottle", (0, 0, 0.62), (0.52, 0.34, 0.58), glass, 2),
-        add_ico("potion_liquid", (0, -0.03, 0.52), (0.43, 0.30, 0.40), liquid, 1),
+        # The liquid defines the bottle's large readable color mass. A separate
+        # opaque outer glass shell would hide tier color at a 96 px icon size.
+        add_ico("potion_bottle_liquid", (0, 0, 0.62), (0.52, 0.34, 0.58), liquid, 2),
+        add_cube("potion_glass_highlight", (-0.19, -0.30, 0.72), (0.075, 0.025, 0.30), glass, 0.02),
         add_cone("potion_neck", (0, 0, 1.06), 0.20, 0.18, 0.40, glass, 8),
         add_cone("potion_cork", (0, 0, 1.29), 0.18, 0.15, 0.22, cork, 7),
         add_torus("potion_band", (0, 0, 1.16), 0.21, 0.035, gold),

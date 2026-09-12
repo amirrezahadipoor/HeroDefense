@@ -38,6 +38,7 @@ Use flat shading. Bevels are permitted only where they improve the silhouette, n
 - Specular is disabled except metal (`0.28`) and potion glass (`0.4`). Roughness is `0.72` for cloth/skin/wood and `0.38` for metal.
 - No photo textures, gradients, procedural noise smaller than four output pixels, or realistic skin shaders.
 - Team readability: Hero greens/gold; regular enemies muted rust/purple/stone; boss accents may use cyan, crimson, amber, or violet.
+- **Gear-overlay exception:** transparent equipment-only animation layers use Blender Workbench studio shading because Mesa's headless EEVEE driver leaks memory on nearly empty alpha scenes. They retain the same procedural mesh, material base color, armature, camera, frame contract, and alpha-dilated outline. Base characters, enemies, bosses, trees, props, and icons remain EEVEE renders.
 
 ### Locked Palette
 
@@ -76,7 +77,7 @@ All character, equipment, item, prop, and tree renders use the named `HD_CAMERA`
 | Orthographic scale, boss | `4.4` |
 | Orthographic scale, item icon | `2.2` |
 | Orthographic scale, World Tree | `6.0` |
-| Framing shift | `0` except Tree `+0.12` and Boss `+0.06`; projection angle remains identical |
+| Framing shift | Character/environment `0`, Tree `+0.12`, Boss `+0.06`, item icon `-0.12`; projection angle remains identical |
 | Character forward direction | `(0, -1, 0)` toward camera |
 | Frame center | pelvis at X center; ground plane at 12% frame height |
 

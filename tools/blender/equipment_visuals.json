@@ -1,47 +1,252 @@
 {
   "items": [
-    {"id": "ashwood_bow", "slot": "WEAPON", "visualSlot": "weapon", "tier": "COMMON"},
-    {"id": "militia_sabre", "slot": "WEAPON", "visualSlot": "weapon", "tier": "COMMON"},
-    {"id": "thorn_spear", "slot": "WEAPON", "visualSlot": "weapon", "tier": "COMMON"},
-    {"id": "leather_cap", "slot": "HELMET", "visualSlot": "helmet", "tier": "COMMON"},
-    {"id": "scout_hood", "slot": "HELMET", "visualSlot": "helmet", "tier": "COMMON"},
-    {"id": "padded_vest", "slot": "ARMOR", "visualSlot": "armor", "tier": "COMMON"},
-    {"id": "bark_tunic", "slot": "ARMOR", "visualSlot": "armor", "tier": "COMMON"},
-    {"id": "trail_boots", "slot": "BOOTS", "visualSlot": "boots", "tier": "COMMON"},
-    {"id": "hide_greaves", "slot": "BOOTS", "visualSlot": "boots", "tier": "COMMON"},
-    {"id": "copper_leaf_ring", "slot": "RING_1", "visualSlot": "ring1", "tier": "COMMON"},
-    {"id": "river_pebble_ring", "slot": "RING_2", "visualSlot": "ring2", "tier": "COMMON"},
-    {"id": "acorn_band", "slot": "RING_1", "visualSlot": "ring1", "tier": "COMMON"},
-    {"id": "hunter_loop", "slot": "RING_2", "visualSlot": "ring2", "tier": "COMMON"},
-    {"id": "twine_circle", "slot": "RING_1", "visualSlot": "ring1", "tier": "COMMON"},
-
-    {"id": "moonwood_longbow", "slot": "WEAPON", "visualSlot": "weapon", "tier": "UNCOMMON"},
-    {"id": "verdant_glaive", "slot": "WEAPON", "visualSlot": "weapon", "tier": "UNCOMMON"},
-    {"id": "fern_guard", "slot": "HELMET", "visualSlot": "helmet", "tier": "UNCOMMON"},
-    {"id": "antler_circlet", "slot": "HELMET", "visualSlot": "helmet", "tier": "UNCOMMON"},
-    {"id": "ranger_mail", "slot": "ARMOR", "visualSlot": "armor", "tier": "UNCOMMON"},
-    {"id": "mossweave_coat", "slot": "ARMOR", "visualSlot": "armor", "tier": "UNCOMMON"},
-    {"id": "windstep_boots", "slot": "BOOTS", "visualSlot": "boots", "tier": "UNCOMMON"},
-    {"id": "rootguard_sabatons", "slot": "BOOTS", "visualSlot": "boots", "tier": "UNCOMMON"},
-    {"id": "jade_sap_ring", "slot": "RING_1", "visualSlot": "ring1", "tier": "UNCOMMON"},
-    {"id": "hawk_eye_band", "slot": "RING_2", "visualSlot": "ring2", "tier": "UNCOMMON"},
-    {"id": "silver_briar_ring", "slot": "RING_1", "visualSlot": "ring1", "tier": "UNCOMMON"},
-    {"id": "dewstone_loop", "slot": "RING_2", "visualSlot": "ring2", "tier": "UNCOMMON"},
-
-    {"id": "starfall_bow", "slot": "WEAPON", "visualSlot": "weapon", "tier": "RARE"},
-    {"id": "golem_splitter", "slot": "WEAPON", "visualSlot": "weapon", "tier": "RARE"},
-    {"id": "owlguard_helm", "slot": "HELMET", "visualSlot": "helmet", "tier": "RARE"},
-    {"id": "crystalbark_plate", "slot": "ARMOR", "visualSlot": "armor", "tier": "RARE"},
-    {"id": "shadeleaf_mantle", "slot": "ARMOR", "visualSlot": "armor", "tier": "RARE"},
-    {"id": "stormrunner_boots", "slot": "BOOTS", "visualSlot": "boots", "tier": "RARE"},
-    {"id": "sapphire_luck_ring", "slot": "RING_1", "visualSlot": "ring1", "tier": "RARE"},
-    {"id": "bloodroot_signet", "slot": "RING_2", "visualSlot": "ring2", "tier": "RARE"},
-    {"id": "echo_band", "slot": "RING_1", "visualSlot": "ring1", "tier": "RARE"},
-
-    {"id": "worldbranch", "slot": "WEAPON", "visualSlot": "weapon", "tier": "LEGENDARY"},
-    {"id": "crown_of_first_leaves", "slot": "HELMET", "visualSlot": "helmet", "tier": "LEGENDARY"},
-    {"id": "heartwood_aegis", "slot": "ARMOR", "visualSlot": "armor", "tier": "LEGENDARY"},
-    {"id": "boots_of_three_winds", "slot": "BOOTS", "visualSlot": "boots", "tier": "LEGENDARY"},
-    {"id": "eternal_seed", "slot": "RING_2", "visualSlot": "ring2", "tier": "LEGENDARY"}
+    {
+      "id": "ashwood_bow",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "COMMON",
+      "visualKind": "bow"
+    },
+    {
+      "id": "militia_sabre",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "COMMON",
+      "visualKind": "sword"
+    },
+    {
+      "id": "thorn_spear",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "COMMON",
+      "visualKind": "spear"
+    },
+    {
+      "id": "leather_cap",
+      "slot": "HELMET",
+      "visualSlot": "helmet",
+      "tier": "COMMON"
+    },
+    {
+      "id": "scout_hood",
+      "slot": "HELMET",
+      "visualSlot": "helmet",
+      "tier": "COMMON"
+    },
+    {
+      "id": "padded_vest",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "COMMON"
+    },
+    {
+      "id": "bark_tunic",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "COMMON"
+    },
+    {
+      "id": "trail_boots",
+      "slot": "BOOTS",
+      "visualSlot": "boots",
+      "tier": "COMMON"
+    },
+    {
+      "id": "hide_greaves",
+      "slot": "BOOTS",
+      "visualSlot": "boots",
+      "tier": "COMMON"
+    },
+    {
+      "id": "copper_leaf_ring",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "COMMON"
+    },
+    {
+      "id": "river_pebble_ring",
+      "slot": "RING_2",
+      "visualSlot": "ring2",
+      "tier": "COMMON"
+    },
+    {
+      "id": "acorn_band",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "COMMON"
+    },
+    {
+      "id": "hunter_loop",
+      "slot": "RING_2",
+      "visualSlot": "ring2",
+      "tier": "COMMON"
+    },
+    {
+      "id": "twine_circle",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "COMMON"
+    },
+    {
+      "id": "moonwood_longbow",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "UNCOMMON",
+      "visualKind": "bow"
+    },
+    {
+      "id": "verdant_glaive",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "UNCOMMON",
+      "visualKind": "glaive"
+    },
+    {
+      "id": "fern_guard",
+      "slot": "HELMET",
+      "visualSlot": "helmet",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "antler_circlet",
+      "slot": "HELMET",
+      "visualSlot": "helmet",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "ranger_mail",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "mossweave_coat",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "windstep_boots",
+      "slot": "BOOTS",
+      "visualSlot": "boots",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "rootguard_sabatons",
+      "slot": "BOOTS",
+      "visualSlot": "boots",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "jade_sap_ring",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "hawk_eye_band",
+      "slot": "RING_2",
+      "visualSlot": "ring2",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "silver_briar_ring",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "dewstone_loop",
+      "slot": "RING_2",
+      "visualSlot": "ring2",
+      "tier": "UNCOMMON"
+    },
+    {
+      "id": "starfall_bow",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "RARE",
+      "visualKind": "bow"
+    },
+    {
+      "id": "golem_splitter",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "RARE",
+      "visualKind": "axe"
+    },
+    {
+      "id": "owlguard_helm",
+      "slot": "HELMET",
+      "visualSlot": "helmet",
+      "tier": "RARE"
+    },
+    {
+      "id": "crystalbark_plate",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "RARE"
+    },
+    {
+      "id": "shadeleaf_mantle",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "RARE"
+    },
+    {
+      "id": "stormrunner_boots",
+      "slot": "BOOTS",
+      "visualSlot": "boots",
+      "tier": "RARE"
+    },
+    {
+      "id": "sapphire_luck_ring",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "RARE"
+    },
+    {
+      "id": "bloodroot_signet",
+      "slot": "RING_2",
+      "visualSlot": "ring2",
+      "tier": "RARE"
+    },
+    {
+      "id": "echo_band",
+      "slot": "RING_1",
+      "visualSlot": "ring1",
+      "tier": "RARE"
+    },
+    {
+      "id": "worldbranch",
+      "slot": "WEAPON",
+      "visualSlot": "weapon",
+      "tier": "LEGENDARY",
+      "visualKind": "bow"
+    },
+    {
+      "id": "crown_of_first_leaves",
+      "slot": "HELMET",
+      "visualSlot": "helmet",
+      "tier": "LEGENDARY"
+    },
+    {
+      "id": "heartwood_aegis",
+      "slot": "ARMOR",
+      "visualSlot": "armor",
+      "tier": "LEGENDARY"
+    },
+    {
+      "id": "boots_of_three_winds",
+      "slot": "BOOTS",
+      "visualSlot": "boots",
+      "tier": "LEGENDARY"
+    },
+    {
+      "id": "eternal_seed",
+      "slot": "RING_2",
+      "visualSlot": "ring2",
+      "tier": "LEGENDARY"
+    }
   ]
 }
