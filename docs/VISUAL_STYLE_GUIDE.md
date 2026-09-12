@@ -143,6 +143,8 @@ Character armatures use these stable bone names:
 - World Tree: 290–360 px and visually behind the Hero.
 - Ground props must not compete with enemies in saturation or contrast.
 - UI stays vector/ShapeRenderer/Scene2D where that is clearer; not every UI panel goes through Blender.
+- Rare equipment receives a restrained blue exterior-edge pulse at runtime; Legendary receives a brighter amber-gold pulse. Common and Uncommon bypass the GLES 2-compatible glow shader.
+- The glow samples only the immediate eight neighboring texels and is enabled only around the affected equipment draw call.
 
 ## 11. Batch Review Checklist
 

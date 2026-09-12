@@ -63,7 +63,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Model, rig/animate as needed, and render the World Tree in healthy and damaged states.
 - [x] Model and render 40 equipment items as attachable Hero-rig variants, plus six potion icons.
 - [x] Model/render ground tiles and 3D props; keep appropriate flat UI assets 2D/vector.
-- [ ] Implement Rare/Legendary glow as a runtime code/shader effect, not baked into sprites.
+- [x] Implement Rare/Legendary glow as a runtime code/shader effect, not baked into sprites.
 - [ ] Commit generation scripts; commit `.blend` files only if small, otherwise regenerate them.
 - [ ] Push each completed and reviewed rendered-asset batch separately.
 
