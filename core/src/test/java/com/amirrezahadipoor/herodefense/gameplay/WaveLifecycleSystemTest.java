@@ -36,15 +36,21 @@ final class WaveLifecycleSystemTest {
     }
 
     @Test
-    void clearingWaveOneHundredCompletesWithoutSpawningWaveOneHundredOne() {
+    void clearingWaveOneHundredPausesForThreeCardsBeforeCompletingRun() {
         GameState state = GameState.newRun(3L);
         state.waveNumber = GameState.FINAL_WAVE;
         lifecycle.startCurrentWave(state);
         state.aliveBosses.get(0).receiveDamage(Float.MAX_VALUE);
 
-        assertEquals(WaveCompletion.RUN_COMPLETED, lifecycle.updateAfterCombat(state));
-        assertTrue(state.runComplete);
+        assertEquals(WaveCompletion.BOSS_REWARD, lifecycle.updateAfterCombat(state));
+        assertTrue(state.awaitingBossReward);
+        assertEquals(3, state.pendingRewardCards.size());
         assertFalse(state.waveActive);
+
+        state.awaitingBossReward = false;
+        state.pendingRewardCards.clear();
+        assertEquals(WaveCompletion.RUN_COMPLETED, lifecycle.continueAfterBossReward(state));
+        assertTrue(state.runComplete);
         assertEquals(0, state.livingEnemyCount());
     }
 }

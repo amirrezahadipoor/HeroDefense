@@ -24,6 +24,7 @@ import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
+import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
 /** Android-only libGDX game loop and top-level state coordinator. */
@@ -39,6 +40,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private HeroAutoAttackSystem heroAutoAttackSystem;
     private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
+    private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
     private GameState gameState;
@@ -65,6 +67,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         viewport.apply(true);
         spriteBatch = new SpriteBatch();
         heroSpriteRenderer = new HeroSpriteRenderer();
+        rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         installTouchInput();
     }
 
@@ -117,6 +120,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         saveNow();
         if (heroSpriteRenderer != null) {
             heroSpriteRenderer.close();
+        }
+        if (rewardCardOverlayRenderer != null) {
+            rewardCardOverlayRenderer.close();
         }
         if (spriteBatch != null) {
             spriteBatch.dispose();
@@ -197,7 +203,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             saveNow();
         } else {
             WaveCompletion waveCompletion = waveLifecycleSystem.updateAfterCombat(gameState);
-            if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
+            if (waveCompletion == WaveCompletion.BOSS_REWARD) {
+                flow.transitionTo(GameScreenState.CARD_CHOICE);
+            } else if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
                 flow.transitionTo(GameScreenState.GAME_OVER);
             }
             if (waveCompletion != WaveCompletion.NO_CHANGE) {
@@ -230,6 +238,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 heroAnimationController.frameIndex(gameState.hero)
             );
             spriteBatch.end();
+        }
+        if (flow.state() == GameScreenState.CARD_CHOICE) {
+            rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         }
     }
 }

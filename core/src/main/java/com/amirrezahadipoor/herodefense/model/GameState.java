@@ -28,6 +28,8 @@ public final class GameState {
     public float worldTreeMaxHealth = 1000f;
     public float simulationSpeed = 1f;
     public boolean waveActive;
+    public boolean awaitingBossReward;
+    public int pendingRewardBossNumber;
     public boolean runComplete;
     public long nextEntityId = 2L;
 
@@ -41,6 +43,7 @@ public final class GameState {
     public Map<String, Float> permanentEffects = new LinkedHashMap<>();
     /** Boss number encoded as a string key for stable JSON object-key round trips. */
     public Map<String, String> chosenRewardCards = new LinkedHashMap<>();
+    public List<String> pendingRewardCards = new ArrayList<>();
     public List<Integer> healthPotions = new ArrayList<>();
 
     public GameState() {
@@ -130,6 +133,13 @@ public final class GameState {
         if (equippedItems == null) equippedItems = new LinkedHashMap<>();
         if (permanentEffects == null) permanentEffects = new LinkedHashMap<>();
         if (chosenRewardCards == null) chosenRewardCards = new LinkedHashMap<>();
+        if (pendingRewardCards == null) pendingRewardCards = new ArrayList<>();
+        if (pendingRewardCards.size() != 3) {
+            pendingRewardCards.clear();
+            awaitingBossReward = false;
+            pendingRewardBossNumber = 0;
+        }
+        if (awaitingBossReward) waveActive = false;
         ensurePotionSlots();
         nextEntityId = Math.max(2L, nextEntityId);
     }
