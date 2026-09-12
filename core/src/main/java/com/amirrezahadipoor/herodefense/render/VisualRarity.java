@@ -40,4 +40,12 @@ public enum VisualRarity {
     public float intensity() {
         return intensity;
     }
+
+    public static VisualRarity fromTier(String tier) {
+        try {
+            return VisualRarity.valueOf(tier);
+        } catch (IllegalArgumentException | NullPointerException error) {
+            return COMMON;
+        }
+    }
 }

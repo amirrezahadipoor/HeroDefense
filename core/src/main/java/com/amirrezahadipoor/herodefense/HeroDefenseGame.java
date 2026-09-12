@@ -266,7 +266,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             spriteBatch.begin();
             int heroFrame = heroAnimationController.frameIndex(gameState.hero);
             heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
-            equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame);
+            equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
             spriteBatch.end();
         }
         if (flow.state() == GameScreenState.CARD_CHOICE) {

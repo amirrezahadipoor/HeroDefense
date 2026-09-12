@@ -3,6 +3,8 @@ package com.amirrezahadipoor.herodefense.render;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
+import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
 import org.junit.jupiter.api.Test;
 
 final class VisualRarityTest {
@@ -13,5 +15,17 @@ final class VisualRarityTest {
         assertTrue(VisualRarity.RARE.isGlowing());
         assertTrue(VisualRarity.LEGENDARY.isGlowing());
         assertTrue(VisualRarity.LEGENDARY.intensity() > VisualRarity.RARE.intensity());
+    }
+
+    @Test
+    void allEquippedCatalogTiersMapToTheRuntimeGlowPolicy() {
+        for (EquipmentDefinition definition : EquipmentCatalog.all()) {
+            VisualRarity rarity = VisualRarity.fromTier(definition.tier().name());
+            assertTrue(
+                rarity.isGlowing()
+                    == (definition.tier().name().equals("RARE")
+                        || definition.tier().name().equals("LEGENDARY"))
+            );
+        }
     }
 }

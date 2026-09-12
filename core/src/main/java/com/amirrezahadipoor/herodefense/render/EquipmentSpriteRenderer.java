@@ -26,8 +26,9 @@ public final class EquipmentSpriteRenderer implements AutoCloseable {
     };
 
     private final Map<String, TextureAtlas> loadedAtlases = new HashMap<>();
+    private final RarityGlowRenderer rarityGlowRenderer = new RarityGlowRenderer();
 
-    public void draw(SpriteBatch batch, GameState state, int frameIndex) {
+    public void draw(SpriteBatch batch, GameState state, int frameIndex, float runTimeSeconds) {
         Set<String> activeIds = new HashSet<>();
         for (EquipmentSlot slot : LAYER_ORDER) {
             Item item = state.equippedItems.get(slot.name());
@@ -51,12 +52,15 @@ public final class EquipmentSpriteRenderer implements AutoCloseable {
             TextureAtlas.AtlasRegion frame = frames.get(
                 Math.min(frames.size - 1, Math.max(0, frameIndex))
             );
-            batch.draw(
+            rarityGlowRenderer.draw(
+                batch,
                 frame,
                 HeroSpriteRenderer.frameX(state.hero),
                 HeroSpriteRenderer.frameY(state.hero),
                 HeroSpriteRenderer.FRAME_SIZE,
-                HeroSpriteRenderer.FRAME_SIZE
+                HeroSpriteRenderer.FRAME_SIZE,
+                VisualRarity.fromTier(item.tier),
+                runTimeSeconds
             );
         }
         disposeUnequipped(activeIds);
@@ -79,5 +83,6 @@ public final class EquipmentSpriteRenderer implements AutoCloseable {
             atlas.dispose();
         }
         loadedAtlases.clear();
+        rarityGlowRenderer.close();
     }
 }
