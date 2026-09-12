@@ -34,7 +34,8 @@ public final class GameState {
     public List<Item> inventory = new ArrayList<>();
     public Map<String, Item> equippedItems = new LinkedHashMap<>();
     public Map<String, Float> permanentEffects = new LinkedHashMap<>();
-    public Map<Integer, String> chosenRewardCards = new LinkedHashMap<>();
+    /** Boss number encoded as a string key for stable JSON object-key round trips. */
+    public Map<String, String> chosenRewardCards = new LinkedHashMap<>();
     public List<Integer> healthPotions = new ArrayList<>();
 
     public GameState() {

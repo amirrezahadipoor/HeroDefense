@@ -42,7 +42,7 @@ A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at
 - [x] Implement the libGDX `ApplicationAdapter` game loop with states: `MENU`, `PLAYING`, `PAUSED`, `LEVEL_UP`, `CARD_CHOICE`, `SHOP`, `GAME_OVER`.
 - [x] Design a simple entity structure using plain classes for `Hero`, `Enemy`, `Boss`, `Projectile`, `Item`, and `DropEntity`.
 - [x] Implement central `GameState`: wave, living enemies, Hero, coins, inventory, level, and unspent talent points.
-- [ ] Implement local save/load using Preferences or local JSON, serializing/deserializing the whole `GameState`.
+- [x] Implement local save/load using Preferences + JSON, serializing/deserializing the whole `GameState` with a backup save.
 - [ ] Implement `ExtendViewport` or `FitViewport` around a portrait reference resolution (approximately 720×1280).
 - [ ] Implement all input with libGDX touch/pointer APIs and Scene2D click/drag listeners. Add no keyboard bindings.
 

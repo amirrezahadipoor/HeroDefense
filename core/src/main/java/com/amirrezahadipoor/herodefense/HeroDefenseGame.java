@@ -3,17 +3,23 @@ package com.amirrezahadipoor.herodefense;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
 /** Android-only libGDX game loop and top-level state coordinator. */
 public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private LocalSaveRepository saves;
+    private GameState gameState;
     private float simulationSeconds;
 
     @Override
     public void create() {
         flow = new GameFlowController();
+        saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
+        gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
     }
 
     @Override
@@ -36,8 +42,28 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         flow.transitionTo(state);
     }
 
+    public GameState gameState() {
+        return gameState;
+    }
+
+    @Override
+    public void pause() {
+        saveNow();
+    }
+
+    @Override
+    public void dispose() {
+        saveNow();
+    }
+
+    private void saveNow() {
+        if (saves != null && gameState != null) {
+            saves.save(gameState);
+        }
+    }
+
     private void updatePlaying(float deltaSeconds) {
-        simulationSeconds += deltaSeconds;
+        simulationSeconds += deltaSeconds * gameState.simulationSpeed;
     }
 
     private void drawCurrentState() {
