@@ -213,7 +213,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 ### 16.2 Reward and Pickup Presentation
 
 - [x] Split item/potion drops into persisted `GROUND` and `HOMING` stages without changing their deterministic reward outcome.
-- [ ] Animate each ground drop automatically homing into the Inventory/HUD destination before it disappears.
+- [x] Animate each ground drop along a smooth raised arc into the live Inventory HUD destination, shrinking cleanly before it disappears.
 - [ ] Give Rare and Legendary ground drops clearly readable but restrained rarity-colored glow and trail effects.
 - [ ] Show a golden floating `$ +N` coin number above the Hero whenever a kill awards coins.
 - [ ] Keep the current total coin balance clearly visible on the live gameplay HUD and the primary menu surface.
