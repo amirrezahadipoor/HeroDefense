@@ -48,6 +48,7 @@ import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
+import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
@@ -98,6 +99,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private RewardCardTouchController rewardCardTouchController;
     private SettingsOverlayRenderer settingsOverlayRenderer;
+    private ScreenShakeSystem screenShakeSystem;
     private SettingsTouchController settingsTouchController;
     private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
@@ -139,6 +141,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         itemDropSystem = new ItemDropSystem();
         pauseTouchController = new PauseTouchController();
         potionDropSystem = new PotionDropSystem();
+        screenShakeSystem = new ScreenShakeSystem();
         settingsTouchController = new SettingsTouchController();
         simulationSpeedTouchController = new SimulationSpeedTouchController();
         statShopSystem = new StatShopSystem();
@@ -446,10 +449,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private void updatePlaying(float deltaSeconds) {
         float simulationDelta = deltaSeconds * gameState.simulationSpeed;
+        screenShakeSystem.update(simulationDelta);
         gameState.anchorHeroAtArenaCenter();
         heroAnimationController.update(gameState.hero, simulationDelta);
         enemyMovementSystem.update(gameState, simulationDelta);
         int livingBeforeAttack = gameState.livingEnemyCount();
+        int bossesBeforeAttack = livingBossCount(gameState);
         float enemyHealthBeforeAttack = totalEnemyHealth(gameState);
         heroAutoAttackSystem.update(gameState, simulationDelta);
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
@@ -458,10 +463,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (gameState.livingEnemyCount() < livingBeforeAttack) {
             audioManager.play(AudioCue.DEATH);
         }
+        if (livingBossCount(gameState) < bossesBeforeAttack) {
+            screenShakeSystem.triggerBossKill();
+        }
         float heroHealthBeforeAttack = gameState.hero.health;
         bossSpecialAttackSystem.update(gameState, simulationDelta);
         boolean gameOver = enemyMeleeAttackSystem.update(gameState, simulationDelta);
         if (gameState.hero.health < heroHealthBeforeAttack - 0.001f) {
+            screenShakeSystem.triggerHeroHit();
             audioManager.play(gameOver ? AudioCue.DEATH : AudioCue.HIT);
         }
         if (!gameOver) {
@@ -512,6 +521,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (flow.state() != GameScreenState.MENU && flow.state() != GameScreenState.SETTINGS) {
+            float baseCameraX = WorldLayout.REFERENCE_WIDTH * 0.5f;
+            float baseCameraY = WorldLayout.REFERENCE_HEIGHT * 0.5f;
+            camera.position.set(
+                baseCameraX + screenShakeSystem.offsetX(),
+                baseCameraY + screenShakeSystem.offsetY(),
+                camera.position.z
+            );
             camera.update();
             spriteBatch.setProjectionMatrix(camera.combined);
             spriteBatch.begin();
@@ -519,6 +535,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
             equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
             spriteBatch.end();
+            camera.position.set(baseCameraX, baseCameraY, camera.position.z);
+            camera.update();
         }
         if (flow.state() == GameScreenState.PLAYING) {
             hudRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
