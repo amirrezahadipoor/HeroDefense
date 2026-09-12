@@ -19,4 +19,11 @@ For wave `w` clamped to 1–100:
 - Boss contact damage on milestone wave `w`: baseline regular damage at `w` × `3`.
 - Boss movement, reach, interval, and special behavior remain identity-specific.
 
+## Reward-card budget
+
+- Boss `b` (1–20) uses multiplier `1 + 0.05 × (b−1)`, rising smoothly from `1.00` to `1.95`.
+- Percentage effects multiply their base magnitude by that budget.
+- Base-stat cards award the rounded budget in whole stat points: one point early and two points late.
+- Every displayed description is generated from the same budget object used to apply the effect.
+
 This is the first playable curve, not a claim of final balance. Phase 14 simulation and manual checkpoints must validate and, if necessary, revise the coefficients.

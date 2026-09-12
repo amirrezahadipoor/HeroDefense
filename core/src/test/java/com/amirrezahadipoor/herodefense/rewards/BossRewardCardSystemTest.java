@@ -56,7 +56,7 @@ final class BossRewardCardSystemTest {
 
         assertTrue(rewards.chooseCard(state, 1));
         assertEquals(
-            0.15f,
+            new RewardPowerBudget().magnitude(RewardCardId.COIN_INCOME, 4),
             state.permanentEffects.get(BossRewardCardSystem.COIN_INCOME_KEY).floatValue(),
             0.0001f
         );

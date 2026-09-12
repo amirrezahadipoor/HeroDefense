@@ -11,11 +11,13 @@ import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
+import com.amirrezahadipoor.herodefense.rewards.RewardPowerBudget;
 
 /** Phone-readable presentation for the three mandatory post-boss choices. */
 public final class RewardCardOverlayRenderer implements AutoCloseable {
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final BitmapFont font = new BitmapFont();
+    private final RewardPowerBudget powerBudget = new RewardPowerBudget();
 
     public RewardCardOverlayRenderer() {
         font.getData().setScale(1.8f);
@@ -50,7 +52,12 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
             RewardCardId card = RewardCardId.valueOf(state.pendingRewardCards.get(index));
             float y = RewardCardTouchLayout.FIRST_CARD_Y - index * RewardCardTouchLayout.CARD_STRIDE;
             font.draw(batch, card.title(), RewardCardTouchLayout.CARD_X + 34f, y + 128f);
-            font.draw(batch, card.description(), RewardCardTouchLayout.CARD_X + 34f, y + 72f);
+            font.draw(
+                batch,
+                powerBudget.description(card, state.pendingRewardBossNumber),
+                RewardCardTouchLayout.CARD_X + 34f,
+                y + 72f
+            );
         }
         batch.end();
     }
