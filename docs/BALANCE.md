@@ -28,6 +28,17 @@ For wave `w` clamped to 1–100:
 - Dodge: `+0.5` percentage points per point, capped at `60%`.
 - Health: `+10` maximum HP per point from a `100`-HP baseline.
 
+## Equipment tier power
+
+| Tier | Relative power target | Whole-stat budget |
+|---|---:|---:|
+| Common | +5% | 1 point |
+| Uncommon | +12% | 2 points |
+| Rare | +25% | 4 points |
+| Legendary | +45% | 7 points |
+
+The relative targets express intended contemporary-run impact. Every authored item spends its tier's entire whole-stat budget across one or two of the five Hero stats.
+
 ## Critical hits
 
 - Every Hero projectile has a deterministic `5%` critical chance and deals `1.75×` damage on success.

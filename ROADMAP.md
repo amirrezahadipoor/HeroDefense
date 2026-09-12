@@ -165,7 +165,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ### 14.2 Hero Growth
 
 - [x] Define exact gains per stat point (starting examples: Health +10 HP, Strength +2 damage).
-- [ ] Define equipment tier power (starting targets: Common +5%, Uncommon +12%, Rare +25%, Legendary +45%).
+- [x] Define equipment tier power (starting targets: Common +5%, Uncommon +12%, Rare +25%, Legendary +45%).
 
 ### 14.3 Simulation-Based Testing
 
