@@ -87,7 +87,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 5 — Boss System
 
-- [ ] Create at least four distinct boss designs, not recolors/rescales.
+- [x] Create at least four distinct boss designs, not recolors/rescales.
 - [ ] Rotate bosses at Waves 5, 10, 15, …, 100.
 - [ ] Give bosses substantially higher HP/damage using Phase 14 multipliers.
 - [ ] Give every boss at least one distinct animation or attack behavior.

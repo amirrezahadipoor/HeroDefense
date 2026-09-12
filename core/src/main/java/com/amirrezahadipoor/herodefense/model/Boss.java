@@ -16,4 +16,12 @@ public final class Boss extends Enemy {
         this.bossType = bossType;
         this.bossNumber = bossNumber;
     }
+
+    public BossType bossDefinition() {
+        try {
+            return BossType.valueOf(bossType);
+        } catch (IllegalArgumentException | NullPointerException ignored) {
+            return BossType.ANCIENT_GOLEM;
+        }
+    }
 }

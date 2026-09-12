@@ -1,0 +1,250 @@
+{
+  "armature": "ancient_golem_armature",
+  "atlas": "sprites/ancient_golem.atlas",
+  "boneAnimated": true,
+  "bones": [
+    "armor_socket",
+    "boot_socket.L",
+    "boot_socket.R",
+    "chest",
+    "foot.L",
+    "foot.R",
+    "forearm.L",
+    "forearm.R",
+    "hand.L",
+    "hand.R",
+    "head",
+    "helmet_socket",
+    "neck",
+    "pelvis",
+    "ring_socket.L",
+    "ring_socket.R",
+    "root",
+    "shin.L",
+    "shin.R",
+    "spine",
+    "thigh.L",
+    "thigh.R",
+    "upper_arm.L",
+    "upper_arm.R",
+    "weapon_socket"
+  ],
+  "builder": "ancient_golem",
+  "clips": {
+    "attack": [
+      {
+        "height": 256,
+        "index": 0,
+        "width": 256,
+        "x": 0,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "width": 256,
+        "x": 256,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "width": 256,
+        "x": 512,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 3,
+        "width": 256,
+        "x": 768,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 4,
+        "width": 256,
+        "x": 1024,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 5,
+        "width": 256,
+        "x": 1280,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 6,
+        "width": 256,
+        "x": 1536,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 7,
+        "width": 256,
+        "x": 1792,
+        "y": 256
+      }
+    ],
+    "death": [
+      {
+        "height": 256,
+        "index": 0,
+        "width": 256,
+        "x": 0,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "width": 256,
+        "x": 256,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "width": 256,
+        "x": 512,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 3,
+        "width": 256,
+        "x": 768,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 4,
+        "width": 256,
+        "x": 1024,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 5,
+        "width": 256,
+        "x": 1280,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 6,
+        "width": 256,
+        "x": 1536,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 7,
+        "width": 256,
+        "x": 1792,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 8,
+        "width": 256,
+        "x": 2048,
+        "y": 768
+      },
+      {
+        "height": 256,
+        "index": 9,
+        "width": 256,
+        "x": 2304,
+        "y": 768
+      }
+    ],
+    "hit": [
+      {
+        "height": 256,
+        "index": 0,
+        "width": 256,
+        "x": 0,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "width": 256,
+        "x": 256,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "width": 256,
+        "x": 512,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 3,
+        "width": 256,
+        "x": 768,
+        "y": 512
+      }
+    ],
+    "idle": [
+      {
+        "height": 256,
+        "index": 0,
+        "width": 256,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "width": 256,
+        "x": 256,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "width": 256,
+        "x": 512,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 3,
+        "width": 256,
+        "x": 768,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 4,
+        "width": 256,
+        "x": 1024,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 5,
+        "width": 256,
+        "x": 1280,
+        "y": 0
+      }
+    ]
+  },
+  "family": "boss",
+  "frameClass": "boss",
+  "frameRate": 12,
+  "frameSize": 256,
+  "key": "ancient_golem",
+  "sheet": "sprites/ancient_golem.png",
+  "sheetHeight": 1024,
+  "sheetWidth": 2560,
+  "silhouette": "monolith_golem",
+  "triangles": 616,
+  "unique_attack": "ground_slam"
+}
