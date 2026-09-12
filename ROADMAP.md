@@ -59,7 +59,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
   - authors Idle, Attack, Hit, and Death clips via bone animation;
   - renders every animation frame from the fixed camera to transparent PNG;
   - packs frames into sprite sheets / texture atlases for libGDX.
-- [ ] Run and review a pilot batch for the Hero and one enemy before scaling the roster.
+- [x] Run and review a pilot batch for the Hero and one enemy before scaling the roster.
 - [ ] Model, rig/animate as needed, and render the World Tree in healthy and damaged states.
 - [ ] Model and render 40 equipment items as attachable Hero-rig variants, plus six potion icons.
 - [ ] Model/render ground tiles and 3D props; keep appropriate flat UI assets 2D/vector.

@@ -104,6 +104,10 @@ def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene
     scene.render.filepath = str(output_directory)
     scene.render.use_file_extension = True
     scene.render.image_settings.compression = 40
+    # Four temporal samples are sufficient for small, flat-shaded sprite frames and
+    # keep the offline batch practical on CPU-only CI renderers.
+    scene.eevee.taa_render_samples = 4
+    scene.eevee.taa_samples = 4
     scene.render.use_freestyle = True
     scene.render.line_thickness = 1.0
 

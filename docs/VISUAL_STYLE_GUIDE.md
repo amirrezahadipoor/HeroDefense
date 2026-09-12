@@ -71,10 +71,10 @@ All character, equipment, item, prop, and tree renders use the named `HD_CAMERA`
 |---|---|
 | Projection | Orthographic |
 | Camera location | `(6.5, -9.5, 6.2)` |
-| Look-at target | `(0, 0, 1.45)` |
-| Orthographic scale, regular character | `5.2` |
-| Orthographic scale, boss | `7.0` |
-| Orthographic scale, item icon | `3.2` |
+| Look-at target | `(0, 0, 1.15)` |
+| Orthographic scale, regular character | `3.0` |
+| Orthographic scale, boss | `4.4` |
+| Orthographic scale, item icon | `2.2` |
 | Character forward direction | `(0, -1, 0)` toward camera |
 | Frame center | pelvis at X center; ground plane at 12% frame height |
 

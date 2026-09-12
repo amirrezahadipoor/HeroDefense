@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import math
-from typing import Iterable
 
 import bpy
-from mathutils import Matrix
 
 from .config import CLIPS, REQUIRED_BONES
 
@@ -67,11 +65,25 @@ def create_standard_armature(name: str, scale: float = 1.0) -> bpy.types.Object:
 
 
 def parent_to_bone(obj: bpy.types.Object, armature: bpy.types.Object, bone_name: str) -> None:
-    world_matrix: Matrix = obj.matrix_world.copy()
-    obj.parent = armature
-    obj.parent_type = "BONE"
-    obj.parent_bone = bone_name
-    obj.matrix_world = world_matrix
+    """Rigid-skin one mesh part to a real armature bone.
+
+    A one-bone vertex group avoids Blender's bone-parent tail offset and gives the
+    procedural multipart character the same evaluated transform contract as a
+    conventionally weighted mesh.
+    """
+    if obj.type != "MESH":
+        raise TypeError(f"Bone attachment requires a mesh object, got {obj.type}")
+    # Armature modifiers evaluate vertices in object space. Bake each procedural
+    # primitive's object transform first so rest-pose deformation is identity.
+    # Force a depsgraph update because primitives are scaled immediately before this.
+    bpy.context.view_layer.update()
+    obj.data.transform(obj.matrix_world.copy())
+    obj.matrix_world.identity()
+    vertex_group = obj.vertex_groups.new(name=bone_name)
+    vertex_group.add(range(len(obj.data.vertices)), 1.0, "REPLACE")
+    modifier = obj.modifiers.new("HD_ARMATURE", "ARMATURE")
+    modifier.object = armature
+    modifier.use_deform_preserve_volume = False
 
 
 def author_standard_actions(armature: bpy.types.Object, name: str) -> dict[str, bpy.types.Action]:
@@ -94,8 +106,39 @@ def author_standard_actions(armature: bpy.types.Object, name: str) -> dict[str, 
             for keyframe in curve.keyframe_points:
                 keyframe.interpolation = "BEZIER" if clip == "idle" else "LINEAR"
         actions[clip] = action
+    _reset_pose(armature)
     armature.animation_data.action = actions["idle"]
     return actions
+
+
+def stack_actions_for_single_render(
+    armature: bpy.types.Object,
+    actions: dict[str, bpy.types.Action],
+) -> dict[str, list[int]]:
+    """Arrange all clips as consecutive NLA strips so one render call emits every frame.
+
+    Mesa software rendering can retain a large context allocation between separate
+    render operator calls. A single NLA animation call is both faster and bounded.
+    """
+    armature.animation_data.action = None
+    for track in list(armature.animation_data.nla_tracks):
+        armature.animation_data.nla_tracks.remove(track)
+    track = armature.animation_data.nla_tracks.new()
+    track.name = "HD_EXPORT_CLIPS"
+    global_frame = 1
+    mapping: dict[str, list[int]] = {}
+    for clip, frame_count in CLIPS.items():
+        action = actions[clip]
+        strip = track.strips.new(clip, global_frame, action)
+        strip.action_frame_start = 1
+        strip.action_frame_end = frame_count
+        strip.frame_start = global_frame
+        strip.frame_end = global_frame + frame_count - 1
+        strip.extrapolation = "NOTHING"
+        strip.blend_type = "REPLACE"
+        mapping[clip] = list(range(global_frame, global_frame + frame_count))
+        global_frame += frame_count
+    return mapping
 
 
 def _reset_pose(armature: bpy.types.Object) -> None:

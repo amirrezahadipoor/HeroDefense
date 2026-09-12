@@ -8,13 +8,13 @@ FRAME_RATE = 12
 OUTLINE_RGBA = (0.0072, 0.0152, 0.0194, 1.0)  # linear-ish #142126
 
 CAMERA_LOCATION = (6.5, -9.5, 6.2)
-CAMERA_TARGET = (0.0, 0.0, 1.45)
+CAMERA_TARGET = (0.0, 0.0, 1.15)
 CAMERA_SCALE = {
-    "character": 5.2,
-    "boss": 7.0,
-    "item": 3.2,
-    "tree": 7.4,
-    "environment": 6.0,
+    "character": 3.0,
+    "boss": 4.4,
+    "item": 2.2,
+    "tree": 5.0,
+    "environment": 4.8,
 }
 FRAME_SIZE = {
     "character": 192,

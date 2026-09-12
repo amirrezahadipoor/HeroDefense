@@ -163,6 +163,10 @@ def build_hero() -> BuiltModel:
     _bone_part(pelvis, armature, "pelvis", objects)
     head = add_ico("hero_head", (0, -0.015, 1.75), (0.30, 0.26, 0.34), mats["skin"], 2)
     _bone_part(head, armature, "head", objects)
+    eye_material = MATERIALS.get("hero_eye", "#17262B")
+    for side, sign in (("L", -1), ("R", 1)):
+        eye = add_ico(f"hero_eye_{side}", (0.09 * sign, -0.258, 1.80), (0.032, 0.018, 0.042), eye_material)
+        _bone_part(eye, armature, "head", objects)
     hair = add_cone("hero_hair", (0, 0.08, 1.88), 0.31, 0.10, 0.44, mats["hair"], 8)
     _bone_part(hair, armature, "head", objects)
     for side, sign in (("L", -1), ("R", 1)):
@@ -235,7 +239,10 @@ def _basic_humanoid(
 
 def build_rootling() -> BuiltModel:
     armature, objects, mats = _basic_humanoid("rootling", PALETTE["wood"], "#B5A166", "ico", 0.92)
+    eye_material = MATERIALS.get("rootling_eye", "#E7C85B")
     for side, sign in (("L", -1), ("R", 1)):
+        eye = add_ico(f"rootling_eye_{side}", (0.09 * sign, -0.285, 1.78), (0.035, 0.018, 0.05), eye_material)
+        _bone_part(eye, armature, "head", objects)
         horn = add_cone(
             f"rootling_branch_{side}", (0.20 * sign, 0.02, 2.02), 0.08, 0.0, 0.55,
             mats["accent"], 5, (0.0, math.radians(22 * sign), 0.0),
