@@ -20,6 +20,14 @@ For wave `w` clamped to 1–100:
 - Boss contact damage on milestone wave `w`: baseline regular damage at `w` × `3`.
 - Boss movement, reach, interval, and special behavior remain identity-specific.
 
+## Hero stat gains
+
+- Strength: `+2` base damage per point from a `10`-damage baseline.
+- Agility: `+0.03` attacks per second per point from `1.00`; interval is the reciprocal.
+- Luck: multiplies item-drop rates by `1.02` per point.
+- Dodge: `+0.5` percentage points per point, capped at `60%`.
+- Health: `+10` maximum HP per point from a `100`-HP baseline.
+
 ## Critical hits
 
 - Every Hero projectile has a deterministic `5%` critical chance and deals `1.75×` damage on success.
