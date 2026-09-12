@@ -51,7 +51,10 @@ public final class GameFlowController {
 
     private static Map<GameScreenState, EnumSet<GameScreenState>> buildTransitions() {
         Map<GameScreenState, EnumSet<GameScreenState>> transitions = new EnumMap<>(GameScreenState.class);
-        transitions.put(GameScreenState.MENU, EnumSet.of(GameScreenState.PLAYING, GameScreenState.SHOP));
+        transitions.put(GameScreenState.MENU, EnumSet.of(
+            GameScreenState.SETTINGS, GameScreenState.PLAYING, GameScreenState.SHOP
+        ));
+        transitions.put(GameScreenState.SETTINGS, EnumSet.of(GameScreenState.MENU));
         transitions.put(GameScreenState.PLAYING, EnumSet.of(
             GameScreenState.PAUSED,
             GameScreenState.LEVEL_UP,

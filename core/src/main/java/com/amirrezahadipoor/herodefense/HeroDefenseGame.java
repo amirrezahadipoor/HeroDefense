@@ -28,9 +28,12 @@ import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
+import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
 import com.amirrezahadipoor.herodefense.input.PauseTouchController;
 import com.amirrezahadipoor.herodefense.input.PauseTouchLayout;
 import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
+import com.amirrezahadipoor.herodefense.input.SettingsTouchController;
+import com.amirrezahadipoor.herodefense.input.SettingsTouchLayout;
 import com.amirrezahadipoor.herodefense.input.SimulationSpeedTouchController;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
@@ -44,11 +47,17 @@ import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HudRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.MainMenuRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
+import com.amirrezahadipoor.herodefense.settings.GameSettings;
+import com.amirrezahadipoor.herodefense.settings.LocalSettingsRepository;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
+
+import java.util.Optional;
 
 /** Android-only libGDX game loop and top-level state coordinator. */
 public final class HeroDefenseGame extends ApplicationAdapter {
@@ -72,15 +81,21 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
     private KillRewardSystem killRewardSystem;
+    private MainMenuRenderer mainMenuRenderer;
     private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
+    private SettingsOverlayRenderer settingsOverlayRenderer;
+    private SettingsTouchController settingsTouchController;
     private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
     private StatShopSystem statShopSystem;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
+    private LocalSettingsRepository settingsRepository;
+    private GameSettings settings;
     private GameState gameState;
+    private boolean continueAvailable;
     private OrthographicCamera camera;
     private Viewport viewport;
     private float simulationSeconds;
@@ -110,10 +125,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         itemDropSystem = new ItemDropSystem();
         pauseTouchController = new PauseTouchController();
         potionDropSystem = new PotionDropSystem();
+        settingsTouchController = new SettingsTouchController();
         simulationSpeedTouchController = new SimulationSpeedTouchController();
         statShopSystem = new StatShopSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
-        gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
+        settingsRepository = new LocalSettingsRepository(
+            Gdx.app.getPreferences(LocalSettingsRepository.PREFERENCES_NAME)
+        );
+        settings = settingsRepository.load();
+        Optional<GameState> loadedRun = saves.load();
+        gameState = loadedRun.orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
+        continueAvailable = loadedRun.isPresent() && canContinue(gameState);
         new StarterLoadoutSystem().provisionOnce(gameState);
         camera = new OrthographicCamera();
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
@@ -123,7 +145,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
+        mainMenuRenderer = new MainMenuRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
+        settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
         installTouchInput();
     }
@@ -184,8 +208,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (inventoryOverlayRenderer != null) {
             inventoryOverlayRenderer.close();
         }
+        if (mainMenuRenderer != null) {
+            mainMenuRenderer.close();
+        }
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
+        }
+        if (settingsOverlayRenderer != null) {
+            settingsOverlayRenderer.close();
         }
         if (statShopOverlayRenderer != null) {
             statShopOverlayRenderer.close();
@@ -198,6 +228,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private void saveNow() {
         if (saves != null && gameState != null) {
             saves.save(gameState);
+            continueAvailable = canContinue(gameState);
         }
     }
 
@@ -225,6 +256,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             @Override
             public boolean onTouchUp(float worldX, float worldY, int pointer, boolean isTap) {
                 if (!isTap) {
+                    return true;
+                }
+                if (flow.state() == GameScreenState.SETTINGS) {
+                    SettingsTouchLayout.Action action = settingsTouchController.tap(
+                        settings, worldX, worldY
+                    );
+                    if (action == SettingsTouchLayout.Action.CLOSE) {
+                        flow.transitionTo(GameScreenState.MENU);
+                    } else if (action != SettingsTouchLayout.Action.NONE) {
+                        settingsRepository.save(settings);
+                    }
                     return true;
                 }
                 if (flow.state() == GameScreenState.CARD_CHOICE) {
@@ -260,11 +302,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     }
                     return true;
                 }
-                if (flow.state() == GameScreenState.MENU
-                    && worldX >= 120f && worldX <= 600f
-                    && worldY >= 150f && worldY <= 310f) {
-                    waveLifecycleSystem.startCurrentWave(gameState);
-                    flow.transitionTo(GameScreenState.PLAYING);
+                if (flow.state() == GameScreenState.MENU) {
+                    MainMenuTouchLayout.Action action = MainMenuTouchLayout.actionAt(
+                        worldX, worldY, continueAvailable
+                    );
+                    if (action == MainMenuTouchLayout.Action.NEW_GAME) {
+                        startNewRun();
+                    } else if (action == MainMenuTouchLayout.Action.CONTINUE) {
+                        continueRun();
+                    } else if (action == MainMenuTouchLayout.Action.SETTINGS) {
+                        flow.transitionTo(GameScreenState.SETTINGS);
+                    }
                     return true;
                 }
                 if (flow.state() == GameScreenState.PLAYING
@@ -306,6 +354,32 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }));
     }
 
+    private void startNewRun() {
+        saves.clear();
+        gameState = GameState.newRun(System.currentTimeMillis());
+        new StarterLoadoutSystem().provisionOnce(gameState);
+        simulationSeconds = 0f;
+        waveLifecycleSystem.startCurrentWave(gameState);
+        flow.transitionTo(GameScreenState.PLAYING);
+        saveNow();
+    }
+
+    private void continueRun() {
+        if (!continueAvailable || !canContinue(gameState)) return;
+        flow.transitionTo(GameScreenState.PLAYING);
+        if (gameState.awaitingBossReward) {
+            flow.transitionTo(GameScreenState.CARD_CHOICE);
+        } else if (gameState.unspentTalentPoints > 0) {
+            flow.transitionTo(GameScreenState.LEVEL_UP);
+        } else if (!gameState.waveActive) {
+            waveLifecycleSystem.startCurrentWave(gameState);
+        }
+    }
+
+    private static boolean canContinue(GameState state) {
+        return state != null && state.hero != null && state.hero.alive && !state.runComplete;
+    }
+
     private void updatePlaying(float deltaSeconds) {
         float simulationDelta = deltaSeconds * gameState.simulationSpeed;
         gameState.anchorHeroAtArenaCenter();
@@ -344,6 +418,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private void drawCurrentState() {
         float tint = switch (flow.state()) {
             case MENU -> 0.07f;
+            case SETTINGS -> 0.065f;
             case PLAYING -> 0.11f;
             case PAUSED -> 0.055f;
             case LEVEL_UP -> 0.13f;
@@ -354,7 +429,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(tint * 0.5f, tint, tint * 0.72f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (flow.state() != GameScreenState.MENU) {
+        if (flow.state() != GameScreenState.MENU && flow.state() != GameScreenState.SETTINGS) {
             camera.update();
             spriteBatch.setProjectionMatrix(camera.combined);
             spriteBatch.begin();
@@ -366,7 +441,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (flow.state() == GameScreenState.PLAYING) {
             hudRenderer.draw(spriteBatch, camera.combined, gameState);
         }
-        if (flow.state() == GameScreenState.CARD_CHOICE) {
+        if (flow.state() == GameScreenState.MENU) {
+            mainMenuRenderer.draw(spriteBatch, camera.combined, continueAvailable);
+        } else if (flow.state() == GameScreenState.SETTINGS) {
+            settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings);
+        } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.SHOP) {
             statShopOverlayRenderer.draw(spriteBatch, camera.combined, gameState, statShopSystem);
