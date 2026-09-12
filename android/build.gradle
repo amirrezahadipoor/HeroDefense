@@ -2,6 +2,17 @@ plugins {
     id "com.android.application"
 }
 
+def cafeBazaarKeystorePath = System.getenv("CAFE_BAZAAR_KEYSTORE_PATH")
+def cafeBazaarKeystorePassword = System.getenv("CAFE_BAZAAR_KEYSTORE_PASSWORD")
+def cafeBazaarKeyAlias = System.getenv("CAFE_BAZAAR_KEY_ALIAS")
+def cafeBazaarKeyPassword = System.getenv("CAFE_BAZAAR_KEY_PASSWORD")
+def cafeBazaarSigningConfigured = [
+    cafeBazaarKeystorePath,
+    cafeBazaarKeystorePassword,
+    cafeBazaarKeyAlias,
+    cafeBazaarKeyPassword
+].every { value -> value != null && !value.isBlank() }
+
 android {
     namespace "com.amirrezahadipoor.herodefense.android"
     compileSdk 35
@@ -22,12 +33,26 @@ android {
         }
     }
 
+    signingConfigs {
+        if (cafeBazaarSigningConfigured) {
+            cafeBazaar {
+                storeFile file(cafeBazaarKeystorePath)
+                storePassword cafeBazaarKeystorePassword
+                keyAlias cafeBazaarKeyAlias
+                keyPassword cafeBazaarKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
         }
         release {
+            if (cafeBazaarSigningConfigured) {
+                signingConfig signingConfigs.cafeBazaar
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }

@@ -1,0 +1,107 @@
+name: Build signed Cafe Bazaar APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cafe-bazaar-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  signed-release-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_USER_HOME: /tmp/herodefense-gradle
+      HERO_PROJECT_CACHE_DIR: /tmp/herodefense-project-cache
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Require all release-signing secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.CAFE_BAZAAR_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.CAFE_BAZAAR_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.CAFE_BAZAAR_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.CAFE_BAZAAR_KEY_PASSWORD }}
+        run: |
+          test -n "$KEYSTORE_BASE64"
+          test -n "$KEYSTORE_PASSWORD"
+          test -n "$KEY_ALIAS"
+          test -n "$KEY_PASSWORD"
+
+      - name: Materialize the temporary release keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.CAFE_BAZAAR_KEYSTORE_BASE64 }}
+        run: |
+          keystore="$RUNNER_TEMP/hero-defense-release.p12"
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$keystore"
+          chmod 600 "$keystore"
+          echo "CAFE_BAZAAR_KEYSTORE_PATH=$keystore" >> "$GITHUB_ENV"
+
+      - name: Run core and balance tests
+        run: ./scripts/gradle.sh :core:test --stacktrace
+
+      - name: Run Android release lint
+        run: ./scripts/gradle.sh :android:lintRelease --stacktrace
+
+      - name: Assemble signed release APK
+        env:
+          CAFE_BAZAAR_KEYSTORE_PASSWORD: ${{ secrets.CAFE_BAZAAR_KEYSTORE_PASSWORD }}
+          CAFE_BAZAAR_KEY_ALIAS: ${{ secrets.CAFE_BAZAAR_KEY_ALIAS }}
+          CAFE_BAZAAR_KEY_PASSWORD: ${{ secrets.CAFE_BAZAAR_KEY_PASSWORD }}
+        run: ./scripts/gradle.sh :android:assembleRelease --stacktrace
+
+      - name: Verify signature, package identity, and release metadata
+        id: verify
+        run: |
+          set -eu
+          apk="android/build/outputs/apk/release/android-release.apk"
+          test -s "$apk"
+          build_tools=$(find "$ANDROID_SDK_ROOT/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)
+          "$build_tools/apksigner" verify --verbose --print-certs "$apk"
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            unzip -l "$apk" "lib/$abi/libgdx.so" | grep -q "lib/$abi/libgdx.so"
+          done
+          apk_bytes=$(wc -c < "$apk")
+          test "$apk_bytes" -lt 100000000
+          package_name=$("$build_tools/aapt" dump badging "$apk" | sed -n "s/^package: name='\([^']*\)'.*/\1/p")
+          version_name=$("$build_tools/aapt" dump badging "$apk" | sed -n "s/^package:.*versionName='\([^']*\)'.*/\1/p")
+          test "$package_name" = "com.amirrezahadipoor.herodefense"
+          test -n "$version_name"
+          output="$RUNNER_TEMP/cafe-bazaar-output"
+          mkdir -p "$output"
+          named_apk="$output/HeroDefense-$version_name-cafe-bazaar.apk"
+          cp "$apk" "$named_apk"
+          sha256sum "$named_apk" > "$named_apk.sha256"
+          echo "directory=$output" >> "$GITHUB_OUTPUT"
+          echo "version=$version_name" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Cafe Bazaar-ready signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hero-defense-${{ steps.verify.outputs.version }}-cafe-bazaar
+          path: ${{ steps.verify.outputs.directory }}/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Remove temporary signing material
+        if: always()
+        run: rm -f "$RUNNER_TEMP/hero-defense-release.p12"
