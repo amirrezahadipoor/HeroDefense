@@ -1,6 +1,73 @@
 # Hero Defense Visual Style Guide
 
-**Status:** locked baseline. Any deliberate exception must be documented in the asset manifest and reviewed before commit.
+**Status:** locked premium-v2 target. Any deliberate exception must be documented in the asset manifest and reviewed before commit.
+
+## 0. Premium-v2 Quality Bar
+
+Premium-v2 is a substantial quality upgrade, not a change to noisy realism. Every frame must look authored, materially separated, and animation-ready while remaining immediately readable on a mid-range Android phone.
+
+### 0.1 Art-direction hierarchy
+
+1. The Hero and World Tree are the primary read; bosses are secondary; regular enemies, rewards, and props follow in that order.
+2. Use a 60/30/10 value-and-color split: broad dark forest masses, readable local-color forms, then restrained gold/rarity accents.
+3. Each character needs one dominant silhouette idea, one supporting shape rhythm, and no more than three high-contrast focal details.
+4. Add detail only where it explains anatomy, material, equipment function, or motion. Decorative micro-noise, arbitrary spikes, excessive particles, and uniformly bright edges are rejected.
+5. A frame must pass at full size, at its real in-game size, at 50% scale, in grayscale, and against both light and dark checkerboards.
+
+### 0.2 Premium shape and material treatment
+
+- Build primary, secondary, and tertiary forms deliberately: torso/weapon/read first, armor/hair/limbs second, fasteners/leaves/runes last.
+- Preserve broad low-poly planes, but improve bevel placement, joint transitions, hand/weapon silhouettes, facial planes, and contact between layered parts.
+- Cloth, skin, wood, foliage, stone, forged metal, crystal, and potion glass must be distinguishable by value grouping and highlight behavior—not by tiny texture noise.
+- Metals receive controlled narrow highlights on selected planes; glass receives one readable interior value break; cloth and wood remain broad and matte.
+- Faces use a minimal eye/brow/nose shadow arrangement that remains readable without becoming portrait detail.
+- Equipment rarity changes construction, silhouette accents, and material emphasis. It must never be only a recolor.
+
+### 0.3 Premium animation treatment
+
+- Preserve the locked clip/frame contract, but pose every clip around a clear line of action and silhouette.
+- Attack must show anticipation, acceleration, impact/release, overshoot, and recovery within its eight frames.
+- Hit must register direction and weight within one frame; Death must preserve identity during collapse and use the final two-frame hold.
+- Idle motion is subtle and asymmetric: breathing, hand tension, foliage/cloth settle, and weapon weight. Avoid whole-body mechanical bobbing.
+- Keep feet planted unless a clip explicitly requires lift. Eliminate elbow/knee collapse, socket sliding, mesh penetration, and frame-to-frame volume popping.
+- Boss signature motion may exaggerate timing and scale, but never obscure its attack telegraph.
+
+### 0.4 Premium render treatment without runtime bloat
+
+- Final runtime frame dimensions remain locked unless a measured device test approves a change.
+- Premium-v2 source frames render at 2× working resolution, use at least 16 EEVEE temporal samples for opaque base assets (8 for sparse equipment overlays), then downsample once with alpha-safe high-quality filtering.
+- Downsampling must preserve straight alpha, the locked outline thickness, stable pivots, and at least four pixels of transparent/extruded edge safety.
+- Prefer better geometry, posing, lighting, and supersampled edges over larger runtime textures. Doubling runtime width and height costs roughly four times the decoded GPU memory.
+- Every atlas page must be at most 2048×2048. Multi-page output is required rather than silently exceeding the limit.
+
+### 0.5 Premium UI language
+
+- UI uses a dark translucent forest-glass base, warm parchment text, restrained leaf/branch corner motifs, and gold only for priority, currency, selection, and confirmation.
+- Maintain a clear three-level hierarchy: screen title, primary value/action, supporting metadata.
+- Every interactive target is at least 96×96 reference units, has visible pressed/disabled/selected states, and keeps text/icon content inside a 12-unit safe inset.
+- Inventory and Shop cards use consistent rarity edge treatment, aligned numeric columns, concise comparison language, and no decorative layer behind critical stats.
+- The live HUD may frame information but may not hide combat lanes, rewards, Hero attacks, or the World Tree silhouette.
+
+### 0.6 Premium VFX restraint
+
+- A normal hit uses at most one impact core, six short motes, and a sub-0.25-second fade. Critical and boss events may exceed this only through documented multipliers.
+- Never run more than one full-screen emphasis effect at once. Screen shake, hit-stop, flash, and particles must reinforce the same impact rather than compete.
+- Rare uses cool blue exterior energy; Legendary uses amber-gold. Common and Uncommon remain clean and quiet.
+- Reward collection trails must point toward their destination and clear rapidly; ambient effects stay below character contrast.
+- At peak combat, VFX must not cover more than 20% of the Hero silhouette or make enemy telegraphs unreadable.
+
+### 0.7 Premium acceptance gates
+
+A premium-v2 batch is rejected unless it has:
+
+1. deterministic source generation and manifest metadata;
+2. no clipped silhouette, unstable pivot, alpha fringe, socket drift, or missing frame;
+3. a side-by-side contact sheet against the accepted baseline;
+4. screenshots at the 720×1280 reference viewport and at a representative physical-phone scale;
+5. grayscale/value-hierarchy and 50%-scale readability checks;
+6. atlas-page, decoded-memory, APK-size, and startup/residency measurements;
+7. a successful runtime asset-contract test and touch-only Android emulator journey;
+8. explicit visual review before its own commit and push.
 
 ## 1. Visual Goal
 
@@ -14,15 +81,15 @@ Budgets count **triangles after modifiers** at render time.
 
 | Asset | Target | Hard maximum |
 |---|---:|---:|
-| Hero body/hair/base clothing | 2,400 | 3,000 |
-| One Hero equipment attachment | 150–350 | 500 |
-| Fully equipped Hero | 3,800 | 5,000 |
-| Regular enemy | 1,400 | 2,400 |
-| Boss | 3,500 | 6,500 |
-| World Tree | 5,000 | 8,500 |
-| Ground tile | 100 | 300 |
-| Arena prop | 300 | 1,200 |
-| Inventory icon-only mesh | 150 | 600 |
+| Hero body/hair/base clothing | 3,200 | 5,000 |
+| One Hero equipment attachment | 250–600 | 900 |
+| Fully equipped Hero | 6,500 | 9,000 |
+| Regular enemy | 2,200 | 4,000 |
+| Boss | 5,500 | 10,000 |
+| World Tree | 7,500 | 14,000 |
+| Ground tile | 200 | 600 |
+| Arena prop | 700 | 2,200 |
+| Inventory icon-only mesh | 300 | 1,200 |
 
 Use flat shading. Bevels are permitted only where they improve the silhouette, normally one segment. Hidden faces should be removed from final procedural meshes when practical.
 

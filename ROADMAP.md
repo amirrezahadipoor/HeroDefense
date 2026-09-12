@@ -220,7 +220,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 
 ### 16.3 Premium Art Pipeline Foundation
 
-- [ ] Upgrade the visual style guide to a premium-v2 quality bar covering shape language, material separation, animation polish, VFX restraint, UI composition, and actual-phone readability.
+- [x] Upgrade the visual style guide to a premium-v2 quality bar covering shape language, material separation, animation polish, VFX restraint, UI composition, and actual-phone readability.
 - [ ] Upgrade the atlas packer to enforce multi-page atlases no larger than 2048×2048, with automated frame/pivot/alpha and GPU-memory-budget checks.
 - [ ] Produce and review a premium-v2 pilot containing the Hero, one regular enemy, one Boss, one equipment set, one drop, one environment prop, and one UI control before scaling the new style.
 
