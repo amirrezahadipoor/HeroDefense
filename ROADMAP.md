@@ -39,7 +39,7 @@ A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at
 
 ## Phase 1 — Core Architecture
 
-- [ ] Implement the libGDX `ApplicationAdapter` game loop with states: `MENU`, `PLAYING`, `PAUSED`, `LEVEL_UP`, `CARD_CHOICE`, `SHOP`, `GAME_OVER`.
+- [x] Implement the libGDX `ApplicationAdapter` game loop with states: `MENU`, `PLAYING`, `PAUSED`, `LEVEL_UP`, `CARD_CHOICE`, `SHOP`, `GAME_OVER`.
 - [ ] Design a simple entity structure using plain classes for `Hero`, `Enemy`, `Boss`, `Projectile`, `Item`, and `DropEntity`.
 - [ ] Implement central `GameState`: wave, living enemies, Hero, coins, inventory, level, and unspent talent points.
 - [ ] Implement local save/load using Preferences or local JSON, serializing/deserializing the whole `GameState`.
