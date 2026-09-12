@@ -801,8 +801,9 @@ def _add_premium_equipment_piece(
             attach(add_ico("sabre_pommel", (0.82, -0.09, 0.43),
                            (0.10, 0.07, 0.10), accent, 1), "weapon_socket")
         elif item_id in {"thorn_spear", "verdant_glaive"}:
+            shaft_top = 1.58 if item_id == "verdant_glaive" else 1.66
             attach(add_cylinder_between(f"{item_id}_shaft", (0.82, -0.08, 0.30),
-                                        (0.82, -0.08, 1.66), 0.045, wood, 8),
+                                        (0.82, -0.08, shaft_top), 0.045, wood, 8),
                    "weapon_socket")
             if item_id == "thorn_spear":
                 attach(add_leaf("thorn_spear_head", (0.82, -0.08, 1.91),
@@ -816,27 +817,31 @@ def _add_premium_equipment_piece(
                 front_ring("thorn_spear_band", (0.82, -0.08, 1.50),
                            0.09, 0.025, parchment, "weapon_socket")
             else:
-                attach(add_leaf("verdant_glaive_blade", (0.96, -0.09, 1.80),
-                                (0.25, 0.055, 0.48), accent,
+                # Keep the sweeping leaf silhouette inside the 192 px safe frame
+                # during the high attack recovery pose.
+                attach(add_leaf("verdant_glaive_blade", (0.95, -0.09, 1.72),
+                                (0.23, 0.055, 0.42), accent,
                                 (0, 0.12, -0.35)), "weapon_socket")
-                attach(add_leaf("verdant_glaive_hook", (0.67, -0.08, 1.67),
-                                (0.12, 0.045, 0.27), leaf, (0, 0, 0.58)),
+                attach(add_leaf("verdant_glaive_hook", (0.68, -0.08, 1.61),
+                                (0.115, 0.045, 0.24), leaf, (0, 0, 0.58)),
                        "weapon_socket")
                 for z in (0.72, 1.40):
                     front_ring(f"verdant_glaive_band_{z}", (0.82, -0.08, z),
                                0.085, 0.023, highlight, "weapon_socket")
         elif item_id == "golem_splitter":
             attach(add_cylinder_between("splitter_haft", (0.82, -0.07, 0.28),
-                                        (0.82, -0.07, 1.58), 0.060, dark, 8),
+                                        (0.82, -0.07, 1.47), 0.060, dark, 8),
                    "weapon_socket")
+            # Lower the complete head without flattening its double-bit profile;
+            # this preserves impact weight while protecting the overhead pose.
             for side, sign in (("L", -1), ("R", 1)):
                 attach(add_leaf(f"splitter_blade_{side}",
-                                (0.82 + 0.25 * sign, -0.08, 1.61),
+                                (0.82 + 0.25 * sign, -0.08, 1.50),
                                 (0.31, 0.065, 0.38), silver,
                                 (0, 0.10 * sign, 0.44 * sign)), "weapon_socket")
-            attach(add_cube("splitter_head_core", (0.82, -0.08, 1.60),
+            attach(add_cube("splitter_head_core", (0.82, -0.08, 1.49),
                             (0.30, 0.13, 0.28), accent, 0.045), "weapon_socket")
-            attach(add_ico("splitter_rune", (0.82, -0.17, 1.61),
+            attach(add_ico("splitter_rune", (0.82, -0.17, 1.50),
                            (0.09, 0.025, 0.12), cyan, 1), "weapon_socket")
             attach(add_ico("splitter_counterweight", (0.82, -0.07, 0.25),
                            (0.13, 0.10, 0.13), accent, 1), "weapon_socket")
@@ -873,17 +878,20 @@ def _add_premium_equipment_piece(
                                 (0.025, 0.02, 0.20), highlight, 0.005), bone)
         elif item_id == "antler_circlet":
             front_ring("antler_circlet", (0, -0.01, 1.99), 0.34, 0.035, accent, bone)
+            # Compact only the upper branches so the circlet stays seated while
+            # the reactive hit pose retains a clean top-edge margin.
             for side, sign in (("L", -1), ("R", 1)):
-                trunk_start=(0.22 * sign, 0.0, 2.04); trunk_end=(0.37 * sign, 0.02, 2.48)
+                trunk_start = (0.22 * sign, 0.0, 2.04)
+                trunk_end = (0.37 * sign, 0.02, 2.38)
                 attach(add_cylinder_between(f"antler_trunk_{side}", trunk_start, trunk_end,
                                             0.045, pale_wood, 7), bone)
                 attach(add_cylinder_between(f"antler_tine_low_{side}",
-                                            (0.30 * sign, 0.01, 2.26),
-                                            (0.52 * sign, 0.0, 2.35), 0.032,
+                                            (0.29 * sign, 0.01, 2.22),
+                                            (0.51 * sign, 0.0, 2.31), 0.032,
                                             parchment, 6), bone)
                 attach(add_cylinder_between(f"antler_tine_high_{side}",
-                                            (0.35 * sign, 0.02, 2.39),
-                                            (0.50 * sign, 0.02, 2.54), 0.028,
+                                            (0.34 * sign, 0.02, 2.31),
+                                            (0.49 * sign, 0.02, 2.43), 0.028,
                                             parchment, 6), bone)
         elif item_id == "owlguard_helm":
             attach(add_ico("owlguard_shell", (0, 0.01, 1.94),
