@@ -47,6 +47,11 @@ public final class GameFlowController {
             throw new IllegalStateException("Current state is not a resumable overlay: " + state);
         }
         state = returnState;
+        // SHOP can be opened over PAUSED. Restore PAUSED's own destination after
+        // unwinding that nested overlay so Resume cannot return to PAUSED forever.
+        if (state == GameScreenState.PAUSED) {
+            returnState = GameScreenState.PLAYING;
+        }
     }
 
     private static Map<GameScreenState, EnumSet<GameScreenState>> buildTransitions() {

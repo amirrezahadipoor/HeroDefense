@@ -15,12 +15,17 @@ final class ShopFlowTest {
     }
 
     @Test
-    void inGameShopReturnsToFrozenPauseOverlay() {
+    void inGameShopReturnsToFrozenPauseOverlayWithoutBreakingResume() {
         GameFlowController flow = new GameFlowController();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.PAUSED);
         flow.transitionTo(GameScreenState.SHOP);
+
         flow.returnFromOverlay();
         assertEquals(GameScreenState.PAUSED, flow.state());
+        assertEquals(GameScreenState.PLAYING, flow.returnState());
+
+        flow.returnFromOverlay();
+        assertEquals(GameScreenState.PLAYING, flow.state());
     }
 }

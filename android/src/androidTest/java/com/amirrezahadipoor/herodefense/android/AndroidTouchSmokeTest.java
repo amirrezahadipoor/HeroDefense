@@ -59,6 +59,16 @@ public final class AndroidTouchSmokeTest {
                 1115f + correction[1]
             ); // Pause HUD target, calibrated from the preceding real touch.
             await("paused", () -> game.screenState() == GameScreenState.PAUSED);
+
+            tapWorld(surface, 360f + correction[0], 1_000f + correction[1]); // Stat Shop
+            await("shop opens over pause", () -> game.screenState() == GameScreenState.SHOP);
+            tapWorld(surface, 620f + correction[0], 1_170f + correction[1]); // Close Shop
+            await("shop returns to pause", () -> game.screenState() == GameScreenState.PAUSED);
+            tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
+            await("resume after shop", () -> game.screenState() == GameScreenState.PLAYING);
+
+            tapWorld(surface, 600f + correction[0], 1_115f + correction[1]); // Pause again
+            await("paused again", () -> game.screenState() == GameScreenState.PAUSED);
             tapWorld(surface, 360f + correction[0], 830f + correction[1]); // Inventory
             await("inventory opens", game::inventoryOpen);
 
