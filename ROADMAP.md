@@ -129,7 +129,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Cycle 1×/2×/3× simulation speed from a tap target.
 - [x] Add touch-only Main Menu: new game, continue, settings.
 - [x] Add touch-only Level-Up stat selection.
-- [ ] Add touch-only post-boss three-card selection.
+- [x] Add touch-only post-boss three-card selection.
 - [ ] Add touch/drag Inventory and Equipment screens.
 - [ ] Add touch-only Shop screen.
 - [ ] Add Game Over summary and tap-to-restart at Wave 1.

@@ -31,7 +31,7 @@ import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
 import com.amirrezahadipoor.herodefense.input.PauseTouchController;
 import com.amirrezahadipoor.herodefense.input.PauseTouchLayout;
-import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
+import com.amirrezahadipoor.herodefense.input.RewardCardTouchController;
 import com.amirrezahadipoor.herodefense.input.SettingsTouchController;
 import com.amirrezahadipoor.herodefense.input.SettingsTouchLayout;
 import com.amirrezahadipoor.herodefense.input.SimulationSpeedTouchController;
@@ -87,6 +87,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
+    private RewardCardTouchController rewardCardTouchController;
     private SettingsOverlayRenderer settingsOverlayRenderer;
     private SettingsTouchController settingsTouchController;
     private SimulationSpeedTouchController simulationSpeedTouchController;
@@ -113,6 +114,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         enemyMovementSystem = new EnemyMovementSystem();
         EnemyWaveSpawner enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
         bossRewardCardSystem = new BossRewardCardSystem();
+        rewardCardTouchController = new RewardCardTouchController(bossRewardCardSystem);
         waveLifecycleSystem = new WaveLifecycleSystem(
             enemyWaveSpawner,
             new BossWaveSpawner(new BossFactory()),
@@ -276,8 +278,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.CARD_CHOICE) {
-                    int choiceIndex = RewardCardTouchLayout.cardIndexAt(worldX, worldY);
-                    if (bossRewardCardSystem.chooseCard(gameState, choiceIndex)) {
+                    if (rewardCardTouchController.tap(gameState, worldX, worldY)) {
                         WaveCompletion result = waveLifecycleSystem.continueAfterBossReward(gameState);
                         flow.transitionTo(
                             result == WaveCompletion.RUN_COMPLETED
