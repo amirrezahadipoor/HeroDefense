@@ -275,6 +275,9 @@
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "sheet": "sprites/ancient_golem.png",
   "sheetHeight": 1024,
   "sheetWidth": 2048,
@@ -286,7 +289,8 @@
       "width": 2048
     }
   ],
-  "silhouette": "monolith_golem",
-  "triangles": 616,
-  "unique_attack": "ground_slam"
+  "silhouette": "heartstone_monolith",
+  "triangles": 1524,
+  "unique_attack": "ground_slam",
+  "visualQuality": "premium-v2"
 }

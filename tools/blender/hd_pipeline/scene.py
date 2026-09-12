@@ -9,7 +9,15 @@ import bpy
 from mathutils import Vector
 
 from .atlas_layout import plan_grid
-from .config import CAMERA_LOCATION, CAMERA_SCALE, CAMERA_SHIFT_Y, CAMERA_TARGET, OUTLINE_RGBA
+from .config import (
+    CAMERA_LOCATION,
+    CAMERA_SCALE,
+    CAMERA_SHIFT_Y,
+    CAMERA_TARGET,
+    OPAQUE_RENDER_SAMPLES,
+    OUTLINE_RGBA,
+    RENDER_SUPERSAMPLE,
+)
 
 
 def hex_rgba(value: str, alpha: float = 1.0) -> tuple[float, float, float, float]:
@@ -99,16 +107,17 @@ def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.image_settings.color_depth = "8"
-    scene.render.resolution_x = scene.render.resolution_y = _frame_size(frame_class)
+    working_size = _frame_size(frame_class) * RENDER_SUPERSAMPLE
+    scene.render.resolution_x = scene.render.resolution_y = working_size
     scene.render.resolution_percentage = 100
     scene.render.fps = 12
     scene.render.filepath = str(output_directory)
     scene.render.use_file_extension = True
     scene.render.image_settings.compression = 40
-    # Four temporal samples are sufficient for small, flat-shaded sprite frames and
-    # keep the offline batch practical on CPU-only CI renderers.
-    scene.eevee.taa_render_samples = 4
-    scene.eevee.taa_samples = 4
+    # Premium-v2 renders opaque assets at 2× working resolution with enough temporal
+    # samples for clean facets and downsampled edges while remaining practical in CI.
+    scene.eevee.taa_render_samples = OPAQUE_RENDER_SAMPLES
+    scene.eevee.taa_samples = OPAQUE_RENDER_SAMPLES
     # Use deterministic alpha-dilation outlines for every asset class. Unlike
     # Freestyle, this keeps repeated software-GL renders memory-bounded in CI.
     scene.render.use_freestyle = False
@@ -250,6 +259,60 @@ def apply_alpha_outline(path: Path, radius: int = 3) -> None:
     image.file_format = "PNG"
     image.save()
     bpy.data.images.remove(image)
+
+
+def downsample_alpha_safe(path: Path, target_size: int) -> None:
+    """Downsample an integer-scale RGBA render in linear premultiplied-alpha space."""
+    source_image = bpy.data.images.load(str(path), check_existing=False)
+    source_width, source_height = source_image.size
+    if source_width != source_height or source_width % target_size != 0:
+        bpy.data.images.remove(source_image)
+        raise ValueError(f"Cannot downsample {source_width}x{source_height} to {target_size}")
+    factor = source_width // target_size
+    if factor < 1:
+        bpy.data.images.remove(source_image)
+        raise ValueError("Downsample target cannot exceed the rendered frame")
+    source = array("f", [0.0]) * (source_width * source_height * 4)
+    source_image.pixels.foreach_get(source)
+    destination = array("f", [0.0]) * (target_size * target_size * 4)
+    sample_count = factor * factor
+
+    for target_y in range(target_size):
+        for target_x in range(target_size):
+            alpha_sum = 0.0
+            red_sum = green_sum = blue_sum = 0.0
+            for offset_y in range(factor):
+                source_y = target_y * factor + offset_y
+                for offset_x in range(factor):
+                    source_x = target_x * factor + offset_x
+                    source_index = (source_y * source_width + source_x) * 4
+                    alpha = source[source_index + 3]
+                    alpha_sum += alpha
+                    red_sum += source[source_index] * alpha
+                    green_sum += source[source_index + 1] * alpha
+                    blue_sum += source[source_index + 2] * alpha
+            output_index = (target_y * target_size + target_x) * 4
+            output_alpha = alpha_sum / sample_count
+            if alpha_sum > 0.000001:
+                destination[output_index] = red_sum / alpha_sum
+                destination[output_index + 1] = green_sum / alpha_sum
+                destination[output_index + 2] = blue_sum / alpha_sum
+            destination[output_index + 3] = output_alpha
+
+    result = bpy.data.images.new(
+        f"{path.stem}_premium_downsample",
+        width=target_size,
+        height=target_size,
+        alpha=True,
+        float_buffer=False,
+    )
+    result.alpha_mode = "STRAIGHT"
+    result.pixels.foreach_set(destination)
+    result.filepath_raw = str(path)
+    result.file_format = "PNG"
+    result.save()
+    bpy.data.images.remove(result)
+    bpy.data.images.remove(source_image)
 
 
 def make_fitted_icon(source_path: Path, output_path: Path, size: int = 96, padding: int = 8) -> None:

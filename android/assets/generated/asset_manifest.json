@@ -277,6 +277,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "sheet": "sprites/ancient_golem.png",
       "sheetHeight": 1024,
       "sheetWidth": 2048,
@@ -288,9 +291,10 @@
           "width": 2048
         }
       ],
-      "silhouette": "monolith_golem",
-      "triangles": 616,
-      "unique_attack": "ground_slam"
+      "silhouette": "heartstone_monolith",
+      "triangles": 1524,
+      "unique_attack": "ground_slam",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -315,7 +319,10 @@
         "x": 0.5,
         "y": 0.5
       },
-      "prop": "crystal_cluster",
+      "prop": "faceted_crystal_cluster",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "sheet": "environment/crystal_prop_0.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -327,8 +334,9 @@
           "width": 192
         }
       ],
-      "triangles": 50,
-      "variant": 0
+      "triangles": 316,
+      "variant": 0,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -2446,6 +2454,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "runtimeGlow": true,
       "sheet": "equipment/boots_of_three_winds.png",
       "sheetHeight": 768,
@@ -2460,7 +2471,9 @@
       ],
       "slot": "BOOTS",
       "tier": "LEGENDARY",
-      "triangles": 88,
+      "triangles": 400,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
       "visualSlot": "boots"
     },
     {
@@ -3034,6 +3047,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "runtimeGlow": true,
       "sheet": "equipment/crown_of_first_leaves.png",
       "sheetHeight": 768,
@@ -3048,7 +3064,9 @@
       ],
       "slot": "HELMET",
       "tier": "LEGENDARY",
-      "triangles": 20,
+      "triangles": 276,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
       "visualSlot": "helmet"
     },
     {
@@ -4210,6 +4228,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "runtimeGlow": true,
       "sheet": "equipment/eternal_seed.png",
       "sheetHeight": 768,
@@ -4224,7 +4245,9 @@
       ],
       "slot": "RING_2",
       "tier": "LEGENDARY",
-      "triangles": 96,
+      "triangles": 216,
+      "visualKind": "ring2",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring2"
     },
     {
@@ -5387,6 +5410,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "runtimeGlow": true,
       "sheet": "equipment/heartwood_aegis.png",
       "sheetHeight": 768,
@@ -5401,7 +5427,9 @@
       ],
       "slot": "ARMOR",
       "tier": "LEGENDARY",
-      "triangles": 44,
+      "triangles": 308,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -12448,6 +12476,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "runtimeGlow": true,
       "sheet": "equipment/worldbranch.png",
       "sheetHeight": 768,
@@ -12462,8 +12493,9 @@
       ],
       "slot": "WEAPON",
       "tier": "LEGENDARY",
-      "triangles": 96,
+      "triangles": 368,
       "visualKind": "bow",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -13376,6 +13408,9 @@
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "sheet": "icons/health_potion_6.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -13388,7 +13423,8 @@
         }
       ],
       "tier": 6,
-      "triangles": 272
+      "triangles": 646,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -13668,6 +13704,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "sheet": "sprites/hero.png",
       "sheetHeight": 768,
       "sheetWidth": 1920,
@@ -13679,8 +13718,9 @@
           "width": 1920
         }
       ],
-      "silhouette": "elf_archer",
-      "triangles": 728
+      "silhouette": "premium_elf_archer",
+      "triangles": 1508,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -13959,6 +13999,9 @@
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "sheet": "sprites/rootling.png",
       "sheetHeight": 768,
       "sheetWidth": 1920,
@@ -13970,8 +14013,9 @@
           "width": 1920
         }
       ],
-      "silhouette": "branch_imp",
-      "triangles": 564
+      "silhouette": "crowned_branch_imp",
+      "triangles": 1036,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -14807,6 +14851,9 @@
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "sheet": "icons/ui_inventory.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -14819,8 +14866,9 @@
         }
       ],
       "touchOnlyUI": true,
-      "triangles": 132,
-      "uiIcon": "inventory"
+      "triangles": 504,
+      "uiIcon": "inventory",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15637,8 +15685,10 @@
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
   "frameRate": 12,
-  "generatedBatch": "ui",
+  "generatedBatch": "premium-pilot",
   "maxAtlasPageSize": 2048,
+  "opaqueRenderSamples": 16,
+  "overlayRenderSamples": 8,
   "palette": {
     "amber": "#E19C3B",
     "crimson": "#B84245",
@@ -15655,7 +15705,8 @@
     "stone": "#65727A",
     "wood": "#70452C"
   },
-  "pipelineVersion": 2,
+  "pipelineVersion": 3,
+  "renderSupersample": 2,
   "requiredBones": [
     "root",
     "pelvis",

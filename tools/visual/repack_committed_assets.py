@@ -52,7 +52,8 @@ def main() -> None:
         entry.clear()
         entry.update(asset)
 
-    manifest["pipelineVersion"] = 2
+    # This legacy page-layout migration must never downgrade newer render provenance.
+    manifest["pipelineVersion"] = max(2, int(manifest.get("pipelineVersion", 0)))
     manifest["maxAtlasPageSize"] = MAX_ATLAS_SIZE
     manifest["decodedCatalogBudgetBytes"] = 335_544_320
     manifest["decodedCombatResidencyBudgetBytes"] = 134_217_728

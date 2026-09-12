@@ -22,6 +22,9 @@
     "x": 0.5,
     "y": 0.5
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "sheet": "icons/health_potion_6.png",
   "sheetHeight": 96,
   "sheetWidth": 96,
@@ -34,5 +37,6 @@
     }
   ],
   "tier": 6,
-  "triangles": 272
+  "triangles": 646,
+  "visualQuality": "premium-v2"
 }

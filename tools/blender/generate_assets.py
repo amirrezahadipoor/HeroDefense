@@ -30,8 +30,11 @@ from hd_pipeline.config import (  # noqa: E402
     CLIPS,
     FRAME_RATE,
     FRAME_SIZE,
+    OPAQUE_RENDER_SAMPLES,
+    OVERLAY_RENDER_SAMPLES,
     PALETTE,
     REGULAR_CHARACTERS,
+    RENDER_SUPERSAMPLE,
     REQUIRED_BONES,
     RenderAsset,
 )
@@ -49,14 +52,22 @@ from hd_pipeline.scene import (  # noqa: E402
     apply_alpha_outline,
     configure_equipment_overlay_renderer,
     configure_scene,
+    downsample_alpha_safe,
     make_fitted_icon,
     pack_grid,
     reset_scene,
     triangle_count,
 )
 
-PIPELINE_VERSION = 2
+PIPELINE_VERSION = 3
 ISOLATED_RENDERING = False
+PREMIUM_PILOT_EQUIPMENT_IDS = {
+    "worldbranch",
+    "crown_of_first_leaves",
+    "heartwood_aegis",
+    "boots_of_three_winds",
+    "eternal_seed",
+}
 TIER_COLORS = {
     "COMMON": "#87949A",
     "UNCOMMON": "#68AD69",
@@ -69,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "characters", "world-tree", "equipment", "environment", "ui", "all"),
+        choices=("pilot", "premium-pilot", "characters", "world-tree", "equipment", "environment", "ui", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -254,7 +265,7 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
                         "variantIndex": item_index,
                         "tierColor": TIER_COLORS[item["tier"]],
                         "visualKind": item.get("visualKind"),
-                        "samples": 1,
+                        "samples": OVERLAY_RENDER_SAMPLES,
                     })
                     frame_paths[clip].append(target)
         else:
@@ -299,6 +310,10 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
             "bones": sorted(bone.name for bone in hero.armature.data.bones),
             "boneAnimated": True,
             "runtimeGlow": item["tier"] in {"RARE", "LEGENDARY"},
+            "visualQuality": (
+                "premium-v2" if item["id"] in PREMIUM_PILOT_EQUIPMENT_IDS
+                else "baseline-compatible"
+            ),
         }
         _write_json(sprite_directory / f"{item['id']}.json", entry)
         entries.append(entry)
@@ -307,8 +322,12 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
     return entries
 
 
-def _outline_radius(scene: bpy.types.Scene) -> int:
-    return 3 if scene.render.resolution_x >= 256 else 2
+def _runtime_frame_size(scene: bpy.types.Scene) -> int:
+    return scene.render.resolution_x // RENDER_SUPERSAMPLE
+
+
+def _outline_radius(frame_size: int) -> int:
+    return 3 if frame_size >= 256 else 2
 
 
 def _render_stacked_animation(
@@ -333,8 +352,10 @@ def _render_stacked_animation(
             if not source.exists():
                 raise RuntimeError(f"Blender did not emit expected frame: {source}")
             source.replace(target)
+            frame_size = _runtime_frame_size(scene)
+            downsample_alpha_safe(target, frame_size)
             if not scene.render.use_freestyle:
-                apply_alpha_outline(target, _outline_radius(scene))
+                apply_alpha_outline(target, _outline_radius(frame_size))
             result[clip].append(target)
     return result
 
@@ -367,8 +388,10 @@ def render_static_model(
         scene.frame_set(1)
         scene.render.filepath = str(path)
         bpy.ops.render.render(write_still=True)
+        frame_size = _runtime_frame_size(scene)
+        downsample_alpha_safe(path, frame_size)
         if not scene.render.use_freestyle:
-            apply_alpha_outline(path, _outline_radius(scene))
+            apply_alpha_outline(path, _outline_radius(frame_size))
     target_directory = output / family
     target_directory.mkdir(parents=True, exist_ok=True)
     target = target_directory / f"{key}.png"
@@ -530,8 +553,10 @@ def _execute_frame_worker(payload_path: Path) -> None:
     scene.frame_set(frame)
     scene.render.filepath = str(output)
     bpy.ops.render.render(write_still=True)
+    frame_size = _runtime_frame_size(scene)
+    downsample_alpha_safe(output, frame_size)
     if not scene.render.use_freestyle:
-        apply_alpha_outline(output, _outline_radius(scene))
+        apply_alpha_outline(output, _outline_radius(frame_size))
 
 
 def main() -> None:
@@ -548,6 +573,15 @@ def main() -> None:
     existing = _read_existing_manifest(output)
     generated: list[dict] = []
     only = set(args.only)
+
+    if args.batch == "premium-pilot":
+        pilot_characters = (REGULAR_CHARACTERS[0], REGULAR_CHARACTERS[1], BOSSES[0])
+        generated.extend(render_character(asset, output, args.keep_frames) for asset in pilot_characters)
+        generated.extend(render_equipment(
+            args.catalog.resolve(), output, args.keep_frames, PREMIUM_PILOT_EQUIPMENT_IDS
+        ))
+        generated.extend(render_environment(output, {"health_potion_6", "crystal_prop_0"}))
+        generated.extend(render_ui(output, {"ui_inventory"}))
 
     if args.batch in {"pilot", "all"}:
         pilot = (REGULAR_CHARACTERS[0], REGULAR_CHARACTERS[1])
@@ -574,6 +608,9 @@ def main() -> None:
         "blenderVersion": BLENDER_VERSION,
         "styleGuide": "docs/VISUAL_STYLE_GUIDE.md",
         "frameRate": FRAME_RATE,
+        "renderSupersample": RENDER_SUPERSAMPLE,
+        "opaqueRenderSamples": OPAQUE_RENDER_SAMPLES,
+        "overlayRenderSamples": OVERLAY_RENDER_SAMPLES,
         "maxAtlasPageSize": MAX_ATLAS_SIZE,
         "decodedCatalogBudgetBytes": 335_544_320,
         "decodedCombatResidencyBudgetBytes": 134_217_728,

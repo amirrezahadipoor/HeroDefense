@@ -8,7 +8,7 @@ Run:
 ./scripts/install-blender-temp.sh
 ```
 
-The pinned, checksum-verified Blender 4.2 LTS binary is extracted below `${TMPDIR:-/tmp}/hero-defense-tools`. On a size-constrained tmpfs, set `HERO_TOOLS_ROOT` to another disposable, non-repository cache (for example `$HOME/.cache/hero-defense-tools`). Only the small `bpy` source scripts and reviewed rendered output are committed. CI follows the same policy on an ephemeral runner.
+The pinned, checksum-verified Blender 4.2 LTS binary is extracted below `${TMPDIR:-/tmp}/hero-defense-tools`. Keep Blender, display helpers, render intermediates, and dependency caches in `/tmp` or an ephemeral CI runner; never extract them into the repository. On a constrained runner, clear stale `/tmp` data and render category batches sequentially rather than retaining a second tool installation.
 
 Render the required low-poly UI icon batch with:
 
@@ -16,6 +16,29 @@ Render the required low-poly UI icon batch with:
 blender --background --factory-startup --python tools/blender/generate_assets.py -- \
   --batch ui --output android/assets/generated --isolate-frames
 ```
+
+## Premium-v2 pilot
+
+Render the guarded pilot into a disposable candidate directory, not directly over reviewed runtime assets:
+
+```sh
+blender --background --factory-startup --python tools/blender/generate_assets.py -- \
+  --batch premium-pilot --output /tmp/hero-defense-premium-pilot --isolate-frames
+python3 tools/visual/validate_generated_assets.py /tmp/hero-defense-premium-pilot
+python3 tools/visual/create_premium_pilot_review.py \
+  /tmp/hero-defense-premium-baseline \
+  /tmp/hero-defense-premium-pilot \
+  /tmp/hero-defense-premium-review
+```
+
+Only after opening and accepting all three contact sheets should the exact-key guarded promotion run:
+
+```sh
+python3 tools/visual/promote_premium_pilot.py \
+  /tmp/hero-defense-premium-pilot android/assets/generated
+```
+
+Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.
 
@@ -26,4 +49,4 @@ python3 -m unittest discover -s tools/blender/tests -v
 python3 tools/visual/validate_generated_assets.py android/assets/generated
 ```
 
-The validator has no third-party dependency. `tools/visual/repack_committed_assets.py` is only the reviewable Pillow-based migration utility used to rearrange already-rendered legacy sheets; normal asset generation remains Blender/bpy-only.
+The validator has no third-party dependency. The deterministic contact-sheet and legacy repack utilities use Pillow; normal asset generation remains Blender/bpy-only. `tools/visual/repack_committed_assets.py` exists only for the reviewed one-time migration of legacy pages and is not a substitute for rerendering premium-v2 assets.

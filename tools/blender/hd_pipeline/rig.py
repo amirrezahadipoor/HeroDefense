@@ -173,61 +173,78 @@ def _key(
 
 
 def _author_idle(armature: bpy.types.Object, count: int) -> None:
+    # A planted, asymmetric breathing loop: shoulders counter-rotate while the head
+    # settles a fraction later, avoiding whole-body mechanical bobbing.
     base = {
-        "upper_arm.L": (0.02, -0.05, -0.05),
-        "upper_arm.R": (-0.02, 0.05, 0.05),
+        "chest": (-0.012, 0.0, -0.018),
+        "head": (0.010, 0.0, 0.025),
+        "upper_arm.L": (0.025, -0.05, -0.07),
+        "forearm.L": (-0.018, 0.0, -0.025),
+        "upper_arm.R": (-0.018, 0.05, 0.055),
+        "forearm.R": (0.012, 0.0, 0.018),
+    }
+    inhale = {
+        "chest": (0.022, 0.0, 0.024),
+        "head": (-0.014, 0.0, -0.018),
+        "upper_arm.L": (0.010, -0.035, -0.045),
+        "forearm.L": (-0.008, 0.0, -0.010),
+        "upper_arm.R": (-0.008, 0.035, 0.040),
+        "forearm.R": (0.006, 0.0, 0.010),
     }
     _key(armature, 1, base, {"chest": (0.0, 0.0, 0.0)})
-    lifted = dict(base)
-    lifted["chest"] = (0.015, 0.0, 0.0)
-    _key(armature, 1 + count // 2, lifted, {"chest": (0.0, 0.0, 0.025)})
+    _key(armature, 1 + count // 2, inhale, {"chest": (0.0, 0.0, 0.022)})
     _key(armature, count, base, {"chest": (0.0, 0.0, 0.0)})
 
 
 def _author_attack(armature: bpy.types.Object, count: int) -> None:
-    _key(armature, 1, {
-        "chest": (0.0, 0.0, 0.0),
-        "upper_arm.R": (0.0, 0.0, 0.0),
-        "forearm.R": (0.0, 0.0, 0.0),
-        "upper_arm.L": (0.0, 0.0, 0.0),
-    })
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0),
+        "upper_arm.R": (0.0, 0.0, 0.0), "forearm.R": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "forearm.L": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    # Anticipation compresses and winds away from the strike direction.
     _key(armature, 3, {
-        "chest": (0.05, 0.0, -0.30),
-        "upper_arm.R": (-0.65, 0.25, 0.70),
-        "forearm.R": (-0.55, 0.0, 0.15),
-        "upper_arm.L": (-0.25, -0.25, -0.55),
-        "forearm.L": (-0.40, 0.0, -0.20),
-    })
+        "pelvis": (0.0, 0.0, -0.12), "chest": (0.07, 0.0, -0.38),
+        "head": (-0.04, 0.0, 0.13),
+        "upper_arm.R": (-0.72, 0.28, 0.78), "forearm.R": (-0.62, 0.0, 0.20),
+        "upper_arm.L": (-0.30, -0.28, -0.62), "forearm.L": (-0.46, 0.0, -0.24),
+    }, {"root": (0.0, 0.0, -0.025)})
+    # Frame five is the release/impact silhouette with the strongest line of action.
     _key(armature, 5, {
-        "chest": (-0.08, 0.0, 0.38),
-        "upper_arm.R": (0.55, -0.15, -0.80),
-        "forearm.R": (0.20, 0.0, -0.10),
-        "upper_arm.L": (0.35, 0.20, 0.45),
-        "forearm.L": (0.30, 0.0, 0.15),
-    })
-    _key(armature, count, {
-        "chest": (0.0, 0.0, 0.0),
-        "upper_arm.R": (0.0, 0.0, 0.0),
-        "forearm.R": (0.0, 0.0, 0.0),
-        "upper_arm.L": (0.0, 0.0, 0.0),
-        "forearm.L": (0.0, 0.0, 0.0),
-    })
+        "pelvis": (0.0, 0.0, 0.18), "chest": (-0.10, 0.0, 0.48),
+        "head": (0.04, 0.0, -0.16),
+        "upper_arm.R": (0.64, -0.18, -0.92), "forearm.R": (0.27, 0.0, -0.15),
+        "upper_arm.L": (0.42, 0.22, 0.52), "forearm.L": (0.34, 0.0, 0.20),
+    }, {"root": (0.0, -0.035, 0.015)})
+    _key(armature, 6, {
+        "pelvis": (0.0, 0.0, 0.10), "chest": (-0.05, 0.0, 0.28),
+        "head": (0.02, 0.0, -0.08),
+        "upper_arm.R": (0.42, -0.10, -0.62), "forearm.R": (0.18, 0.0, -0.08),
+        "upper_arm.L": (0.28, 0.14, 0.33), "forearm.L": (0.20, 0.0, 0.12),
+    }, {"root": (0.0, -0.015, 0.006)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
 
 
 def _author_hit(armature: bpy.types.Object, count: int) -> None:
-    _key(armature, 1, {"chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0)})
-    _key(armature, 2, {
-        "chest": (-0.32, 0.0, 0.12),
-        "head": (0.22, 0.0, -0.08),
-        "upper_arm.L": (0.35, 0.0, -0.20),
-        "upper_arm.R": (0.35, 0.0, 0.20),
-    })
-    _key(armature, count, {
-        "chest": (0.0, 0.0, 0.0),
-        "head": (0.0, 0.0, 0.0),
-        "upper_arm.L": (0.0, 0.0, 0.0),
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0), "upper_arm.L": (0.0, 0.0, 0.0),
         "upper_arm.R": (0.0, 0.0, 0.0),
-    })
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 2, {
+        "pelvis": (-0.10, 0.0, 0.08), "chest": (-0.38, 0.0, 0.17),
+        "head": (0.27, 0.0, -0.11),
+        "upper_arm.L": (0.42, 0.0, -0.26), "upper_arm.R": (0.38, 0.0, 0.26),
+    }, {"root": (0.08, 0.0, -0.025)})
+    _key(armature, 3, {
+        "pelvis": (0.04, 0.0, -0.03), "chest": (0.12, 0.0, -0.06),
+        "head": (-0.08, 0.0, 0.04),
+        "upper_arm.L": (-0.10, 0.0, 0.06), "upper_arm.R": (-0.08, 0.0, -0.06),
+    }, {"root": (-0.02, 0.0, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
 
 
 def _author_death(armature: bpy.types.Object, count: int) -> None:

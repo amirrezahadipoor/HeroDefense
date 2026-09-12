@@ -275,6 +275,9 @@
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "sheet": "sprites/rootling.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,
@@ -286,6 +289,7 @@
       "width": 1920
     }
   ],
-  "silhouette": "branch_imp",
-  "triangles": 564
+  "silhouette": "crowned_branch_imp",
+  "triangles": 1036,
+  "visualQuality": "premium-v2"
 }

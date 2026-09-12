@@ -21,8 +21,23 @@ import org.junit.jupiter.api.Test;
 
 /** Guards frame geometry, pivots, alpha safety, page limits, and decoded GPU budgets. */
 final class PremiumAssetContractTest {
-    private static final Path GENERATED = Path.of("../android/assets/generated").normalize();
+    private static final Path REPOSITORY = Path.of("..").normalize();
+    private static final Path GENERATED = REPOSITORY.resolve("android/assets/generated").normalize();
     private static final Path MANIFEST = GENERATED.resolve("asset_manifest.json");
+    private static final String PILOT_REVIEW = "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md";
+    private static final Set<String> EXPECTED_PREMIUM_PILOT = Set.of(
+        "hero",
+        "rootling",
+        "ancient_golem",
+        "equipment_worldbranch",
+        "equipment_crown_of_first_leaves",
+        "equipment_heartwood_aegis",
+        "equipment_boots_of_three_winds",
+        "equipment_eternal_seed",
+        "health_potion_6",
+        "crystal_prop_0",
+        "ui_inventory"
+    );
     private static final Map<String, float[]> EXPECTED_PIVOTS = Map.of(
         "character", new float[] {0.5f, 0.12f},
         "boss", new float[] {0.5f, 0.12f},
@@ -32,9 +47,32 @@ final class PremiumAssetContractTest {
     );
 
     @Test
+    void committedPilotHasReviewedPremiumProvenance() throws IOException {
+        JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
+        assertEquals(3, manifest.getInt("pipelineVersion"));
+        assertEquals("premium-pilot", manifest.getString("generatedBatch"));
+        assertTrue(Files.isRegularFile(REPOSITORY.resolve(PILOT_REVIEW)));
+
+        Set<String> premiumKeys = new HashSet<>();
+        for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
+            if (!"premium-v2".equals(asset.getString("visualQuality", ""))) continue;
+            String key = asset.getString("key");
+            premiumKeys.add(key);
+            assertEquals(2, asset.getInt("renderSupersample"), key);
+            int expectedSamples = "equipment".equals(asset.getString("family")) ? 8 : 16;
+            assertEquals(expectedSamples, asset.getInt("renderSamples"), key);
+            assertEquals(PILOT_REVIEW, asset.getString("reviewDocument"), key);
+        }
+        assertEquals(EXPECTED_PREMIUM_PILOT, premiumKeys);
+    }
+
+    @Test
     void committedCatalogSatisfiesThePremiumRuntimeTextureContract() throws IOException {
         JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
         int maxPageSize = manifest.getInt("maxAtlasPageSize");
+        assertEquals(2, manifest.getInt("renderSupersample"));
+        assertTrue(manifest.getInt("opaqueRenderSamples") >= 16);
+        assertTrue(manifest.getInt("overlayRenderSamples") >= 8);
         long catalogBudget = manifest.getLong("decodedCatalogBudgetBytes");
         long residencyBudget = manifest.getLong("decodedCombatResidencyBudgetBytes");
         assertEquals(2048, maxPageSize);

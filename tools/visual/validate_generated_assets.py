@@ -17,6 +17,14 @@ def main() -> None:
     root = args.root.resolve()
     manifest = json.loads((root / "asset_manifest.json").read_text(encoding="utf-8"))
     page_limit = manifest["maxAtlasPageSize"]
+    if manifest.get("pipelineVersion", 0) < 3:
+        raise ValueError("premium-v2 output requires pipeline version 3 or newer")
+    if manifest.get("renderSupersample") != 2:
+        raise ValueError("premium-v2 output must use 2x working renders")
+    if manifest.get("opaqueRenderSamples", 0) < 16:
+        raise ValueError("premium-v2 opaque renders require at least 16 samples")
+    if manifest.get("overlayRenderSamples", 0) < 8:
+        raise ValueError("premium-v2 overlays require at least 8 samples")
     decoded_total = 0
     referenced: set[Path] = set()
 

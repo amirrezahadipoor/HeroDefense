@@ -275,6 +275,9 @@
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 8,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "runtimeGlow": true,
   "sheet": "equipment/boots_of_three_winds.png",
   "sheetHeight": 768,
@@ -289,6 +292,8 @@
   ],
   "slot": "BOOTS",
   "tier": "LEGENDARY",
-  "triangles": 88,
+  "triangles": 400,
+  "visualKind": "boots",
+  "visualQuality": "premium-v2",
   "visualSlot": "boots"
 }
