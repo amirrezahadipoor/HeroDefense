@@ -16,16 +16,31 @@ final class ItemDropSystemTest {
 
     @Test
     void baseRollBandsMatchRoadmapRatesAndPrioritizeRarestTier() {
+        assertEquals(0.06f, ItemDropSystem.COMMON_RATE);
+        assertEquals(0.03f, ItemDropSystem.UNCOMMON_RATE);
+        assertEquals(0.008f, ItemDropSystem.RARE_RATE);
+        assertEquals(0.0015f, ItemDropSystem.LEGENDARY_RATE);
+
+        float legendaryEnd = ItemDropSystem.LEGENDARY_RATE;
+        float rareEnd = legendaryEnd + ItemDropSystem.RARE_RATE;
+        float uncommonEnd = rareEnd + ItemDropSystem.UNCOMMON_RATE;
+        float commonEnd = uncommonEnd + ItemDropSystem.COMMON_RATE;
         assertEquals(ItemTier.LEGENDARY, drops.tierForRoll(0f, 1f));
-        assertEquals(ItemTier.RARE, drops.tierForRoll(0.002f, 1f));
-        assertEquals(ItemTier.UNCOMMON, drops.tierForRoll(0.01f, 1f));
-        assertEquals(ItemTier.COMMON, drops.tierForRoll(0.05f, 1f));
-        assertNull(drops.tierForRoll(0.10f, 1f));
+        assertEquals(ItemTier.RARE, drops.tierForRoll(legendaryEnd, 1f));
+        assertEquals(ItemTier.UNCOMMON, drops.tierForRoll(rareEnd, 1f));
+        assertEquals(ItemTier.COMMON, drops.tierForRoll(uncommonEnd, 1f));
+        assertNull(drops.tierForRoll(commonEnd, 1f));
     }
 
     @Test
     void luckMultipliesDropRatesAndEachDefeatRollsOnlyOnce() {
         GameState state = GameState.newRun(91L);
+        state.hero.stats.luck = 2;
+        assertEquals(
+            (float) Math.pow(1.02, 2),
+            new HeroStatCalculator().dropChanceMultiplier(state),
+            0.0001f
+        );
         state.hero.stats.luck = 200; // Guarantees total weighted chance above 100% for this test.
         Enemy enemy = new EnemyFactory().create(state, EnemyType.ROOTLING, 1f, 2f, 0);
         enemy.receiveDamage(Float.MAX_VALUE);

@@ -175,7 +175,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ### 14.4 Drops & Economy
 
-- [ ] Use starting per-kill item rates: Common 6%, Uncommon 3%, Rare 0.8%, Legendary 0.15%; each Luck point multiplies rates by 1.02.
+- [x] Use starting per-kill item rates: Common 6%, Uncommon 3%, Rare 0.8%, Legendary 0.15%; each Luck point multiplies rates by 1.02.
 - [ ] Use approximately 8% potion-drop chance, weighted toward wave-appropriate tiers.
 - [ ] Use potion heals of 15%, 25%, 40%, 60%, 80%, and 100% max HP.
 - [ ] Set sell/shop prices so one boss reward is roughly one meaningful contemporary upgrade.
