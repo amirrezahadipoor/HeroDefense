@@ -7,12 +7,14 @@ import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.view.View;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.UiDevice;
 
+import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.amirrezahadipoor.herodefense.GameScreenState;
 import com.amirrezahadipoor.herodefense.HeroDefenseGame;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -40,23 +42,24 @@ public final class AndroidTouchSmokeTest {
             HeroDefenseGame game = gameFrom(scenario);
             await("libGDX touch input", game::readyForTouch);
             await("main menu", () -> game.screenState() == GameScreenState.MENU);
+            int[] surface = gameSurfaceFrom(scenario);
 
-            tapWorld(device, 360f, 760f); // New Game
+            tapWorld(device, surface, 360f, 760f); // New Game
             await("wave starts", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().waveNumber);
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
 
-            tapWorld(device, 630f, 1115f); // Pause HUD target
+            tapWorld(device, surface, 630f, 1150f); // Pause HUD target
             await("paused", () -> game.screenState() == GameScreenState.PAUSED);
-            tapWorld(device, 360f, 830f); // Inventory
+            tapWorld(device, surface, 360f, 830f); // Inventory
             await("inventory opens", game::inventoryOpen);
 
-            swipeWorld(device, 360f, 580f, 360f, 730f); // Drag-only inventory gesture
+            swipeWorld(device, surface, 360f, 580f, 360f, 730f); // Drag-only inventory gesture
             assertTrue(game.inventoryOpen());
-            tapWorld(device, 620f, 1160f); // Inventory close
+            tapWorld(device, surface, 620f, 1160f); // Inventory close
             await("inventory closes", () -> !game.inventoryOpen());
-            tapWorld(device, 360f, 600f); // Resume
+            tapWorld(device, surface, 360f, 600f); // Resume
             await("play resumes", () -> game.screenState() == GameScreenState.PLAYING);
 
             assertEquals(
@@ -74,12 +77,13 @@ public final class AndroidTouchSmokeTest {
             HeroDefenseGame game = gameFrom(scenario);
             await("libGDX touch input", game::readyForTouch);
             await("saved run menu", () -> game.screenState() == GameScreenState.MENU);
+            int[] surface = gameSurfaceFrom(scenario);
 
-            tapWorld(device, 360f, 570f); // Continue
+            tapWorld(device, surface, 360f, 570f); // Continue
             await("reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
             assertEquals(3, game.gameState().pendingRewardCards.size());
 
-            tapWorld(device, 360f, 890f); // First card
+            tapWorld(device, surface, 360f, 890f); // First card
             await("card applied", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().chosenRewardCards.size());
             assertEquals(6, game.gameState().waveNumber);
@@ -100,29 +104,51 @@ public final class AndroidTouchSmokeTest {
         return device;
     }
 
-    private static void tapWorld(UiDevice device, float worldX, float worldY) {
-        int[] point = screenPoint(device, worldX, worldY);
+    private static int[] gameSurfaceFrom(ActivityScenario<AndroidLauncher> scenario) {
+        AtomicReference<int[]> reference = new AtomicReference<>();
+        scenario.onActivity(activity -> {
+            View view = ((AndroidGraphics) activity.getGraphics()).getView();
+            int[] location = new int[2];
+            view.getLocationOnScreen(location);
+            reference.set(new int[] {location[0], location[1], view.getWidth(), view.getHeight()});
+        });
+        int[] surface = reference.get();
+        assertNotNull(surface);
+        assertTrue(surface[2] > 0);
+        assertTrue(surface[3] > 0);
+        return surface;
+    }
+
+    private static void tapWorld(
+        UiDevice device, int[] surface, float worldX, float worldY
+    ) {
+        int[] point = screenPoint(surface, worldX, worldY);
         assertTrue(device.click(point[0], point[1]));
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
 
     private static void swipeWorld(
-        UiDevice device, float fromX, float fromY, float toX, float toY
+        UiDevice device,
+        int[] surface,
+        float fromX,
+        float fromY,
+        float toX,
+        float toY
     ) {
-        int[] start = screenPoint(device, fromX, fromY);
-        int[] end = screenPoint(device, toX, toY);
+        int[] start = screenPoint(surface, fromX, fromY);
+        int[] end = screenPoint(surface, toX, toY);
         assertTrue(device.swipe(start[0], start[1], end[0], end[1], 18));
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
 
-    private static int[] screenPoint(UiDevice device, float worldX, float worldY) {
-        int width = device.getDisplayWidth();
-        int height = device.getDisplayHeight();
+    private static int[] screenPoint(int[] surface, float worldX, float worldY) {
+        int width = surface[2];
+        int height = surface[3];
         float scale = Math.min(width / WORLD_WIDTH, height / WORLD_HEIGHT);
         float viewportWidth = WORLD_WIDTH * scale;
         float viewportHeight = WORLD_HEIGHT * scale;
-        float left = (width - viewportWidth) * 0.5f;
-        float top = (height - viewportHeight) * 0.5f;
+        float left = surface[0] + (width - viewportWidth) * 0.5f;
+        float top = surface[1] + (height - viewportHeight) * 0.5f;
         return new int[] {
             Math.round(left + worldX * scale),
             Math.round(top + (WORLD_HEIGHT - worldY) * scale)
