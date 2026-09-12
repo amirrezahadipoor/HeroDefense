@@ -10,7 +10,10 @@ import com.badlogic.gdx.utils.Array;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
 import com.amirrezahadipoor.herodefense.model.Boss;
+import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
+import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.model.BossType;
+import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
 import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.EnemyType;
@@ -31,6 +34,11 @@ public final class CombatEntityRenderer implements AutoCloseable {
     static final float REGULAR_FEET_RATIO = 23f / 192f;
     static final float BOSS_FEET_RATIO = 30f / 256f;
     private static final float ATTACK_CLIP_SECONDS = 8f / FRAME_RATE;
+    static final float DROP_TARGET_X = HudTouchLayout.INVENTORY_X
+        + HudTouchLayout.UTILITY_BUTTON_WIDTH * 0.5f;
+    static final float DROP_TARGET_Y = HudTouchLayout.UTILITY_BUTTON_Y
+        + HudTouchLayout.UTILITY_BUTTON_HEIGHT * 0.5f;
+    private static final float DROP_HOMING_ARC_HEIGHT = 86f;
     private static final Set<String> BOSS_ASSET_KEYS = bossAssetKeys();
 
     private final Map<String, EntityClips> clipsByKey = new LinkedHashMap<>();
@@ -141,10 +149,43 @@ public final class CombatEntityRenderer implements AutoCloseable {
             if (drop == null || !drop.active) continue;
             String path = dropTexturePath(drop);
             Texture texture = dropTextures.computeIfAbsent(path, CombatEntityRenderer::loadTexture);
-            float bob = MathUtils.sin(runTimeSeconds * 5f + drop.id * 0.31f) * 5f;
-            batch.setColor(1f, 1f, 1f, 0.96f);
-            batch.draw(texture, drop.x - 28f, drop.y + bob, 56f, 56f);
+            float progress = dropHomingProgress(drop);
+            float size = 56f * (1f - progress * 0.42f);
+            float alpha = 0.96f * (1f - progress * 0.24f);
+            float x = dropDrawX(drop);
+            float y = dropDrawY(drop, runTimeSeconds);
+            batch.setColor(1f, 1f, 1f, alpha);
+            batch.draw(texture, x - size * 0.5f, y - size * 0.5f, size, size);
         }
+        batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    static float dropHomingProgress(DropEntity drop) {
+        if (drop == null || drop.collectionStage != DropCollectionStage.HOMING) return 0f;
+        return MathUtils.clamp(
+            drop.homingElapsedSeconds / DropPickupSystem.HOMING_DURATION_SECONDS,
+            0f,
+            1f
+        );
+    }
+
+    static float dropDrawX(DropEntity drop) {
+        float eased = smoothStep(dropHomingProgress(drop));
+        return MathUtils.lerp(drop.x, DROP_TARGET_X, eased);
+    }
+
+    static float dropDrawY(DropEntity drop, float runTimeSeconds) {
+        float progress = dropHomingProgress(drop);
+        float eased = smoothStep(progress);
+        float bob = MathUtils.sin(runTimeSeconds * 5f + drop.id * 0.31f)
+            * 5f
+            * (1f - progress);
+        float arc = MathUtils.sin(MathUtils.PI * progress) * DROP_HOMING_ARC_HEIGHT;
+        return MathUtils.lerp(drop.y + 28f, DROP_TARGET_Y, eased) + bob + arc;
+    }
+
+    private static float smoothStep(float value) {
+        return value * value * (3f - 2f * value);
     }
 
     static String assetKey(Enemy enemy, boolean boss) {
