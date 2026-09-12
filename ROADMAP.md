@@ -182,7 +182,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ### 14.5 Reward Cards
 
-- [ ] Define a boss-index-scaled card power budget with similar relative impact from Boss 1 to Boss 20.
+- [x] Define a boss-index-scaled card power budget with similar relative impact from Boss 1 to Boss 20.
 - [ ] Verify in simulation that no single card trivializes the remaining run.
 
 ### 14.6 Manual Checkpoints
