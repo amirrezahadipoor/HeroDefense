@@ -253,6 +253,8 @@ def build_hero() -> BuiltModel:
     return BuiltModel(armature, objects, {
         "silhouette": "premium_elf_archer",
         "attachment_variant": "equipment_neutral",
+        "modelRevision": "hero-premium-v2-final",
+        "rigProfile": "premium-humanoid-v2",
         "visualQuality": "premium-v2",
     })
 

@@ -32,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "hero",
+  "categoryReview": {
+    "category": "hero",
+    "document": "docs/art_reviews/HERO_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -271,6 +276,7 @@
   "frameRate": 12,
   "frameSize": 192,
   "key": "hero",
+  "modelRevision": "hero-premium-v2-final",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
@@ -279,6 +285,7 @@
   "renderSamples": 16,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+  "rigProfile": "premium-humanoid-v2",
   "sheet": "sprites/hero.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,

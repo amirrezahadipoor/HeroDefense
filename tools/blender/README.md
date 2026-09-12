@@ -38,6 +38,16 @@ python3 tools/visual/promote_premium_pilot.py \
   /tmp/hero-defense-premium-pilot android/assets/generated
 ```
 
+For a complete character-category review, generate the reusable native-size motion and readability sheets, inspect both, write the review document, and only then record acceptance in the catalog:
+
+```sh
+python3 tools/visual/create_character_animation_review.py \
+  /tmp/hero-defense-baseline android/assets/generated \
+  hero "Elf Hero" /tmp/hero-defense-hero-review
+python3 tools/visual/record_category_review.py \
+  android/assets/generated docs/art_reviews/HERO_PREMIUM_V2_REVIEW.md hero hero
+```
+
 Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.

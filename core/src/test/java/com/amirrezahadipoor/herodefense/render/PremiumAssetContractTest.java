@@ -25,6 +25,7 @@ final class PremiumAssetContractTest {
     private static final Path GENERATED = REPOSITORY.resolve("android/assets/generated").normalize();
     private static final Path MANIFEST = GENERATED.resolve("asset_manifest.json");
     private static final String PILOT_REVIEW = "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md";
+    private static final String HERO_REVIEW = "docs/art_reviews/HERO_PREMIUM_V2_REVIEW.md";
     private static final Set<String> EXPECTED_PREMIUM_PILOT = Set.of(
         "hero",
         "rootling",
@@ -64,6 +65,40 @@ final class PremiumAssetContractTest {
             assertEquals(PILOT_REVIEW, asset.getString("reviewDocument"), key);
         }
         assertEquals(EXPECTED_PREMIUM_PILOT, premiumKeys);
+    }
+
+    @Test
+    void finalizedHeroRetainsTheReviewedModelRigAndMotionContract() throws IOException {
+        JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
+        JsonValue hero = null;
+        for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
+            if ("hero".equals(asset.getString("key"))) {
+                hero = asset;
+                break;
+            }
+        }
+        assertTrue(hero != null, "missing Hero asset");
+        assertEquals("hero-premium-v2-final", hero.getString("modelRevision"));
+        assertEquals("premium-humanoid-v2", hero.getString("rigProfile"));
+        assertEquals("premium_elf_archer", hero.getString("silhouette"));
+        assertEquals("equipment_neutral", hero.getString("attachment_variant"));
+        assertTrue(hero.getBoolean("boneAnimated"));
+        assertTrue(hero.getInt("triangles") >= 1_500);
+        assertEquals(192, hero.getInt("frameSize"));
+        assertEquals(1_920, hero.getInt("sheetWidth"));
+        assertEquals(768, hero.getInt("sheetHeight"));
+        assertEquals(6, hero.get("clips").get("idle").size);
+        assertEquals(8, hero.get("clips").get("attack").size);
+        assertEquals(4, hero.get("clips").get("hit").size);
+        assertEquals(10, hero.get("clips").get("death").size);
+
+        Set<String> requiredBones = jsonStringSet(manifest.get("requiredBones"));
+        assertEquals(requiredBones, jsonStringSet(hero.get("bones")));
+        JsonValue review = hero.get("categoryReview");
+        assertEquals("hero", review.getString("category"));
+        assertEquals("accepted", review.getString("status"));
+        assertEquals(HERO_REVIEW, review.getString("document"));
+        assertTrue(Files.isRegularFile(REPOSITORY.resolve(HERO_REVIEW)));
     }
 
     @Test
@@ -275,6 +310,14 @@ final class PremiumAssetContractTest {
 
     private static long decodedBytes(List<Path> paths, Map<Path, ImageInfo> images) {
         return paths.stream().map(images::get).mapToLong(ImageInfo::decodedBytes).sum();
+    }
+
+    private static Set<String> jsonStringSet(JsonValue values) {
+        Set<String> result = new HashSet<>();
+        for (JsonValue value = values.child; value != null; value = value.next) {
+            result.add(value.asString());
+        }
+        return result;
     }
 
     private static void addFamily(
