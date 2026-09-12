@@ -53,6 +53,22 @@ public final class AndroidTouchSmokeTest {
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
 
+            tapWorld(surface, 450f + correction[0], 76f + correction[1]); // Direct Shop
+            await("direct shop opens", () -> game.screenState() == GameScreenState.SHOP);
+            tapWorld(surface, 620f + correction[0], 1_170f + correction[1]); // Close Shop
+            await("direct shop returns to play", () -> game.screenState() == GameScreenState.PLAYING);
+
+            tapWorld(surface, 270f + correction[0], 76f + correction[1]); // Direct Inventory
+            await("direct inventory pauses", () ->
+                game.screenState() == GameScreenState.PAUSED && game.inventoryOpen()
+            );
+            tapWorld(surface, 620f + correction[0], 1_160f + correction[1]); // Close Inventory
+            await("direct inventory closes", () -> !game.inventoryOpen());
+            tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
+            await("direct inventory returns to play", () ->
+                game.screenState() == GameScreenState.PLAYING
+            );
+
             tapWorld(
                 surface,
                 600f + correction[0],

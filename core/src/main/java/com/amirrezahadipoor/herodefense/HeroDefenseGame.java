@@ -32,6 +32,7 @@ import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
 import com.amirrezahadipoor.herodefense.input.GdxHapticFeedback;
 import com.amirrezahadipoor.herodefense.input.HapticFeedback;
+import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
@@ -438,6 +439,19 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     } else if (action == MainMenuTouchLayout.Action.SETTINGS) {
                         flow.transitionTo(GameScreenState.SETTINGS);
                     }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PLAYING
+                    && HudTouchLayout.inventoryAt(worldX, worldY)) {
+                    flow.transitionTo(GameScreenState.PAUSED);
+                    inventoryTouchController.open();
+                    saveNow();
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PLAYING
+                    && HudTouchLayout.shopAt(worldX, worldY)) {
+                    flow.transitionTo(GameScreenState.SHOP);
+                    saveNow();
                     return true;
                 }
                 if (flow.state() == GameScreenState.PLAYING

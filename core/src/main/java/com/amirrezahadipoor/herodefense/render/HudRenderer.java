@@ -36,12 +36,16 @@ public final class HudRenderer implements AutoCloseable {
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(0.015f, 0.03f, 0.035f, 0.90f);
         shapes.rect(16f, 1045f, 688f, 215f);
+        shapes.setColor(0.015f, 0.03f, 0.035f, 0.82f);
+        shapes.rect(180f, 12f, 360f, 128f);
         shapes.setColor(0.12f, 0.08f, 0.07f, 1f);
         shapes.rect(HP_X, HP_Y, HP_WIDTH, HP_HEIGHT);
         shapes.setColor(0.20f, 0.66f, 0.38f, 1f);
         shapes.rect(HP_X, HP_Y, HP_WIDTH * healthRatio, HP_HEIGHT);
         button(HudTouchLayout.SPEED_X, HudTouchLayout.BUTTON_Y);
         button(HudTouchLayout.PAUSE_X, HudTouchLayout.BUTTON_Y);
+        utilityButton(HudTouchLayout.INVENTORY_X);
+        utilityButton(HudTouchLayout.SHOP_X);
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -53,10 +57,14 @@ public final class HudRenderer implements AutoCloseable {
         icons.draw(batch, "coin", 215f, 1081f, 52f);
         icons.draw(batch, "speed", 438f, 1080f, 54f);
         icons.draw(batch, "pause", 603f, 1080f, 54f);
+        icons.draw(batch, "inventory", 207f, 46f, 58f);
+        icons.draw(batch, "shop", 387f, 46f, 58f);
         font.draw(batch, "HP " + Math.round(state.hero.health) + "/" + Math.round(state.hero.maxHealth), 80f, 1223f);
         font.draw(batch, state.waveNumber + "/" + GameState.FINAL_WAVE, 92f, 1128f);
         font.draw(batch, Integer.toString(state.coins), 272f, 1128f);
         font.draw(batch, Math.round(state.simulationSpeed) + "x", 492f, 1128f);
+        font.draw(batch, "Bag", 275f, 88f);
+        font.draw(batch, "Shop", 452f, 88f);
         batch.end();
     }
 
@@ -65,6 +73,24 @@ public final class HudRenderer implements AutoCloseable {
         shapes.rect(x, y, HudTouchLayout.BUTTON_WIDTH, HudTouchLayout.BUTTON_HEIGHT);
         shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
         shapes.rect(x, y + HudTouchLayout.BUTTON_HEIGHT - 5f, HudTouchLayout.BUTTON_WIDTH, 5f);
+    }
+
+    private void utilityButton(float x) {
+        shapes.setColor(0.08f, 0.18f, 0.17f, 0.96f);
+        shapes.rect(
+            x,
+            HudTouchLayout.UTILITY_BUTTON_Y,
+            HudTouchLayout.UTILITY_BUTTON_WIDTH,
+            HudTouchLayout.UTILITY_BUTTON_HEIGHT
+        );
+        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
+        shapes.rect(
+            x,
+            HudTouchLayout.UTILITY_BUTTON_Y
+                + HudTouchLayout.UTILITY_BUTTON_HEIGHT - 5f,
+            HudTouchLayout.UTILITY_BUTTON_WIDTH,
+            5f
+        );
     }
 
     @Override
