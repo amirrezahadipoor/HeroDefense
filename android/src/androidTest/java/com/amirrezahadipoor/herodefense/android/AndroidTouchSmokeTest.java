@@ -60,13 +60,11 @@ public final class AndroidTouchSmokeTest {
 
             tapWorld(surface, 270f + correction[0], 76f + correction[1]); // Direct Inventory
             await("direct inventory pauses", () ->
-                game.screenState() == GameScreenState.PAUSED && game.inventoryOpen()
+                game.screenState() == GameScreenState.INVENTORY && game.inventoryOpen()
             );
             tapWorld(surface, 620f + correction[0], 1_160f + correction[1]); // Close Inventory
-            await("direct inventory closes", () -> !game.inventoryOpen());
-            tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
             await("direct inventory returns to play", () ->
-                game.screenState() == GameScreenState.PLAYING
+                game.screenState() == GameScreenState.PLAYING && !game.inventoryOpen()
             );
 
             tapWorld(
@@ -86,7 +84,9 @@ public final class AndroidTouchSmokeTest {
             tapWorld(surface, 600f + correction[0], 1_115f + correction[1]); // Pause again
             await("paused again", () -> game.screenState() == GameScreenState.PAUSED);
             tapWorld(surface, 360f + correction[0], 830f + correction[1]); // Inventory
-            await("inventory opens", game::inventoryOpen);
+            await("inventory opens over pause", () ->
+                game.screenState() == GameScreenState.INVENTORY && game.inventoryOpen()
+            );
 
             swipeWorld(
                 surface,
@@ -97,7 +97,9 @@ public final class AndroidTouchSmokeTest {
             ); // Drag-only inventory gesture
             assertTrue(game.inventoryOpen());
             tapWorld(surface, 620f + correction[0], 1160f + correction[1]); // Close
-            await("inventory closes", () -> !game.inventoryOpen());
+            await("inventory returns to pause", () ->
+                game.screenState() == GameScreenState.PAUSED && !game.inventoryOpen()
+            );
             tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
             await("play resumes", () -> game.screenState() == GameScreenState.PLAYING);
 

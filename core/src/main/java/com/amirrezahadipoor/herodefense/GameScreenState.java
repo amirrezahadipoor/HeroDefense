@@ -8,6 +8,7 @@ public enum GameScreenState {
     PAUSED,
     LEVEL_UP,
     CARD_CHOICE,
+    INVENTORY,
     SHOP,
     GAME_OVER
 }

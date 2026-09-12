@@ -36,14 +36,16 @@ public final class GameFlowController {
         }
         if (target == GameScreenState.PAUSED) {
             returnState = state == GameScreenState.MENU ? GameScreenState.MENU : GameScreenState.PLAYING;
-        } else if (target == GameScreenState.SHOP) {
+        } else if (target == GameScreenState.SHOP || target == GameScreenState.INVENTORY) {
             returnState = state == GameScreenState.MENU ? GameScreenState.MENU : state;
         }
         state = target;
     }
 
     public void returnFromOverlay() {
-        if (state != GameScreenState.PAUSED && state != GameScreenState.SHOP) {
+        if (state != GameScreenState.PAUSED
+            && state != GameScreenState.INVENTORY
+            && state != GameScreenState.SHOP) {
             throw new IllegalStateException("Current state is not a resumable overlay: " + state);
         }
         state = returnState;
@@ -64,15 +66,22 @@ public final class GameFlowController {
             GameScreenState.PAUSED,
             GameScreenState.LEVEL_UP,
             GameScreenState.CARD_CHOICE,
+            GameScreenState.INVENTORY,
             GameScreenState.SHOP,
             GameScreenState.GAME_OVER,
             GameScreenState.MENU
         ));
         transitions.put(GameScreenState.PAUSED, EnumSet.of(
-            GameScreenState.PLAYING, GameScreenState.MENU, GameScreenState.SHOP
+            GameScreenState.PLAYING,
+            GameScreenState.MENU,
+            GameScreenState.INVENTORY,
+            GameScreenState.SHOP
         ));
         transitions.put(GameScreenState.LEVEL_UP, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
         transitions.put(GameScreenState.CARD_CHOICE, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
+        transitions.put(GameScreenState.INVENTORY, EnumSet.of(
+            GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.PAUSED
+        ));
         transitions.put(GameScreenState.SHOP, EnumSet.of(
             GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.PAUSED
         ));

@@ -357,7 +357,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 float deltaY,
                 int pointer
             ) {
-                if (flow.state() == GameScreenState.PAUSED && inventoryTouchController.isOpen()) {
+                if (flow.state() == GameScreenState.INVENTORY
+                    && inventoryTouchController.isOpen()) {
                     inventoryTouchController.drag(gameState, deltaY);
                 }
                 return true;
@@ -443,7 +444,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 }
                 if (flow.state() == GameScreenState.PLAYING
                     && HudTouchLayout.inventoryAt(worldX, worldY)) {
-                    flow.transitionTo(GameScreenState.PAUSED);
+                    flow.transitionTo(GameScreenState.INVENTORY);
                     inventoryTouchController.open();
                     saveNow();
                     return true;
@@ -464,11 +465,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     saveNow();
                     return true;
                 }
-                if (flow.state() == GameScreenState.PAUSED && inventoryTouchController.isOpen()) {
+                if (flow.state() == GameScreenState.INVENTORY
+                    && inventoryTouchController.isOpen()) {
                     InventoryTouchController.Action action = inventoryTouchController.tap(
                         gameState, worldX, worldY
                     );
-                    if (action == InventoryTouchController.Action.EQUIPPED
+                    if (action == InventoryTouchController.Action.CLOSED) {
+                        flow.returnFromOverlay();
+                        saveNow();
+                    } else if (action == InventoryTouchController.Action.EQUIPPED
                         || action == InventoryTouchController.Action.UNEQUIPPED
                         || action == InventoryTouchController.Action.SOLD) {
                         saveNow();
@@ -482,6 +487,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 }
                 if (flow.state() == GameScreenState.PAUSED
                     && PauseTouchLayout.inventoryAt(worldX, worldY)) {
+                    flow.transitionTo(GameScreenState.INVENTORY);
                     inventoryTouchController.open();
                     return true;
                 }
@@ -642,6 +648,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             case PAUSED -> 0.055f;
             case LEVEL_UP -> 0.13f;
             case CARD_CHOICE -> 0.15f;
+            case INVENTORY -> 0.10f;
             case SHOP -> 0.10f;
             case GAME_OVER -> 0.035f;
         };
@@ -687,20 +694,18 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             statShopOverlayRenderer.draw(
                 spriteBatch, camera.combined, gameState, statShopSystem, uiIconRenderer
             );
+        } else if (flow.state() == GameScreenState.INVENTORY) {
+            inventoryOverlayRenderer.drawInventory(
+                spriteBatch,
+                camera.combined,
+                gameState,
+                inventoryTouchController,
+                uiIconRenderer
+            );
         } else if (flow.state() == GameScreenState.PAUSED) {
-            if (inventoryTouchController.isOpen()) {
-                inventoryOverlayRenderer.drawInventory(
-                    spriteBatch,
-                    camera.combined,
-                    gameState,
-                    inventoryTouchController,
-                    uiIconRenderer
-                );
-            } else {
-                inventoryOverlayRenderer.drawPauseMenu(
-                    spriteBatch, camera.combined, uiIconRenderer
-                );
-            }
+            inventoryOverlayRenderer.drawPauseMenu(
+                spriteBatch, camera.combined, uiIconRenderer
+            );
         }
         touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);
     }

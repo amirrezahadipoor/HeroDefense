@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 final class GameFlowControllerTest {
     @Test
     void exposesEveryRequiredStateAndStartsAtMenu() {
-        assertEquals(8, GameScreenState.values().length);
+        assertEquals(9, GameScreenState.values().length);
         assertEquals(GameScreenState.MENU, new GameFlowController().state());
     }
 
@@ -17,6 +18,24 @@ final class GameFlowControllerTest {
         GameFlowController flow = new GameFlowController();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.PAUSED);
+        flow.returnFromOverlay();
+        assertEquals(GameScreenState.PLAYING, flow.state());
+    }
+
+    @Test
+    void inventoryFreezesPlayAndReturnsToItsExactOpeningState() {
+        GameFlowController flow = new GameFlowController();
+        flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.INVENTORY);
+        assertEquals(GameScreenState.INVENTORY, flow.state());
+        assertFalse(flow.simulationRunning());
+        flow.returnFromOverlay();
+        assertEquals(GameScreenState.PLAYING, flow.state());
+
+        flow.transitionTo(GameScreenState.PAUSED);
+        flow.transitionTo(GameScreenState.INVENTORY);
+        flow.returnFromOverlay();
+        assertEquals(GameScreenState.PAUSED, flow.state());
         flow.returnFromOverlay();
         assertEquals(GameScreenState.PLAYING, flow.state());
     }

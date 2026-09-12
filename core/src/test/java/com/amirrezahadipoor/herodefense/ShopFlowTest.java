@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,16 @@ final class ShopFlowTest {
         assertEquals(GameScreenState.SETTINGS, flow.state());
         flow.transitionTo(GameScreenState.MENU);
         assertEquals(GameScreenState.MENU, flow.state());
+    }
+
+    @Test
+    void directInGameShopFreezesSimulationUntilItCloses() {
+        GameFlowController flow = new GameFlowController();
+        flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.SHOP);
+        assertFalse(flow.simulationRunning());
+        flow.returnFromOverlay();
+        assertEquals(GameScreenState.PLAYING, flow.state());
     }
 
     @Test
