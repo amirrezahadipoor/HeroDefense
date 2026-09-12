@@ -13,14 +13,21 @@ CAMERA_SCALE = {
     "character": 3.0,
     "boss": 4.4,
     "item": 2.2,
-    "tree": 5.0,
+    "tree": 6.0,
     "environment": 4.8,
+}
+CAMERA_SHIFT_Y = {
+    "character": 0.0,
+    "boss": 0.06,
+    "item": 0.0,
+    "tree": 0.12,
+    "environment": 0.0,
 }
 FRAME_SIZE = {
     "character": 192,
     "boss": 256,
     "item": 96,
-    "tree": 320,
+    "tree": 256,
     "environment": 192,
 }
 

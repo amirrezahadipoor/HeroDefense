@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import traceback
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -41,7 +42,13 @@ from hd_pipeline.environment import (  # noqa: E402
 )
 from hd_pipeline.models import MATERIALS, add_equipment_variant, build_character, build_hero  # noqa: E402
 from hd_pipeline.rig import author_standard_actions, stack_actions_for_single_render  # noqa: E402
-from hd_pipeline.scene import configure_scene, pack_grid, reset_scene, triangle_count  # noqa: E402
+from hd_pipeline.scene import (  # noqa: E402
+    apply_alpha_outline,
+    configure_scene,
+    pack_grid,
+    reset_scene,
+    triangle_count,
+)
 
 PIPELINE_VERSION = 1
 ISOLATED_RENDERING = False
@@ -294,6 +301,8 @@ def _render_stacked_animation(
             if not source.exists():
                 raise RuntimeError(f"Blender did not emit expected frame: {source}")
             source.replace(target)
+            if not scene.render.use_freestyle:
+                apply_alpha_outline(target, 3)
             result[clip].append(target)
     return result
 
@@ -326,6 +335,8 @@ def render_static_model(
         scene.frame_set(1)
         scene.render.filepath = str(path)
         bpy.ops.render.render(write_still=True)
+        if not scene.render.use_freestyle:
+            apply_alpha_outline(path, 3)
     target_directory = output / family
     target_directory.mkdir(parents=True, exist_ok=True)
     target = target_directory / f"{key}.png"
@@ -444,6 +455,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
     scene.frame_set(frame)
     scene.render.filepath = str(output)
     bpy.ops.render.render(write_still=True)
+    if not scene.render.use_freestyle:
+        apply_alpha_outline(output, 3)
 
 
 def main() -> None:
@@ -547,4 +560,8 @@ def _relative(path: Path, root: Path) -> str:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        traceback.print_exc()
+        raise SystemExit(1)

@@ -8,7 +8,7 @@ from typing import Iterable
 import bpy
 from mathutils import Vector
 
-from .config import CAMERA_LOCATION, CAMERA_SCALE, CAMERA_TARGET, OUTLINE_RGBA
+from .config import CAMERA_LOCATION, CAMERA_SCALE, CAMERA_SHIFT_Y, CAMERA_TARGET, OUTLINE_RGBA
 
 
 def hex_rgba(value: str, alpha: float = 1.0) -> tuple[float, float, float, float]:
@@ -108,7 +108,10 @@ def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene
     # keep the offline batch practical on CPU-only CI renderers.
     scene.eevee.taa_render_samples = 4
     scene.eevee.taa_samples = 4
-    scene.render.use_freestyle = True
+    # Freestyle is excellent for 192 px characters but its software-GL view map has
+    # a high memory peak at 256 px. Larger tree/boss frames use the equivalent
+    # deterministic alpha-dilation outline after rendering.
+    scene.render.use_freestyle = frame_class not in {"tree", "boss"}
     scene.render.line_thickness = 1.0
 
     try:
@@ -143,6 +146,7 @@ def _add_camera(frame_class: str) -> bpy.types.Object:
     data = bpy.data.cameras.new("HD_CAMERA")
     data.type = "ORTHO"
     data.ortho_scale = CAMERA_SCALE[frame_class]
+    data.shift_y = CAMERA_SHIFT_Y[frame_class]
     camera = bpy.data.objects.new("HD_CAMERA", data)
     bpy.context.collection.objects.link(camera)
     camera.location = CAMERA_LOCATION
@@ -189,6 +193,43 @@ def add_contact_shadow(material: bpy.types.Material) -> bpy.types.Object:
     shadow.scale.y = 0.48
     shadow.data.materials.append(material)
     return shadow
+
+
+def apply_alpha_outline(path: Path, radius: int = 3) -> None:
+    """Dilate opaque alpha into a fixed-color external outline in-place."""
+    image = bpy.data.images.load(str(path), check_existing=False)
+    width, height = image.size
+    source = array("f", [0.0]) * (width * height * 4)
+    image.pixels.foreach_get(source)
+    result = array("f", source)
+    outline = OUTLINE_RGBA
+    opaque = [source[index * 4 + 3] > 0.08 for index in range(width * height)]
+    radius_squared = radius * radius
+    offsets = [
+        (dx, dy)
+        for dy in range(-radius, radius + 1)
+        for dx in range(-radius, radius + 1)
+        if dx * dx + dy * dy <= radius_squared and (dx or dy)
+    ]
+    for y in range(height):
+        for x in range(width):
+            pixel_index = y * width + x
+            if opaque[pixel_index]:
+                continue
+            touches = False
+            for dx, dy in offsets:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < width and 0 <= ny < height and opaque[ny * width + nx]:
+                    touches = True
+                    break
+            if touches:
+                base = pixel_index * 4
+                result[base:base + 4] = array("f", outline)
+    image.pixels.foreach_set(result)
+    image.filepath_raw = str(path)
+    image.file_format = "PNG"
+    image.save()
+    bpy.data.images.remove(image)
 
 
 def triangle_count(objects: Iterable[bpy.types.Object]) -> int:

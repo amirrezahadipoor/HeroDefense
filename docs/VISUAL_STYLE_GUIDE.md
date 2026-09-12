@@ -75,6 +75,8 @@ All character, equipment, item, prop, and tree renders use the named `HD_CAMERA`
 | Orthographic scale, regular character | `3.0` |
 | Orthographic scale, boss | `4.4` |
 | Orthographic scale, item icon | `2.2` |
+| Orthographic scale, World Tree | `6.0` |
+| Framing shift | `0` except Tree `+0.12` and Boss `+0.06`; projection angle remains identical |
 | Character forward direction | `(0, -1, 0)` toward camera |
 | Frame center | pelvis at X center; ground plane at 12% frame height |
 
@@ -121,7 +123,7 @@ Character armatures use these stable bone names:
 |---|---:|---:|
 | Hero / regular enemy | 192×192 PNG | 4 px extrusion |
 | Boss | 256×256 PNG | 6 px extrusion |
-| World Tree | 320×320 PNG | 6 px extrusion |
+| World Tree | 256×256 PNG | 6 px extrusion |
 | Equipment / potion icon | 96×96 PNG | 4 px extrusion |
 | Ground tile / prop | 192×192 PNG | 4 px extrusion |
 

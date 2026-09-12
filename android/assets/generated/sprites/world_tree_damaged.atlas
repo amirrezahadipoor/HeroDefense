@@ -1,0 +1,47 @@
+world_tree_damaged.png
+size: 1536,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+world_tree_damaged_idle
+  rotate: false
+  xy: 0, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 0
+world_tree_damaged_idle
+  rotate: false
+  xy: 256, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 1
+world_tree_damaged_idle
+  rotate: false
+  xy: 512, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 2
+world_tree_damaged_idle
+  rotate: false
+  xy: 768, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 3
+world_tree_damaged_idle
+  rotate: false
+  xy: 1024, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 4
+world_tree_damaged_idle
+  rotate: false
+  xy: 1280, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 5
