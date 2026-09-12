@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
@@ -15,6 +16,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private HeroAutoAttackSystem heroAutoAttackSystem;
     private LocalSaveRepository saves;
     private GameState gameState;
     private OrthographicCamera camera;
@@ -24,6 +26,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void create() {
         flow = new GameFlowController();
+        heroAutoAttackSystem = new HeroAutoAttackSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         camera = new OrthographicCamera();
@@ -123,8 +126,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     }
 
     private void updatePlaying(float deltaSeconds) {
+        float simulationDelta = deltaSeconds * gameState.simulationSpeed;
         gameState.anchorHeroAtArenaCenter();
-        simulationSeconds += deltaSeconds * gameState.simulationSpeed;
+        heroAutoAttackSystem.update(gameState, simulationDelta);
+        simulationSeconds += simulationDelta;
     }
 
     private void drawCurrentState() {
