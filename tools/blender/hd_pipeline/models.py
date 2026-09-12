@@ -830,19 +830,19 @@ def _add_premium_equipment_piece(
                                0.085, 0.023, highlight, "weapon_socket")
         elif item_id == "golem_splitter":
             attach(add_cylinder_between("splitter_haft", (0.82, -0.07, 0.28),
-                                        (0.82, -0.07, 1.47), 0.060, dark, 8),
+                                        (0.82, -0.07, 1.37), 0.060, dark, 8),
                    "weapon_socket")
-            # Lower the complete head without flattening its double-bit profile;
-            # this preserves impact weight while protecting the overhead pose.
+            # Lower and modestly compact the complete head while retaining its
+            # broad double-bit profile, impact weight, and readable center rune.
             for side, sign in (("L", -1), ("R", 1)):
                 attach(add_leaf(f"splitter_blade_{side}",
-                                (0.82 + 0.25 * sign, -0.08, 1.50),
-                                (0.31, 0.065, 0.38), silver,
+                                (0.82 + 0.22 * sign, -0.08, 1.40),
+                                (0.27, 0.065, 0.34), silver,
                                 (0, 0.10 * sign, 0.44 * sign)), "weapon_socket")
-            attach(add_cube("splitter_head_core", (0.82, -0.08, 1.49),
-                            (0.30, 0.13, 0.28), accent, 0.045), "weapon_socket")
-            attach(add_ico("splitter_rune", (0.82, -0.17, 1.50),
-                           (0.09, 0.025, 0.12), cyan, 1), "weapon_socket")
+            attach(add_cube("splitter_head_core", (0.82, -0.08, 1.39),
+                            (0.27, 0.13, 0.25), accent, 0.045), "weapon_socket")
+            attach(add_ico("splitter_rune", (0.82, -0.17, 1.40),
+                           (0.085, 0.025, 0.11), cyan, 1), "weapon_socket")
             attach(add_ico("splitter_counterweight", (0.82, -0.07, 0.25),
                            (0.13, 0.10, 0.13), accent, 1), "weapon_socket")
         else:
