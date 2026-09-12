@@ -18,6 +18,18 @@ final class GameStateTest {
     }
 
     @Test
+    void simulationAnchorAlwaysReturnsHeroToTheFixedArenaCenter() {
+        GameState state = GameState.newRun(7L);
+        state.hero.x = -900f;
+        state.hero.y = 42f;
+
+        state.anchorHeroAtArenaCenter();
+
+        assertEquals(GameState.ARENA_CENTER_X, state.hero.x);
+        assertEquals(GameState.ARENA_CENTER_Y, state.hero.y);
+    }
+
+    @Test
     void countsLivingRegularEnemiesAndBosses() {
         GameState state = GameState.newRun(1L);
         Enemy living = new Enemy(state.allocateEntityId(), "ROOTLING", 0f, 0f);

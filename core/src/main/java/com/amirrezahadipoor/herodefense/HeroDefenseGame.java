@@ -123,6 +123,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     }
 
     private void updatePlaying(float deltaSeconds) {
+        gameState.anchorHeroAtArenaCenter();
         simulationSeconds += deltaSeconds * gameState.simulationSpeed;
     }
 

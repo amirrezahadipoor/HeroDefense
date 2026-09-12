@@ -55,6 +55,13 @@ public final class GameState {
         return nextEntityId++;
     }
 
+    /** Enforces the stationary-defender rule every simulation tick. */
+    public void anchorHeroAtArenaCenter() {
+        if (hero != null) {
+            hero.keepAt(ARENA_CENTER_X, ARENA_CENTER_Y);
+        }
+    }
+
     public int livingEnemyCount() {
         int count = 0;
         for (Enemy enemy : aliveEnemies) {
