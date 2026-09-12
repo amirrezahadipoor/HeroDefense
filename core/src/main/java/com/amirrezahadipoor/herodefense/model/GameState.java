@@ -28,6 +28,7 @@ public final class GameState {
     public float worldTreeMaxHealth = 1000f;
     public float simulationSpeed = 1f;
     public boolean waveActive;
+    public boolean starterLoadoutGranted;
     public boolean awaitingBossReward;
     public int pendingRewardBossNumber;
     public boolean runComplete;

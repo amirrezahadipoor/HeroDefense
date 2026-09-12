@@ -185,9 +185,7 @@ def build_hero() -> BuiltModel:
     cloak = add_cone("leaf_cloak", (0, 0.20, 1.11), 0.48, 0.22, 0.82, mats["leaf"], 7)
     _bone_part(cloak, armature, "chest", objects)
     _humanoid_limbs(armature, objects, mats["green"], mats["dark"], mats["skin"])
-    _add_bow(armature, objects, mats["wood"], mats["gold"])
-    _add_quiver(armature, objects, mats["wood"], mats["gold"])
-    return BuiltModel(armature, objects, {"silhouette": "elf_archer", "attachment_variant": "starter_bow"})
+    return BuiltModel(armature, objects, {"silhouette": "elf_archer", "attachment_variant": "equipment_neutral"})
 
 
 def _add_bow(armature, objects, wood, gold) -> None:

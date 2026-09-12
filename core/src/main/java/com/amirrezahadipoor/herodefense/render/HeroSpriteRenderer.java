@@ -14,7 +14,7 @@ import java.util.Map;
 /** Draws the procedural Blender Hero atlas at its fixed gameplay anchor. */
 public final class HeroSpriteRenderer implements AutoCloseable {
     private static final String ATLAS_PATH = "generated/sprites/hero.atlas";
-    private static final float FRAME_SIZE = 192f;
+    static final float FRAME_SIZE = 192f;
     private static final float FEET_OFFSET_FROM_FRAME_BOTTOM = 23f;
 
     private final TextureAtlas atlas;
@@ -34,11 +34,19 @@ public final class HeroSpriteRenderer implements AutoCloseable {
         TextureAtlas.AtlasRegion frame = clip.get(Math.min(clip.size - 1, Math.max(0, frameIndex)));
         batch.draw(
             frame,
-            hero.x - FRAME_SIZE * 0.5f,
-            hero.y - FEET_OFFSET_FROM_FRAME_BOTTOM,
+            frameX(hero),
+            frameY(hero),
             FRAME_SIZE,
             FRAME_SIZE
         );
+    }
+
+    static float frameX(Hero hero) {
+        return hero.x - FRAME_SIZE * 0.5f;
+    }
+
+    static float frameY(Hero hero) {
+        return hero.y - FEET_OFFSET_FROM_FRAME_BOTTOM;
     }
 
     private void register(HeroAnimationState state, String regionName, int expectedFrames) {

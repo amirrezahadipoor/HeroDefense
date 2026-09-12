@@ -11261,7 +11261,7 @@
     {
       "armature": "hero_armature",
       "atlas": "sprites/hero.atlas",
-      "attachment_variant": "starter_bow",
+      "attachment_variant": "equipment_neutral",
       "boneAnimated": true,
       "bones": [
         "armor_socket",
@@ -11506,7 +11506,7 @@
       "sheetHeight": 768,
       "sheetWidth": 1920,
       "silhouette": "elf_archer",
-      "triangles": 896
+      "triangles": 728
     },
     {
       "armature": "rootling_armature",

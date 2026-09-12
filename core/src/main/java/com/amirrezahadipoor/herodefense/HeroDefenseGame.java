@@ -24,8 +24,10 @@ import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
+import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
@@ -37,6 +39,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private GameFlowController flow;
     private BossRewardCardSystem bossRewardCardSystem;
+    private EquipmentSpriteRenderer equipmentSpriteRenderer;
     private BossSpecialAttackSystem bossSpecialAttackSystem;
     private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
@@ -73,11 +76,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroProgressionSystem = new HeroProgressionSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
+        new StarterLoadoutSystem().provisionOnce(gameState);
         camera = new OrthographicCamera();
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
         viewport.apply(true);
         spriteBatch = new SpriteBatch();
         heroSpriteRenderer = new HeroSpriteRenderer();
+        equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         installTouchInput();
     }
@@ -131,6 +136,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         saveNow();
         if (heroSpriteRenderer != null) {
             heroSpriteRenderer.close();
+        }
+        if (equipmentSpriteRenderer != null) {
+            equipmentSpriteRenderer.close();
         }
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
@@ -256,11 +264,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             camera.update();
             spriteBatch.setProjectionMatrix(camera.combined);
             spriteBatch.begin();
-            heroSpriteRenderer.draw(
-                spriteBatch,
-                gameState.hero,
-                heroAnimationController.frameIndex(gameState.hero)
-            );
+            int heroFrame = heroAnimationController.frameIndex(gameState.hero);
+            heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
+            equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame);
             spriteBatch.end();
         }
         if (flow.state() == GameScreenState.CARD_CHOICE) {

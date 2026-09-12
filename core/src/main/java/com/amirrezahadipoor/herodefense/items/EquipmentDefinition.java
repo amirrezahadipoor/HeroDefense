@@ -61,6 +61,7 @@ public final class EquipmentDefinition {
     public Item createItem() {
         Item item = new Item(id, name, slot.name(), tier.name());
         item.iconKey = iconPath;
+        item.visualKey = "generated/equipment/" + id + ".atlas";
         for (Map.Entry<HeroStat, Integer> bonus : statBonuses.entrySet()) {
             item.statBonuses.put(bonus.getKey().name(), bonus.getValue().floatValue());
         }
