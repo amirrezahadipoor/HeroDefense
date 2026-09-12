@@ -75,6 +75,18 @@ public final class BalanceSimulator {
     );
 
     public BalanceReport run(long seed) {
+        return run(seed, null, 0);
+    }
+
+    /** Forces one legal card effect into a selected boss offer for comparative simulations. */
+    public BalanceReport runWithForcedCard(long seed, RewardCardId card, int bossNumber) {
+        if (card == null || bossNumber < 1 || bossNumber > 20) {
+            throw new IllegalArgumentException("Forced card and boss number 1..20 are required");
+        }
+        return run(seed, card, bossNumber);
+    }
+
+    private BalanceReport run(long seed, RewardCardId forcedCard, int forcedBossNumber) {
         GameState state = GameState.newRun(seed);
         new StarterLoadoutSystem().provisionOnce(state);
         allocateTalentPoints(state);
@@ -122,7 +134,7 @@ public final class BalanceSimulator {
 
                 WaveCompletion completion = waves.updateAfterCombat(state);
                 if (completion == WaveCompletion.BOSS_REWARD) {
-                    chooseBalancedReward(state);
+                    chooseReward(state, forcedCard, forcedBossNumber);
                     waves.continueAfterBossReward(state);
                 }
                 elapsed += STEP_SECONDS;
@@ -192,18 +204,31 @@ public final class BalanceSimulator {
         for (Item spare : new ArrayList<>(state.inventory)) equipment.sell(state, spare);
     }
 
-    private void chooseBalancedReward(GameState state) {
-        int bestIndex = 0;
-        int bestScore = Integer.MIN_VALUE;
-        for (int index = 0; index < state.pendingRewardCards.size(); index++) {
-            RewardCardId card = RewardCardId.valueOf(state.pendingRewardCards.get(index));
-            int score = rewardScore(state, card);
-            if (score > bestScore) {
-                bestIndex = index;
-                bestScore = score;
+    private void chooseReward(
+        GameState state,
+        RewardCardId forcedCard,
+        int forcedBossNumber
+    ) {
+        int selectedIndex;
+        if (forcedCard != null && state.pendingRewardBossNumber == forcedBossNumber) {
+            selectedIndex = state.pendingRewardCards.indexOf(forcedCard.name());
+            if (selectedIndex < 0) {
+                selectedIndex = 0;
+                state.pendingRewardCards.set(selectedIndex, forcedCard.name());
+            }
+        } else {
+            selectedIndex = 0;
+            int bestScore = Integer.MIN_VALUE;
+            for (int index = 0; index < state.pendingRewardCards.size(); index++) {
+                RewardCardId card = RewardCardId.valueOf(state.pendingRewardCards.get(index));
+                int score = rewardScore(state, card);
+                if (score > bestScore) {
+                    selectedIndex = index;
+                    bestScore = score;
+                }
             }
         }
-        if (!rewardCards.chooseCard(state, bestIndex)) {
+        if (!rewardCards.chooseCard(state, selectedIndex)) {
             throw new IllegalStateException("Simulator could not apply a pending boss reward");
         }
     }

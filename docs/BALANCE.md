@@ -79,6 +79,8 @@ The relative targets express intended contemporary-run impact. Every authored it
 - Base-stat cards award the rounded budget in whole stat points: one point early and two points late.
 - Every displayed description is generated from the same budget object used to apply the effect.
 
+The card regression runs all eight card identities as the forced choice at every boss with future combat (Bosses 1–19), for 152 complete simulations. Each remaining segment must retain at least 5% average gross damage, 25 seconds average clear time, and pressure on at least 90% of waves, while still respecting the 35% damage and 120-second spike ceilings. The calibrated scenarios retained at least `6.8017%` average damage and `33.822624 s` average clear time; their worst single wave was `30.708814%` damage and `100.86547 s`. Boss 20 is omitted because no wave remains after its reward.
+
 ## Renderer-independent simulation gate
 
 `BalanceSimulator` advances the real movement, attacks, projectiles, enemy and boss behavior, progression, drops, potions, equipment, shop, reward-card, and wave-lifecycle systems at 30 Hz. Its balanced automated policy distributes points and shop purchases across all five stats, equips upgrades, sells spare gear, and chooses rewards by a fixed survival/power priority. The fixed baseline seed emits one CSV row per wave with HP, gross incoming damage, DPS-to-enemy-HP ratio, clear time, and timeout state.
