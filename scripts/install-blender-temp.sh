@@ -18,5 +18,6 @@ if [ ! -x "$INSTALL_PATH/blender" ]; then
     rm -f "$ARCHIVE_PATH"
 fi
 
-"$INSTALL_PATH/blender" --version | head -n 1
+BLENDER_VERSION_OUTPUT=$("$INSTALL_PATH/blender" --version)
+printf '%s\n' "$BLENDER_VERSION_OUTPUT" | sed -n '1p'
 printf '%s\n' "$INSTALL_PATH/blender"
