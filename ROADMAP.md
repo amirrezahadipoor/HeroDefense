@@ -50,7 +50,7 @@ A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at
 
 The source of truth is procedural Python. Real 3D rigs and bones provide coherent motion and equipment attachment, while the Android game ships only 2D sprites.
 
-- [ ] Install/run Blender only in a temporary or CI environment; never commit Blender itself.
+- [x] Install/run checksum-pinned Blender 4.2 LTS only in a disposable cache/CI environment; never commit Blender itself.
 - [ ] Write the style guide first: polygon budgets, toon color bands, outlines, fixed camera, and fixed lighting.
 - [ ] Implement a headless `bpy` pipeline (`blender --background --python ...`) that:
   - creates low-poly toon models for the Hero, enemies, and bosses;
