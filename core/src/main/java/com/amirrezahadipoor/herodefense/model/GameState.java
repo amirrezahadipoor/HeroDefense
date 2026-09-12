@@ -16,6 +16,8 @@ public final class GameState {
 
     public int schemaVersion = CURRENT_SCHEMA_VERSION;
     public long runSeed;
+    /** Persisted xorshift state keeps combat rolls deterministic across save/load. */
+    public long combatRandomState;
     public int waveNumber = 1;
     public int coins;
     public int heroLevel = 1;
@@ -47,12 +49,26 @@ public final class GameState {
     public static GameState newRun(long seed) {
         GameState state = new GameState();
         state.runSeed = seed;
+        state.combatRandomState = initialRandomState(seed);
         state.validateAndRepair();
         return state;
     }
 
     public long allocateEntityId() {
         return nextEntityId++;
+    }
+
+    /** Returns a deterministic uniform combat roll in [0, 1) and advances saved state. */
+    public float nextCombatRandomFloat() {
+        long value = combatRandomState;
+        if (value == 0L) {
+            value = initialRandomState(runSeed);
+        }
+        value ^= value << 13;
+        value ^= value >>> 7;
+        value ^= value << 17;
+        combatRandomState = value;
+        return (value >>> 40) / 16_777_216f;
     }
 
     /** Enforces the stationary-defender rule every simulation tick. */
@@ -86,6 +102,9 @@ public final class GameState {
         heroExperience = Math.max(0, heroExperience);
         unspentTalentPoints = Math.max(0, unspentTalentPoints);
         simulationSpeed = simulationSpeed == 2f || simulationSpeed == 3f ? simulationSpeed : 1f;
+        if (combatRandomState == 0L) {
+            combatRandomState = initialRandomState(runSeed);
+        }
         if (hero == null) {
             hero = new Hero(1L, ARENA_CENTER_X, ARENA_CENTER_Y);
         }
@@ -101,6 +120,11 @@ public final class GameState {
         if (chosenRewardCards == null) chosenRewardCards = new LinkedHashMap<>();
         ensurePotionSlots();
         nextEntityId = Math.max(2L, nextEntityId);
+    }
+
+    private static long initialRandomState(long seed) {
+        long mixed = seed ^ 0x9E3779B97F4A7C15L;
+        return mixed == 0L ? 0xD1B54A32D192ED03L : mixed;
     }
 
     private void ensurePotionSlots() {

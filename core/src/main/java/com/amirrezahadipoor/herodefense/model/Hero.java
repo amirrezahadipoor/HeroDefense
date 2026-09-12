@@ -38,6 +38,25 @@ public final class Hero extends ArenaEntity {
         return stats.dodgeChance();
     }
 
+    public IncomingHitResult receiveIncomingHit(float amount, float dodgeRoll) {
+        if (!alive || amount <= 0f) {
+            return IncomingHitResult.IGNORED;
+        }
+        if (dodgeRoll < 0f || dodgeRoll >= 1f || Float.isNaN(dodgeRoll)) {
+            throw new IllegalArgumentException("Dodge roll must be in [0, 1)");
+        }
+        if (dodgeRoll < dodgeChance()) {
+            return IncomingHitResult.DODGED;
+        }
+        health = Math.max(0f, health - amount);
+        if (health == 0f) {
+            alive = false;
+            active = false;
+            return IncomingHitResult.KILLED;
+        }
+        return IncomingHitResult.DAMAGED;
+    }
+
     /** Repairs loaded stats and synchronizes derived HP without granting a heal. */
     public void validateAndRepair() {
         if (stats == null) {
