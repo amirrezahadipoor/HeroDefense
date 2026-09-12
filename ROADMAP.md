@@ -65,7 +65,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Model/render ground tiles and 3D props; keep appropriate flat UI assets 2D/vector.
 - [x] Implement Rare/Legendary glow as a runtime code/shader effect, not baked into sprites.
 - [x] Commit generation scripts; commit `.blend` files only if small, otherwise regenerate them.
-- [ ] Push each completed and reviewed rendered-asset batch separately.
+- [x] Push each completed and reviewed rendered-asset batch separately.
 
 ## Phase 3 — Hero Implementation
 
