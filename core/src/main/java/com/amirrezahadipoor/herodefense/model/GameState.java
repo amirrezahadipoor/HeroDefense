@@ -27,6 +27,7 @@ public final class GameState {
     public float worldTreeHealth = 1000f;
     public float worldTreeMaxHealth = 1000f;
     public float simulationSpeed = 1f;
+    public boolean waveActive;
     public boolean runComplete;
     public long nextEntityId = 2L;
 
@@ -121,6 +122,8 @@ public final class GameState {
         }
         if (aliveEnemies == null) aliveEnemies = new ArrayList<>();
         if (aliveBosses == null) aliveBosses = new ArrayList<>();
+        if (livingEnemyCount() > 0) waveActive = true;
+        if (runComplete) waveActive = false;
         if (projectiles == null) projectiles = new ArrayList<>();
         if (drops == null) drops = new ArrayList<>();
         if (inventory == null) inventory = new ArrayList<>();

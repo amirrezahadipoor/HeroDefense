@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.gameplay.ContinuousWaveRun;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
@@ -15,6 +16,8 @@ import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
+import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
+import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -29,7 +32,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameFlowController flow;
     private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
-    private EnemyWaveSpawner enemyWaveSpawner;
+    private WaveLifecycleSystem waveLifecycleSystem;
     private HeroAnimationController heroAnimationController;
     private HeroAutoAttackSystem heroAutoAttackSystem;
     private HeroProgressionSystem heroProgressionSystem;
@@ -46,7 +49,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         flow = new GameFlowController();
         enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(new HeroDamageSystem());
         enemyMovementSystem = new EnemyMovementSystem();
-        enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
+        EnemyWaveSpawner enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
+        waveLifecycleSystem = new WaveLifecycleSystem(enemyWaveSpawner, new ContinuousWaveRun());
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
@@ -158,13 +162,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.MENU
                     && worldX >= 120f && worldX <= 600f
                     && worldY >= 150f && worldY <= 310f) {
-                    if (gameState.livingEnemyCount() == 0) {
-                        enemyWaveSpawner.spawnRegularEnemies(
-                            gameState,
-                            gameState.waveNumber,
-                            enemyWaveSpawner.regularCountForWave(gameState.waveNumber)
-                        );
-                    }
+                    waveLifecycleSystem.startCurrentWave(gameState);
                     flow.transitionTo(GameScreenState.PLAYING);
                     return true;
                 }
@@ -192,6 +190,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (enemyMeleeAttackSystem.update(gameState, simulationDelta)) {
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
+        } else {
+            WaveCompletion waveCompletion = waveLifecycleSystem.updateAfterCombat(gameState);
+            if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
+                flow.transitionTo(GameScreenState.GAME_OVER);
+            }
+            if (waveCompletion != WaveCompletion.NO_CHANGE) {
+                saveNow();
+            }
         }
         simulationSeconds += simulationDelta;
     }
