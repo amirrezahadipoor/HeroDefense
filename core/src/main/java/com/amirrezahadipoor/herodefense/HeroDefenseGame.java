@@ -3,6 +3,9 @@ package com.amirrezahadipoor.herodefense;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
@@ -13,6 +16,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameFlowController flow;
     private LocalSaveRepository saves;
     private GameState gameState;
+    private OrthographicCamera camera;
+    private Viewport viewport;
     private float simulationSeconds;
 
     @Override
@@ -20,6 +25,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         flow = new GameFlowController();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
+        viewport.apply(true);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     @Override

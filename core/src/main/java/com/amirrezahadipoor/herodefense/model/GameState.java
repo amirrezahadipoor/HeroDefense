@@ -1,5 +1,7 @@
 package com.amirrezahadipoor.herodefense.model;
 
+import com.amirrezahadipoor.herodefense.WorldLayout;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,8 +11,8 @@ import java.util.Map;
 public final class GameState {
     public static final int CURRENT_SCHEMA_VERSION = 1;
     public static final int FINAL_WAVE = 100;
-    public static final float ARENA_CENTER_X = 360f;
-    public static final float ARENA_CENTER_Y = 600f;
+    public static final float ARENA_CENTER_X = WorldLayout.HERO_CENTER_X;
+    public static final float ARENA_CENTER_Y = WorldLayout.HERO_CENTER_Y;
 
     public int schemaVersion = CURRENT_SCHEMA_VERSION;
     public long runSeed;

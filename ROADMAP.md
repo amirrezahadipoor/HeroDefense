@@ -43,7 +43,7 @@ A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at
 - [x] Design a simple entity structure using plain classes for `Hero`, `Enemy`, `Boss`, `Projectile`, `Item`, and `DropEntity`.
 - [x] Implement central `GameState`: wave, living enemies, Hero, coins, inventory, level, and unspent talent points.
 - [x] Implement local save/load using Preferences + JSON, serializing/deserializing the whole `GameState` with a backup save.
-- [ ] Implement `ExtendViewport` or `FitViewport` around a portrait reference resolution (approximately 720×1280).
+- [x] Implement `FitViewport` around a fixed 720×1280 portrait reference resolution.
 - [ ] Implement all input with libGDX touch/pointer APIs and Scene2D click/drag listeners. Add no keyboard bindings.
 
 ## Phase 2 — Offline Blender + Python Asset Pipeline
