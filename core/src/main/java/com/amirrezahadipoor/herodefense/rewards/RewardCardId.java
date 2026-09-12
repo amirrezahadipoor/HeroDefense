@@ -1,19 +1,31 @@
 package com.amirrezahadipoor.herodefense.rewards;
 
-/** Initial reward IDs; the effect pool expands in the next roadmap item. */
+/** Extensible authored card pool used for deterministic three-card offers. */
 public enum RewardCardId {
-    STRENGTH("Strength", "+ Strength"),
-    AGILITY("Agility", "+ Agility"),
-    LUCK("Luck", "+ Luck"),
-    DODGE("Dodge", "+ Dodge"),
-    HEALTH("Health", "+ Health");
+    STRENGTH("Might of Oak", "+ Strength", RewardEffectType.BASE_STAT, 1f),
+    AGILITY("Windstep", "+ Agility", RewardEffectType.BASE_STAT, 1f),
+    LUCK("Fortune Leaf", "+ Luck", RewardEffectType.BASE_STAT, 1f),
+    DODGE("Fox Instinct", "+ Dodge", RewardEffectType.BASE_STAT, 1f),
+    HEALTH("Heartwood", "+ Health", RewardEffectType.BASE_STAT, 1f),
+    GENERAL_POWER("Verdant Power", "+8% all damage", RewardEffectType.GENERAL_POWER, 0.08f),
+    COIN_INCOME("Golden Sap", "+15% coin income", RewardEffectType.COIN_INCOME, 0.15f),
+    LIFESTEAL("Crimson Root", "+2% lifesteal", RewardEffectType.LIFESTEAL, 0.02f);
 
     private final String title;
     private final String description;
+    private final RewardEffectType effectType;
+    private final float baseMagnitude;
 
-    RewardCardId(String title, String description) {
+    RewardCardId(
+        String title,
+        String description,
+        RewardEffectType effectType,
+        float baseMagnitude
+    ) {
         this.title = title;
         this.description = description;
+        this.effectType = effectType;
+        this.baseMagnitude = baseMagnitude;
     }
 
     public String title() {
@@ -22,5 +34,13 @@ public enum RewardCardId {
 
     public String description() {
         return description;
+    }
+
+    public RewardEffectType effectType() {
+        return effectType;
+    }
+
+    public float baseMagnitude() {
+        return baseMagnitude;
     }
 }

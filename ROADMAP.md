@@ -95,7 +95,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ## Phase 6 — Post-Boss Reward Cards
 
 - [x] Pause and display exactly three random reward cards after every boss kill.
-- [ ] Build a pool including base stats, general power, coin income, lifesteal, and extensible effects.
+- [x] Build a pool including base stats, general power, coin income, lifesteal, and extensible effects.
 - [ ] Apply a card immediately when tapped and persist its effect in `GameState`.
 - [ ] Scale cards with a defined power budget from Phase 14.
 
