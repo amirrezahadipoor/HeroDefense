@@ -101,7 +101,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 7 — Inventory, Equipment & Items
 
-- [ ] Implement six equipment slots: Weapon, Helmet, Armor, Boots, Ring 1, Ring 2.
+- [x] Implement six equipment slots: Weapon, Helmet, Armor, Boots, Ring 1, Ring 2.
 - [ ] Define 40 items over four tiers: Common, Uncommon, Rare, Legendary.
 - [ ] Give each item a name, slot, tier, stat bonuses, and icon.
 - [ ] Connect equipped items to rendered mesh/material sprite variants.
