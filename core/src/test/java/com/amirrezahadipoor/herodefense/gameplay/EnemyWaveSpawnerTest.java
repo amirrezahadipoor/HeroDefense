@@ -30,6 +30,12 @@ final class EnemyWaveSpawnerTest {
     }
 
     @Test
+    void lateWavePopulationIsCappedToAvoidUnfairMeleeSwarms() {
+        assertEquals(EnemyWaveSpawner.MAX_REGULAR_ENEMIES, spawner.regularCountForWave(100));
+        assertTrue(spawner.regularCountForWave(25) < EnemyWaveSpawner.MAX_REGULAR_ENEMIES);
+    }
+
+    @Test
     void sameRunWaveAndCountProduceSameSpawnPattern() {
         GameState first = GameState.newRun(555L);
         GameState second = GameState.newRun(555L);

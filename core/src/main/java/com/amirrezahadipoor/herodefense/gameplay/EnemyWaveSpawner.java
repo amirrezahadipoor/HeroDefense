@@ -9,6 +9,7 @@ import com.amirrezahadipoor.herodefense.model.SpawnLane;
 /** Deterministically distributes each regular wave over three arena edges. */
 public final class EnemyWaveSpawner {
     public static final float EDGE_OFFSET = 40f;
+    public static final int MAX_REGULAR_ENEMIES = 24;
     private static final float SIDE_JITTER = 180f;
     private static final float SOUTH_JITTER = 250f;
 
@@ -19,7 +20,10 @@ public final class EnemyWaveSpawner {
     }
 
     public int regularCountForWave(int waveNumber) {
-        return Math.max(3, 4 + Math.max(1, waveNumber) / 2);
+        return Math.min(
+            MAX_REGULAR_ENEMIES,
+            Math.max(3, 4 + Math.max(1, waveNumber) / 2)
+        );
     }
 
     public void spawnRegularEnemies(GameState state, int waveNumber, int count) {

@@ -170,7 +170,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ### 14.3 Simulation-Based Testing
 
 - [x] Add a renderer-independent 100-wave simulation/test logging HP remaining, DPS-to-HP ratio, and clear time per wave.
-- [ ] Define a pass criterion: balanced allocation reaches Wave 100 while losing about 5%–15% max HP per wave on average; remove spikes.
+- [x] Define a pass criterion: balanced allocation reaches Wave 100 while losing about 5%–15% max HP per wave on average; remove spikes.
 - [ ] Re-run simulation after every coefficient change and before manual playtests.
 
 ### 14.4 Drops & Economy

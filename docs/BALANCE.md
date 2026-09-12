@@ -6,12 +6,13 @@ These coefficients are centralized in renderer-independent Java so the Phase 14 
 
 For wave `w` clamped to 1–100:
 
-- Baseline HP: `20 × 1.045^w`.
-- HP checkpoints: Wave 1 `20.90`, Wave 25 `60.11`, Wave 50 `180.65`, Wave 75 `542.94`, and Wave 100 `1,631.77`.
-- Baseline damage: `5 × 1.025^(w−1)`.
+- The required starting candidate was `20 × 1.045^w`; deterministic simulation tuned the shipped baseline to `20 × 1.035^w` to remove late-run clear-time and incoming-damage spikes.
+- Shipped HP checkpoints: Wave 1 `20.70`, Wave 25 `47.26`, Wave 50 `111.70`, Wave 75 `263.97`, and Wave 100 `623.83`.
+- Baseline damage: `0.18 × 1.002^(w−1)`, reaching `0.2194` at Wave 100 before archetype scaling.
 - A regular hit is capped at 28% of the max HP of a reference Hero who invests one of every five earned points in Health.
 - Archetype HP multipliers, relative to the 20-HP Rootling: Rootling `1.00`, Stonekin `1.70`, Gloom Wolf `0.85`, Fungal Brute `2.30`.
-- Archetype damage multipliers, relative to the 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
+- Archetype damage multipliers, relative to the authored 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
+- Regular populations grow from four and cap at 24 so late waves remain a readable melee defense rather than an unbounded swarm.
 - Movement speed, melee reach, and attack interval remain archetype properties rather than wave-scaled values.
 
 ## Boss growth
@@ -76,4 +77,15 @@ The relative targets express intended contemporary-run impact. Every authored it
 - Base-stat cards award the rounded budget in whole stat points: one point early and two points late.
 - Every displayed description is generated from the same budget object used to apply the effect.
 
-This is the first playable curve, not a claim of final balance. Phase 14 simulation and manual checkpoints must validate and, if necessary, revise the coefficients.
+## Renderer-independent simulation gate
+
+`BalanceSimulator` advances the real movement, attacks, projectiles, enemy and boss behavior, progression, drops, potions, equipment, shop, reward-card, and wave-lifecycle systems at 30 Hz. Its balanced automated policy distributes points and shop purchases across all five stats, equips upgrades, sells spare gear, and chooses rewards by a fixed survival/power priority. The fixed baseline seed emits one CSV row per wave with HP, gross incoming damage, DPS-to-enemy-HP ratio, clear time, and timeout state.
+
+The deterministic regression gate requires all of the following:
+
+- Complete exactly 100 waves with the Hero alive.
+- Average gross incoming damage from enemy attacks, divided by contemporary maximum HP, must be 5%–15% across the run. Gross damage is measured before potion and lifesteal recovery so healing cannot hide pressure.
+- No single wave may exceed 35% gross damage or 120 seconds to clear.
+- Every metric must be finite and no wave may hit the simulator's timeout.
+
+After tuning, baseline seed `0x4845524F444546` completed 100/100 waves with `7.866184%` average gross damage, `26.5138%` maximum single-wave damage, `47.43463 s` average clear time, and `98.999 s` maximum clear time. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.

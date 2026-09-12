@@ -12,8 +12,12 @@ final class DifficultyCurveTest {
     private final DifficultyCurve curve = new DifficultyCurve();
 
     @Test
-    void regularHealthUsesTheRoadmapWaveFormulaAndTypeMultiplier() {
-        assertEquals(20f * 1.045f, curve.baselineRegularHealth(1), 0.0001f);
+    void regularHealthUsesTheSimulationTunedWaveFormulaAndTypeMultiplier() {
+        assertEquals(
+            DifficultyCurve.BASE_ENEMY_HEALTH * DifficultyCurve.ENEMY_HEALTH_GROWTH,
+            curve.baselineRegularHealth(1),
+            0.0001f
+        );
         assertEquals(
             curve.baselineRegularHealth(25) * EnemyType.STONEKIN.baseHealth() / 20f,
             curve.regularHealth(EnemyType.STONEKIN, 25),
