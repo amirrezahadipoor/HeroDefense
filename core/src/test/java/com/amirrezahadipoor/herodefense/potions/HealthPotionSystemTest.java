@@ -15,6 +15,7 @@ final class HealthPotionSystemTest {
         float[] expected = {0.15f, 0.25f, 0.40f, 0.60f, 0.80f, 1f};
         assertEquals(6, PotionTier.values().length);
         for (PotionTier tier : PotionTier.values()) {
+            assertEquals(expected[tier.ordinal()], tier.maxHealthFraction());
             GameState state = GameState.newRun(tier.ordinal());
             state.hero.health = 0.01f;
             potions.add(state, tier, 1);
