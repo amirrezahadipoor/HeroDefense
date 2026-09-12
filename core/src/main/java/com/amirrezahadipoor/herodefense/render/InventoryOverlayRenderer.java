@@ -36,15 +36,17 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         shapes.rect(0f, 0f, 720f, 1280f);
         panel(180f, 480f, 360f, 240f);
         panel(180f, 760f, 360f, 140f);
+        panel(180f, 930f, 360f, 140f);
         shapes.end();
         endShapes();
 
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("E7D8B1"));
-        font.draw(batch, "Paused", 295f, 1010f);
+        font.draw(batch, "Paused", 295f, 1170f);
         font.draw(batch, "Resume", 300f, 615f);
         font.draw(batch, "Inventory", 280f, 845f);
+        font.draw(batch, "Stat Shop", 282f, 1015f);
         batch.end();
     }
 

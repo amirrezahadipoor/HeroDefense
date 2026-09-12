@@ -35,6 +35,7 @@ final class GameStateCodecTest {
         source.inventory.add(item);
         source.equippedItems.put("WEAPON", item);
         source.permanentEffects.put("LIFESTEAL", 0.04f);
+        source.shopUpgradeLevels.put("STRENGTH", 4);
         source.chosenRewardCards.put("7", "CARD_LIFESTEAL");
         source.healthPotions.set(2, 3);
 
@@ -47,6 +48,7 @@ final class GameStateCodecTest {
         assertEquals("THORN_MATRIARCH", restored.aliveBosses.get(0).bossType);
         assertEquals("Ashwood Bow", restored.inventory.get(0).name);
         assertEquals(3, restored.healthPotions.get(2));
+        assertEquals(4, restored.shopUpgradeLevels.get("STRENGTH"));
         assertEquals("CARD_LIFESTEAL", restored.chosenRewardCards.get("7"));
         assertFalse(restored.runComplete);
     }

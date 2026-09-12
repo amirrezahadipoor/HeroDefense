@@ -19,6 +19,12 @@ For wave `w` clamped to 1–100:
 - Boss contact damage on milestone wave `w`: baseline regular damage at `w` × `3`.
 - Boss movement, reach, interval, and special behavior remain identity-specific.
 
+## Direct stat shop
+
+- Strength, Agility, Luck, Dodge, and Health can each be purchased up to 20 times with earned coins only.
+- Base prices are `55`, `60`, `50`, `50`, and `65` coins respectively; each repeat purchase costs `1.22^n` times its base.
+- The shop is entered and operated exclusively through touch targets from the paused run.
+
 ## Kill rewards
 
 - Regular kill coins use each enemy archetype's base reward times `1 + 0.025 × wave`.

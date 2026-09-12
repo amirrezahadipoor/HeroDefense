@@ -30,8 +30,10 @@ public final class GameFlowController {
         if (!canTransitionTo(target)) {
             throw new IllegalStateException("Illegal game-state transition: " + state + " -> " + target);
         }
-        if (target == GameScreenState.PAUSED || target == GameScreenState.SHOP) {
+        if (target == GameScreenState.PAUSED) {
             returnState = state == GameScreenState.MENU ? GameScreenState.MENU : GameScreenState.PLAYING;
+        } else if (target == GameScreenState.SHOP) {
+            returnState = state == GameScreenState.MENU ? GameScreenState.MENU : state;
         }
         state = target;
     }
@@ -54,10 +56,14 @@ public final class GameFlowController {
             GameScreenState.GAME_OVER,
             GameScreenState.MENU
         ));
-        transitions.put(GameScreenState.PAUSED, EnumSet.of(GameScreenState.PLAYING, GameScreenState.MENU));
+        transitions.put(GameScreenState.PAUSED, EnumSet.of(
+            GameScreenState.PLAYING, GameScreenState.MENU, GameScreenState.SHOP
+        ));
         transitions.put(GameScreenState.LEVEL_UP, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
         transitions.put(GameScreenState.CARD_CHOICE, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
-        transitions.put(GameScreenState.SHOP, EnumSet.of(GameScreenState.MENU, GameScreenState.PLAYING));
+        transitions.put(GameScreenState.SHOP, EnumSet.of(
+            GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.PAUSED
+        ));
         transitions.put(GameScreenState.GAME_OVER, EnumSet.of(GameScreenState.MENU, GameScreenState.PLAYING));
         return transitions;
     }

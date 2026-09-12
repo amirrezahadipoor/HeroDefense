@@ -28,7 +28,9 @@ import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
+import com.amirrezahadipoor.herodefense.input.PauseTouchLayout;
 import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
+import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -40,8 +42,10 @@ import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
+import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 
 /** Android-only libGDX game loop and top-level state coordinator. */
 public final class HeroDefenseGame extends ApplicationAdapter {
@@ -66,6 +70,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private KillRewardSystem killRewardSystem;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
+    private StatShopOverlayRenderer statShopOverlayRenderer;
+    private StatShopSystem statShopSystem;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
     private GameState gameState;
@@ -97,6 +103,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
         potionDropSystem = new PotionDropSystem();
+        statShopSystem = new StatShopSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         new StarterLoadoutSystem().provisionOnce(gameState);
@@ -108,6 +115,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
+        statShopOverlayRenderer = new StatShopOverlayRenderer();
         installTouchInput();
     }
 
@@ -170,6 +178,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
         }
+        if (statShopOverlayRenderer != null) {
+            statShopOverlayRenderer.close();
+        }
         if (spriteBatch != null) {
             spriteBatch.dispose();
         }
@@ -230,6 +241,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     }
                     return true;
                 }
+                if (flow.state() == GameScreenState.SHOP) {
+                    if (StatShopTouchLayout.closeAt(worldX, worldY)) {
+                        flow.returnFromOverlay();
+                        saveNow();
+                    } else {
+                        HeroStat stat = StatShopTouchLayout.statAt(worldX, worldY);
+                        if (statShopSystem.purchase(gameState, stat)) saveNow();
+                    }
+                    return true;
+                }
                 if (flow.state() == GameScreenState.MENU
                     && worldX >= 120f && worldX <= 600f
                     && worldY >= 150f && worldY <= 310f) {
@@ -254,14 +275,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.PAUSED
-                    && worldX >= 180f && worldX <= 540f
-                    && worldY >= 760f && worldY <= 900f) {
+                    && PauseTouchLayout.shopAt(worldX, worldY)) {
+                    flow.transitionTo(GameScreenState.SHOP);
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PAUSED
+                    && PauseTouchLayout.inventoryAt(worldX, worldY)) {
                     inventoryTouchController.open();
                     return true;
                 }
                 if (flow.state() == GameScreenState.PAUSED
-                    && worldX >= 180f && worldX <= 540f
-                    && worldY >= 480f && worldY <= 720f) {
+                    && PauseTouchLayout.resumeAt(worldX, worldY)) {
                     flow.returnFromOverlay();
                 }
                 return true;
@@ -328,6 +352,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+        } else if (flow.state() == GameScreenState.SHOP) {
+            statShopOverlayRenderer.draw(spriteBatch, camera.combined, gameState, statShopSystem);
         } else if (flow.state() == GameScreenState.PAUSED) {
             if (inventoryTouchController.isOpen()) {
                 inventoryOverlayRenderer.drawInventory(

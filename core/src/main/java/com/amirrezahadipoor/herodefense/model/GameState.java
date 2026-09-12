@@ -42,6 +42,7 @@ public final class GameState {
     public List<Item> inventory = new ArrayList<>();
     public Map<String, Item> equippedItems = new LinkedHashMap<>();
     public Map<String, Float> permanentEffects = new LinkedHashMap<>();
+    public Map<String, Integer> shopUpgradeLevels = new LinkedHashMap<>();
     /** Boss number encoded as a string key for stable JSON object-key round trips. */
     public Map<String, String> chosenRewardCards = new LinkedHashMap<>();
     public List<String> pendingRewardCards = new ArrayList<>();
@@ -134,6 +135,8 @@ public final class GameState {
         if (equippedItems == null) equippedItems = new LinkedHashMap<>();
         synchronizeEquipmentHealth();
         if (permanentEffects == null) permanentEffects = new LinkedHashMap<>();
+        if (shopUpgradeLevels == null) shopUpgradeLevels = new LinkedHashMap<>();
+        shopUpgradeLevels.replaceAll((key, value) -> value == null ? 0 : Math.max(0, value));
         if (chosenRewardCards == null) chosenRewardCards = new LinkedHashMap<>();
         if (pendingRewardCards == null) pendingRewardCards = new ArrayList<>();
         if (pendingRewardCards.size() != 3) {
