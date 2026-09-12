@@ -51,7 +51,6 @@ jobs:
           --python tools/blender/generate_assets.py
           --
           --batch "${{ inputs.batch }}"
-          --isolate-frames
           --output /tmp/hero-defense-rendered
 
       - name: Enforce generated-artifact size budget

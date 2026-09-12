@@ -634,7 +634,7 @@
   ],
   "blenderVersion": "4.2.23",
   "frameRate": 12,
-  "generatedBatch": "world-tree",
+  "generatedBatch": "pilot",
   "palette": {
     "amber": "#E19C3B",
     "crimson": "#B84245",

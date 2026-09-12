@@ -108,10 +108,9 @@ def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene
     # keep the offline batch practical on CPU-only CI renderers.
     scene.eevee.taa_render_samples = 4
     scene.eevee.taa_samples = 4
-    # Freestyle is excellent for 192 px characters but its software-GL view map has
-    # a high memory peak at 256 px. Larger tree/boss frames use the equivalent
-    # deterministic alpha-dilation outline after rendering.
-    scene.render.use_freestyle = frame_class not in {"tree", "boss"}
+    # Use deterministic alpha-dilation outlines for every asset class. Unlike
+    # Freestyle, this keeps repeated software-GL renders memory-bounded in CI.
+    scene.render.use_freestyle = False
     scene.render.line_thickness = 1.0
 
     try:

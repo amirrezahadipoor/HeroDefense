@@ -279,6 +279,10 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
     return entries
 
 
+def _outline_radius(scene: bpy.types.Scene) -> int:
+    return 3 if scene.render.resolution_x >= 256 else 2
+
+
 def _render_stacked_animation(
     scene: bpy.types.Scene,
     frame_root: Path,
@@ -302,7 +306,7 @@ def _render_stacked_animation(
                 raise RuntimeError(f"Blender did not emit expected frame: {source}")
             source.replace(target)
             if not scene.render.use_freestyle:
-                apply_alpha_outline(target, 3)
+                apply_alpha_outline(target, _outline_radius(scene))
             result[clip].append(target)
     return result
 
@@ -336,7 +340,7 @@ def render_static_model(
         scene.render.filepath = str(path)
         bpy.ops.render.render(write_still=True)
         if not scene.render.use_freestyle:
-            apply_alpha_outline(path, 3)
+            apply_alpha_outline(path, _outline_radius(scene))
     target_directory = output / family
     target_directory.mkdir(parents=True, exist_ok=True)
     target = target_directory / f"{key}.png"
@@ -456,7 +460,7 @@ def _execute_frame_worker(payload_path: Path) -> None:
     scene.render.filepath = str(output)
     bpy.ops.render.render(write_still=True)
     if not scene.render.use_freestyle:
-        apply_alpha_outline(output, 3)
+        apply_alpha_outline(output, _outline_radius(scene))
 
 
 def main() -> None:
