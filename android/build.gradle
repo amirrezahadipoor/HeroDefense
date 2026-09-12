@@ -1,0 +1,55 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "com.amirrezahadipoor.herodefense.android"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.amirrezahadipoor.herodefense"
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName "0.1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ["assets"]
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources.excludes += ["META-INF/DEPENDENCIES", "META-INF/NOTICE", "META-INF/LICENSE"]
+    }
+}
+
+dependencies {
+    implementation project(":core")
+    implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation "androidx.test:runner:1.6.2"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
+}

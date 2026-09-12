@@ -1,0 +1,23 @@
+plugins {
+    id "java-library"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+dependencies {
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+
+    testImplementation platform("org.junit:junit-bom:$junitVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+test {
+    useJUnitPlatform()
+}
