@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
+import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
+import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
@@ -25,6 +27,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
     private EnemyWaveSpawner enemyWaveSpawner;
     private HeroAnimationController heroAnimationController;
@@ -41,6 +44,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void create() {
         flow = new GameFlowController();
+        enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(new HeroDamageSystem());
         enemyMovementSystem = new EnemyMovementSystem();
         enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
         heroAnimationController = new HeroAnimationController();
@@ -185,6 +189,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAnimationController.update(gameState.hero, simulationDelta);
         enemyMovementSystem.update(gameState, simulationDelta);
         heroAutoAttackSystem.update(gameState, simulationDelta);
+        if (enemyMeleeAttackSystem.update(gameState, simulationDelta)) {
+            flow.transitionTo(GameScreenState.GAME_OVER);
+            saveNow();
+        }
         simulationSeconds += simulationDelta;
     }
 

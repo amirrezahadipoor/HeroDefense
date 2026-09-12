@@ -71,6 +71,10 @@ public final class GameState {
         return (value >>> 40) / 16_777_216f;
     }
 
+    public void destroyWorldTree() {
+        worldTreeHealth = 0f;
+    }
+
     /** Enforces the stationary-defender rule every simulation tick. */
     public void anchorHeroAtArenaCenter() {
         if (hero != null) {
@@ -110,6 +114,11 @@ public final class GameState {
         }
         hero.keepAt(ARENA_CENTER_X, ARENA_CENTER_Y);
         hero.validateAndRepair();
+        worldTreeMaxHealth = Math.max(1f, worldTreeMaxHealth);
+        worldTreeHealth = Math.max(0f, Math.min(worldTreeMaxHealth, worldTreeHealth));
+        if (!hero.alive) {
+            destroyWorldTree();
+        }
         if (aliveEnemies == null) aliveEnemies = new ArrayList<>();
         if (aliveBosses == null) aliveBosses = new ArrayList<>();
         if (projectiles == null) projectiles = new ArrayList<>();
