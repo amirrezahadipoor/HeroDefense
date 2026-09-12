@@ -26,9 +26,9 @@ import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
-import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
+import com.amirrezahadipoor.herodefense.input.PauseTouchController;
 import com.amirrezahadipoor.herodefense.input.PauseTouchLayout;
 import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
@@ -71,6 +71,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
     private KillRewardSystem killRewardSystem;
+    private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private StatShopOverlayRenderer statShopOverlayRenderer;
@@ -105,6 +106,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         killRewardSystem = new KillRewardSystem(heroProgressionSystem);
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
+        pauseTouchController = new PauseTouchController();
         potionDropSystem = new PotionDropSystem();
         statShopSystem = new StatShopSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
@@ -131,11 +133,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void render() {
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
-        switch (flow.state()) {
-            case PLAYING -> updatePlaying(deltaSeconds);
-            case MENU, PAUSED, LEVEL_UP, CARD_CHOICE, SHOP, GAME_OVER -> {
-                // Overlay/menu states deliberately freeze the combat simulation.
-            }
+        if (flow.simulationRunning()) {
+            updatePlaying(deltaSeconds);
         }
         drawCurrentState();
     }
@@ -266,8 +265,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.PLAYING
-                    && HudTouchLayout.pauseAt(worldX, worldY)) {
-                    flow.transitionTo(GameScreenState.PAUSED);
+                    && pauseTouchController.tap(flow, worldX, worldY)) {
+                    saveNow();
                     return true;
                 }
                 if (flow.state() == GameScreenState.PAUSED && inventoryTouchController.isOpen()) {
@@ -291,9 +290,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     inventoryTouchController.open();
                     return true;
                 }
-                if (flow.state() == GameScreenState.PAUSED
-                    && PauseTouchLayout.resumeAt(worldX, worldY)) {
-                    flow.returnFromOverlay();
+                if (flow.state() == GameScreenState.PAUSED) {
+                    pauseTouchController.tap(flow, worldX, worldY);
                 }
                 return true;
             }

@@ -20,6 +20,10 @@ public final class GameFlowController {
         return returnState;
     }
 
+    public boolean simulationRunning() {
+        return state == GameScreenState.PLAYING;
+    }
+
     public boolean canTransitionTo(GameScreenState target) {
         Objects.requireNonNull(target, "target");
         return target == state || ALLOWED.get(state).contains(target);
