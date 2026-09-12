@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.ContinuousWaveRun;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
@@ -30,6 +31,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private BossSpecialAttackSystem bossSpecialAttackSystem;
     private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
     private WaveLifecycleSystem waveLifecycleSystem;
@@ -47,7 +49,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void create() {
         flow = new GameFlowController();
-        enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(new HeroDamageSystem());
+        HeroDamageSystem heroDamageSystem = new HeroDamageSystem();
+        bossSpecialAttackSystem = new BossSpecialAttackSystem(heroDamageSystem);
+        enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(heroDamageSystem);
         enemyMovementSystem = new EnemyMovementSystem();
         EnemyWaveSpawner enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
         waveLifecycleSystem = new WaveLifecycleSystem(enemyWaveSpawner, new ContinuousWaveRun());
@@ -187,6 +191,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAnimationController.update(gameState.hero, simulationDelta);
         enemyMovementSystem.update(gameState, simulationDelta);
         heroAutoAttackSystem.update(gameState, simulationDelta);
+        bossSpecialAttackSystem.update(gameState, simulationDelta);
         if (enemyMeleeAttackSystem.update(gameState, simulationDelta)) {
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();

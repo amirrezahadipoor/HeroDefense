@@ -5,6 +5,8 @@ public final class Boss extends Enemy {
     public String bossType = "ANCIENT_GOLEM";
     public String uniqueAttack = "GROUND_SLAM";
     public float specialCooldownSeconds;
+    public float specialAnimationSeconds;
+    public int specialUseCount;
     public int bossNumber;
 
     public Boss() {
