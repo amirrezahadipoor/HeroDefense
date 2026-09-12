@@ -3,6 +3,8 @@
 A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at the center of the arena, defending the World Tree behind him through 100 continuous waves. Game language is English.
 
 > **Progress rule:** Complete, verify, commit, and push each checklist item separately. Never batch completed items into one push.
+>
+> **Prior-roadmap closure (2026-09-13):** At the owner's direction, Phases 0–15 are closed. A checked item normally means verified completion; where a physical/manual action or previously excluded release deliverable was not actually performed, the item is checked as **owner-closed/waived** and says so explicitly rather than claiming false verification.
 
 ## Core Specs (Quick Reference)
 
@@ -152,7 +154,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 - [x] Run Android builds in a headless emulator, driving interaction only through simulated touch events.
 - [x] Automate a touch smoke test: menu, waves, inventory, and reward card.
-- [ ] Manually verify on at least one real mid-range Android touchscreen before release.
+- [x] Owner-closed/waived: manually verify on at least one real mid-range Android touchscreen before release. This was not physically performed and remains a recorded release risk.
 
 ## Phase 14 — Comprehensive Balancing
 
@@ -187,15 +189,66 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ### 14.6 Manual Checkpoints
 
-- [ ] Playtest Waves 1, 5, 25, 50, 75, and 100 and record felt difficulty.
-- [ ] After coefficient changes, re-run simulation and then repeat manual playtests.
+- [x] Owner-closed/waived: playtest Waves 1, 5, 25, 50, 75, and 100 and record felt difficulty. Automated balance evidence exists, but subjective play feel was not manually verified.
+- [x] Owner-closed/waived: after coefficient changes, re-run simulation and then repeat manual playtests. The mandatory simulation reruns passed; the subjective repeat was not performed.
 
 ## Phase 15 — Release Preparation
 
 - [x] Finalize CI to build, sign, and output a Cafe Bazaar-ready APK.
-- [ ] Prepare store icon, screenshots, and English description matching the visual style.
-- [ ] Perform final repository/APK size checks.
-- [ ] Push final changes and create a Git release tag.
+- [x] Owner-closed for the prior roadmap: prepare store icon, screenshots, and English description matching the visual style. The generated icon is complete; screenshots and description were explicitly waived and were not produced.
+- [x] Perform final repository/APK size checks (workspace 33 MB excluding Git; signed artifact archive 24,123,865 bytes; CI enforces APK below 100 MB).
+- [x] Owner-closed for the prior roadmap: push final changes and create a Git release tag. Changes were pushed; the tag was explicitly waived and was not created.
+
+## Phase 16 — Premium Visual & Live-Gameplay UX Upgrade
+
+The goal is a substantially more polished, eye-catching commercial-mobile presentation without gratuitous clutter. Preserve silhouette readability, touch clarity, deterministic gameplay, save compatibility, and mid-range Android performance. **Audio is frozen and out of scope for this phase.**
+
+### 16.1 Navigation Reliability
+
+- [ ] Reproduce, root-cause, and fix the intermittent Resume touch failure; add regression coverage and pass the Android touch-emulator journey.
+- [ ] Add always-visible, generous Inventory and Shop touch targets to the live gameplay HUD so neither requires opening Pause first.
+- [ ] Automatically pause all combat simulation while Inventory or Shop is open, and restore the correct prior state when closing either screen.
+- [ ] Show complete item details inside Inventory: name, rarity, slot, every stat bonus, equipped state, and a clear comparison against the currently equipped item.
+
+### 16.2 Reward and Pickup Presentation
+
+- [ ] Split item/potion drops into visible ground and collected stages without changing their deterministic reward outcome.
+- [ ] Animate each ground drop automatically homing into the Inventory/HUD destination before it disappears.
+- [ ] Give Rare and Legendary ground drops clearly readable but restrained rarity-colored glow and trail effects.
+- [ ] Show a golden floating `$ +N` coin number above the Hero whenever a kill awards coins.
+- [ ] Keep the current total coin balance clearly visible on the live gameplay HUD and the primary menu surface.
+
+### 16.3 Premium Art Pipeline Foundation
+
+- [ ] Upgrade the visual style guide to a premium-v2 quality bar covering shape language, material separation, animation polish, VFX restraint, UI composition, and actual-phone readability.
+- [ ] Upgrade the atlas packer to enforce multi-page atlases no larger than 2048×2048, with automated frame/pivot/alpha and GPU-memory-budget checks.
+- [ ] Produce and review a premium-v2 pilot containing the Hero, one regular enemy, one Boss, one equipment set, one drop, one environment prop, and one UI control before scaling the new style.
+
+### 16.4 Premium Character and World Batches
+
+- [ ] Upgrade and review the complete Hero model, rig deformation, Idle/Attack/Hit/Death animation, silhouette, materials, and sprite output.
+- [ ] Upgrade and review all 40 equipment attachment animation atlases while preserving socket alignment with every Hero frame.
+- [ ] Upgrade and review all four regular enemy models, rigs, animations, materials, silhouettes, and atlases.
+- [ ] Upgrade and review all four Boss models, rigs, signature animations, materials, silhouettes, and atlases.
+- [ ] Upgrade and review the healthy/damaged World Tree art and destruction presentation.
+- [ ] Upgrade and review all arena ground tiles, crystal props, background composition, and depth treatment.
+
+### 16.5 Premium Items, UI, and Effects
+
+- [ ] Upgrade and review all equipment, potion, drop, currency, navigation, stat, speed, pause, inventory, shop, and reward-card icons.
+- [ ] Upgrade the Main Menu and live HUD visual hierarchy, panels, typography treatment, buttons, and touch feedback without reducing gameplay visibility.
+- [ ] Upgrade the Inventory and Equipment presentation, including item cards, comparison states, selection, equip/unequip, sell feedback, and rarity treatment.
+- [ ] Upgrade the Shop presentation, including stat cards, price/affordability states, purchase feedback, and paused-game context.
+- [ ] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard.
+- [ ] Upgrade projectiles, impacts, critical hits, enemy deaths, Boss entrances/deaths, item collection, coins, World Tree damage, and ambient arena VFX with restrained visual layering.
+- [ ] Re-review the launcher/store icon against the final premium-v2 in-game style and replace it only if the integrated style no longer matches.
+
+### 16.6 Integrated Verification
+
+- [ ] Review contact sheets and real-size emulator screenshots for every premium-v2 batch before acceptance and push.
+- [ ] Pass the full core suite, runtime asset-contract suite, Android lint, touch-only emulator journeys, save migration checks, and signed Cafe Bazaar APK workflow.
+- [ ] Measure startup, frame pacing, peak texture residency, APK/repository size, and readability on the minimum-device profile; optimize without lowering the accepted art bar.
+- [ ] Perform and record the final Waves 1/5/25/50/75/100 touch playtest with the completed visuals and UX; retain an explicit physical-device caveat if no real device is available.
 
 ## Standing Rules
 
