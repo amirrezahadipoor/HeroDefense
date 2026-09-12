@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.audio.AudioCue;
+import com.amirrezahadipoor.herodefense.audio.GameAudioManager;
 import com.amirrezahadipoor.herodefense.gameplay.BossFactory;
 import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.BossWaveSpawner;
@@ -39,6 +41,8 @@ import com.amirrezahadipoor.herodefense.input.SimulationSpeedTouchController;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
+import com.amirrezahadipoor.herodefense.model.Boss;
+import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
@@ -68,6 +72,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private GameAudioManager audioManager;
     private AutoPotionSystem autoPotionSystem;
     private BossRewardCardSystem bossRewardCardSystem;
     private EquipmentSpriteRenderer equipmentSpriteRenderer;
@@ -142,6 +147,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             Gdx.app.getPreferences(LocalSettingsRepository.PREFERENCES_NAME)
         );
         settings = settingsRepository.load();
+        audioManager = new GameAudioManager(settings);
         Optional<GameState> loadedRun = saves.load();
         gameState = loadedRun.orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         continueAvailable = loadedRun.isPresent() && canContinue(gameState);
@@ -171,6 +177,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     @Override
     public void render() {
+        audioManager.update(settings);
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
         if (flow.simulationRunning()) {
             updatePlaying(deltaSeconds);
@@ -193,6 +200,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     /** Awards kill XP and opens the touch allocation overlay whenever a level is gained. */
     public int grantHeroExperience(int experience) {
         int levelsGained = heroProgressionSystem.grantExperience(gameState, experience);
+        if (levelsGained > 0) audioManager.play(AudioCue.LEVEL_UP);
         if (levelsGained > 0 && flow.state() == GameScreenState.PLAYING) {
             flow.transitionTo(GameScreenState.LEVEL_UP);
             saveNow();
@@ -202,12 +210,21 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     @Override
     public void pause() {
+        if (audioManager != null) audioManager.pauseForBackground();
         saveNow();
+    }
+
+    @Override
+    public void resume() {
+        if (audioManager != null) audioManager.resumeFromBackground();
     }
 
     @Override
     public void dispose() {
         saveNow();
+        if (audioManager != null) {
+            audioManager.close();
+        }
         if (gameOverOverlayRenderer != null) {
             gameOverOverlayRenderer.close();
         }
@@ -396,8 +413,31 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         } else if (gameState.unspentTalentPoints > 0) {
             flow.transitionTo(GameScreenState.LEVEL_UP);
         } else if (!gameState.waveActive) {
+            int bossesBefore = livingBossCount(gameState);
             waveLifecycleSystem.startCurrentWave(gameState);
+            if (livingBossCount(gameState) > bossesBefore) {
+                audioManager.play(AudioCue.BOSS_ENTRANCE);
+            }
         }
+    }
+
+    private static float totalEnemyHealth(GameState state) {
+        float total = 0f;
+        for (Enemy enemy : state.aliveEnemies) {
+            if (enemy != null) total += Math.max(0f, enemy.health);
+        }
+        for (Boss boss : state.aliveBosses) {
+            if (boss != null) total += Math.max(0f, boss.health);
+        }
+        return total;
+    }
+
+    private static int livingBossCount(GameState state) {
+        int count = 0;
+        for (Boss boss : state.aliveBosses) {
+            if (boss != null && boss.alive) count++;
+        }
+        return count;
     }
 
     private static boolean canContinue(GameState state) {
@@ -409,15 +449,29 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         gameState.anchorHeroAtArenaCenter();
         heroAnimationController.update(gameState.hero, simulationDelta);
         enemyMovementSystem.update(gameState, simulationDelta);
+        int livingBeforeAttack = gameState.livingEnemyCount();
+        float enemyHealthBeforeAttack = totalEnemyHealth(gameState);
         heroAutoAttackSystem.update(gameState, simulationDelta);
+        if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
+            audioManager.play(AudioCue.HIT);
+        }
+        if (gameState.livingEnemyCount() < livingBeforeAttack) {
+            audioManager.play(AudioCue.DEATH);
+        }
+        float heroHealthBeforeAttack = gameState.hero.health;
         bossSpecialAttackSystem.update(gameState, simulationDelta);
         boolean gameOver = enemyMeleeAttackSystem.update(gameState, simulationDelta);
+        if (gameState.hero.health < heroHealthBeforeAttack - 0.001f) {
+            audioManager.play(gameOver ? AudioCue.DEATH : AudioCue.HIT);
+        }
         if (!gameOver) {
             autoPotionSystem.update(gameState);
         }
-        itemDropSystem.processDefeatedEnemies(gameState);
+        int itemDrops = itemDropSystem.processDefeatedEnemies(gameState);
+        if (itemDrops > 0) audioManager.play(AudioCue.ITEM_DROP);
         potionDropSystem.processDefeatedEnemies(gameState);
         KillRewardResult killRewards = killRewardSystem.processDefeatedEnemies(gameState);
+        if (killRewards.levelsGained() > 0) audioManager.play(AudioCue.LEVEL_UP);
         dropPickupSystem.update(gameState, simulationDelta);
         if (gameOver) {
             flow.transitionTo(GameScreenState.GAME_OVER);
@@ -426,7 +480,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             flow.transitionTo(GameScreenState.LEVEL_UP);
             saveNow();
         } else {
+            int bossesBeforeWaveAdvance = livingBossCount(gameState);
             WaveCompletion waveCompletion = waveLifecycleSystem.updateAfterCombat(gameState);
+            if (livingBossCount(gameState) > bossesBeforeWaveAdvance) {
+                audioManager.play(AudioCue.BOSS_ENTRANCE);
+            }
             if (waveCompletion == WaveCompletion.BOSS_REWARD) {
                 flow.transitionTo(GameScreenState.CARD_CHOICE);
             } else if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
