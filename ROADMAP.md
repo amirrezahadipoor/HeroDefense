@@ -216,7 +216,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Animate each ground drop along a smooth raised arc into the live Inventory HUD destination, shrinking cleanly before it disappears.
 - [x] Give Rare and Legendary ground drops clearly readable but restrained rarity-colored shader glow and color-matched homing trails.
 - [x] Show a high-contrast golden floating `$ +N` coin number above the Hero whenever a kill awards coins.
-- [ ] Keep the current total coin balance clearly visible on the live gameplay HUD and the primary menu surface.
+- [x] Keep the current total coin balance clearly visible with a currency icon and `$` label on the live gameplay HUD and primary menu surface.
 
 ### 16.3 Premium Art Pipeline Foundation
 
