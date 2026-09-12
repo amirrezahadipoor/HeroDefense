@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
@@ -28,6 +29,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         camera = new OrthographicCamera();
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
         viewport.apply(true);
+        installTouchInput();
     }
 
     @Override
@@ -73,6 +75,51 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (saves != null && gameState != null) {
             saves.save(gameState);
         }
+    }
+
+    private void installTouchInput() {
+        Gdx.input.setInputProcessor(new TouchInputController(viewport, new TouchInputController.Listener() {
+            @Override
+            public boolean onTouchDown(float worldX, float worldY, int pointer) {
+                return true;
+            }
+
+            @Override
+            public boolean onTouchDragged(
+                float worldX,
+                float worldY,
+                float deltaX,
+                float deltaY,
+                int pointer
+            ) {
+                // Inventory drag behavior is attached to this callback by the UI layer.
+                return true;
+            }
+
+            @Override
+            public boolean onTouchUp(float worldX, float worldY, int pointer, boolean isTap) {
+                if (!isTap) {
+                    return true;
+                }
+                if (flow.state() == GameScreenState.MENU
+                    && worldX >= 120f && worldX <= 600f
+                    && worldY >= 150f && worldY <= 310f) {
+                    flow.transitionTo(GameScreenState.PLAYING);
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PLAYING
+                    && worldX >= 610f && worldY >= 1120f) {
+                    flow.transitionTo(GameScreenState.PAUSED);
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PAUSED
+                    && worldX >= 180f && worldX <= 540f
+                    && worldY >= 480f && worldY <= 720f) {
+                    flow.returnFromOverlay();
+                }
+                return true;
+            }
+        }));
     }
 
     private void updatePlaying(float deltaSeconds) {
