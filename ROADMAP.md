@@ -145,7 +145,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 - [x] Add light screen shake on Hero hits and boss kills.
 - [x] Add brief critical-hit hit-stop.
-- [ ] Add particles for hits, deaths, coins, and item pickups.
+- [x] Add particles for hits, deaths, coins, and item pickups.
 - [ ] Add clear visual/haptic feedback for taps and card selection.
 
 ## Phase 13 — Testing

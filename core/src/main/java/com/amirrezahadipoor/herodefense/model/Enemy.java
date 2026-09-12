@@ -14,6 +14,7 @@ public class Enemy extends ArenaEntity {
     public boolean itemDropRolled;
     public boolean potionDropRolled;
     public boolean killRewardsGranted;
+    public boolean defeatParticlesEmitted;
     public boolean alive = true;
 
     public Enemy() {

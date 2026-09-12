@@ -37,7 +37,9 @@ public final class HeroAutoAttackSystem {
         hero.currentTargetId = target == null ? -1L : target.id;
         if (target == null) {
             hero.attackCooldownSeconds = Math.max(0f, hero.attackCooldownSeconds);
-            return new HeroAttackUpdateResult(0, impacts.hits, impacts.criticalHits);
+            return new HeroAttackUpdateResult(
+                0, impacts.hits, impacts.criticalHits, impacts.x, impacts.y
+            );
         }
 
         int shots = 0;
@@ -46,7 +48,9 @@ public final class HeroAutoAttackSystem {
             hero.attackCooldownSeconds += statCalculator.attackIntervalSeconds(state);
             shots++;
         }
-        return new HeroAttackUpdateResult(shots, impacts.hits, impacts.criticalHits);
+        return new HeroAttackUpdateResult(
+            shots, impacts.hits, impacts.criticalHits, impacts.x, impacts.y
+        );
     }
 
     public Enemy findNearestTarget(GameState state, float x, float y, float range) {
@@ -109,6 +113,8 @@ public final class HeroAutoAttackSystem {
     private static ImpactCounts updateProjectiles(GameState state, float deltaSeconds) {
         int hits = 0;
         int criticalHits = 0;
+        float impactX = Float.NaN;
+        float impactY = Float.NaN;
         for (Projectile projectile : state.projectiles) {
             if (projectile == null || !projectile.active || projectile.sourceId != state.hero.id) {
                 continue;
@@ -128,6 +134,8 @@ public final class HeroAutoAttackSystem {
                 float healthBefore = target.health;
                 target.receiveDamage(projectile.damage);
                 hits++;
+                impactX = target.x;
+                impactY = target.y;
                 if (projectile.critical) criticalHits++;
                 float damageDealt = Math.max(0f, healthBefore - target.health);
                 float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY);
@@ -145,7 +153,7 @@ public final class HeroAutoAttackSystem {
             }
         }
         state.projectiles.removeIf(projectile -> projectile == null || !projectile.active);
-        return new ImpactCounts(hits, criticalHits);
+        return new ImpactCounts(hits, criticalHits, impactX, impactY);
     }
 
     private static Enemy findTargetById(GameState state, long id) {
@@ -180,6 +188,6 @@ public final class HeroAutoAttackSystem {
         projectile.velocityY = dy / length * PROJECTILE_SPEED;
     }
 
-    private record ImpactCounts(int hits, int criticalHits) {
+    private record ImpactCounts(int hits, int criticalHits, float x, float y) {
     }
 }

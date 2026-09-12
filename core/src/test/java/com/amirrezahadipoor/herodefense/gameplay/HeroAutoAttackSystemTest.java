@@ -71,6 +71,9 @@ final class HeroAutoAttackSystemTest {
         HeroAttackUpdateResult impact = system.update(state, 0.2f);
         assertEquals(1, impact.hits());
         assertEquals(1, impact.criticalHits());
+        assertTrue(impact.hasImpact());
+        assertEquals(target.x, impact.impactX());
+        assertEquals(target.y, impact.impactY());
         assertEquals(82.5f, target.health);
     }
 

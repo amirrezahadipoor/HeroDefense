@@ -43,6 +43,7 @@ import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.Boss;
+import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
@@ -50,6 +51,7 @@ import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.polish.HitStopSystem;
+import com.amirrezahadipoor.herodefense.polish.ParticleSystem;
 import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
@@ -58,6 +60,7 @@ import com.amirrezahadipoor.herodefense.render.HudRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.LevelUpOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.MainMenuRenderer;
+import com.amirrezahadipoor.herodefense.render.ParticleRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
@@ -97,6 +100,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private KillRewardSystem killRewardSystem;
     private LevelUpOverlayRenderer levelUpOverlayRenderer;
     private MainMenuRenderer mainMenuRenderer;
+    private ParticleRenderer particleRenderer;
+    private ParticleSystem particleSystem;
     private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
@@ -143,6 +148,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         killRewardSystem = new KillRewardSystem(heroProgressionSystem);
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
+        particleSystem = new ParticleSystem();
         pauseTouchController = new PauseTouchController();
         potionDropSystem = new PotionDropSystem();
         screenShakeSystem = new ScreenShakeSystem();
@@ -170,6 +176,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
         levelUpOverlayRenderer = new LevelUpOverlayRenderer();
         mainMenuRenderer = new MainMenuRenderer();
+        particleRenderer = new ParticleRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
@@ -253,6 +260,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (mainMenuRenderer != null) {
             mainMenuRenderer.close();
+        }
+        if (particleRenderer != null) {
+            particleRenderer.close();
         }
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
@@ -409,6 +419,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         new StarterLoadoutSystem().provisionOnce(gameState);
         simulationSeconds = 0f;
         hitStopSystem.clear();
+        particleSystem.clear();
         waveLifecycleSystem.startCurrentWave(gameState);
         flow.transitionTo(GameScreenState.PLAYING);
         saveNow();
@@ -426,6 +437,27 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             waveLifecycleSystem.startCurrentWave(gameState);
             if (livingBossCount(gameState) > bossesBefore) {
                 audioManager.play(AudioCue.BOSS_ENTRANCE);
+            }
+        }
+    }
+
+    private void emitDefeatParticles(GameState state) {
+        for (Enemy enemy : state.aliveEnemies) emitDefeatParticles(enemy);
+        for (Boss boss : state.aliveBosses) emitDefeatParticles(boss);
+    }
+
+    private void emitDefeatParticles(Enemy enemy) {
+        if (enemy == null || enemy.alive || enemy.defeatParticlesEmitted) return;
+        enemy.defeatParticlesEmitted = true;
+        particleSystem.emitDeath(enemy.x, enemy.y + 30f);
+        particleSystem.emitCoins(enemy.x, enemy.y + 50f);
+    }
+
+    private void emitPendingPickupParticles(GameState state, float deltaSeconds) {
+        for (DropEntity drop : state.drops) {
+            if (drop == null || !drop.active || drop.pickupDelaySeconds > deltaSeconds) continue;
+            if ("ITEM".equals(drop.dropType) || "POTION".equals(drop.dropType)) {
+                particleSystem.emitItemPickup(drop.x, drop.y + 25f);
             }
         }
     }
@@ -456,6 +488,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private void updatePlaying(float deltaSeconds) {
         float simulationDelta = deltaSeconds * gameState.simulationSpeed;
         screenShakeSystem.update(simulationDelta);
+        particleSystem.update(simulationDelta);
         gameState.anchorHeroAtArenaCenter();
         heroAnimationController.update(gameState.hero, simulationDelta);
         enemyMovementSystem.update(gameState, simulationDelta);
@@ -463,6 +496,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         int bossesBeforeAttack = livingBossCount(gameState);
         float enemyHealthBeforeAttack = totalEnemyHealth(gameState);
         HeroAttackUpdateResult attackEvents = heroAutoAttackSystem.update(gameState, simulationDelta);
+        if (attackEvents.hasImpact()) {
+            particleSystem.emitHit(
+                attackEvents.impactX(), attackEvents.impactY(), attackEvents.criticalHits() > 0
+            );
+        }
         if (attackEvents.criticalHits() > 0) hitStopSystem.triggerCriticalHit();
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
             audioManager.play(AudioCue.HIT);
@@ -478,8 +516,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         boolean gameOver = enemyMeleeAttackSystem.update(gameState, simulationDelta);
         if (gameState.hero.health < heroHealthBeforeAttack - 0.001f) {
             screenShakeSystem.triggerHeroHit();
+            particleSystem.emitHit(gameState.hero.x, gameState.hero.y + 45f, false);
             audioManager.play(gameOver ? AudioCue.DEATH : AudioCue.HIT);
         }
+        emitDefeatParticles(gameState);
         if (!gameOver) {
             autoPotionSystem.update(gameState);
         }
@@ -488,6 +528,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         potionDropSystem.processDefeatedEnemies(gameState);
         KillRewardResult killRewards = killRewardSystem.processDefeatedEnemies(gameState);
         if (killRewards.levelsGained() > 0) audioManager.play(AudioCue.LEVEL_UP);
+        emitPendingPickupParticles(gameState, simulationDelta);
         dropPickupSystem.update(gameState, simulationDelta);
         if (gameOver) {
             flow.transitionTo(GameScreenState.GAME_OVER);
@@ -542,6 +583,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
             equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
             spriteBatch.end();
+            particleRenderer.draw(camera.combined, particleSystem);
             camera.position.set(baseCameraX, baseCameraY, camera.position.z);
             camera.update();
         }
