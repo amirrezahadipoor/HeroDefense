@@ -215,7 +215,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Split item/potion drops into persisted `GROUND` and `HOMING` stages without changing their deterministic reward outcome.
 - [x] Animate each ground drop along a smooth raised arc into the live Inventory HUD destination, shrinking cleanly before it disappears.
 - [x] Give Rare and Legendary ground drops clearly readable but restrained rarity-colored shader glow and color-matched homing trails.
-- [ ] Show a golden floating `$ +N` coin number above the Hero whenever a kill awards coins.
+- [x] Show a high-contrast golden floating `$ +N` coin number above the Hero whenever a kill awards coins.
 - [ ] Keep the current total coin balance clearly visible on the live gameplay HUD and the primary menu surface.
 
 ### 16.3 Premium Art Pipeline Foundation
