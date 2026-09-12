@@ -19,6 +19,11 @@ For wave `w` clamped to 1–100:
 - Boss contact damage on milestone wave `w`: baseline regular damage at `w` × `3`.
 - Boss movement, reach, interval, and special behavior remain identity-specific.
 
+## Critical hits
+
+- Every Hero projectile has a deterministic `5%` critical chance and deals `1.75×` damage on success.
+- A confirmed critical impact freezes only combat simulation for `45 ms`; UI and rendering continue.
+
 ## Direct stat shop
 
 - Strength, Agility, Luck, Dodge, and Health can each be purchased up to 20 times with earned coins only.

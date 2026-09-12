@@ -11,6 +11,8 @@ import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 public final class HeroAutoAttackSystem {
     public static final float ATTACK_RANGE = 420f;
     public static final float PROJECTILE_SPEED = 900f;
+    public static final float CRITICAL_CHANCE = 0.05f;
+    public static final float CRITICAL_DAMAGE_MULTIPLIER = 1.75f;
     private static final int MAX_SHOTS_PER_UPDATE = 4;
 
     private final HeroStatCalculator statCalculator;
@@ -23,11 +25,11 @@ public final class HeroAutoAttackSystem {
         this.statCalculator = statCalculator;
     }
 
-    public void update(GameState state, float deltaSeconds) {
+    public HeroAttackUpdateResult update(GameState state, float deltaSeconds) {
         if (state == null || state.hero == null || !state.hero.alive || deltaSeconds < 0f) {
-            return;
+            return HeroAttackUpdateResult.NONE;
         }
-        updateProjectiles(state, deltaSeconds);
+        ImpactCounts impacts = updateProjectiles(state, deltaSeconds);
 
         Hero hero = state.hero;
         hero.attackCooldownSeconds -= deltaSeconds;
@@ -35,7 +37,7 @@ public final class HeroAutoAttackSystem {
         hero.currentTargetId = target == null ? -1L : target.id;
         if (target == null) {
             hero.attackCooldownSeconds = Math.max(0f, hero.attackCooldownSeconds);
-            return;
+            return new HeroAttackUpdateResult(0, impacts.hits, impacts.criticalHits);
         }
 
         int shots = 0;
@@ -44,6 +46,7 @@ public final class HeroAutoAttackSystem {
             hero.attackCooldownSeconds += statCalculator.attackIntervalSeconds(state);
             shots++;
         }
+        return new HeroAttackUpdateResult(shots, impacts.hits, impacts.criticalHits);
     }
 
     public Enemy findNearestTarget(GameState state, float x, float y, float range) {
@@ -93,15 +96,19 @@ public final class HeroAutoAttackSystem {
         Projectile projectile = new Projectile(
             state.allocateEntityId(), hero.id, target.id, hero.x, hero.y
         );
+        projectile.critical = state.nextCombatRandomFloat() < CRITICAL_CHANCE;
         projectile.damage = statCalculator.damage(state)
-            * (1f + effectValue(state, BossRewardCardSystem.GENERAL_POWER_KEY));
+            * (1f + effectValue(state, BossRewardCardSystem.GENERAL_POWER_KEY))
+            * (projectile.critical ? CRITICAL_DAMAGE_MULTIPLIER : 1f);
         float distance = (float) Math.sqrt(hero.distanceSquaredTo(target.x, target.y));
         projectile.remainingLifetimeSeconds = distance / PROJECTILE_SPEED + 0.25f;
         setVelocityToward(projectile, target);
         state.projectiles.add(projectile);
     }
 
-    private static void updateProjectiles(GameState state, float deltaSeconds) {
+    private static ImpactCounts updateProjectiles(GameState state, float deltaSeconds) {
+        int hits = 0;
+        int criticalHits = 0;
         for (Projectile projectile : state.projectiles) {
             if (projectile == null || !projectile.active || projectile.sourceId != state.hero.id) {
                 continue;
@@ -120,6 +127,8 @@ public final class HeroAutoAttackSystem {
                 projectile.y = target.y;
                 float healthBefore = target.health;
                 target.receiveDamage(projectile.damage);
+                hits++;
+                if (projectile.critical) criticalHits++;
                 float damageDealt = Math.max(0f, healthBefore - target.health);
                 float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY);
                 if (lifesteal > 0f && state.hero.alive) {
@@ -136,6 +145,7 @@ public final class HeroAutoAttackSystem {
             }
         }
         state.projectiles.removeIf(projectile -> projectile == null || !projectile.active);
+        return new ImpactCounts(hits, criticalHits);
     }
 
     private static Enemy findTargetById(GameState state, long id) {
@@ -168,5 +178,8 @@ public final class HeroAutoAttackSystem {
         }
         projectile.velocityX = dx / length * PROJECTILE_SPEED;
         projectile.velocityY = dy / length * PROJECTILE_SPEED;
+    }
+
+    private record ImpactCounts(int hits, int criticalHits) {
     }
 }

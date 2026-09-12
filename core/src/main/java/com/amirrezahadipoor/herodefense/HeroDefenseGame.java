@@ -19,6 +19,7 @@ import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
+import com.amirrezahadipoor.herodefense.gameplay.HeroAttackUpdateResult;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
@@ -48,6 +49,7 @@ import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
+import com.amirrezahadipoor.herodefense.polish.HitStopSystem;
 import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
@@ -87,6 +89,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameOverOverlayRenderer gameOverOverlayRenderer;
     private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
+    private HitStopSystem hitStopSystem;
     private HudRenderer hudRenderer;
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
@@ -136,6 +139,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
+        hitStopSystem = new HitStopSystem();
         killRewardSystem = new KillRewardSystem(heroProgressionSystem);
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
@@ -183,7 +187,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         audioManager.update(settings);
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
         if (flow.simulationRunning()) {
-            updatePlaying(deltaSeconds);
+            float gameplayDelta = hitStopSystem.consume(deltaSeconds);
+            if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
         }
         drawCurrentState();
     }
@@ -403,6 +408,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         gameState = GameState.newRun(System.currentTimeMillis());
         new StarterLoadoutSystem().provisionOnce(gameState);
         simulationSeconds = 0f;
+        hitStopSystem.clear();
         waveLifecycleSystem.startCurrentWave(gameState);
         flow.transitionTo(GameScreenState.PLAYING);
         saveNow();
@@ -456,7 +462,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         int livingBeforeAttack = gameState.livingEnemyCount();
         int bossesBeforeAttack = livingBossCount(gameState);
         float enemyHealthBeforeAttack = totalEnemyHealth(gameState);
-        heroAutoAttackSystem.update(gameState, simulationDelta);
+        HeroAttackUpdateResult attackEvents = heroAutoAttackSystem.update(gameState, simulationDelta);
+        if (attackEvents.criticalHits() > 0) hitStopSystem.triggerCriticalHit();
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
             audioManager.play(AudioCue.HIT);
         }

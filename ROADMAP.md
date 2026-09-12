@@ -144,7 +144,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ## Phase 12 — Polish & Game Feel
 
 - [x] Add light screen shake on Hero hits and boss kills.
-- [ ] Add brief critical-hit hit-stop.
+- [x] Add brief critical-hit hit-stop.
 - [ ] Add particles for hits, deaths, coins, and item pickups.
 - [ ] Add clear visual/haptic feedback for taps and card selection.
 

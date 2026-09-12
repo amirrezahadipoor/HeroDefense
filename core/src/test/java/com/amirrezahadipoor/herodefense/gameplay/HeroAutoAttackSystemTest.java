@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -57,6 +58,23 @@ final class HeroAutoAttackSystemTest {
     }
 
     @Test
+    void deterministicCriticalProjectileDealsBonusDamageAndReportsImpact() {
+        GameState state = stateWhoseNextRollCrits();
+        Enemy target = enemy(state, 90f, 0f);
+        state.aliveEnemies.add(target);
+
+        HeroAttackUpdateResult fired = system.update(state, 0f);
+        assertEquals(1, fired.shots());
+        assertTrue(state.projectiles.get(0).critical);
+        assertEquals(17.5f, state.projectiles.get(0).damage);
+
+        HeroAttackUpdateResult impact = system.update(state, 0.2f);
+        assertEquals(1, impact.hits());
+        assertEquals(1, impact.criticalHits());
+        assertEquals(82.5f, target.health);
+    }
+
+    @Test
     void agilityDerivedIntervalIsAppliedToCooldown() {
         GameState state = GameState.newRun(12L);
         state.hero.stats.agility = 10;
@@ -65,6 +83,18 @@ final class HeroAutoAttackSystemTest {
         system.update(state, 0f);
 
         assertEquals(state.hero.attackIntervalSeconds(), state.hero.attackCooldownSeconds, 0.0001f);
+    }
+
+    private static GameState stateWhoseNextRollCrits() {
+        for (long seed = 0; seed < 10_000; seed++) {
+            GameState state = GameState.newRun(seed);
+            long before = state.combatRandomState;
+            if (state.nextCombatRandomFloat() < HeroAutoAttackSystem.CRITICAL_CHANCE) {
+                state.combatRandomState = before;
+                return state;
+            }
+        }
+        throw new AssertionError("Could not find deterministic critical-hit seed");
     }
 
     private static Enemy enemy(GameState state, float offsetX, float offsetY) {
