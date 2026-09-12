@@ -18,6 +18,7 @@ android {
     sourceSets {
         main {
             assets.srcDirs = ["assets"]
+            jniLibs.srcDir(layout.buildDirectory.dir("generated/jniLibs"))
         }
     }
 
@@ -42,12 +43,47 @@ android {
     }
 }
 
+configurations {
+    natives
+}
+
+def extractedNatives = layout.buildDirectory.dir("generated/jniLibs")
+tasks.register("extractAndroidNatives") {
+    inputs.files(configurations.natives)
+    outputs.dir(extractedNatives)
+    doLast {
+        File destination = extractedNatives.get().asFile
+        delete(destination)
+        configurations.natives.files.each { archive ->
+            String abi
+            if (archive.name.contains("natives-arm64-v8a")) {
+                abi = "arm64-v8a"
+            } else if (archive.name.contains("natives-armeabi-v7a")) {
+                abi = "armeabi-v7a"
+            } else if (archive.name.contains("natives-x86_64")) {
+                abi = "x86_64"
+            } else {
+                throw new GradleException("Unknown Android native archive: ${archive.name}")
+            }
+            copy {
+                from zipTree(archive)
+                include "*.so"
+                into new File(destination, abi)
+            }
+        }
+    }
+}
+
+tasks.named("preBuild").configure {
+    dependsOn(tasks.named("extractAndroidNatives"))
+}
+
 dependencies {
     implementation project(":core")
     implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
-    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
 
     androidTestImplementation "androidx.test.ext:junit:1.2.1"
     androidTestImplementation "androidx.test:runner:1.6.2"
