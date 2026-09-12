@@ -124,7 +124,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 10 — UI / UX / HUD
 
-- [ ] Build a clean phone HUD: HP, wave, coins, Pause, and Speed controls with generous tap targets.
+- [x] Build a clean phone HUD: HP, wave, coins, Pause, and Speed controls with generous tap targets.
 - [ ] Pause/resume all simulation from a tap target.
 - [ ] Cycle 1×/2×/3× simulation speed from a tap target.
 - [ ] Add touch-only Main Menu: new game, continue, settings.
