@@ -54,13 +54,7 @@ jobs:
           emulator-options: >-
             -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
             -camera-back none -camera-front none
-          script: |
-            adb logcat -c
-            if ! ./scripts/gradle.sh :android:connectedDebugAndroidTest --stacktrace; then
-              mkdir -p android/build/reports/androidTests/diagnostics
-              adb logcat -d > android/build/reports/androidTests/diagnostics/emulator-logcat.txt
-              exit 1
-            fi
+          script: ./scripts/android-touch-test.sh
 
       - name: Upload debug APK
         if: always()
