@@ -1,9 +1,11 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "clips": {
     "idle": [
       {
         "height": 192,
         "index": 0,
+        "page": 0,
         "width": 192,
         "x": 0,
         "y": 0
@@ -14,8 +16,23 @@
   "frameClass": "environment",
   "frameSize": 192,
   "key": "crystal_prop_2",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
   "prop": "crystal_cluster",
   "sheet": "environment/crystal_prop_2.png",
+  "sheetHeight": 192,
+  "sheetWidth": 192,
+  "sheets": [
+    {
+      "decodedBytes": 147456,
+      "file": "environment/crystal_prop_2.png",
+      "height": 192,
+      "width": 192
+    }
+  ],
   "triangles": 50,
   "variant": 2
 }

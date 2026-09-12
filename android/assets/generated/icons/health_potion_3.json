@@ -1,9 +1,11 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "clips": {
     "idle": [
       {
         "height": 96,
         "index": 0,
+        "page": 0,
         "width": 96,
         "x": 0,
         "y": 0
@@ -15,7 +17,22 @@
   "frameSize": 96,
   "heal_icon": true,
   "key": "health_potion_3",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
   "sheet": "icons/health_potion_3.png",
+  "sheetHeight": 96,
+  "sheetWidth": 96,
+  "sheets": [
+    {
+      "decodedBytes": 36864,
+      "file": "icons/health_potion_3.png",
+      "height": 96,
+      "width": 96
+    }
+  ],
   "tier": 3,
   "triangles": 272
 }

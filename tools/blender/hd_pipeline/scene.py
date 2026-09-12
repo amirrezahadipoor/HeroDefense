@@ -8,6 +8,7 @@ from typing import Iterable
 import bpy
 from mathutils import Vector
 
+from .atlas_layout import plan_grid
 from .config import CAMERA_LOCATION, CAMERA_SCALE, CAMERA_SHIFT_Y, CAMERA_TARGET, OUTLINE_RGBA
 
 
@@ -308,42 +309,69 @@ def pack_grid(
     frame_paths: dict[str, list[Path]],
     output_path: Path,
     frame_size: int,
-) -> tuple[int, int, dict[str, list[dict[str, int]]]]:
-    """Pack clip rows using Blender's image API; returns top-left atlas coordinates."""
-    clips = list(frame_paths)
-    columns = max(len(frame_paths[clip]) for clip in clips)
-    width = columns * frame_size
-    height = len(clips) * frame_size
-    sheet = bpy.data.images.new(output_path.stem, width=width, height=height, alpha=True, float_buffer=False)
-    sheet_pixels = array("f", [0.0]) * (width * height * 4)
-    regions: dict[str, list[dict[str, int]]] = {}
+) -> tuple[list[dict[str, object]], dict[str, list[dict[str, int]]]]:
+    """Pack deterministic, page-bounded sheets using Blender's image API."""
+    planned_pages, regions = plan_grid(
+        {clip: len(paths) for clip, paths in frame_paths.items()},
+        frame_size,
+    )
+    # Remove only numbered spill pages from an earlier generation of this asset.
+    for stale in output_path.parent.glob(f"{output_path.stem}_*{output_path.suffix}"):
+        page_suffix = stale.stem.removeprefix(output_path.stem + "_")
+        if page_suffix.isdigit():
+            stale.unlink()
+    pages: list[dict[str, object]] = []
 
-    for row, clip in enumerate(clips):
-        regions[clip] = []
-        for column, path in enumerate(frame_paths[clip]):
-            image = bpy.data.images.load(str(path), check_existing=False)
-            image.colorspace_settings.name = "sRGB"
-            pixels = array("f", [0.0]) * (frame_size * frame_size * 4)
-            image.pixels.foreach_get(pixels)
-            # Blender pixel buffers and our destination are both bottom-up. Place the
-            # first clip at the atlas top while retaining conventional top-left metadata.
-            destination_row = len(clips) - row - 1
-            for source_y in range(frame_size):
-                src_start = source_y * frame_size * 4
-                dst_start = ((destination_row * frame_size + source_y) * width + column * frame_size) * 4
-                sheet_pixels[dst_start:dst_start + frame_size * 4] = pixels[src_start:src_start + frame_size * 4]
-            regions[clip].append({
-                "x": column * frame_size,
-                "y": row * frame_size,
-                "width": frame_size,
-                "height": frame_size,
-                "index": column,
-            })
-            bpy.data.images.remove(image)
+    for planned in planned_pages:
+        page_index = planned["index"]
+        width = planned["width"]
+        height = planned["height"]
+        page_path = (
+            output_path
+            if page_index == 0
+            else output_path.with_name(f"{output_path.stem}_{page_index}{output_path.suffix}")
+        )
+        sheet = bpy.data.images.new(
+            f"{output_path.stem}_{page_index}",
+            width=width,
+            height=height,
+            alpha=True,
+            float_buffer=False,
+        )
+        sheet_pixels = array("f", [0.0]) * (width * height * 4)
 
-    sheet.pixels.foreach_set(sheet_pixels)
-    sheet.filepath_raw = str(output_path)
-    sheet.file_format = "PNG"
-    sheet.save()
-    bpy.data.images.remove(sheet)
-    return width, height, regions
+        for clip, paths in frame_paths.items():
+            for frame_index, path in enumerate(paths):
+                region = regions[clip][frame_index]
+                if region["page"] != page_index:
+                    continue
+                image = bpy.data.images.load(str(path), check_existing=False)
+                image.colorspace_settings.name = "sRGB"
+                pixels = array("f", [0.0]) * (frame_size * frame_size * 4)
+                image.pixels.foreach_get(pixels)
+                # Blender and destination buffers are bottom-up; metadata is top-left.
+                destination_y = height - region["y"] - frame_size
+                for source_y in range(frame_size):
+                    src_start = source_y * frame_size * 4
+                    dst_start = (
+                        (destination_y + source_y) * width + region["x"]
+                    ) * 4
+                    sheet_pixels[dst_start:dst_start + frame_size * 4] = (
+                        pixels[src_start:src_start + frame_size * 4]
+                    )
+                bpy.data.images.remove(image)
+
+        sheet.pixels.foreach_set(sheet_pixels)
+        sheet.filepath_raw = str(page_path)
+        sheet.file_format = "PNG"
+        sheet.save()
+        bpy.data.images.remove(sheet)
+        pages.append({
+            "index": page_index,
+            "path": page_path,
+            "width": width,
+            "height": height,
+            "decodedBytes": width * height * 4,
+        })
+
+    return pages, regions

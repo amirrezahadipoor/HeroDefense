@@ -1,9 +1,11 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "clips": {
     "idle": [
       {
         "height": 96,
         "index": 0,
+        "page": 0,
         "width": 96,
         "x": 0,
         "y": 0
@@ -14,7 +16,22 @@
   "frameClass": "item",
   "frameSize": 96,
   "key": "ui_new_game",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
   "sheet": "icons/ui_new_game.png",
+  "sheetHeight": 96,
+  "sheetWidth": 96,
+  "sheets": [
+    {
+      "decodedBytes": 36864,
+      "file": "icons/ui_new_game.png",
+      "height": 96,
+      "width": 96
+    }
+  ],
   "touchOnlyUI": true,
   "triangles": 196,
   "uiIcon": "new_game"

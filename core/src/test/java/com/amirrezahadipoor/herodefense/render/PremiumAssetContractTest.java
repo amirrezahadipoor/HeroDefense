@@ -1,0 +1,261 @@
+package com.amirrezahadipoor.herodefense.render;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.imageio.ImageIO;
+import org.junit.jupiter.api.Test;
+
+/** Guards frame geometry, pivots, alpha safety, page limits, and decoded GPU budgets. */
+final class PremiumAssetContractTest {
+    private static final Path GENERATED = Path.of("../android/assets/generated").normalize();
+    private static final Path MANIFEST = GENERATED.resolve("asset_manifest.json");
+    private static final Map<String, float[]> EXPECTED_PIVOTS = Map.of(
+        "character", new float[] {0.5f, 0.12f},
+        "boss", new float[] {0.5f, 0.12f},
+        "tree", new float[] {0.5f, 0.06f},
+        "item", new float[] {0.5f, 0.5f},
+        "environment", new float[] {0.5f, 0.5f}
+    );
+
+    @Test
+    void committedCatalogSatisfiesThePremiumRuntimeTextureContract() throws IOException {
+        JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
+        int maxPageSize = manifest.getInt("maxAtlasPageSize");
+        long catalogBudget = manifest.getLong("decodedCatalogBudgetBytes");
+        long residencyBudget = manifest.getLong("decodedCombatResidencyBudgetBytes");
+        assertEquals(2048, maxPageSize);
+
+        Map<Path, ImageInfo> imageInfo = new HashMap<>();
+        Set<Path> referencedPngs = new HashSet<>();
+        Map<String, List<Path>> sheetPathsByFamily = new HashMap<>();
+        List<List<Path>> bossSheets = new ArrayList<>();
+        List<List<Path>> equipmentSheets = new ArrayList<>();
+
+        for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
+            String key = asset.getString("key");
+            String family = asset.getString("family");
+            int frameSize = asset.getInt("frameSize");
+            assertPivot(key, asset);
+            assertEquals("STRAIGHT_RGBA", asset.getString("alphaMode"), key);
+
+            JsonValue sheets = asset.get("sheets");
+            assertTrue(sheets != null && sheets.size > 0, key + " must declare atlas pages");
+            List<Path> assetSheets = new ArrayList<>();
+            List<BufferedImage> assetImages = new ArrayList<>();
+            for (JsonValue sheet = sheets.child; sheet != null; sheet = sheet.next) {
+                Path path = resolveInsideGenerated(sheet.getString("file"));
+                BufferedImage image = readImage(path);
+                imageInfo.put(path, new ImageInfo(image.getWidth(), image.getHeight()));
+                assertTrue(image.getColorModel().hasAlpha(), path + " must be RGBA");
+                assertEquals(sheet.getInt("width"), image.getWidth(), path.toString());
+                assertEquals(sheet.getInt("height"), image.getHeight(), path.toString());
+                assertEquals((long) image.getWidth() * image.getHeight() * 4L,
+                    sheet.getLong("decodedBytes"), path.toString());
+                assertTrue(image.getWidth() <= maxPageSize, path + " exceeds page width");
+                assertTrue(image.getHeight() <= maxPageSize, path + " exceeds page height");
+                referencedPngs.add(path);
+                assetSheets.add(path);
+                assetImages.add(image);
+            }
+            sheetPathsByFamily.computeIfAbsent(family, ignored -> new ArrayList<>())
+                .addAll(assetSheets);
+            if ("boss".equals(family)) bossSheets.add(assetSheets);
+            if ("equipment".equals(family)) equipmentSheets.add(assetSheets);
+
+            if (asset.has("icon")) {
+                Path icon = resolveInsideGenerated(asset.getString("icon"));
+                BufferedImage image = readImage(icon);
+                imageInfo.put(icon, new ImageInfo(image.getWidth(), image.getHeight()));
+                assertTrue(image.getColorModel().hasAlpha(), icon + " must be RGBA");
+                assertEquals(96, image.getWidth(), icon.toString());
+                assertEquals(96, image.getHeight(), icon.toString());
+                assertTransparentOuterEdge(icon, image, 0, 0, image.getWidth(), image.getHeight());
+                referencedPngs.add(icon);
+            }
+
+            assertFrames(key, family, frameSize, asset.get("clips"), assetSheets, assetImages);
+            if (asset.has("atlas")) assertAtlasReferencesEveryPage(asset, assetSheets);
+        }
+
+        Set<Path> committedPngs = new HashSet<>();
+        try (var paths = Files.walk(GENERATED)) {
+            paths.filter(path -> path.toString().endsWith(".png"))
+                .map(Path::normalize)
+                .forEach(committedPngs::add);
+        }
+        assertEquals(committedPngs, referencedPngs,
+            "every committed PNG must be declared exactly through a sheet or icon contract");
+
+        long decodedCatalogBytes = committedPngs.stream()
+            .map(imageInfo::get)
+            .mapToLong(ImageInfo::decodedBytes)
+            .sum();
+        assertTrue(decodedCatalogBytes <= catalogBudget,
+            "decoded catalog " + decodedCatalogBytes + " exceeds " + catalogBudget);
+
+        Set<Path> peakResidency = new HashSet<>();
+        addFamily(peakResidency, sheetPathsByFamily, "hero");
+        addFamily(peakResidency, sheetPathsByFamily, "enemy");
+        addFamily(peakResidency, sheetPathsByFamily, "world_tree");
+        addFamily(peakResidency, sheetPathsByFamily, "environment");
+        largestAsset(bossSheets, imageInfo).forEach(peakResidency::add);
+        equipmentSheets.stream()
+            .sorted(Comparator.comparingLong((List<Path> paths) -> decodedBytes(paths, imageInfo)).reversed())
+            .limit(6)
+            .forEach(peakResidency::addAll);
+        committedPngs.stream()
+            .filter(path -> GENERATED.relativize(path).startsWith("icons"))
+            .forEach(peakResidency::add);
+        long peakBytes = decodedBytes(new ArrayList<>(peakResidency), imageInfo);
+        assertTrue(peakBytes <= residencyBudget,
+            "conservative combat residency " + peakBytes + " exceeds " + residencyBudget);
+    }
+
+    private static void assertFrames(
+        String key,
+        String family,
+        int frameSize,
+        JsonValue clips,
+        List<Path> sheets,
+        List<BufferedImage> images
+    ) {
+        Map<String, Integer> expected = switch (family) {
+            case "hero", "enemy", "boss", "equipment" -> Map.of(
+                "idle", 6, "attack", 8, "hit", 4, "death", 10
+            );
+            case "world_tree" -> Map.of("idle", 6);
+            default -> Map.of("idle", 1);
+        };
+        assertEquals(expected.size(), clips.size, key + " clip count");
+        for (Map.Entry<String, Integer> clip : expected.entrySet()) {
+            JsonValue frames = clips.get(clip.getKey());
+            assertTrue(frames != null, key + " missing " + clip.getKey());
+            assertEquals(clip.getValue().intValue(), frames.size, key + " " + clip.getKey());
+            int expectedIndex = 0;
+            for (JsonValue frame = frames.child; frame != null; frame = frame.next) {
+                int page = frame.getInt("page");
+                int x = frame.getInt("x");
+                int y = frame.getInt("y");
+                int width = frame.getInt("width");
+                int height = frame.getInt("height");
+                assertEquals(expectedIndex++, frame.getInt("index"), key + " frame order");
+                assertEquals(frameSize, width, key + " frame width");
+                assertEquals(frameSize, height, key + " frame height");
+                assertTrue(page >= 0 && page < sheets.size(), key + " page index");
+                BufferedImage image = images.get(page);
+                assertTrue(x >= 0 && y >= 0 && x + width <= image.getWidth()
+                    && y + height <= image.getHeight(), key + " frame outside page");
+                assertTransparentOuterEdge(key, image, x, y, width, height);
+                assertVisiblePixels(key, image, x, y, width, height);
+            }
+        }
+    }
+
+    private static void assertPivot(String key, JsonValue asset) {
+        String frameClass = asset.getString("frameClass");
+        JsonValue pivot = asset.get("pivot");
+        assertTrue(pivot != null, key + " missing pivot");
+        float[] expected = EXPECTED_PIVOTS.get(frameClass);
+        assertTrue(expected != null, key + " unknown frame class " + frameClass);
+        assertEquals(expected[0], pivot.getFloat("x"), 0.0001f, key + " pivot x");
+        assertEquals(expected[1], pivot.getFloat("y"), 0.0001f, key + " pivot y");
+        assertEquals("normalized-bottom-left", pivot.getString("units"), key);
+    }
+
+    private static void assertAtlasReferencesEveryPage(JsonValue asset, List<Path> sheets)
+        throws IOException {
+        Path atlas = resolveInsideGenerated(asset.getString("atlas"));
+        String text = Files.readString(atlas);
+        for (Path sheet : sheets) {
+            assertTrue(text.lines().anyMatch(sheet.getFileName().toString()::equals),
+                atlas + " missing page " + sheet.getFileName());
+        }
+    }
+
+    private static void assertTransparentOuterEdge(
+        Object label, BufferedImage image, int x, int y, int width, int height
+    ) {
+        for (int column = x; column < x + width; column++) {
+            assertEquals(0, alpha(image, column, y), label + " top alpha edge");
+            assertEquals(0, alpha(image, column, y + height - 1), label + " bottom alpha edge");
+        }
+        for (int row = y; row < y + height; row++) {
+            assertEquals(0, alpha(image, x, row), label + " left alpha edge");
+            assertEquals(0, alpha(image, x + width - 1, row), label + " right alpha edge");
+        }
+    }
+
+    private static void assertVisiblePixels(
+        String key, BufferedImage image, int x, int y, int width, int height
+    ) {
+        boolean visible = false;
+        for (int row = y; row < y + height && !visible; row++) {
+            for (int column = x; column < x + width; column++) {
+                if (alpha(image, column, row) > 0) {
+                    visible = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(visible, key + " contains an empty frame");
+    }
+
+    private static int alpha(BufferedImage image, int x, int y) {
+        return image.getRGB(x, y) >>> 24;
+    }
+
+    private static Path resolveInsideGenerated(String relative) {
+        Path path = GENERATED.resolve(relative).normalize();
+        assertTrue(path.startsWith(GENERATED), "asset path escapes generated root: " + relative);
+        assertTrue(Files.isRegularFile(path), "missing generated asset: " + path);
+        return path;
+    }
+
+    private static BufferedImage readImage(Path path) {
+        try {
+            BufferedImage image = ImageIO.read(path.toFile());
+            assertTrue(image != null, "unreadable PNG: " + path);
+            return image;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Could not read " + path, exception);
+        }
+    }
+
+    private static long decodedBytes(List<Path> paths, Map<Path, ImageInfo> images) {
+        return paths.stream().map(images::get).mapToLong(ImageInfo::decodedBytes).sum();
+    }
+
+    private static void addFamily(
+        Set<Path> target, Map<String, List<Path>> pathsByFamily, String family
+    ) {
+        target.addAll(pathsByFamily.getOrDefault(family, List.of()));
+    }
+
+    private static List<Path> largestAsset(
+        List<List<Path>> assets, Map<Path, ImageInfo> images
+    ) {
+        return assets.stream()
+            .max(Comparator.comparingLong(paths -> decodedBytes(paths, images)))
+            .orElseGet(List::of);
+    }
+
+    private record ImageInfo(int width, int height) {
+        long decodedBytes() {
+            return (long) width * height * 4L;
+        }
+    }
+}

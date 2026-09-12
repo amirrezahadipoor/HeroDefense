@@ -23,6 +23,7 @@ if str(SCRIPT_DIR) not in sys.path:
 
 import bpy  # noqa: E402
 
+from hd_pipeline.atlas_layout import MAX_ATLAS_SIZE  # noqa: E402
 from hd_pipeline.config import (  # noqa: E402
     BLENDER_VERSION,
     BOSSES,
@@ -54,7 +55,7 @@ from hd_pipeline.scene import (  # noqa: E402
     triangle_count,
 )
 
-PIPELINE_VERSION = 1
+PIPELINE_VERSION = 2
 ISOLATED_RENDERING = False
 TIER_COLORS = {
     "COMMON": "#87949A",
@@ -123,9 +124,9 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
     sprite_directory = output / "sprites"
     sprite_directory.mkdir(parents=True, exist_ok=True)
     sheet_path = sprite_directory / f"{asset.key}.png"
-    width, height, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE[asset.frame_class])
+    pages, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE[asset.frame_class])
     atlas_path = sprite_directory / f"{asset.key}.atlas"
-    _write_libgdx_atlas(atlas_path, sheet_path.name, width, height, regions)
+    _write_libgdx_atlas(atlas_path, pages, regions)
     triangles = triangle_count(model.render_objects)
     entry = {
         "key": asset.key,
@@ -133,10 +134,13 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
         "builder": asset.builder,
         "frameClass": asset.frame_class,
         "frameSize": FRAME_SIZE[asset.frame_class],
-        "sheet": _relative(sheet_path, output),
+        "sheet": _relative(pages[0]["path"], output),
+        "sheets": _sheet_manifest(pages, output),
         "atlas": _relative(atlas_path, output),
-        "sheetWidth": width,
-        "sheetHeight": height,
+        "sheetWidth": pages[0]["width"],
+        "sheetHeight": pages[0]["height"],
+        "pivot": _pivot_for(asset.frame_class),
+        "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
         "frameRate": FRAME_RATE,
         "triangles": triangles,
@@ -181,16 +185,21 @@ def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
     sprite_directory = output / "sprites"
     sprite_directory.mkdir(parents=True, exist_ok=True)
     sheet_path = sprite_directory / f"{key}.png"
-    width, height, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE["tree"])
+    pages, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE["tree"])
     atlas_path = sprite_directory / f"{key}.atlas"
-    _write_libgdx_atlas(atlas_path, sheet_path.name, width, height, regions)
+    _write_libgdx_atlas(atlas_path, pages, regions)
     entry = {
         "key": key,
         "family": "world_tree",
         "frameClass": "tree",
         "frameSize": FRAME_SIZE["tree"],
-        "sheet": _relative(sheet_path, output),
+        "sheet": _relative(pages[0]["path"], output),
+        "sheets": _sheet_manifest(pages, output),
         "atlas": _relative(atlas_path, output),
+        "sheetWidth": pages[0]["width"],
+        "sheetHeight": pages[0]["height"],
+        "pivot": _pivot_for("tree"),
+        "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
         "triangles": triangle_count(model.render_objects),
         "armature": model.armature.name,
@@ -259,9 +268,9 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
         sprite_directory = output / "equipment"
         sprite_directory.mkdir(parents=True, exist_ok=True)
         sheet_path = sprite_directory / f"{item['id']}.png"
-        width, height, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE["character"])
+        pages, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE["character"])
         atlas_path = sprite_directory / f"{item['id']}.atlas"
-        _write_libgdx_atlas(atlas_path, sheet_path.name, width, height, regions)
+        _write_libgdx_atlas(atlas_path, pages, regions)
         icon_directory = output / "icons"
         icon_directory.mkdir(parents=True, exist_ok=True)
         icon_path = icon_directory / f"equipment_{item['id']}.png"
@@ -276,9 +285,14 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
             "tier": item["tier"],
             "frameClass": "character",
             "frameSize": FRAME_SIZE["character"],
-            "sheet": _relative(sheet_path, output),
+            "sheet": _relative(pages[0]["path"], output),
+            "sheets": _sheet_manifest(pages, output),
+            "sheetWidth": pages[0]["width"],
+            "sheetHeight": pages[0]["height"],
             "atlas": _relative(atlas_path, output),
             "icon": _relative(icon_path, output),
+            "pivot": _pivot_for("character"),
+            "alphaMode": "STRAIGHT_RGBA",
             "clips": regions,
             "triangles": triangle_count(equipment_objects),
             "armature": hero.armature.name,
@@ -366,7 +380,24 @@ def render_static_model(
         "frameClass": frame_class,
         "frameSize": FRAME_SIZE[frame_class],
         "sheet": _relative(target, output),
-        "clips": {"idle": [{"x": 0, "y": 0, "width": FRAME_SIZE[frame_class], "height": FRAME_SIZE[frame_class], "index": 0}]},
+        "sheets": [{
+            "file": _relative(target, output),
+            "width": FRAME_SIZE[frame_class],
+            "height": FRAME_SIZE[frame_class],
+            "decodedBytes": FRAME_SIZE[frame_class] * FRAME_SIZE[frame_class] * 4,
+        }],
+        "sheetWidth": FRAME_SIZE[frame_class],
+        "sheetHeight": FRAME_SIZE[frame_class],
+        "pivot": _pivot_for(frame_class),
+        "alphaMode": "STRAIGHT_RGBA",
+        "clips": {"idle": [{
+            "page": 0,
+            "x": 0,
+            "y": 0,
+            "width": FRAME_SIZE[frame_class],
+            "height": FRAME_SIZE[frame_class],
+            "index": 0,
+        }]},
         "triangles": triangle_count(model.render_objects),
         **model.metadata,
     }
@@ -543,6 +574,9 @@ def main() -> None:
         "blenderVersion": BLENDER_VERSION,
         "styleGuide": "docs/VISUAL_STYLE_GUIDE.md",
         "frameRate": FRAME_RATE,
+        "maxAtlasPageSize": MAX_ATLAS_SIZE,
+        "decodedCatalogBudgetBytes": 335_544_320,
+        "decodedCombatResidencyBudgetBytes": 134_217_728,
         "palette": PALETTE,
         "requiredBones": list(REQUIRED_BONES),
         "generatedBatch": args.batch,
@@ -554,30 +588,55 @@ def main() -> None:
 
 def _write_libgdx_atlas(
     path: Path,
-    image_name: str,
-    width: int,
-    height: int,
+    pages: list[dict[str, object]],
     regions: dict[str, list[dict[str, int]]],
 ) -> None:
-    lines = [
-        image_name,
-        f"size: {width},{height}",
-        "format: RGBA8888",
-        "filter: Nearest,Nearest",
-        "repeat: none",
-    ]
-    for clip, frames in regions.items():
-        for frame in frames:
-            lines.extend([
-                f"{path.stem}_{clip}",
-                "  rotate: false",
-                f"  xy: {frame['x']}, {frame['y']}",
-                f"  size: {frame['width']}, {frame['height']}",
-                f"  orig: {frame['width']}, {frame['height']}",
-                "  offset: 0, 0",
-                f"  index: {frame['index']}",
-            ])
+    lines: list[str] = []
+    for page in pages:
+        if lines:
+            lines.append("")
+        lines.extend([
+            Path(page["path"]).name,
+            f"size: {page['width']},{page['height']}",
+            "format: RGBA8888",
+            "filter: Nearest,Nearest",
+            "repeat: none",
+        ])
+        for clip, frames in regions.items():
+            for frame in frames:
+                if frame["page"] != page["index"]:
+                    continue
+                lines.extend([
+                    f"{path.stem}_{clip}",
+                    "  rotate: false",
+                    f"  xy: {frame['x']}, {frame['y']}",
+                    f"  size: {frame['width']}, {frame['height']}",
+                    f"  orig: {frame['width']}, {frame['height']}",
+                    "  offset: 0, 0",
+                    f"  index: {frame['index']}",
+                ])
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _sheet_manifest(pages: list[dict[str, object]], output: Path) -> list[dict[str, object]]:
+    return [{
+        "file": _relative(Path(page["path"]), output),
+        "width": page["width"],
+        "height": page["height"],
+        "decodedBytes": page["decodedBytes"],
+    } for page in pages]
+
+
+def _pivot_for(frame_class: str) -> dict[str, object]:
+    values = {
+        "character": (0.5, 0.12),
+        "boss": (0.5, 0.12),
+        "tree": (0.5, 0.06),
+        "item": (0.5, 0.5),
+        "environment": (0.5, 0.5),
+    }
+    x, y = values[frame_class]
+    return {"x": x, "y": y, "units": "normalized-bottom-left"}
 
 
 def _read_existing_manifest(output: Path) -> list[dict]:

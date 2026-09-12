@@ -1,4 +1,5 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "armature": "ember_wyrm_armature",
   "atlas": "sprites/ember_wyrm.atlas",
   "boneAnimated": true,
@@ -35,57 +36,65 @@
       {
         "height": 256,
         "index": 0,
+        "page": 0,
+        "width": 256,
+        "x": 1536,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "page": 0,
+        "width": 256,
+        "x": 1792,
+        "y": 0
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "page": 0,
         "width": 256,
         "x": 0,
         "y": 256
       },
       {
         "height": 256,
-        "index": 1,
+        "index": 3,
+        "page": 0,
         "width": 256,
         "x": 256,
         "y": 256
       },
       {
         "height": 256,
-        "index": 2,
+        "index": 4,
+        "page": 0,
         "width": 256,
         "x": 512,
         "y": 256
       },
       {
         "height": 256,
-        "index": 3,
+        "index": 5,
+        "page": 0,
         "width": 256,
         "x": 768,
         "y": 256
       },
       {
         "height": 256,
-        "index": 4,
+        "index": 6,
+        "page": 0,
         "width": 256,
         "x": 1024,
         "y": 256
       },
       {
         "height": 256,
-        "index": 5,
+        "index": 7,
+        "page": 0,
         "width": 256,
         "x": 1280,
-        "y": 256
-      },
-      {
-        "height": 256,
-        "index": 6,
-        "width": 256,
-        "x": 1536,
-        "y": 256
-      },
-      {
-        "height": 256,
-        "index": 7,
-        "width": 256,
-        "x": 1792,
         "y": 256
       }
     ],
@@ -93,71 +102,81 @@
       {
         "height": 256,
         "index": 0,
+        "page": 0,
+        "width": 256,
+        "x": 512,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "page": 0,
+        "width": 256,
+        "x": 768,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "page": 0,
+        "width": 256,
+        "x": 1024,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 3,
+        "page": 0,
+        "width": 256,
+        "x": 1280,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 4,
+        "page": 0,
+        "width": 256,
+        "x": 1536,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 5,
+        "page": 0,
+        "width": 256,
+        "x": 1792,
+        "y": 512
+      },
+      {
+        "height": 256,
+        "index": 6,
+        "page": 0,
         "width": 256,
         "x": 0,
         "y": 768
       },
       {
         "height": 256,
-        "index": 1,
+        "index": 7,
+        "page": 0,
         "width": 256,
         "x": 256,
         "y": 768
       },
       {
         "height": 256,
-        "index": 2,
+        "index": 8,
+        "page": 0,
         "width": 256,
         "x": 512,
         "y": 768
       },
       {
         "height": 256,
-        "index": 3,
+        "index": 9,
+        "page": 0,
         "width": 256,
         "x": 768,
-        "y": 768
-      },
-      {
-        "height": 256,
-        "index": 4,
-        "width": 256,
-        "x": 1024,
-        "y": 768
-      },
-      {
-        "height": 256,
-        "index": 5,
-        "width": 256,
-        "x": 1280,
-        "y": 768
-      },
-      {
-        "height": 256,
-        "index": 6,
-        "width": 256,
-        "x": 1536,
-        "y": 768
-      },
-      {
-        "height": 256,
-        "index": 7,
-        "width": 256,
-        "x": 1792,
-        "y": 768
-      },
-      {
-        "height": 256,
-        "index": 8,
-        "width": 256,
-        "x": 2048,
-        "y": 768
-      },
-      {
-        "height": 256,
-        "index": 9,
-        "width": 256,
-        "x": 2304,
         "y": 768
       }
     ],
@@ -165,29 +184,33 @@
       {
         "height": 256,
         "index": 0,
+        "page": 0,
+        "width": 256,
+        "x": 1536,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 1,
+        "page": 0,
+        "width": 256,
+        "x": 1792,
+        "y": 256
+      },
+      {
+        "height": 256,
+        "index": 2,
+        "page": 0,
         "width": 256,
         "x": 0,
         "y": 512
       },
       {
         "height": 256,
-        "index": 1,
+        "index": 3,
+        "page": 0,
         "width": 256,
         "x": 256,
-        "y": 512
-      },
-      {
-        "height": 256,
-        "index": 2,
-        "width": 256,
-        "x": 512,
-        "y": 512
-      },
-      {
-        "height": 256,
-        "index": 3,
-        "width": 256,
-        "x": 768,
         "y": 512
       }
     ],
@@ -195,6 +218,7 @@
       {
         "height": 256,
         "index": 0,
+        "page": 0,
         "width": 256,
         "x": 0,
         "y": 0
@@ -202,6 +226,7 @@
       {
         "height": 256,
         "index": 1,
+        "page": 0,
         "width": 256,
         "x": 256,
         "y": 0
@@ -209,6 +234,7 @@
       {
         "height": 256,
         "index": 2,
+        "page": 0,
         "width": 256,
         "x": 512,
         "y": 0
@@ -216,6 +242,7 @@
       {
         "height": 256,
         "index": 3,
+        "page": 0,
         "width": 256,
         "x": 768,
         "y": 0
@@ -223,6 +250,7 @@
       {
         "height": 256,
         "index": 4,
+        "page": 0,
         "width": 256,
         "x": 1024,
         "y": 0
@@ -230,6 +258,7 @@
       {
         "height": 256,
         "index": 5,
+        "page": 0,
         "width": 256,
         "x": 1280,
         "y": 0
@@ -241,9 +270,22 @@
   "frameRate": 12,
   "frameSize": 256,
   "key": "ember_wyrm",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.12
+  },
   "sheet": "sprites/ember_wyrm.png",
   "sheetHeight": 1024,
-  "sheetWidth": 2560,
+  "sheetWidth": 2048,
+  "sheets": [
+    {
+      "decodedBytes": 8388608,
+      "file": "sprites/ember_wyrm.png",
+      "height": 1024,
+      "width": 2048
+    }
+  ],
   "silhouette": "winged_wyrm",
   "triangles": 308,
   "unique_attack": "flame_sweep"

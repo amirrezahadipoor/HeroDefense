@@ -1,9 +1,11 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "clips": {
     "idle": [
       {
         "height": 192,
         "index": 0,
+        "page": 0,
         "width": 192,
         "x": 0,
         "y": 0
@@ -14,7 +16,22 @@
   "frameClass": "environment",
   "frameSize": 192,
   "key": "ground_tile_2",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
   "sheet": "environment/ground_tile_2.png",
+  "sheetHeight": 192,
+  "sheetWidth": 192,
+  "sheets": [
+    {
+      "decodedBytes": 147456,
+      "file": "environment/ground_tile_2.png",
+      "height": 192,
+      "width": 192
+    }
+  ],
   "tileable": false,
   "triangles": 144,
   "variant": 2

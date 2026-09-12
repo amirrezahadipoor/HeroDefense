@@ -53,6 +53,9 @@ jobs:
           --batch "${{ inputs.batch }}"
           --output /tmp/hero-defense-rendered
 
+      - name: Validate frame, pivot, alpha, page, and decoded-memory contracts
+        run: python3 tools/visual/validate_generated_assets.py /tmp/hero-defense-rendered
+
       - name: Enforce generated-artifact size budget
         run: |
           size=$(du -sb /tmp/hero-defense-rendered | cut -f1)

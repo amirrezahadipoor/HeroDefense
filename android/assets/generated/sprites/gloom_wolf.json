@@ -1,4 +1,5 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "armature": "gloom_wolf_armature",
   "atlas": "sprites/gloom_wolf.atlas",
   "boneAnimated": true,
@@ -35,6 +36,7 @@
       {
         "height": 192,
         "index": 0,
+        "page": 0,
         "width": 192,
         "x": 0,
         "y": 192
@@ -42,6 +44,7 @@
       {
         "height": 192,
         "index": 1,
+        "page": 0,
         "width": 192,
         "x": 192,
         "y": 192
@@ -49,6 +52,7 @@
       {
         "height": 192,
         "index": 2,
+        "page": 0,
         "width": 192,
         "x": 384,
         "y": 192
@@ -56,6 +60,7 @@
       {
         "height": 192,
         "index": 3,
+        "page": 0,
         "width": 192,
         "x": 576,
         "y": 192
@@ -63,6 +68,7 @@
       {
         "height": 192,
         "index": 4,
+        "page": 0,
         "width": 192,
         "x": 768,
         "y": 192
@@ -70,6 +76,7 @@
       {
         "height": 192,
         "index": 5,
+        "page": 0,
         "width": 192,
         "x": 960,
         "y": 192
@@ -77,6 +84,7 @@
       {
         "height": 192,
         "index": 6,
+        "page": 0,
         "width": 192,
         "x": 1152,
         "y": 192
@@ -84,6 +92,7 @@
       {
         "height": 192,
         "index": 7,
+        "page": 0,
         "width": 192,
         "x": 1344,
         "y": 192
@@ -93,6 +102,7 @@
       {
         "height": 192,
         "index": 0,
+        "page": 0,
         "width": 192,
         "x": 0,
         "y": 576
@@ -100,6 +110,7 @@
       {
         "height": 192,
         "index": 1,
+        "page": 0,
         "width": 192,
         "x": 192,
         "y": 576
@@ -107,6 +118,7 @@
       {
         "height": 192,
         "index": 2,
+        "page": 0,
         "width": 192,
         "x": 384,
         "y": 576
@@ -114,6 +126,7 @@
       {
         "height": 192,
         "index": 3,
+        "page": 0,
         "width": 192,
         "x": 576,
         "y": 576
@@ -121,6 +134,7 @@
       {
         "height": 192,
         "index": 4,
+        "page": 0,
         "width": 192,
         "x": 768,
         "y": 576
@@ -128,6 +142,7 @@
       {
         "height": 192,
         "index": 5,
+        "page": 0,
         "width": 192,
         "x": 960,
         "y": 576
@@ -135,6 +150,7 @@
       {
         "height": 192,
         "index": 6,
+        "page": 0,
         "width": 192,
         "x": 1152,
         "y": 576
@@ -142,6 +158,7 @@
       {
         "height": 192,
         "index": 7,
+        "page": 0,
         "width": 192,
         "x": 1344,
         "y": 576
@@ -149,6 +166,7 @@
       {
         "height": 192,
         "index": 8,
+        "page": 0,
         "width": 192,
         "x": 1536,
         "y": 576
@@ -156,6 +174,7 @@
       {
         "height": 192,
         "index": 9,
+        "page": 0,
         "width": 192,
         "x": 1728,
         "y": 576
@@ -165,6 +184,7 @@
       {
         "height": 192,
         "index": 0,
+        "page": 0,
         "width": 192,
         "x": 0,
         "y": 384
@@ -172,6 +192,7 @@
       {
         "height": 192,
         "index": 1,
+        "page": 0,
         "width": 192,
         "x": 192,
         "y": 384
@@ -179,6 +200,7 @@
       {
         "height": 192,
         "index": 2,
+        "page": 0,
         "width": 192,
         "x": 384,
         "y": 384
@@ -186,6 +208,7 @@
       {
         "height": 192,
         "index": 3,
+        "page": 0,
         "width": 192,
         "x": 576,
         "y": 384
@@ -195,6 +218,7 @@
       {
         "height": 192,
         "index": 0,
+        "page": 0,
         "width": 192,
         "x": 0,
         "y": 0
@@ -202,6 +226,7 @@
       {
         "height": 192,
         "index": 1,
+        "page": 0,
         "width": 192,
         "x": 192,
         "y": 0
@@ -209,6 +234,7 @@
       {
         "height": 192,
         "index": 2,
+        "page": 0,
         "width": 192,
         "x": 384,
         "y": 0
@@ -216,6 +242,7 @@
       {
         "height": 192,
         "index": 3,
+        "page": 0,
         "width": 192,
         "x": 576,
         "y": 0
@@ -223,6 +250,7 @@
       {
         "height": 192,
         "index": 4,
+        "page": 0,
         "width": 192,
         "x": 768,
         "y": 0
@@ -230,6 +258,7 @@
       {
         "height": 192,
         "index": 5,
+        "page": 0,
         "width": 192,
         "x": 960,
         "y": 0
@@ -241,9 +270,22 @@
   "frameRate": 12,
   "frameSize": 192,
   "key": "gloom_wolf",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.12
+  },
   "sheet": "sprites/gloom_wolf.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,
+  "sheets": [
+    {
+      "decodedBytes": 5898240,
+      "file": "sprites/gloom_wolf.png",
+      "height": 768,
+      "width": 1920
+    }
+  ],
   "silhouette": "low_quadruped",
   "triangles": 588
 }

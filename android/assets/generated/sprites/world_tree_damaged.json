@@ -1,4 +1,5 @@
 {
+  "alphaMode": "STRAIGHT_RGBA",
   "armature": "world_tree_armature",
   "atlas": "sprites/world_tree_damaged.atlas",
   "boneAnimated": true,
@@ -14,6 +15,7 @@
       {
         "height": 256,
         "index": 0,
+        "page": 0,
         "width": 256,
         "x": 0,
         "y": 0
@@ -21,6 +23,7 @@
       {
         "height": 256,
         "index": 1,
+        "page": 0,
         "width": 256,
         "x": 256,
         "y": 0
@@ -28,6 +31,7 @@
       {
         "height": 256,
         "index": 2,
+        "page": 0,
         "width": 256,
         "x": 512,
         "y": 0
@@ -35,6 +39,7 @@
       {
         "height": 256,
         "index": 3,
+        "page": 0,
         "width": 256,
         "x": 768,
         "y": 0
@@ -42,6 +47,7 @@
       {
         "height": 256,
         "index": 4,
+        "page": 0,
         "width": 256,
         "x": 1024,
         "y": 0
@@ -49,6 +55,7 @@
       {
         "height": 256,
         "index": 5,
+        "page": 0,
         "width": 256,
         "x": 1280,
         "y": 0
@@ -59,8 +66,23 @@
   "frameClass": "tree",
   "frameSize": 256,
   "key": "world_tree_damaged",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.06
+  },
   "rigged": true,
   "sheet": "sprites/world_tree_damaged.png",
+  "sheetHeight": 256,
+  "sheetWidth": 1536,
+  "sheets": [
+    {
+      "decodedBytes": 1572864,
+      "file": "sprites/world_tree_damaged.png",
+      "height": 256,
+      "width": 1536
+    }
+  ],
   "state": "damaged",
   "triangles": 444
 }

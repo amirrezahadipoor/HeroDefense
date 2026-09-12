@@ -16,3 +16,14 @@ Render the required low-poly UI icon batch with:
 blender --background --factory-startup --python tools/blender/generate_assets.py -- \
   --batch ui --output android/assets/generated --isolate-frames
 ```
+
+Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.
+
+Validate any generated output before review:
+
+```sh
+python3 -m unittest discover -s tools/blender/tests -v
+python3 tools/visual/validate_generated_assets.py android/assets/generated
+```
+
+The validator has no third-party dependency. `tools/visual/repack_committed_assets.py` is only the reviewable Pillow-based migration utility used to rearrange already-rendered legacy sheets; normal asset generation remains Blender/bpy-only.

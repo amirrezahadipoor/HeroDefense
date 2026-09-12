@@ -1,5 +1,5 @@
 ancient_golem.png
-size: 2560,1024
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -47,154 +47,154 @@ ancient_golem_idle
   index: 5
 ancient_golem_attack
   rotate: false
-  xy: 0, 256
+  xy: 1536, 0
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 0
+ancient_golem_attack
+  rotate: false
+  xy: 1792, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 1
+ancient_golem_attack
+  rotate: false
+  xy: 0, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 2
 ancient_golem_attack
   rotate: false
   xy: 256, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 1
+  index: 3
 ancient_golem_attack
   rotate: false
   xy: 512, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 2
+  index: 4
 ancient_golem_attack
   rotate: false
   xy: 768, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 3
+  index: 5
 ancient_golem_attack
   rotate: false
   xy: 1024, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 4
+  index: 6
 ancient_golem_attack
   rotate: false
   xy: 1280, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 5
-ancient_golem_attack
+  index: 7
+ancient_golem_hit
   rotate: false
   xy: 1536, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 6
-ancient_golem_attack
+  index: 0
+ancient_golem_hit
   rotate: false
   xy: 1792, 256
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 7
+  index: 1
 ancient_golem_hit
   rotate: false
   xy: 0, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 0
+  index: 2
 ancient_golem_hit
   rotate: false
   xy: 256, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: 1
-ancient_golem_hit
-  rotate: false
-  xy: 512, 512
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: 2
-ancient_golem_hit
-  rotate: false
-  xy: 768, 512
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
   index: 3
 ancient_golem_death
   rotate: false
-  xy: 0, 768
+  xy: 512, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 0
 ancient_golem_death
   rotate: false
-  xy: 256, 768
+  xy: 768, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 1
 ancient_golem_death
   rotate: false
-  xy: 512, 768
+  xy: 1024, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 2
 ancient_golem_death
   rotate: false
-  xy: 768, 768
+  xy: 1280, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 3
 ancient_golem_death
   rotate: false
-  xy: 1024, 768
+  xy: 1536, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 4
 ancient_golem_death
   rotate: false
-  xy: 1280, 768
+  xy: 1792, 512
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 5
 ancient_golem_death
   rotate: false
-  xy: 1536, 768
+  xy: 0, 768
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 6
 ancient_golem_death
   rotate: false
-  xy: 1792, 768
+  xy: 256, 768
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 7
 ancient_golem_death
   rotate: false
-  xy: 2048, 768
+  xy: 512, 768
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: 8
 ancient_golem_death
   rotate: false
-  xy: 2304, 768
+  xy: 768, 768
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
