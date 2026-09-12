@@ -4,11 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
 /** Android-only libGDX game loop and top-level state coordinator. */
@@ -16,7 +19,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private HeroAnimationController heroAnimationController;
     private HeroAutoAttackSystem heroAutoAttackSystem;
+    private HeroSpriteRenderer heroSpriteRenderer;
+    private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
     private GameState gameState;
     private OrthographicCamera camera;
@@ -26,12 +32,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void create() {
         flow = new GameFlowController();
+        heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         camera = new OrthographicCamera();
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
         viewport.apply(true);
+        spriteBatch = new SpriteBatch();
+        heroSpriteRenderer = new HeroSpriteRenderer();
         installTouchInput();
     }
 
@@ -72,6 +81,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         saveNow();
+        if (heroSpriteRenderer != null) {
+            heroSpriteRenderer.close();
+        }
+        if (spriteBatch != null) {
+            spriteBatch.dispose();
+        }
     }
 
     private void saveNow() {
@@ -128,6 +143,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private void updatePlaying(float deltaSeconds) {
         float simulationDelta = deltaSeconds * gameState.simulationSpeed;
         gameState.anchorHeroAtArenaCenter();
+        heroAnimationController.update(gameState.hero, simulationDelta);
         heroAutoAttackSystem.update(gameState, simulationDelta);
         simulationSeconds += simulationDelta;
     }
@@ -144,5 +160,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         };
         Gdx.gl.glClearColor(tint * 0.5f, tint, tint * 0.72f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (flow.state() != GameScreenState.MENU) {
+            camera.update();
+            spriteBatch.setProjectionMatrix(camera.combined);
+            spriteBatch.begin();
+            heroSpriteRenderer.draw(
+                spriteBatch,
+                gameState.hero,
+                heroAnimationController.frameIndex(gameState.hero)
+            );
+            spriteBatch.end();
+        }
     }
 }

@@ -78,6 +78,7 @@ public final class HeroAutoAttackSystem {
     }
 
     private static void fire(GameState state, Hero hero, Enemy target) {
+        hero.beginAttackAnimation();
         Projectile projectile = new Projectile(
             state.allocateEntityId(), hero.id, target.id, hero.x, hero.y
         );

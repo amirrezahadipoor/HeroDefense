@@ -7,6 +7,8 @@ public final class Hero extends ArenaEntity {
     public HeroStats stats = new HeroStats();
     public float attackCooldownSeconds;
     public long currentTargetId = -1L;
+    public HeroAnimationState animationState = HeroAnimationState.IDLE;
+    public float animationStateSeconds;
     public boolean alive = true;
 
     public Hero() {
@@ -52,9 +54,37 @@ public final class Hero extends ArenaEntity {
         if (health == 0f) {
             alive = false;
             active = false;
+            beginDeathAnimation();
             return IncomingHitResult.KILLED;
         }
+        beginHitAnimation();
         return IncomingHitResult.DAMAGED;
+    }
+
+    public void beginIdleAnimation() {
+        if (alive) {
+            animationState = HeroAnimationState.IDLE;
+            animationStateSeconds = 0f;
+        }
+    }
+
+    public void beginAttackAnimation() {
+        if (alive && animationState != HeroAnimationState.HIT) {
+            animationState = HeroAnimationState.ATTACK;
+            animationStateSeconds = 0f;
+        }
+    }
+
+    public void beginHitAnimation() {
+        if (alive) {
+            animationState = HeroAnimationState.HIT;
+            animationStateSeconds = 0f;
+        }
+    }
+
+    public void beginDeathAnimation() {
+        animationState = HeroAnimationState.DEATH;
+        animationStateSeconds = 0f;
     }
 
     /** Repairs loaded stats and synchronizes derived HP without granting a heal. */
@@ -66,5 +96,13 @@ public final class Hero extends ArenaEntity {
         maxHealth = stats.maxHealth();
         health = Math.max(0f, Math.min(maxHealth, health));
         alive = health > 0f;
+        active = alive;
+        if (animationState == null) {
+            animationState = alive ? HeroAnimationState.IDLE : HeroAnimationState.DEATH;
+        }
+        if (!alive) {
+            animationState = HeroAnimationState.DEATH;
+        }
+        animationStateSeconds = Math.max(0f, animationStateSeconds);
     }
 }
