@@ -31,6 +31,7 @@ import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.PauseTouchController;
 import com.amirrezahadipoor.herodefense.input.PauseTouchLayout;
 import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
+import com.amirrezahadipoor.herodefense.input.SimulationSpeedTouchController;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
@@ -74,6 +75,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
+    private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
     private StatShopSystem statShopSystem;
     private SpriteBatch spriteBatch;
@@ -108,6 +110,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         itemDropSystem = new ItemDropSystem();
         pauseTouchController = new PauseTouchController();
         potionDropSystem = new PotionDropSystem();
+        simulationSpeedTouchController = new SimulationSpeedTouchController();
         statShopSystem = new StatShopSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
@@ -262,6 +265,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     && worldY >= 150f && worldY <= 310f) {
                     waveLifecycleSystem.startCurrentWave(gameState);
                     flow.transitionTo(GameScreenState.PLAYING);
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PLAYING
+                    && simulationSpeedTouchController.tap(gameState, worldX, worldY)) {
+                    saveNow();
                     return true;
                 }
                 if (flow.state() == GameScreenState.PLAYING
