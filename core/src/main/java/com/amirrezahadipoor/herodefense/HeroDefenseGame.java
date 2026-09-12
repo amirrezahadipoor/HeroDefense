@@ -30,6 +30,8 @@ import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
+import com.amirrezahadipoor.herodefense.input.GdxHapticFeedback;
+import com.amirrezahadipoor.herodefense.input.HapticFeedback;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
@@ -53,6 +55,7 @@ import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.polish.HitStopSystem;
 import com.amirrezahadipoor.herodefense.polish.ParticleSystem;
 import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
+import com.amirrezahadipoor.herodefense.polish.TouchFeedbackSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
@@ -64,6 +67,7 @@ import com.amirrezahadipoor.herodefense.render.ParticleRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.TouchFeedbackRenderer;
 import com.amirrezahadipoor.herodefense.render.UiIconRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
@@ -92,6 +96,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameOverOverlayRenderer gameOverOverlayRenderer;
     private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
+    private HapticFeedback hapticFeedback;
     private HitStopSystem hitStopSystem;
     private HudRenderer hudRenderer;
     private InventoryTouchController inventoryTouchController;
@@ -112,6 +117,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
     private StatShopSystem statShopSystem;
+    private TouchFeedbackRenderer touchFeedbackRenderer;
+    private TouchFeedbackSystem touchFeedbackSystem;
     private UiIconRenderer uiIconRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
@@ -144,6 +151,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
+        hapticFeedback = new GdxHapticFeedback();
         hitStopSystem = new HitStopSystem();
         killRewardSystem = new KillRewardSystem(heroProgressionSystem);
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
@@ -155,6 +163,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         settingsTouchController = new SettingsTouchController();
         simulationSpeedTouchController = new SimulationSpeedTouchController();
         statShopSystem = new StatShopSystem();
+        touchFeedbackSystem = new TouchFeedbackSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         settingsRepository = new LocalSettingsRepository(
             Gdx.app.getPreferences(LocalSettingsRepository.PREFERENCES_NAME)
@@ -180,6 +189,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
+        touchFeedbackRenderer = new TouchFeedbackRenderer();
         uiIconRenderer = new UiIconRenderer();
         installTouchInput();
     }
@@ -193,6 +203,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     public void render() {
         audioManager.update(settings);
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
+        touchFeedbackSystem.update(deltaSeconds);
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
@@ -273,6 +284,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (statShopOverlayRenderer != null) {
             statShopOverlayRenderer.close();
         }
+        if (touchFeedbackRenderer != null) {
+            touchFeedbackRenderer.close();
+        }
         if (uiIconRenderer != null) {
             uiIconRenderer.close();
         }
@@ -314,6 +328,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (!isTap) {
                     return true;
                 }
+                boolean cardChoiceTap = flow.state() == GameScreenState.CARD_CHOICE;
+                if (!cardChoiceTap) {
+                    touchFeedbackSystem.triggerTap(worldX, worldY);
+                    hapticFeedback.tap();
+                }
                 if (flow.state() == GameScreenState.SETTINGS) {
                     SettingsTouchLayout.Action action = settingsTouchController.tap(
                         settings, worldX, worldY
@@ -331,6 +350,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 }
                 if (flow.state() == GameScreenState.CARD_CHOICE) {
                     if (rewardCardTouchController.tap(gameState, worldX, worldY)) {
+                        touchFeedbackSystem.triggerCardSelection(worldX, worldY);
+                        hapticFeedback.cardSelection();
                         WaveCompletion result = waveLifecycleSystem.continueAfterBossReward(gameState);
                         flow.transitionTo(
                             result == WaveCompletion.RUN_COMPLETED
@@ -338,6 +359,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                                 : GameScreenState.PLAYING
                         );
                         saveNow();
+                    } else {
+                        touchFeedbackSystem.triggerTap(worldX, worldY);
+                        hapticFeedback.tap();
                     }
                     return true;
                 }
@@ -619,5 +643,6 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 );
             }
         }
+        touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);
     }
 }
