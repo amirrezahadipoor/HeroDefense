@@ -78,7 +78,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 4 — Enemies & Continuous Waves
 
-- [ ] Implement several regular enemy types, all melee.
+- [x] Implement several regular enemy types, all melee.
 - [ ] Spawn enemies from three directions and have them converge on the Hero.
 - [ ] While the Hero lives, enemies attack the Hero; when the Hero dies, destroy the World Tree and enter Game Over.
 - [ ] Advance seamlessly through waves 1–100 without loading screens.

@@ -22,6 +22,14 @@ public class Enemy extends ArenaEntity {
         this.enemyType = enemyType;
     }
 
+    public EnemyType type() {
+        try {
+            return EnemyType.valueOf(enemyType);
+        } catch (IllegalArgumentException | NullPointerException ignored) {
+            return EnemyType.ROOTLING;
+        }
+    }
+
     public void receiveDamage(float amount) {
         if (!alive || amount <= 0f) {
             return;
