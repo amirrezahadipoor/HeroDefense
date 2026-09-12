@@ -32,7 +32,7 @@ A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at
 - [x] Configure Gradle so wrapper/dependency downloads happen in `/tmp` or a cache outside the committed folder.
 - [x] Write a precise `.gitignore`: no build output, APKs, Gradle caches, SDK files, or Blender install files enter Git.
 - [x] Store the GitHub token as a GitHub Actions secret (`RELEASE_GITHUB_TOKEN`); never hardcode it in source.
-- [ ] Add `.github/workflows/build-android.yml`: build on every push, run in a headless Android emulator with simulated touch, and upload the APK artifact. Final signing can come later.
+- [x] Add `.github/workflows/build-android.yml`: build on every push, run in a headless Android emulator with simulated touch, and upload the APK artifact. Final signing can come later.
 - [ ] Add an optional workflow that runs `core` unit tests on every push.
 - [ ] Add this `ROADMAP.md` at the repository root.
 - [ ] Verify and push the initial project skeleton and workflows.
