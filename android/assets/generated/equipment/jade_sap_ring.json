@@ -30,6 +30,11 @@
     "upper_arm.R",
     "weapon_socket"
   ],
+  "categoryReview": {
+    "category": "equipment",
+    "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +275,16 @@
   "icon": "icons/equipment_jade_sap_ring.png",
   "itemId": "jade_sap_ring",
   "key": "equipment_jade_sap_ring",
+  "modelRevision": "equipment-premium-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 8,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+  "rigProfile": "hero-socket-v2",
   "runtimeGlow": false,
   "sheet": "equipment/jade_sap_ring.png",
   "sheetHeight": 768,
@@ -289,6 +299,8 @@
   ],
   "slot": "RING_1",
   "tier": "UNCOMMON",
-  "triangles": 96,
+  "triangles": 136,
+  "visualKind": "ring1",
+  "visualQuality": "premium-v2",
   "visualSlot": "ring1"
 }

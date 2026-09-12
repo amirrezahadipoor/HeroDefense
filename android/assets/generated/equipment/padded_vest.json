@@ -30,6 +30,11 @@
     "upper_arm.R",
     "weapon_socket"
   ],
+  "categoryReview": {
+    "category": "equipment",
+    "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +275,16 @@
   "icon": "icons/equipment_padded_vest.png",
   "itemId": "padded_vest",
   "key": "equipment_padded_vest",
+  "modelRevision": "equipment-premium-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 8,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+  "rigProfile": "hero-socket-v2",
   "runtimeGlow": false,
   "sheet": "equipment/padded_vest.png",
   "sheetHeight": 768,
@@ -289,6 +299,8 @@
   ],
   "slot": "ARMOR",
   "tier": "COMMON",
-  "triangles": 44,
+  "triangles": 168,
+  "visualKind": "armor",
+  "visualQuality": "premium-v2",
   "visualSlot": "armor"
 }

@@ -48,6 +48,22 @@ python3 tools/visual/record_category_review.py \
   android/assets/generated docs/art_reviews/HERO_PREMIUM_V2_REVIEW.md hero hero
 ```
 
+For the complete equipment category, render all 40 entries into a disposable candidate,
+audit every overlay against all 28 finalized Hero frames, and inspect the four icon plus
+five equipped-motion sheets. The promotion command refuses any unreviewed, clipped,
+detached, extra, missing, or hash-mismatched payload:
+
+```sh
+python3 tools/visual/create_equipment_batch_review.py \
+  /tmp/hero-defense-equipment-baseline \
+  /tmp/hero-defense-equipment-candidate \
+  android/assets/generated \
+  tools/blender/equipment_visuals.json \
+  docs/art_reviews/equipment_premium_v2
+python3 tools/visual/promote_equipment_batch.py \
+  /tmp/hero-defense-equipment-candidate android/assets/generated
+```
+
 Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.

@@ -30,6 +30,11 @@
     "upper_arm.R",
     "weapon_socket"
   ],
+  "categoryReview": {
+    "category": "equipment",
+    "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,6 +275,8 @@
   "icon": "icons/equipment_heartwood_aegis.png",
   "itemId": "heartwood_aegis",
   "key": "equipment_heartwood_aegis",
+  "modelRevision": "equipment-premium-v2",
+  "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
@@ -277,7 +284,8 @@
   },
   "renderSamples": 8,
   "renderSupersample": 2,
-  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+  "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+  "rigProfile": "hero-socket-v2",
   "runtimeGlow": true,
   "sheet": "equipment/heartwood_aegis.png",
   "sheetHeight": 768,

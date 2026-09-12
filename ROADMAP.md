@@ -227,7 +227,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 ### 16.4 Premium Character and World Batches
 
 - [x] Upgrade and review the complete Hero model, 25-bone rig deformation, Idle/Attack/Hit/Death animation, silhouette, materials, and native-size sprite output; final acceptance is recorded in `docs/art_reviews/HERO_PREMIUM_V2_REVIEW.md`.
-- [ ] Upgrade and review all 40 equipment attachment animation atlases while preserving socket alignment with every Hero frame.
+- [x] Upgrade and review all 40 equipment attachment animation atlases while preserving socket alignment with every Hero frame; the accepted 1,120-frame audit and review sheets are recorded in `docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md`.
 - [ ] Upgrade and review all four regular enemy models, rigs, animations, materials, silhouettes, and atlases.
 - [ ] Upgrade and review all four Boss models, rigs, signature animations, materials, silhouettes, and atlases.
 - [ ] Upgrade and review the healthy/damaged World Tree art and destruction presentation.

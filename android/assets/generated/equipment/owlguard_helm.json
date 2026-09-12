@@ -30,6 +30,11 @@
     "upper_arm.R",
     "weapon_socket"
   ],
+  "categoryReview": {
+    "category": "equipment",
+    "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +275,16 @@
   "icon": "icons/equipment_owlguard_helm.png",
   "itemId": "owlguard_helm",
   "key": "equipment_owlguard_helm",
+  "modelRevision": "equipment-premium-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 8,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+  "rigProfile": "hero-socket-v2",
   "runtimeGlow": true,
   "sheet": "equipment/owlguard_helm.png",
   "sheetHeight": 768,
@@ -289,6 +299,8 @@
   ],
   "slot": "HELMET",
   "tier": "RARE",
-  "triangles": 20,
+  "triangles": 360,
+  "visualKind": "helmet",
+  "visualQuality": "premium-v2",
   "visualSlot": "helmet"
 }

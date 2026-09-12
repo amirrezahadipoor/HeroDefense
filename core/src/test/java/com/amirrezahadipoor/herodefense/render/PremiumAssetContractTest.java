@@ -3,16 +3,22 @@ package com.amirrezahadipoor.herodefense.render;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
+import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +32,12 @@ final class PremiumAssetContractTest {
     private static final Path MANIFEST = GENERATED.resolve("asset_manifest.json");
     private static final String PILOT_REVIEW = "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md";
     private static final String HERO_REVIEW = "docs/art_reviews/HERO_PREMIUM_V2_REVIEW.md";
+    private static final String EQUIPMENT_REVIEW =
+        "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md";
+    private static final Path EQUIPMENT_REVIEW_DIRECTORY =
+        REPOSITORY.resolve("docs/art_reviews/equipment_premium_v2");
+    private static final Path EQUIPMENT_AUDIT =
+        EQUIPMENT_REVIEW_DIRECTORY.resolve("equipment_alignment_audit.json");
     private static final Set<String> EXPECTED_PREMIUM_PILOT = Set.of(
         "hero",
         "rootling",
@@ -51,20 +63,24 @@ final class PremiumAssetContractTest {
     void committedPilotHasReviewedPremiumProvenance() throws IOException {
         JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
         assertEquals(3, manifest.getInt("pipelineVersion"));
-        assertEquals("premium-pilot", manifest.getString("generatedBatch"));
         assertTrue(Files.isRegularFile(REPOSITORY.resolve(PILOT_REVIEW)));
 
-        Set<String> premiumKeys = new HashSet<>();
-        for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
-            if (!"premium-v2".equals(asset.getString("visualQuality", ""))) continue;
-            String key = asset.getString("key");
-            premiumKeys.add(key);
+        Map<String, JsonValue> byKey = assetsByKey(manifest);
+        for (String key : EXPECTED_PREMIUM_PILOT) {
+            JsonValue asset = byKey.get(key);
+            assertTrue(asset != null, "missing premium pilot asset " + key);
+            assertEquals("premium-v2", asset.getString("visualQuality"), key);
             assertEquals(2, asset.getInt("renderSupersample"), key);
             int expectedSamples = "equipment".equals(asset.getString("family")) ? 8 : 16;
             assertEquals(expectedSamples, asset.getInt("renderSamples"), key);
-            assertEquals(PILOT_REVIEW, asset.getString("reviewDocument"), key);
+            if ("equipment".equals(asset.getString("family"))) {
+                assertEquals(PILOT_REVIEW, asset.getString(
+                    "pilotReviewDocument", asset.getString("reviewDocument", "")
+                ), key);
+            } else {
+                assertEquals(PILOT_REVIEW, asset.getString("reviewDocument"), key);
+            }
         }
-        assertEquals(EXPECTED_PREMIUM_PILOT, premiumKeys);
     }
 
     @Test
@@ -99,6 +115,140 @@ final class PremiumAssetContractTest {
         assertEquals("accepted", review.getString("status"));
         assertEquals(HERO_REVIEW, review.getString("document"));
         assertTrue(Files.isRegularFile(REPOSITORY.resolve(HERO_REVIEW)));
+    }
+
+    @Test
+    void allRuntimeEquipmentHasReviewedPremiumSocketAtlases() throws IOException {
+        JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
+        assertEquals("equipment", manifest.getString("generatedBatch"));
+        assertTrue(Files.isRegularFile(REPOSITORY.resolve(EQUIPMENT_REVIEW)));
+        assertTrue(Files.isRegularFile(EQUIPMENT_AUDIT));
+
+        JsonValue audit = new JsonReader().parse(Files.readString(EQUIPMENT_AUDIT));
+        assertEquals("premium-v2-equipment", audit.getString("contract"));
+        JsonValue summary = audit.get("summary");
+        assertEquals(40, summary.getInt("assets"));
+        assertEquals(1_120, summary.getInt("frames"));
+        assertEquals(0, summary.getInt("boundaryFrames"));
+        assertEquals(0, summary.getInt("detachedFrames"));
+        assertEquals(237_404_160L, summary.getLong("decodedBytes"));
+        assertTrue(summary.getInt("maxTriangles") <= 900);
+        assertPositiveMargins("equipment batch frames", summary.get("minimumFrameMargins"));
+        assertPositiveMargins("equipment batch icons", summary.get("minimumIconMargins"));
+        assertTrue(summary.getFloat("minimumNearHeroPixels") > 0f);
+        assertEquals(14, summary.get("tierCounts").getInt("COMMON"));
+        assertEquals(12, summary.get("tierCounts").getInt("UNCOMMON"));
+        assertEquals(9, summary.get("tierCounts").getInt("RARE"));
+        assertEquals(5, summary.get("tierCounts").getInt("LEGENDARY"));
+        assertEquals(8, summary.get("visualSlotCounts").getInt("weapon"));
+        assertEquals(6, summary.get("visualSlotCounts").getInt("helmet"));
+        assertEquals(7, summary.get("visualSlotCounts").getInt("armor"));
+        assertEquals(6, summary.get("visualSlotCounts").getInt("boots"));
+        assertEquals(7, summary.get("visualSlotCounts").getInt("ring1"));
+        assertEquals(6, summary.get("visualSlotCounts").getInt("ring2"));
+
+        JsonValue reviewSheets = audit.get("reviewSheets");
+        assertEquals(9, reviewSheets.size);
+        for (JsonValue sheet = reviewSheets.child; sheet != null; sheet = sheet.next) {
+            Path path = EQUIPMENT_REVIEW_DIRECTORY.resolve(sheet.name).normalize();
+            assertTrue(path.startsWith(EQUIPMENT_REVIEW_DIRECTORY));
+            assertTrue(Files.isRegularFile(path), "missing review sheet " + sheet.name);
+            assertEquals(sheet.asString(), sha256(path), sheet.name);
+        }
+
+        Map<String, JsonValue> byKey = assetsByKey(manifest);
+        JsonValue hero = byKey.get("hero");
+        JsonValue heroContract = audit.get("heroContract");
+        assertEquals("hero", heroContract.getString("key"));
+        assertEquals(hero.getString("modelRevision"), heroContract.getString("modelRevision"));
+        assertEquals(hero.getString("rigProfile"), heroContract.getString("rigProfile"));
+        assertEquals(hero.getInt("frameSize"), heroContract.getInt("frameSize"));
+        assertEquals(
+            sha256(resolveInsideGenerated(hero.getString("sheet"))),
+            heroContract.getString("sheetSha256")
+        );
+
+        Map<String, JsonValue> auditedById = new HashMap<>();
+        for (JsonValue asset = audit.get("assets").child; asset != null; asset = asset.next) {
+            assertTrue(auditedById.put(asset.getString("id"), asset) == null,
+                "duplicate audited equipment " + asset.getString("id"));
+        }
+        assertEquals(40, auditedById.size());
+
+        Set<String> expectedKeys = new HashSet<>();
+        Set<String> actualKeys = new HashSet<>();
+        for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
+            if ("equipment".equals(asset.getString("family"))) {
+                actualKeys.add(asset.getString("key"));
+            }
+        }
+
+        Set<String> requiredBones = jsonStringSet(manifest.get("requiredBones"));
+        for (EquipmentDefinition definition : EquipmentCatalog.all()) {
+            String id = definition.id();
+            String key = "equipment_" + id;
+            expectedKeys.add(key);
+            JsonValue asset = byKey.get(key);
+            assertTrue(asset != null, "missing equipment asset " + key);
+            assertEquals(id, asset.getString("itemId"), key);
+            assertEquals(definition.slot().name(), asset.getString("slot"), key);
+            assertEquals(definition.tier().name(), asset.getString("tier"), key);
+            assertEquals(expectedVisualSlot(definition), asset.getString("visualSlot"), key);
+            assertEquals("premium-v2", asset.getString("visualQuality"), key);
+            assertEquals("equipment-premium-v2", asset.getString("modelRevision"), key);
+            assertEquals("hero-socket-v2", asset.getString("rigProfile"), key);
+            assertEquals(2, asset.getInt("renderSupersample"), key);
+            assertEquals(8, asset.getInt("renderSamples"), key);
+            assertEquals(192, asset.getInt("frameSize"), key);
+            assertEquals(1_920, asset.getInt("sheetWidth"), key);
+            assertEquals(768, asset.getInt("sheetHeight"), key);
+            assertTrue(asset.getBoolean("boneAnimated"), key);
+            assertEquals(requiredBones, jsonStringSet(asset.get("bones")), key);
+            boolean expectedGlow = definition.tier() == ItemTier.RARE
+                || definition.tier() == ItemTier.LEGENDARY;
+            assertEquals(expectedGlow, asset.getBoolean("runtimeGlow"), key);
+            assertTrue(asset.getInt("triangles") > 0 && asset.getInt("triangles") <= 900, key);
+
+            JsonValue categoryReview = asset.get("categoryReview");
+            assertEquals("equipment", categoryReview.getString("category"), key);
+            assertEquals("accepted", categoryReview.getString("status"), key);
+            assertEquals(EQUIPMENT_REVIEW, categoryReview.getString("document"), key);
+            assertEquals(EQUIPMENT_REVIEW, asset.getString("reviewDocument"), key);
+            if (EXPECTED_PREMIUM_PILOT.contains(key)) {
+                assertEquals(PILOT_REVIEW, asset.getString("pilotReviewDocument"), key);
+            }
+
+            Path metadataPath = GENERATED.resolve("equipment/" + id + ".json");
+            JsonValue metadata = new JsonReader().parse(Files.readString(metadataPath));
+            assertEquals(key, metadata.getString("key"), key);
+            assertEquals(EQUIPMENT_REVIEW, metadata.getString("reviewDocument"), key);
+            assertEquals("accepted", metadata.get("categoryReview").getString("status"), key);
+
+            JsonValue recorded = auditedById.get(id);
+            assertTrue(recorded != null, "missing audited equipment " + id);
+            assertEquals(key, recorded.getString("key"), key);
+            assertEquals(28, recorded.getInt("frameCount"), key);
+            assertEquals(asset.getInt("triangles"), recorded.getInt("triangles"), key);
+            assertPositiveMargins(key + " frames", recorded.get("minimumFrameMargins"));
+            assertPositiveMargins(key + " icon", recorded.get("iconMargins"));
+            assertTrue(recorded.getFloat("minimumNearHeroPixels") > 0f, key);
+            JsonValue unique = recorded.get("uniqueFrames");
+            assertEquals("boots".equals(asset.getString("visualSlot")) ? 1 : 5,
+                unique.getInt("idle"), key);
+            assertEquals(7, unique.getInt("attack"), key);
+            assertEquals(3, unique.getInt("hit"), key);
+            assertEquals(9, unique.getInt("death"), key);
+            assertEquals(sha256(resolveInsideGenerated(asset.getString("sheet"))),
+                recorded.getString("sheetSha256"), key);
+            assertEquals(sha256(resolveInsideGenerated(asset.getString("icon"))),
+                recorded.getString("iconSha256"), key);
+            assertEquals(sha256(resolveInsideGenerated(asset.getString("atlas"))),
+                recorded.getString("atlasSha256"), key);
+        }
+        assertEquals(40, expectedKeys.size());
+        assertEquals(expectedKeys, actualKeys);
+        assertEquals(expectedKeys.stream().map(key -> key.substring("equipment_".length()))
+            .collect(java.util.stream.Collectors.toSet()), auditedById.keySet());
     }
 
     @Test
@@ -196,6 +346,42 @@ final class PremiumAssetContractTest {
         long peakBytes = decodedBytes(new ArrayList<>(peakResidency), imageInfo);
         assertTrue(peakBytes <= residencyBudget,
             "conservative combat residency " + peakBytes + " exceeds " + residencyBudget);
+    }
+
+    private static Map<String, JsonValue> assetsByKey(JsonValue manifest) {
+        Map<String, JsonValue> result = new HashMap<>();
+        for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
+            String key = asset.getString("key");
+            assertTrue(result.put(key, asset) == null, "duplicate generated asset " + key);
+        }
+        return result;
+    }
+
+    private static String expectedVisualSlot(EquipmentDefinition definition) {
+        return switch (definition.slot()) {
+            case WEAPON -> "weapon";
+            case HELMET -> "helmet";
+            case ARMOR -> "armor";
+            case BOOTS -> "boots";
+            case RING_1 -> "ring1";
+            case RING_2 -> "ring2";
+        };
+    }
+
+    private static void assertPositiveMargins(String label, JsonValue margins) {
+        assertTrue(margins != null, label + " missing margins");
+        for (String edge : List.of("left", "top", "right", "bottom")) {
+            assertTrue(margins.getInt(edge) > 0, label + " touches " + edge + " boundary");
+        }
+    }
+
+    private static String sha256(Path path) throws IOException {
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path));
+            return HexFormat.of().formatHex(digest);
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IllegalStateException("SHA-256 is unavailable", exception);
+        }
     }
 
     private static void assertFrames(

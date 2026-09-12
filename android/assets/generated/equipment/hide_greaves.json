@@ -30,6 +30,11 @@
     "upper_arm.R",
     "weapon_socket"
   ],
+  "categoryReview": {
+    "category": "equipment",
+    "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +275,16 @@
   "icon": "icons/equipment_hide_greaves.png",
   "itemId": "hide_greaves",
   "key": "equipment_hide_greaves",
+  "modelRevision": "equipment-premium-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 8,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+  "rigProfile": "hero-socket-v2",
   "runtimeGlow": false,
   "sheet": "equipment/hide_greaves.png",
   "sheetHeight": 768,
@@ -289,6 +299,8 @@
   ],
   "slot": "BOOTS",
   "tier": "COMMON",
-  "triangles": 88,
+  "triangles": 248,
+  "visualKind": "boots",
+  "visualQuality": "premium-v2",
   "visualSlot": "boots"
 }

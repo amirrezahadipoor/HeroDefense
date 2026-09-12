@@ -1,0 +1,1341 @@
+{
+  "assets": [
+    {
+      "atlasSha256": "85e9ea31989d558ad5beefb8fcb0f85ff02743ed42f7650a2a699562a78a9d4c",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 32,
+        "right": 32,
+        "top": 8
+      },
+      "iconSha256": "840972693d0c7c930d602990e82f7c6c48d1637296c820527ea542ab7185d67e",
+      "id": "ashwood_bow",
+      "key": "equipment_ashwood_bow",
+      "metadataSha256": "3f497941efddfe6c4f1f37435fb67b6c2739ff4f464a5cd5138a10c0535c5357",
+      "minimumFrameMargins": {
+        "bottom": 30,
+        "left": 48,
+        "right": 14,
+        "top": 19
+      },
+      "minimumNearHeroPixels": 268.82,
+      "sheetSha256": "f7d6049f1489f7f087491e7545243b530f54c13a411012e0842160c2f843b1e4",
+      "slot": "WEAPON",
+      "tier": "COMMON",
+      "triangles": 176,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "b9a5dd856641cbb456ea2c52f3f5e165371fd0708e968b706e4f578c0a190302",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 34,
+        "right": 34,
+        "top": 8
+      },
+      "iconSha256": "627cfe694d5b56974b7b08046b7d36697f3b878990b7b976e338c9f4869eee79",
+      "id": "militia_sabre",
+      "key": "equipment_militia_sabre",
+      "metadataSha256": "d513a96637457e876a579d66450603c177c3011d8ebbc5ea2aab2814fbe6356d",
+      "minimumFrameMargins": {
+        "bottom": 27,
+        "left": 44,
+        "right": 20,
+        "top": 21
+      },
+      "minimumNearHeroPixels": 331.13,
+      "sheetSha256": "8060ce2e9d77a4931a50edbc5487db5b2716c373aebecfa8acc2e6c87d905f00",
+      "slot": "WEAPON",
+      "tier": "COMMON",
+      "triangles": 112,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "ae8bae9961d2cf5c050b8994107b15cb43d8913627eb837c04a51b558b9f8dbc",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 37,
+        "right": 38,
+        "top": 8
+      },
+      "iconSha256": "ba83870417d085d0211480a55ba450e63cf935b199f6bd0cd9083cdaee4d99ab",
+      "id": "thorn_spear",
+      "key": "equipment_thorn_spear",
+      "metadataSha256": "726502872430738d027e50da800b2ad1ba17ccc6737f3242ba3448e6994c7238",
+      "minimumFrameMargins": {
+        "bottom": 24,
+        "left": 41,
+        "right": 12,
+        "top": 7
+      },
+      "minimumNearHeroPixels": 247.09,
+      "sheetSha256": "e1a41284d3b7bceb39447721c8aa26aa8b45ea32b74218c27a5959f26525f5d9",
+      "slot": "WEAPON",
+      "tier": "COMMON",
+      "triangles": 160,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "da777e3087664f25c25c3c6c210db3d50341a8124273c6471d5071eee978f0ac",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 11,
+        "left": 8,
+        "right": 8,
+        "top": 11
+      },
+      "iconSha256": "b343e5f5e7f47fdc5b3470356dafa18b5d4a6a08dc54564dbe1afb23f8c489a9",
+      "id": "leather_cap",
+      "key": "equipment_leather_cap",
+      "metadataSha256": "0c01a4dd744dfa74b8a54e3c7c839b0dc60fce4f5de59f6f63fcb57756e410d5",
+      "minimumFrameMargins": {
+        "bottom": 89,
+        "left": 35,
+        "right": 41,
+        "top": 25
+      },
+      "minimumNearHeroPixels": 1612.56,
+      "sheetSha256": "c677c66b3c11df7ab8ce1482e3f664208c60eeebaa84fbb0ee2a2413a7e7e853",
+      "slot": "HELMET",
+      "tier": "COMMON",
+      "triangles": 120,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "helmet"
+    },
+    {
+      "atlasSha256": "9032ef33411bfb37e1d3909db5ac8659b68edc07ad526b78905a3fbbadbd57f5",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 9
+      },
+      "iconSha256": "7c149a720d962f6ef6fcf1c5d61c0956f523b1714dfc0fa1450d2a2a6a2d99fd",
+      "id": "scout_hood",
+      "key": "equipment_scout_hood",
+      "metadataSha256": "beb0826d847ec4d95bee4f429fc10999f2a9f49064b61e532d859c911737fc75",
+      "minimumFrameMargins": {
+        "bottom": 88,
+        "left": 38,
+        "right": 41,
+        "top": 18
+      },
+      "minimumNearHeroPixels": 2038.75,
+      "sheetSha256": "43dba04771f9285df07bfccc1da8d9e92ef8615bbc3b2f3ba508ee1ec19e31ee",
+      "slot": "HELMET",
+      "tier": "COMMON",
+      "triangles": 240,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "helmet"
+    },
+    {
+      "atlasSha256": "322bda53a32c72a4c53fbfaec6b754225fd751c6b489d648ef7b72415d650557",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 18,
+        "right": 18,
+        "top": 8
+      },
+      "iconSha256": "547a95087419d22025e536043bfb95209ed9cd55a48ead067d8d5906358f8df0",
+      "id": "padded_vest",
+      "key": "equipment_padded_vest",
+      "metadataSha256": "0f6f4fcce0168311c694b1ddc3faa4b2d118e03eeb183702d6634c30d5d504d3",
+      "minimumFrameMargins": {
+        "bottom": 62,
+        "left": 48,
+        "right": 53,
+        "top": 62
+      },
+      "minimumNearHeroPixels": 1040.57,
+      "sheetSha256": "6a89ec34d10db28e8afd51e31bfa39c923111da481ab91f15340256975d6284d",
+      "slot": "ARMOR",
+      "tier": "COMMON",
+      "triangles": 168,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "13a703fd42ca32cbc42b8c1823050506bad96fe8c51ee3487f904d956c9fa702",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 22,
+        "right": 22,
+        "top": 8
+      },
+      "iconSha256": "15fbb1c3f31929dab0ad47bc9d81b2c57e2b035ec241e86bdd4950eff5794068",
+      "id": "bark_tunic",
+      "key": "equipment_bark_tunic",
+      "metadataSha256": "f84abdb9d235d46d5c3347c6909780986fa4af6d71990fe1256a71dc6bea9651",
+      "minimumFrameMargins": {
+        "bottom": 56,
+        "left": 40,
+        "right": 46,
+        "top": 43
+      },
+      "minimumNearHeroPixels": 1355.28,
+      "sheetSha256": "d0cf14d08ed8eef22c696260589d39ac64d45e585033ba64ab77fe4fd6f6a943",
+      "slot": "ARMOR",
+      "tier": "COMMON",
+      "triangles": 176,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "2d153b0f51a0a4e7bae762f504d78d5b6c66d7b455bd18146196965e0968d87b",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 16,
+        "left": 8,
+        "right": 8,
+        "top": 17
+      },
+      "iconSha256": "630e4ef2060ee5e66fbdecc654d332587e0a36195a862f30dfd2da2367ef32a0",
+      "id": "trail_boots",
+      "key": "equipment_trail_boots",
+      "metadataSha256": "8e230d48ab822fd53ea98d41e8719eaa3fb0fe4c474cfc87ac490301c2a0f7ba",
+      "minimumFrameMargins": {
+        "bottom": 15,
+        "left": 61,
+        "right": 47,
+        "top": 118
+      },
+      "minimumNearHeroPixels": 1627.95,
+      "sheetSha256": "5712a681f6e96078e2f974fcdafd0d3f3141ef8c1575b04356a44d12eb9ed14f",
+      "slot": "BOOTS",
+      "tier": "COMMON",
+      "triangles": 368,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 1
+      },
+      "visualSlot": "boots"
+    },
+    {
+      "atlasSha256": "99ab532cba402304584e4d380adea2c2679a8babd057872f0c4fef4e8b3f179f",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 14,
+        "left": 8,
+        "right": 8,
+        "top": 14
+      },
+      "iconSha256": "6f99297dfe60e61e678d5d76d6e101359b05b8a82dea650913f7d0a7b3ebc1dd",
+      "id": "hide_greaves",
+      "key": "equipment_hide_greaves",
+      "metadataSha256": "da445b238202e07f2e10a6c27201461306aa94000a24184283b9041489723cf6",
+      "minimumFrameMargins": {
+        "bottom": 16,
+        "left": 65,
+        "right": 51,
+        "top": 117
+      },
+      "minimumNearHeroPixels": 1525.18,
+      "sheetSha256": "6ca88daf790ab560909cad5d492b05d88123fd17d0b90db4e39e89e0493790cd",
+      "slot": "BOOTS",
+      "tier": "COMMON",
+      "triangles": 248,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 1
+      },
+      "visualSlot": "boots"
+    },
+    {
+      "atlasSha256": "a382627e0505c217c0b5de4f14cd2188679262842efe332d0cbc6fcdea25308e",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 13,
+        "right": 14,
+        "top": 8
+      },
+      "iconSha256": "f40612bb11528eb2b43648fa9a84bdb1dc60fc4415f80955d76798ac6a099313",
+      "id": "copper_leaf_ring",
+      "key": "equipment_copper_leaf_ring",
+      "metadataSha256": "9f9194b4e4f513047284bd9ca403ad84510f1ffd035cc01a40c3c0d557fbbb69",
+      "minimumFrameMargins": {
+        "bottom": 79,
+        "left": 18,
+        "right": 92,
+        "top": 36
+      },
+      "minimumNearHeroPixels": 199.76,
+      "sheetSha256": "eb2a79dfa80c1ca00e75663e790d6a6d9deb4248927f654be633dcd83f0c2e55",
+      "slot": "RING_1",
+      "tier": "COMMON",
+      "triangles": 116,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "b6857538a4d5ad70f0ad681a74dc3fb21be4c1254a8eeffb8b63553a8c18859b",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8
+      },
+      "iconSha256": "3cf096c43ff7804fbe806efd5285e2941ce48a76f15d523deaa65be05bb4b786",
+      "id": "river_pebble_ring",
+      "key": "equipment_river_pebble_ring",
+      "metadataSha256": "20fc25e8a00d013cf69465c5ae5d8fb0a29e7f61a50df2d6446ea726599da0f2",
+      "minimumFrameMargins": {
+        "bottom": 51,
+        "left": 64,
+        "right": 29,
+        "top": 34
+      },
+      "minimumNearHeroPixels": 209.42,
+      "sheetSha256": "9b8c150e2fa28e09722e46fc248b3f7398718dbbc3823d8c92699bbd9c811aac",
+      "slot": "RING_2",
+      "tier": "COMMON",
+      "triangles": 220,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring2"
+    },
+    {
+      "atlasSha256": "a57ec29dab274727b265fb92f3b417794410df1723419f8e1a214b2287474d74",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 10,
+        "right": 10,
+        "top": 8
+      },
+      "iconSha256": "16b65687c5b70984d2fb632287c2fbece9271e87d58b2b3c8ebe3767471b3f7f",
+      "id": "acorn_band",
+      "key": "equipment_acorn_band",
+      "metadataSha256": "1b413f48d1aee3cc6fd4e4f12a3671f8105d89c16c7e71d34fb810d9885e2ba9",
+      "minimumFrameMargins": {
+        "bottom": 79,
+        "left": 18,
+        "right": 92,
+        "top": 36
+      },
+      "minimumNearHeroPixels": 218.0,
+      "sheetSha256": "8be57840049419dc3cb8325b1f1529db628728ea78365e9cefabd25a4f62ee26",
+      "slot": "RING_1",
+      "tier": "COMMON",
+      "triangles": 272,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "1bbdbed8118e964499bfa9249561c6f33132f2741046b2a8453eaa4f6e7affbc",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8
+      },
+      "iconSha256": "873e600acf53797f03e992dfcbc9f44fd89b587b6a95b49011a10a62980ad005",
+      "id": "hunter_loop",
+      "key": "equipment_hunter_loop",
+      "metadataSha256": "889cabce25976db0d2c0345938c3b9d907c1b17a9fc165d081bef35c5db8fb9e",
+      "minimumFrameMargins": {
+        "bottom": 50,
+        "left": 64,
+        "right": 29,
+        "top": 34
+      },
+      "minimumNearHeroPixels": 233.67,
+      "sheetSha256": "3f9acf4a0e665da8b493b8db41519a739597c66015205151b7ac68d8fd07982e",
+      "slot": "RING_2",
+      "tier": "COMMON",
+      "triangles": 126,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring2"
+    },
+    {
+      "atlasSha256": "f61a2aea3320ee2f0f3ef19f24ddbc384cbe4ee92c37030b65d61bddd3e91bf9",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 10,
+        "right": 10,
+        "top": 8
+      },
+      "iconSha256": "224d1e220150fe8a7e50aaea065cf8466e9570a0641dec0760d94520a3561411",
+      "id": "twine_circle",
+      "key": "equipment_twine_circle",
+      "metadataSha256": "f64ed3466acc2862129c13008ca24b66c762949f8fe6e93638d7c929419ee9dd",
+      "minimumFrameMargins": {
+        "bottom": 79,
+        "left": 18,
+        "right": 92,
+        "top": 36
+      },
+      "minimumNearHeroPixels": 193.06,
+      "sheetSha256": "6e4d69f2b8f9c00d5df607b241bc2d49671bba2b7a5512b8f84b65ab1ec454fa",
+      "slot": "RING_1",
+      "tier": "COMMON",
+      "triangles": 212,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "867c778663adab4a62457e2ebc1be5b98d6dd1b6a724298be797539400e6da67",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 32,
+        "right": 33,
+        "top": 8
+      },
+      "iconSha256": "4b8d4cf71b6a8c8feba6822b4aaa731fd30430e79f09e86d3e9c1131cf50fa1b",
+      "id": "moonwood_longbow",
+      "key": "equipment_moonwood_longbow",
+      "metadataSha256": "879e94850a98e1b8c5f36163d3132110861611a6d0fcc21558c84f0f6925d760",
+      "minimumFrameMargins": {
+        "bottom": 21,
+        "left": 37,
+        "right": 10,
+        "top": 13
+      },
+      "minimumNearHeroPixels": 235.83,
+      "sheetSha256": "54336c3ed326f55f4e19b37e2245f9412c6c53ca3bf2d18cd71b502e6fab3688",
+      "slot": "WEAPON",
+      "tier": "UNCOMMON",
+      "triangles": 324,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "ab9e679d8f9d8ad56fcad5b71341abc3ef976a7e382979258afe22dbafbe013f",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 35,
+        "right": 35,
+        "top": 8
+      },
+      "iconSha256": "8ba6e6c0136f0e397835e644c134a9cc4c508cf92c522cb0db0c9d52ce015448",
+      "id": "verdant_glaive",
+      "key": "equipment_verdant_glaive",
+      "metadataSha256": "da7b29bede700d1aeee2e3b909f5be17081ba11d846219488973bdc75f08766d",
+      "minimumFrameMargins": {
+        "bottom": 24,
+        "left": 41,
+        "right": 12,
+        "top": 6
+      },
+      "minimumNearHeroPixels": 268.42,
+      "sheetSha256": "7aab0997614459b268e5e672d1651e263eb04d6187db499b52cf792514ff5649",
+      "slot": "WEAPON",
+      "tier": "UNCOMMON",
+      "triangles": 260,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "5a1adec96bbe673ff0081fca104d70a0eb401e7d7b1fea4fff099c67ef611417",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 13,
+        "right": 14,
+        "top": 8
+      },
+      "iconSha256": "e8cfc6db4bc2f732718e6a4b7bfb9068bbb2a3d485e9412d596d848e844268b4",
+      "id": "fern_guard",
+      "key": "equipment_fern_guard",
+      "metadataSha256": "b02e56ae36fbe2605f806ab93e98a0842d3067a516fd59e75ee5e993b46afaf6",
+      "minimumFrameMargins": {
+        "bottom": 93,
+        "left": 36,
+        "right": 37,
+        "top": 8
+      },
+      "minimumNearHeroPixels": 756.31,
+      "sheetSha256": "7360778b8ee3bf28b9f23d3165e36419706e394d39adb8cd3210805190ae641f",
+      "slot": "HELMET",
+      "tier": "UNCOMMON",
+      "triangles": 288,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "helmet"
+    },
+    {
+      "atlasSha256": "d41ccc05f63829e6d4d2f88c729ba491eb184222d96a3bb703abd152c53a2607",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 8,
+        "right": 8,
+        "top": 8
+      },
+      "iconSha256": "581afd65813f13416c2f69b395f1a721c7acb0fc4c1ec066accde90fde1bbc48",
+      "id": "antler_circlet",
+      "key": "equipment_antler_circlet",
+      "metadataSha256": "ab4b814d902e86cc262400682528b5a804714db61f855bed213a48cb104a116c",
+      "minimumFrameMargins": {
+        "bottom": 101,
+        "left": 29,
+        "right": 21,
+        "top": 6
+      },
+      "minimumNearHeroPixels": 589.1,
+      "sheetSha256": "4aa3333f25d1f8e02a4273ed9d5358207827fa738f47af3ec57f8f9ea9634bf6",
+      "slot": "HELMET",
+      "tier": "UNCOMMON",
+      "triangles": 224,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "helmet"
+    },
+    {
+      "atlasSha256": "2939848cf6b21e4f92c147b9d5adc405a817906c664ecc334e77042b0834f9c4",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 17,
+        "right": 17,
+        "top": 8
+      },
+      "iconSha256": "0e4fa21e8cfd08849ce67e28670b5dfa99a8c4213e2aecdc86ef0923f2231ab0",
+      "id": "ranger_mail",
+      "key": "equipment_ranger_mail",
+      "metadataSha256": "0497d7e3cfb15bd9def2c94f70996b8033bb5eeadc81225d05aab896cdc648e1",
+      "minimumFrameMargins": {
+        "bottom": 63,
+        "left": 42,
+        "right": 49,
+        "top": 58
+      },
+      "minimumNearHeroPixels": 1117.11,
+      "sheetSha256": "7ee590cf88c5fd9f3c023b30de13f52bcac26024487760d1d1884544a318ff40",
+      "slot": "ARMOR",
+      "tier": "UNCOMMON",
+      "triangles": 708,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "9cc5a2935547df81841938fc2c9b4850350899b8d38164f3a5413eff286814af",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 19,
+        "right": 20,
+        "top": 8
+      },
+      "iconSha256": "035a324e7dd7064dd4f5a7c2229cc4a9ba058d1a9ed6b16f5f7b0f6e408d6bfa",
+      "id": "mossweave_coat",
+      "key": "equipment_mossweave_coat",
+      "metadataSha256": "28588faa3bd82080419227163b16fe10ce12f17322b2bf4c8e10a7465550970b",
+      "minimumFrameMargins": {
+        "bottom": 49,
+        "left": 43,
+        "right": 49,
+        "top": 48
+      },
+      "minimumNearHeroPixels": 3107.17,
+      "sheetSha256": "1be52f4094ad8aa10f575f7f4c1d6a1087a43c71ba93a80feea179b6191459a1",
+      "slot": "ARMOR",
+      "tier": "UNCOMMON",
+      "triangles": 180,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "de7c5f13fdf7821d71dc7508b4f9219c9af860c175b655caab83ac0835ba9c19",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 12,
+        "left": 8,
+        "right": 8,
+        "top": 13
+      },
+      "iconSha256": "e63b573c848a9f20d06cdb189e1ca3b842de3f9af5c20da3a82b9abeb2a3c9be",
+      "id": "windstep_boots",
+      "key": "equipment_windstep_boots",
+      "metadataSha256": "33d622cbbd1a42d4f0e7290956427cf61aeaa583868cdfffa5a52b87154773a6",
+      "minimumFrameMargins": {
+        "bottom": 18,
+        "left": 63,
+        "right": 51,
+        "top": 110
+      },
+      "minimumNearHeroPixels": 1644.93,
+      "sheetSha256": "480b21f6e1bfec0e9730006224bd0c33a1fd306a7eb915e047bd944383239c3a",
+      "slot": "BOOTS",
+      "tier": "UNCOMMON",
+      "triangles": 360,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 1
+      },
+      "visualSlot": "boots"
+    },
+    {
+      "atlasSha256": "21eed80e4ce9cb0e69188a9914cbe8e47e06b7cf26f309a2077c8152e18d316a",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 19,
+        "left": 8,
+        "right": 8,
+        "top": 19
+      },
+      "iconSha256": "533cfbd9f81a6033175ffb94a4d765d5fb4b7e8ddfff03ae78bccd7f2607b396",
+      "id": "rootguard_sabatons",
+      "key": "equipment_rootguard_sabatons",
+      "metadataSha256": "cb28aa1cfa079eab2d7673a7f1762b30a878792c1f4ff75b3aef1896c6372b44",
+      "minimumFrameMargins": {
+        "bottom": 13,
+        "left": 60,
+        "right": 46,
+        "top": 121
+      },
+      "minimumNearHeroPixels": 1492.58,
+      "sheetSha256": "d7aed5fd96ccadabb4472c1eae2467509225af4cc63cd0f4376839e6457082ff",
+      "slot": "BOOTS",
+      "tier": "UNCOMMON",
+      "triangles": 208,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 1
+      },
+      "visualSlot": "boots"
+    },
+    {
+      "atlasSha256": "997b7c08aa2a56bfd50acecb60e0f78ecb3e1df502e81cec79b5ce1a94e4f499",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 13,
+        "right": 13,
+        "top": 8
+      },
+      "iconSha256": "b839ba6cba6a06a1e2d58d53609828b367238abde722b13e87d1514c34647284",
+      "id": "jade_sap_ring",
+      "key": "equipment_jade_sap_ring",
+      "metadataSha256": "2441cc771234c9643e8b2d7e61b9f82b75b04261a0ff80516933d3c224bd1268",
+      "minimumFrameMargins": {
+        "bottom": 78,
+        "left": 18,
+        "right": 92,
+        "top": 35
+      },
+      "minimumNearHeroPixels": 223.36,
+      "sheetSha256": "0729a5c5fd2706b90f51b970dedbdb416538f822fc8ce6ec1144d66f75b30103",
+      "slot": "RING_1",
+      "tier": "UNCOMMON",
+      "triangles": 136,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "320786700c3141fd5f7f24a5ec057e17f7cb8a023fa0f9d2c9534a5ab194a210",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 9,
+        "left": 8,
+        "right": 8,
+        "top": 10
+      },
+      "iconSha256": "a29fc320edb5c9640458e8e9a7a207548b15808058eaae807bc6d24424d387a4",
+      "id": "hawk_eye_band",
+      "key": "equipment_hawk_eye_band",
+      "metadataSha256": "693016087448246c3020fc411f87ba0b1e7fb018202f1e6e27ab9d317a384fa3",
+      "minimumFrameMargins": {
+        "bottom": 50,
+        "left": 63,
+        "right": 28,
+        "top": 34
+      },
+      "minimumNearHeroPixels": 252.17,
+      "sheetSha256": "39d1bdd245a0ae6962a86db5a545a515b2bbcd4b31e0869ffe811355a6433ac9",
+      "slot": "RING_2",
+      "tier": "UNCOMMON",
+      "triangles": 232,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring2"
+    },
+    {
+      "atlasSha256": "5d6e92a6fcc147c25686a222dca35df7f75e336aa674de9679e535828eb59b66",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 11,
+        "right": 12,
+        "top": 8
+      },
+      "iconSha256": "5c5676737cb13476db6d8efd2214a2c739736939d58c0e3f2dc549e974c883c2",
+      "id": "silver_briar_ring",
+      "key": "equipment_silver_briar_ring",
+      "metadataSha256": "2ffe6d9af5c338daabbdc20bc23377b2c1848d4818bb7df97eb7af7be9d9d082",
+      "minimumFrameMargins": {
+        "bottom": 78,
+        "left": 18,
+        "right": 92,
+        "top": 35
+      },
+      "minimumNearHeroPixels": 206.56,
+      "sheetSha256": "93fca445d0e9aff781ac3077fbaf56cefa5587f6ecd6b15e04249cf3e8e64506",
+      "slot": "RING_1",
+      "tier": "UNCOMMON",
+      "triangles": 120,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "6866cdc2249d342f6158e82f01f95dc592ce430e615a3ad4e4478d265d7e2cf9",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 10,
+        "right": 10,
+        "top": 8
+      },
+      "iconSha256": "66da8b7f3693a1e5511ad307a3fa5dba06a0f1e7ac79035d3b629a9a78f510a6",
+      "id": "dewstone_loop",
+      "key": "equipment_dewstone_loop",
+      "metadataSha256": "e8ec13fc2c09e22650a98be24deb306b86b29540f19f919537af2b98b67f8957",
+      "minimumFrameMargins": {
+        "bottom": 51,
+        "left": 63,
+        "right": 28,
+        "top": 34
+      },
+      "minimumNearHeroPixels": 204.73,
+      "sheetSha256": "89a7c848bca4f0237351d381eaca4c15eeb1b5d8807563944abdc85dbcde31d3",
+      "slot": "RING_2",
+      "tier": "UNCOMMON",
+      "triangles": 136,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring2"
+    },
+    {
+      "atlasSha256": "896b29d2ce9961973ab3861ad69be48377a1ebb6c1a88153ca4de96ba7bf1468",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 31,
+        "right": 32,
+        "top": 8
+      },
+      "iconSha256": "d3cff5cd82b613ea20a8077ca5ba8935394e48837dd44ac90782d23159dff6c8",
+      "id": "starfall_bow",
+      "key": "equipment_starfall_bow",
+      "metadataSha256": "c5e28135b7cb1b3a2958f87dfaee50cc5ac3492c27d84feae63b2ba39d3447c5",
+      "minimumFrameMargins": {
+        "bottom": 24,
+        "left": 41,
+        "right": 8,
+        "top": 12
+      },
+      "minimumNearHeroPixels": 231.88,
+      "sheetSha256": "abb60fbe58ba3feab2832cfd0e38cd09b693fffefd0b9f8ea1678e12ac58f5a0",
+      "slot": "WEAPON",
+      "tier": "RARE",
+      "triangles": 344,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "f7dbef42396e08b3e02ed0f41bb8cbeef86ca44680d14b0c6e6a0d0ba630a0a0",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 27,
+        "right": 27,
+        "top": 8
+      },
+      "iconSha256": "70af92e63929fb1bdcd1629408cade92f946b74d559ca64ca7e0daf4f87209d1",
+      "id": "golem_splitter",
+      "key": "equipment_golem_splitter",
+      "metadataSha256": "8f743f69ea51b12967800a6bca5af52e56913267df1fbffccef08c492b3fc9a2",
+      "minimumFrameMargins": {
+        "bottom": 17,
+        "left": 32,
+        "right": 14,
+        "top": 5
+      },
+      "minimumNearHeroPixels": 540.97,
+      "sheetSha256": "c35f1276630da4cb4c31cc19e43971d8d5b53f5722022b0079bec5d874fd5638",
+      "slot": "WEAPON",
+      "tier": "RARE",
+      "triangles": 152,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "a093f8ad850cd9e35fb12643cd84df347aad5a4b410fbe4ff3ac3923b5f1ad0f",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 10,
+        "left": 8,
+        "right": 8,
+        "top": 11
+      },
+      "iconSha256": "1d797385c65efb32d4567f6ea414c36387d822709f80f7b993299b029c5ef930",
+      "id": "owlguard_helm",
+      "key": "equipment_owlguard_helm",
+      "metadataSha256": "fa0a6bd3ce928937f9789304d25e1cba5a614c54f53ab45367aa5eeea5dd9712",
+      "minimumFrameMargins": {
+        "bottom": 86,
+        "left": 37,
+        "right": 32,
+        "top": 16
+      },
+      "minimumNearHeroPixels": 1937.45,
+      "sheetSha256": "891fd44d32b30b41d9eb040fdd94c9fed10298d645e45821bd286d0811b11f73",
+      "slot": "HELMET",
+      "tier": "RARE",
+      "triangles": 360,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "helmet"
+    },
+    {
+      "atlasSha256": "ddcd1dfea8a020bc0e2cae911f090269d50eef5c8f2711e2b8783c6a5844807b",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 23,
+        "right": 23,
+        "top": 8
+      },
+      "iconSha256": "9c66b30843f40cd630f65dcd45d39b580bf1fc2c9f33e0f6501082ecb2f7828e",
+      "id": "crystalbark_plate",
+      "key": "equipment_crystalbark_plate",
+      "metadataSha256": "ba27038258d5070bab12ba8a13e262bb4f8ecaa387a1d3c88b71254f02a7e778",
+      "minimumFrameMargins": {
+        "bottom": 50,
+        "left": 35,
+        "right": 42,
+        "top": 46
+      },
+      "minimumNearHeroPixels": 1613.43,
+      "sheetSha256": "9cf3275ee213ea4de50d83df8baf0ae5a322f3e9fe8657066e6466ca5ad71267",
+      "slot": "ARMOR",
+      "tier": "RARE",
+      "triangles": 204,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "d8025465d9d8f948dd54bef9805aee9d8687ab0d82f92b901fdadeffa73c0238",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 9,
+        "right": 10,
+        "top": 8
+      },
+      "iconSha256": "b34e40c2fd6392621ab20cb8435c962367f8817fc36d5b0b135f2aebd3a5bcef",
+      "id": "shadeleaf_mantle",
+      "key": "equipment_shadeleaf_mantle",
+      "metadataSha256": "bb2c0e9c8c3b557a252a1d82da0935c997151b0b2da87038df5ea8d4d19cd578",
+      "minimumFrameMargins": {
+        "bottom": 56,
+        "left": 40,
+        "right": 43,
+        "top": 44
+      },
+      "minimumNearHeroPixels": 3271.81,
+      "sheetSha256": "de33506e5e2eab9663d3374c22cbcebe3fadb6053d44205ad59b2960f52324c2",
+      "slot": "ARMOR",
+      "tier": "RARE",
+      "triangles": 228,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "d550f4f372a0c7c3e94e509439d94dbfa653d5ecaa9429c3225cb768cf91b1c9",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 11,
+        "left": 8,
+        "right": 8,
+        "top": 12
+      },
+      "iconSha256": "5906d089fc7cc4d79cd58e12c23e7e96eb1238e24d41e08cd7e42a845febf845",
+      "id": "stormrunner_boots",
+      "key": "equipment_stormrunner_boots",
+      "metadataSha256": "69cd80a4346d272cd50779d8f5e79a9a3b009d0b4e9efd869f291597f97b136a",
+      "minimumFrameMargins": {
+        "bottom": 17,
+        "left": 62,
+        "right": 50,
+        "top": 110
+      },
+      "minimumNearHeroPixels": 1711.38,
+      "sheetSha256": "2a9e3247ff9731bdee1da6e11d28a5a12f701f3c01eb3ea9fe7a218c6afaab77",
+      "slot": "BOOTS",
+      "tier": "RARE",
+      "triangles": 400,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 1
+      },
+      "visualSlot": "boots"
+    },
+    {
+      "atlasSha256": "c3fbed7a6af3effea282168183b27008ff9c244834910e503099727dd104bf6f",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 9,
+        "left": 8,
+        "right": 8,
+        "top": 10
+      },
+      "iconSha256": "835398004d55075253d6f62ed245a1f225804f236e055254651cfab6e0c72cd0",
+      "id": "sapphire_luck_ring",
+      "key": "equipment_sapphire_luck_ring",
+      "metadataSha256": "cb9b12e08e9d305d6ca51a79c93a590607fa2f01394ab79f75b733761efec0f6",
+      "minimumFrameMargins": {
+        "bottom": 78,
+        "left": 17,
+        "right": 92,
+        "top": 35
+      },
+      "minimumNearHeroPixels": 256.36,
+      "sheetSha256": "1ec637471a5e64620da6afb7954cceff0a436f1dd4dc90713b3245394b230239",
+      "slot": "RING_1",
+      "tier": "RARE",
+      "triangles": 216,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "d35f97b2fe1ecce612560a127f2c2f69064d9561c4c0fbb0099732a052dcfb81",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 10,
+        "left": 8,
+        "right": 8,
+        "top": 10
+      },
+      "iconSha256": "5b5d274a5c73ee35d08dcd352b3bfe9ee253e3506611e2ed8cb496de7827d4d5",
+      "id": "bloodroot_signet",
+      "key": "equipment_bloodroot_signet",
+      "metadataSha256": "b24a51184cc6f3fdf8675b10709c4a927e8e21f1a254e9ec525766f46d278e7e",
+      "minimumFrameMargins": {
+        "bottom": 50,
+        "left": 63,
+        "right": 28,
+        "top": 34
+      },
+      "minimumNearHeroPixels": 246.1,
+      "sheetSha256": "08f704af326df5c91abb57a089b580888da194bc0c6cc779e79b944fe12a6ec1",
+      "slot": "RING_2",
+      "tier": "RARE",
+      "triangles": 208,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring2"
+    },
+    {
+      "atlasSha256": "d0bbaeb48389a2d1a4465d752bb36c4eb6ca7f74f765755e117d7bcd30035434",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 9,
+        "right": 10,
+        "top": 8
+      },
+      "iconSha256": "4db8fb0a474bd01b77064212d43ea0373ccc9f0f89be34f36766539123d7c853",
+      "id": "echo_band",
+      "key": "equipment_echo_band",
+      "metadataSha256": "115481224dd8718c98afa15598126de3b4265a487c5f59a6cb22a3d30caba0d7",
+      "minimumFrameMargins": {
+        "bottom": 78,
+        "left": 17,
+        "right": 92,
+        "top": 35
+      },
+      "minimumNearHeroPixels": 254.85,
+      "sheetSha256": "def5348941f0f723a00e84cce210499bd53c217161802f92577b1d1e88c1875b",
+      "slot": "RING_1",
+      "tier": "RARE",
+      "triangles": 288,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring1"
+    },
+    {
+      "atlasSha256": "3d7c2ed4296ae732f18714c64636c0e9d1673b081ecfcabc883d268a4acb8712",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 31,
+        "right": 32,
+        "top": 8
+      },
+      "iconSha256": "ec80a987d03078b5ba8ec2b33a968e412607776e71cc2a7adb21a4165e00cdcb",
+      "id": "worldbranch",
+      "key": "equipment_worldbranch",
+      "metadataSha256": "88721b138782298006b6669f9f124a72380ee8db949d397dc9ecbc96d039aa30",
+      "minimumFrameMargins": {
+        "bottom": 23,
+        "left": 41,
+        "right": 9,
+        "top": 14
+      },
+      "minimumNearHeroPixels": 316.38,
+      "sheetSha256": "f18875c0b48261cbf0eae2239806bd8bd01b4892bc55a02e4d5b342c13ba947a",
+      "slot": "WEAPON",
+      "tier": "LEGENDARY",
+      "triangles": 368,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "weapon"
+    },
+    {
+      "atlasSha256": "df5ed32926862c89b958730d91d64f19c18a8485decb10bc3d600dd436bb8c2d",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 14,
+        "right": 14,
+        "top": 8
+      },
+      "iconSha256": "a35d5b989d1cfa6efd2bb43c4d9bc4dddbfe70960e867141b3de50ba50ad55da",
+      "id": "crown_of_first_leaves",
+      "key": "equipment_crown_of_first_leaves",
+      "metadataSha256": "39ac722f5fbddfaec43ccd670f3637659f4ad234b65e9c8bd77e4fd4b8c0d63c",
+      "minimumFrameMargins": {
+        "bottom": 88,
+        "left": 34,
+        "right": 32,
+        "top": 3
+      },
+      "minimumNearHeroPixels": 807.06,
+      "sheetSha256": "c1026dd6b93fdef571b44ae975c7c53eaf68bc7e6acb8d918ba5ae2b560ebedb",
+      "slot": "HELMET",
+      "tier": "LEGENDARY",
+      "triangles": 276,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "helmet"
+    },
+    {
+      "atlasSha256": "12ec2529bee64b2d898bdbed1e07ff1d67db0d235ee1b85370d26cff7e2fa9ec",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 17,
+        "right": 17,
+        "top": 8
+      },
+      "iconSha256": "111284dd084ba4d257a01687d3da643efc3e09a26592573a138f1f3991dc7ab5",
+      "id": "heartwood_aegis",
+      "key": "equipment_heartwood_aegis",
+      "metadataSha256": "e0965524394eb6661047ed60748a6ed2a130f5aa40da303c0eac3f07dbf7fdcf",
+      "minimumFrameMargins": {
+        "bottom": 60,
+        "left": 40,
+        "right": 44,
+        "top": 47
+      },
+      "minimumNearHeroPixels": 1367.02,
+      "sheetSha256": "0908affba9ec3587a42dd3a775e38c7b337cbd007082daab1ed53f9d86d49a57",
+      "slot": "ARMOR",
+      "tier": "LEGENDARY",
+      "triangles": 308,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "armor"
+    },
+    {
+      "atlasSha256": "763444d828402d57ff3fe58bfd55386e40fc0fccbf1d56617f9dbbce889d7f5d",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 12,
+        "left": 8,
+        "right": 8,
+        "top": 12
+      },
+      "iconSha256": "120f741ad4a488ec92bce2e26d80593ae04be1b8214dff8bbb01c05e400497d1",
+      "id": "boots_of_three_winds",
+      "key": "equipment_boots_of_three_winds",
+      "metadataSha256": "946d38472849c35085f44661d8e01efb826a345960f846f7aa5919503c8cf373",
+      "minimumFrameMargins": {
+        "bottom": 17,
+        "left": 62,
+        "right": 50,
+        "top": 109
+      },
+      "minimumNearHeroPixels": 1744.04,
+      "sheetSha256": "9b82e90ced14445c2caa147ddfe98c33051c942d7314e472275e1231280026cf",
+      "slot": "BOOTS",
+      "tier": "LEGENDARY",
+      "triangles": 400,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 1
+      },
+      "visualSlot": "boots"
+    },
+    {
+      "atlasSha256": "e6646e1e74b5126bc9ac9a424fb11435e4bfb7b269389b154c461ecd5fef3429",
+      "frameCount": 28,
+      "iconMargins": {
+        "bottom": 8,
+        "left": 9,
+        "right": 10,
+        "top": 8
+      },
+      "iconSha256": "751611e86ef2d67efd9aaccbe5ace0d496c3052fd931d5f9b7b06d72f47ec048",
+      "id": "eternal_seed",
+      "key": "equipment_eternal_seed",
+      "metadataSha256": "7faa567de3eb9396538e30b700f7d3d365684c5f69511c7fbc903c9302288c81",
+      "minimumFrameMargins": {
+        "bottom": 51,
+        "left": 64,
+        "right": 28,
+        "top": 33
+      },
+      "minimumNearHeroPixels": 239.75,
+      "sheetSha256": "ee37f0512c259d57f323c2fa6e835bcc4fcac0105d177d53ed28200f96480d65",
+      "slot": "RING_2",
+      "tier": "LEGENDARY",
+      "triangles": 216,
+      "uniqueFrames": {
+        "attack": 7,
+        "death": 9,
+        "hit": 3,
+        "idle": 5
+      },
+      "visualSlot": "ring2"
+    }
+  ],
+  "candidateManifestSha256": "7a5c272421f3b96bd900c07b7526828b427f76b2f5416b974b9e6a814b6108fe",
+  "catalogSha256": "af2f91c1472128e34d10b7643d7b3c48844d0b8667930e0845e5710b72a748fd",
+  "contract": "premium-v2-equipment",
+  "heroContract": {
+    "frameSize": 192,
+    "key": "hero",
+    "modelRevision": "hero-premium-v2-final",
+    "rigProfile": "premium-humanoid-v2",
+    "sheetSha256": "d6830b89d63ebe744dadc5508445d6b931ea0476db1a6b2188f743beaf1680e9"
+  },
+  "reviewSheets": {
+    "equipment_composites_1.png": "53fd7a17684d88f5b6892c4d469770359c08f8d2f69ffd0cdceec9f1297e3cc7",
+    "equipment_composites_2.png": "c434b8383a96e6aaa536a874443cf854cead77d0b795c2b05b288733e3775349",
+    "equipment_composites_3.png": "e1d036aed2e04a449e5dfd10671f6952899bb27d812fbfc0bdd1e2e85b2f4651",
+    "equipment_composites_4.png": "7241a113cad555622fad62bfce4b607ac9393c015963bca92711327906f84fb6",
+    "equipment_composites_5.png": "cdc143996cb5fb05fc760673f26426e1efa44e8a312049b04e085bc082851f22",
+    "equipment_icons_common.png": "946c59b318a1c31a9cd882f136caa8440def82a6544ccc0feb7345e625e82fdb",
+    "equipment_icons_legendary.png": "01a19fdf7eb5961cbb041ea39966e115a164df47b9152cb54b258c59262d0bb0",
+    "equipment_icons_rare.png": "037856ea7b10d6ee960dce5f4c8374c1f8c9af974ebceaec83504cda8c199dc1",
+    "equipment_icons_uncommon.png": "0439bd8fe688a99186ef972a796e19825aed7f78de280d531705191890fa9ae0"
+  },
+  "summary": {
+    "assets": 40,
+    "boundaryFrames": 0,
+    "compressedPngBytes": 4444093,
+    "decodedBytes": 237404160,
+    "detachedFrames": 0,
+    "frames": 1120,
+    "maxTriangles": 708,
+    "minimumFrameMargins": {
+      "bottom": 13,
+      "left": 17,
+      "right": 8,
+      "top": 3
+    },
+    "minimumIconMargins": {
+      "bottom": 8,
+      "left": 8,
+      "right": 8,
+      "top": 8
+    },
+    "minimumNearHeroPixels": 193.06,
+    "tierCounts": {
+      "COMMON": 14,
+      "LEGENDARY": 5,
+      "RARE": 9,
+      "UNCOMMON": 12
+    },
+    "visualSlotCounts": {
+      "armor": 7,
+      "boots": 6,
+      "helmet": 6,
+      "ring1": 7,
+      "ring2": 6,
+      "weapon": 8
+    }
+  }
+}

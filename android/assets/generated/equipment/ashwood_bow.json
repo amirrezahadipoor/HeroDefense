@@ -30,6 +30,11 @@
     "upper_arm.R",
     "weapon_socket"
   ],
+  "categoryReview": {
+    "category": "equipment",
+    "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +275,16 @@
   "icon": "icons/equipment_ashwood_bow.png",
   "itemId": "ashwood_bow",
   "key": "equipment_ashwood_bow",
+  "modelRevision": "equipment-premium-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 8,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+  "rigProfile": "hero-socket-v2",
   "runtimeGlow": false,
   "sheet": "equipment/ashwood_bow.png",
   "sheetHeight": 768,
@@ -289,7 +299,8 @@
   ],
   "slot": "WEAPON",
   "tier": "COMMON",
-  "triangles": 96,
+  "triangles": 176,
   "visualKind": "bow",
+  "visualQuality": "premium-v2",
   "visualSlot": "weapon"
 }

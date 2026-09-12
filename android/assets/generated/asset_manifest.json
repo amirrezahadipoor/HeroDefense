@@ -738,6 +738,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -978,11 +983,16 @@
       "icon": "icons/equipment_acorn_band.png",
       "itemId": "acorn_band",
       "key": "equipment_acorn_band",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/acorn_band.png",
       "sheetHeight": 768,
@@ -997,7 +1007,9 @@
       ],
       "slot": "RING_1",
       "tier": "COMMON",
-      "triangles": 96,
+      "triangles": 272,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -1032,6 +1044,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -1272,11 +1289,16 @@
       "icon": "icons/equipment_antler_circlet.png",
       "itemId": "antler_circlet",
       "key": "equipment_antler_circlet",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/antler_circlet.png",
       "sheetHeight": 768,
@@ -1291,7 +1313,9 @@
       ],
       "slot": "HELMET",
       "tier": "UNCOMMON",
-      "triangles": 24,
+      "triangles": 224,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
       "visualSlot": "helmet"
     },
     {
@@ -1326,6 +1350,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -1566,11 +1595,16 @@
       "icon": "icons/equipment_ashwood_bow.png",
       "itemId": "ashwood_bow",
       "key": "equipment_ashwood_bow",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/ashwood_bow.png",
       "sheetHeight": 768,
@@ -1585,8 +1619,9 @@
       ],
       "slot": "WEAPON",
       "tier": "COMMON",
-      "triangles": 96,
+      "triangles": 176,
       "visualKind": "bow",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -1621,6 +1656,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -1861,11 +1901,16 @@
       "icon": "icons/equipment_bark_tunic.png",
       "itemId": "bark_tunic",
       "key": "equipment_bark_tunic",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/bark_tunic.png",
       "sheetHeight": 768,
@@ -1880,7 +1925,9 @@
       ],
       "slot": "ARMOR",
       "tier": "COMMON",
-      "triangles": 44,
+      "triangles": 176,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -1915,6 +1962,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -2155,11 +2207,16 @@
       "icon": "icons/equipment_bloodroot_signet.png",
       "itemId": "bloodroot_signet",
       "key": "equipment_bloodroot_signet",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/bloodroot_signet.png",
       "sheetHeight": 768,
@@ -2174,7 +2231,9 @@
       ],
       "slot": "RING_2",
       "tier": "RARE",
-      "triangles": 96,
+      "triangles": 208,
+      "visualKind": "ring2",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring2"
     },
     {
@@ -2209,6 +2268,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -2449,6 +2513,8 @@
       "icon": "icons/equipment_boots_of_three_winds.png",
       "itemId": "boots_of_three_winds",
       "key": "equipment_boots_of_three_winds",
+      "modelRevision": "equipment-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -2456,7 +2522,8 @@
       },
       "renderSamples": 8,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/boots_of_three_winds.png",
       "sheetHeight": 768,
@@ -2508,6 +2575,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -2748,11 +2820,16 @@
       "icon": "icons/equipment_copper_leaf_ring.png",
       "itemId": "copper_leaf_ring",
       "key": "equipment_copper_leaf_ring",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/copper_leaf_ring.png",
       "sheetHeight": 768,
@@ -2767,7 +2844,9 @@
       ],
       "slot": "RING_1",
       "tier": "COMMON",
-      "triangles": 96,
+      "triangles": 116,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -2802,6 +2881,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -3042,6 +3126,8 @@
       "icon": "icons/equipment_crown_of_first_leaves.png",
       "itemId": "crown_of_first_leaves",
       "key": "equipment_crown_of_first_leaves",
+      "modelRevision": "equipment-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -3049,7 +3135,8 @@
       },
       "renderSamples": 8,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/crown_of_first_leaves.png",
       "sheetHeight": 768,
@@ -3101,6 +3188,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -3341,11 +3433,16 @@
       "icon": "icons/equipment_crystalbark_plate.png",
       "itemId": "crystalbark_plate",
       "key": "equipment_crystalbark_plate",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/crystalbark_plate.png",
       "sheetHeight": 768,
@@ -3360,7 +3457,9 @@
       ],
       "slot": "ARMOR",
       "tier": "RARE",
-      "triangles": 44,
+      "triangles": 204,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -3395,6 +3494,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -3635,11 +3739,16 @@
       "icon": "icons/equipment_dewstone_loop.png",
       "itemId": "dewstone_loop",
       "key": "equipment_dewstone_loop",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/dewstone_loop.png",
       "sheetHeight": 768,
@@ -3654,7 +3763,9 @@
       ],
       "slot": "RING_2",
       "tier": "UNCOMMON",
-      "triangles": 96,
+      "triangles": 136,
+      "visualKind": "ring2",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring2"
     },
     {
@@ -3689,6 +3800,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -3929,11 +4045,16 @@
       "icon": "icons/equipment_echo_band.png",
       "itemId": "echo_band",
       "key": "equipment_echo_band",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/echo_band.png",
       "sheetHeight": 768,
@@ -3948,7 +4069,9 @@
       ],
       "slot": "RING_1",
       "tier": "RARE",
-      "triangles": 96,
+      "triangles": 288,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -3983,6 +4106,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -4223,6 +4351,8 @@
       "icon": "icons/equipment_eternal_seed.png",
       "itemId": "eternal_seed",
       "key": "equipment_eternal_seed",
+      "modelRevision": "equipment-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -4230,7 +4360,8 @@
       },
       "renderSamples": 8,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/eternal_seed.png",
       "sheetHeight": 768,
@@ -4282,6 +4413,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -4522,11 +4658,16 @@
       "icon": "icons/equipment_fern_guard.png",
       "itemId": "fern_guard",
       "key": "equipment_fern_guard",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/fern_guard.png",
       "sheetHeight": 768,
@@ -4541,7 +4682,9 @@
       ],
       "slot": "HELMET",
       "tier": "UNCOMMON",
-      "triangles": 20,
+      "triangles": 288,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
       "visualSlot": "helmet"
     },
     {
@@ -4576,6 +4719,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -4816,11 +4964,16 @@
       "icon": "icons/equipment_golem_splitter.png",
       "itemId": "golem_splitter",
       "key": "equipment_golem_splitter",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/golem_splitter.png",
       "sheetHeight": 768,
@@ -4835,8 +4988,9 @@
       ],
       "slot": "WEAPON",
       "tier": "RARE",
-      "triangles": 64,
+      "triangles": 152,
       "visualKind": "axe",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -4871,6 +5025,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -5111,11 +5270,16 @@
       "icon": "icons/equipment_hawk_eye_band.png",
       "itemId": "hawk_eye_band",
       "key": "equipment_hawk_eye_band",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/hawk_eye_band.png",
       "sheetHeight": 768,
@@ -5130,7 +5294,9 @@
       ],
       "slot": "RING_2",
       "tier": "UNCOMMON",
-      "triangles": 96,
+      "triangles": 232,
+      "visualKind": "ring2",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring2"
     },
     {
@@ -5165,6 +5331,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -5405,6 +5576,8 @@
       "icon": "icons/equipment_heartwood_aegis.png",
       "itemId": "heartwood_aegis",
       "key": "equipment_heartwood_aegis",
+      "modelRevision": "equipment-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -5412,7 +5585,8 @@
       },
       "renderSamples": 8,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/heartwood_aegis.png",
       "sheetHeight": 768,
@@ -5464,6 +5638,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -5704,11 +5883,16 @@
       "icon": "icons/equipment_hide_greaves.png",
       "itemId": "hide_greaves",
       "key": "equipment_hide_greaves",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/hide_greaves.png",
       "sheetHeight": 768,
@@ -5723,7 +5907,9 @@
       ],
       "slot": "BOOTS",
       "tier": "COMMON",
-      "triangles": 88,
+      "triangles": 248,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
       "visualSlot": "boots"
     },
     {
@@ -5758,6 +5944,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -5998,11 +6189,16 @@
       "icon": "icons/equipment_hunter_loop.png",
       "itemId": "hunter_loop",
       "key": "equipment_hunter_loop",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/hunter_loop.png",
       "sheetHeight": 768,
@@ -6017,7 +6213,9 @@
       ],
       "slot": "RING_2",
       "tier": "COMMON",
-      "triangles": 96,
+      "triangles": 126,
+      "visualKind": "ring2",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring2"
     },
     {
@@ -6052,6 +6250,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -6292,11 +6495,16 @@
       "icon": "icons/equipment_jade_sap_ring.png",
       "itemId": "jade_sap_ring",
       "key": "equipment_jade_sap_ring",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/jade_sap_ring.png",
       "sheetHeight": 768,
@@ -6311,7 +6519,9 @@
       ],
       "slot": "RING_1",
       "tier": "UNCOMMON",
-      "triangles": 96,
+      "triangles": 136,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -6346,6 +6556,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -6586,11 +6801,16 @@
       "icon": "icons/equipment_leather_cap.png",
       "itemId": "leather_cap",
       "key": "equipment_leather_cap",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/leather_cap.png",
       "sheetHeight": 768,
@@ -6605,7 +6825,9 @@
       ],
       "slot": "HELMET",
       "tier": "COMMON",
-      "triangles": 32,
+      "triangles": 120,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
       "visualSlot": "helmet"
     },
     {
@@ -6640,6 +6862,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -6880,11 +7107,16 @@
       "icon": "icons/equipment_militia_sabre.png",
       "itemId": "militia_sabre",
       "key": "equipment_militia_sabre",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/militia_sabre.png",
       "sheetHeight": 768,
@@ -6899,8 +7131,9 @@
       ],
       "slot": "WEAPON",
       "tier": "COMMON",
-      "triangles": 26,
+      "triangles": 112,
       "visualKind": "sword",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -6935,6 +7168,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -7175,11 +7413,16 @@
       "icon": "icons/equipment_moonwood_longbow.png",
       "itemId": "moonwood_longbow",
       "key": "equipment_moonwood_longbow",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/moonwood_longbow.png",
       "sheetHeight": 768,
@@ -7194,8 +7437,9 @@
       ],
       "slot": "WEAPON",
       "tier": "UNCOMMON",
-      "triangles": 96,
+      "triangles": 324,
       "visualKind": "bow",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -7230,6 +7474,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -7470,11 +7719,16 @@
       "icon": "icons/equipment_mossweave_coat.png",
       "itemId": "mossweave_coat",
       "key": "equipment_mossweave_coat",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/mossweave_coat.png",
       "sheetHeight": 768,
@@ -7489,7 +7743,9 @@
       ],
       "slot": "ARMOR",
       "tier": "UNCOMMON",
-      "triangles": 44,
+      "triangles": 180,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -7524,6 +7780,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -7764,11 +8025,16 @@
       "icon": "icons/equipment_owlguard_helm.png",
       "itemId": "owlguard_helm",
       "key": "equipment_owlguard_helm",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/owlguard_helm.png",
       "sheetHeight": 768,
@@ -7783,7 +8049,9 @@
       ],
       "slot": "HELMET",
       "tier": "RARE",
-      "triangles": 20,
+      "triangles": 360,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
       "visualSlot": "helmet"
     },
     {
@@ -7818,6 +8086,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -8058,11 +8331,16 @@
       "icon": "icons/equipment_padded_vest.png",
       "itemId": "padded_vest",
       "key": "equipment_padded_vest",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/padded_vest.png",
       "sheetHeight": 768,
@@ -8077,7 +8355,9 @@
       ],
       "slot": "ARMOR",
       "tier": "COMMON",
-      "triangles": 44,
+      "triangles": 168,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -8112,6 +8392,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -8352,11 +8637,16 @@
       "icon": "icons/equipment_ranger_mail.png",
       "itemId": "ranger_mail",
       "key": "equipment_ranger_mail",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/ranger_mail.png",
       "sheetHeight": 768,
@@ -8371,7 +8661,9 @@
       ],
       "slot": "ARMOR",
       "tier": "UNCOMMON",
-      "triangles": 44,
+      "triangles": 708,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -8406,6 +8698,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -8646,11 +8943,16 @@
       "icon": "icons/equipment_river_pebble_ring.png",
       "itemId": "river_pebble_ring",
       "key": "equipment_river_pebble_ring",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/river_pebble_ring.png",
       "sheetHeight": 768,
@@ -8665,7 +8967,9 @@
       ],
       "slot": "RING_2",
       "tier": "COMMON",
-      "triangles": 96,
+      "triangles": 220,
+      "visualKind": "ring2",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring2"
     },
     {
@@ -8700,6 +9004,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -8940,11 +9249,16 @@
       "icon": "icons/equipment_rootguard_sabatons.png",
       "itemId": "rootguard_sabatons",
       "key": "equipment_rootguard_sabatons",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/rootguard_sabatons.png",
       "sheetHeight": 768,
@@ -8959,7 +9273,9 @@
       ],
       "slot": "BOOTS",
       "tier": "UNCOMMON",
-      "triangles": 88,
+      "triangles": 208,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
       "visualSlot": "boots"
     },
     {
@@ -8994,6 +9310,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -9234,11 +9555,16 @@
       "icon": "icons/equipment_sapphire_luck_ring.png",
       "itemId": "sapphire_luck_ring",
       "key": "equipment_sapphire_luck_ring",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/sapphire_luck_ring.png",
       "sheetHeight": 768,
@@ -9253,7 +9579,9 @@
       ],
       "slot": "RING_1",
       "tier": "RARE",
-      "triangles": 96,
+      "triangles": 216,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -9288,6 +9616,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -9528,11 +9861,16 @@
       "icon": "icons/equipment_scout_hood.png",
       "itemId": "scout_hood",
       "key": "equipment_scout_hood",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/scout_hood.png",
       "sheetHeight": 768,
@@ -9547,7 +9885,9 @@
       ],
       "slot": "HELMET",
       "tier": "COMMON",
-      "triangles": 20,
+      "triangles": 240,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
       "visualSlot": "helmet"
     },
     {
@@ -9582,6 +9922,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -9822,11 +10167,16 @@
       "icon": "icons/equipment_shadeleaf_mantle.png",
       "itemId": "shadeleaf_mantle",
       "key": "equipment_shadeleaf_mantle",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/shadeleaf_mantle.png",
       "sheetHeight": 768,
@@ -9841,7 +10191,9 @@
       ],
       "slot": "ARMOR",
       "tier": "RARE",
-      "triangles": 44,
+      "triangles": 228,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
       "visualSlot": "armor"
     },
     {
@@ -9876,6 +10228,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -10116,11 +10473,16 @@
       "icon": "icons/equipment_silver_briar_ring.png",
       "itemId": "silver_briar_ring",
       "key": "equipment_silver_briar_ring",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/silver_briar_ring.png",
       "sheetHeight": 768,
@@ -10135,7 +10497,9 @@
       ],
       "slot": "RING_1",
       "tier": "UNCOMMON",
-      "triangles": 96,
+      "triangles": 120,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -10170,6 +10534,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -10410,11 +10779,16 @@
       "icon": "icons/equipment_starfall_bow.png",
       "itemId": "starfall_bow",
       "key": "equipment_starfall_bow",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/starfall_bow.png",
       "sheetHeight": 768,
@@ -10429,8 +10803,9 @@
       ],
       "slot": "WEAPON",
       "tier": "RARE",
-      "triangles": 96,
+      "triangles": 344,
       "visualKind": "bow",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -10465,6 +10840,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -10705,11 +11085,16 @@
       "icon": "icons/equipment_stormrunner_boots.png",
       "itemId": "stormrunner_boots",
       "key": "equipment_stormrunner_boots",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/stormrunner_boots.png",
       "sheetHeight": 768,
@@ -10724,7 +11109,9 @@
       ],
       "slot": "BOOTS",
       "tier": "RARE",
-      "triangles": 88,
+      "triangles": 400,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
       "visualSlot": "boots"
     },
     {
@@ -10759,6 +11146,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -10999,11 +11391,16 @@
       "icon": "icons/equipment_thorn_spear.png",
       "itemId": "thorn_spear",
       "key": "equipment_thorn_spear",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/thorn_spear.png",
       "sheetHeight": 768,
@@ -11018,8 +11415,9 @@
       ],
       "slot": "WEAPON",
       "tier": "COMMON",
-      "triangles": 26,
+      "triangles": 160,
       "visualKind": "spear",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -11054,6 +11452,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -11294,11 +11697,16 @@
       "icon": "icons/equipment_trail_boots.png",
       "itemId": "trail_boots",
       "key": "equipment_trail_boots",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/trail_boots.png",
       "sheetHeight": 768,
@@ -11313,7 +11721,9 @@
       ],
       "slot": "BOOTS",
       "tier": "COMMON",
-      "triangles": 88,
+      "triangles": 368,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
       "visualSlot": "boots"
     },
     {
@@ -11348,6 +11758,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -11588,11 +12003,16 @@
       "icon": "icons/equipment_twine_circle.png",
       "itemId": "twine_circle",
       "key": "equipment_twine_circle",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/twine_circle.png",
       "sheetHeight": 768,
@@ -11607,7 +12027,9 @@
       ],
       "slot": "RING_1",
       "tier": "COMMON",
-      "triangles": 96,
+      "triangles": 212,
+      "visualKind": "ring1",
+      "visualQuality": "premium-v2",
       "visualSlot": "ring1"
     },
     {
@@ -11642,6 +12064,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -11882,11 +12309,16 @@
       "icon": "icons/equipment_verdant_glaive.png",
       "itemId": "verdant_glaive",
       "key": "equipment_verdant_glaive",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/verdant_glaive.png",
       "sheetHeight": 768,
@@ -11901,8 +12333,9 @@
       ],
       "slot": "WEAPON",
       "tier": "UNCOMMON",
-      "triangles": 26,
+      "triangles": 260,
       "visualKind": "glaive",
+      "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
     {
@@ -11937,6 +12370,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -12177,11 +12615,16 @@
       "icon": "icons/equipment_windstep_boots.png",
       "itemId": "windstep_boots",
       "key": "equipment_windstep_boots",
+      "modelRevision": "equipment-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": false,
       "sheet": "equipment/windstep_boots.png",
       "sheetHeight": 768,
@@ -12196,7 +12639,9 @@
       ],
       "slot": "BOOTS",
       "tier": "UNCOMMON",
-      "triangles": 88,
+      "triangles": 360,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
       "visualSlot": "boots"
     },
     {
@@ -12231,6 +12676,11 @@
         "upper_arm.R",
         "weapon_socket"
       ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -12471,6 +12921,8 @@
       "icon": "icons/equipment_worldbranch.png",
       "itemId": "worldbranch",
       "key": "equipment_worldbranch",
+      "modelRevision": "equipment-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -12478,7 +12930,8 @@
       },
       "renderSamples": 8,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+      "rigProfile": "hero-socket-v2",
       "runtimeGlow": true,
       "sheet": "equipment/worldbranch.png",
       "sheetHeight": 768,
@@ -15692,7 +16145,7 @@
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
   "frameRate": 12,
-  "generatedBatch": "premium-pilot",
+  "generatedBatch": "equipment",
   "maxAtlasPageSize": 2048,
   "opaqueRenderSamples": 16,
   "overlayRenderSamples": 8,
