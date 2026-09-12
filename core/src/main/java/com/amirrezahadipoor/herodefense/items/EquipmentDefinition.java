@@ -62,6 +62,12 @@ public final class EquipmentDefinition {
         Item item = new Item(id, name, slot.name(), tier.name());
         item.iconKey = iconPath;
         item.visualKey = "generated/equipment/" + id + ".atlas";
+        item.sellPrice = switch (tier) {
+            case COMMON -> 12;
+            case UNCOMMON -> 30;
+            case RARE -> 75;
+            case LEGENDARY -> 180;
+        };
         for (Map.Entry<HeroStat, Integer> bonus : statBonuses.entrySet()) {
             item.statBonuses.put(bonus.getKey().name(), bonus.getValue().floatValue());
         }

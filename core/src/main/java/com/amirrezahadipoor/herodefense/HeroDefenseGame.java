@@ -19,8 +19,10 @@ import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
+import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
+import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
@@ -29,6 +31,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
+import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
@@ -48,6 +51,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private HeroAutoAttackSystem heroAutoAttackSystem;
     private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
+    private InventoryTouchController inventoryTouchController;
+    private InventoryOverlayRenderer inventoryOverlayRenderer;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
@@ -74,6 +79,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
+        inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         new StarterLoadoutSystem().provisionOnce(gameState);
@@ -83,6 +89,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         spriteBatch = new SpriteBatch();
         heroSpriteRenderer = new HeroSpriteRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
+        inventoryOverlayRenderer = new InventoryOverlayRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         installTouchInput();
     }
@@ -140,6 +147,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (equipmentSpriteRenderer != null) {
             equipmentSpriteRenderer.close();
         }
+        if (inventoryOverlayRenderer != null) {
+            inventoryOverlayRenderer.close();
+        }
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
         }
@@ -169,7 +179,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 float deltaY,
                 int pointer
             ) {
-                // Inventory drag behavior is attached to this callback by the UI layer.
+                if (flow.state() == GameScreenState.PAUSED && inventoryTouchController.isOpen()) {
+                    inventoryTouchController.drag(gameState, deltaY);
+                }
                 return true;
             }
 
@@ -211,6 +223,23 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.PLAYING
                     && worldX >= 610f && worldY >= 1120f) {
                     flow.transitionTo(GameScreenState.PAUSED);
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PAUSED && inventoryTouchController.isOpen()) {
+                    InventoryTouchController.Action action = inventoryTouchController.tap(
+                        gameState, worldX, worldY
+                    );
+                    if (action == InventoryTouchController.Action.EQUIPPED
+                        || action == InventoryTouchController.Action.UNEQUIPPED
+                        || action == InventoryTouchController.Action.SOLD) {
+                        saveNow();
+                    }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PAUSED
+                    && worldX >= 180f && worldX <= 540f
+                    && worldY >= 760f && worldY <= 900f) {
+                    inventoryTouchController.open();
                     return true;
                 }
                 if (flow.state() == GameScreenState.PAUSED
@@ -271,6 +300,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+        } else if (flow.state() == GameScreenState.PAUSED) {
+            if (inventoryTouchController.isOpen()) {
+                inventoryOverlayRenderer.drawInventory(
+                    spriteBatch, camera.combined, gameState, inventoryTouchController
+                );
+            } else {
+                inventoryOverlayRenderer.drawPauseMenu(spriteBatch, camera.combined);
+            }
         }
     }
 }
