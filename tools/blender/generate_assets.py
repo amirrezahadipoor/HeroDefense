@@ -246,6 +246,8 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
             item_index,
             TIER_COLORS[item["tier"]],
             item.get("visualKind"),
+            item["id"],
+            item["tier"],
         )
         actions = author_standard_actions(hero.armature, key)
         if ISOLATED_RENDERING:
@@ -265,6 +267,8 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
                         "variantIndex": item_index,
                         "tierColor": TIER_COLORS[item["tier"]],
                         "visualKind": item.get("visualKind"),
+                        "itemId": item["id"],
+                        "tier": item["tier"],
                         "samples": OVERLAY_RENDER_SAMPLES,
                     })
                     frame_paths[clip].append(target)
@@ -310,10 +314,11 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
             "bones": sorted(bone.name for bone in hero.armature.data.bones),
             "boneAnimated": True,
             "runtimeGlow": item["tier"] in {"RARE", "LEGENDARY"},
-            "visualQuality": (
-                "premium-v2" if item["id"] in PREMIUM_PILOT_EQUIPMENT_IDS
-                else "baseline-compatible"
-            ),
+            "modelRevision": "equipment-premium-v2",
+            "rigProfile": "hero-socket-v2",
+            "renderSupersample": RENDER_SUPERSAMPLE,
+            "renderSamples": OVERLAY_RENDER_SAMPLES,
+            "visualQuality": "premium-v2",
         }
         _write_json(sprite_directory / f"{item['id']}.json", entry)
         entries.append(entry)
@@ -530,6 +535,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
             int(payload["variantIndex"]),
             payload["tierColor"],
             payload.get("visualKind"),
+            payload["itemId"],
+            payload["tier"],
         )
         actions = author_standard_actions(hero.armature, payload["key"])
         hero.armature.animation_data.action = actions[payload["clip"]]

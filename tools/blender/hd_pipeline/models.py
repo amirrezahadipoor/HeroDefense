@@ -693,60 +693,466 @@ def _add_premium_legendary_piece(
     return objects
 
 
+def _add_premium_equipment_piece(
+    armature: bpy.types.Object,
+    slot: str,
+    variant_index: int,
+    tier_color: str,
+    visual_kind: str | None,
+    item_id: str,
+    tier: str,
+) -> list[bpy.types.Object]:
+    """Build one named equipment silhouette with restrained tier accents."""
+    tier_highlights = {
+        "COMMON": "#D9D0AD",
+        "UNCOMMON": "#A8E286",
+        "RARE": "#9DD8FF",
+        "LEGENDARY": "#FFE6A0",
+    }
+    accent = MATERIALS.get(f"{item_id}_accent", tier_color, tier in {"RARE", "LEGENDARY"})
+    highlight = MATERIALS.get(
+        f"{item_id}_highlight", tier_highlights[tier], tier in {"RARE", "LEGENDARY"}
+    )
+    dark = MATERIALS.get(f"{item_id}_dark", "#172C2B")
+    leather = MATERIALS.get(f"{item_id}_leather", "#694632")
+    wood = MATERIALS.get(f"{item_id}_wood", "#765033")
+    pale_wood = MATERIALS.get(f"{item_id}_pale_wood", "#AA8050")
+    silver = MATERIALS.get(f"{item_id}_silver", "#9DAEAD")
+    parchment = MATERIALS.get(f"{item_id}_parchment", "#D7C99B")
+    leaf = MATERIALS.get(f"{item_id}_leaf", "#67A85A")
+    deep_leaf = MATERIALS.get(f"{item_id}_deep_leaf", "#285842")
+    cyan = MATERIALS.get(f"{item_id}_cyan", "#8DE1DC", tier == "RARE")
+    crimson = MATERIALS.get(f"{item_id}_crimson", "#A9464C", tier == "RARE")
+    violet = MATERIALS.get(f"{item_id}_violet", "#6C568D", tier == "RARE")
+    objects: list[bpy.types.Object] = []
+
+    def attach(obj: bpy.types.Object, bone: str) -> bpy.types.Object:
+        _bone_part(obj, armature, bone, objects)
+        return obj
+
+    def front_ring(name: str, location, radius: float, thickness: float, material, bone: str):
+        return attach(add_torus(
+            name, location, radius, thickness, material, (math.pi / 2, 0, 0)
+        ), bone)
+
+    def segmented_bow(name: str, points, limb_material, detail_material, gem_material=None):
+        for index, (start, end) in enumerate(zip(points, points[1:])):
+            attach(add_cylinder_between(
+                f"{name}_limb_{index}", start, end,
+                0.044 if index not in {2, 3} else 0.052,
+                limb_material if index % 2 == 0 else detail_material, 7,
+            ), "weapon_socket")
+        nocking = (points[len(points) // 2][0] - 0.32, -0.15, points[len(points) // 2][2])
+        attach(add_cylinder_between(
+            f"{name}_string_lower", points[0], nocking, 0.008, highlight, 5
+        ), "weapon_socket")
+        attach(add_cylinder_between(
+            f"{name}_string_upper", nocking, points[-1], 0.008, highlight, 5
+        ), "weapon_socket")
+        attach(add_cylinder_between(
+            f"{name}_grip", (points[len(points) // 2][0], -0.13, nocking[2] - 0.13),
+            (points[len(points) // 2][0], -0.13, nocking[2] + 0.13), 0.066, dark, 8,
+        ), "weapon_socket")
+        if gem_material is not None:
+            attach(add_ico(
+                f"{name}_gem", (points[len(points) // 2][0], -0.21, nocking[2]),
+                (0.085, 0.03, 0.12), gem_material, 2,
+            ), "weapon_socket")
+
+    if slot == "weapon":
+        if item_id in {"ashwood_bow", "moonwood_longbow", "starfall_bow"}:
+            if item_id == "ashwood_bow":
+                points = ((0.73, -0.09, 0.40), (0.98, -0.12, 0.67),
+                          (1.08, -0.13, 1.02), (0.96, -0.11, 1.35),
+                          (0.71, -0.08, 1.58))
+                segmented_bow(item_id, points, wood, pale_wood)
+                attach(add_leaf("ashwood_grip_leaf", (1.08, -0.20, 1.02),
+                                (0.08, 0.025, 0.15), leaf), "weapon_socket")
+            elif item_id == "moonwood_longbow":
+                points = ((0.68, -0.08, 0.29), (0.94, -0.11, 0.54),
+                          (1.12, -0.13, 0.82), (1.17, -0.13, 1.06),
+                          (1.10, -0.12, 1.32), (0.91, -0.10, 1.58),
+                          (0.65, -0.07, 1.78))
+                segmented_bow(item_id, points, pale_wood, accent, cyan)
+                for index, (x, z, angle) in enumerate(((0.76, 0.37, -0.55), (0.73, 1.69, 0.55))):
+                    attach(add_leaf(f"moonwood_tip_leaf_{index}", (x, -0.13, z),
+                                    (0.09, 0.03, 0.17), leaf, (0, 0, angle)),
+                           "weapon_socket")
+            else:
+                points = ((0.66, -0.08, 0.27), (0.92, -0.11, 0.51),
+                          (1.12, -0.13, 0.78), (1.19, -0.14, 1.05),
+                          (1.11, -0.12, 1.34), (0.89, -0.10, 1.61),
+                          (0.62, -0.07, 1.82))
+                segmented_bow(item_id, points, silver, accent, cyan)
+                for index, (x, z) in enumerate(((0.72, 0.35), (1.18, 1.05), (0.69, 1.73))):
+                    attach(add_ico(f"starfall_star_{index}", (x, -0.18, z),
+                                   (0.065, 0.025, 0.085), highlight, 1), "weapon_socket")
+        elif item_id == "militia_sabre":
+            attach(add_cylinder_between("sabre_grip", (0.82, -0.09, 0.48),
+                                        (0.82, -0.09, 0.92), 0.065, leather, 8),
+                   "weapon_socket")
+            guard = add_cube("sabre_guard", (0.82, -0.10, 0.97),
+                             (0.48, 0.11, 0.09), accent, 0.025)
+            guard.rotation_euler.z = -0.12
+            attach(guard, "weapon_socket")
+            attach(add_leaf("sabre_blade", (0.84, -0.09, 1.37),
+                            (0.14, 0.055, 0.55), silver, (0, 0.08, -0.05)),
+                   "weapon_socket")
+            attach(add_ico("sabre_pommel", (0.82, -0.09, 0.43),
+                           (0.10, 0.07, 0.10), accent, 1), "weapon_socket")
+        elif item_id in {"thorn_spear", "verdant_glaive"}:
+            attach(add_cylinder_between(f"{item_id}_shaft", (0.82, -0.08, 0.30),
+                                        (0.82, -0.08, 1.66), 0.045, wood, 8),
+                   "weapon_socket")
+            if item_id == "thorn_spear":
+                attach(add_leaf("thorn_spear_head", (0.82, -0.08, 1.91),
+                                (0.18, 0.055, 0.38), accent), "weapon_socket")
+                for index, sign in enumerate((-1, 1)):
+                    barb = add_cone(f"thorn_spear_barb_{index}",
+                                    (0.82 + 0.13 * sign, -0.08, 1.66),
+                                    0.06, 0.0, 0.27, dark, 5,
+                                    (0, math.radians(58 * sign), 0))
+                    attach(barb, "weapon_socket")
+                front_ring("thorn_spear_band", (0.82, -0.08, 1.50),
+                           0.09, 0.025, parchment, "weapon_socket")
+            else:
+                attach(add_leaf("verdant_glaive_blade", (0.96, -0.09, 1.80),
+                                (0.25, 0.055, 0.48), accent,
+                                (0, 0.12, -0.35)), "weapon_socket")
+                attach(add_leaf("verdant_glaive_hook", (0.67, -0.08, 1.67),
+                                (0.12, 0.045, 0.27), leaf, (0, 0, 0.58)),
+                       "weapon_socket")
+                for z in (0.72, 1.40):
+                    front_ring(f"verdant_glaive_band_{z}", (0.82, -0.08, z),
+                               0.085, 0.023, highlight, "weapon_socket")
+        elif item_id == "golem_splitter":
+            attach(add_cylinder_between("splitter_haft", (0.82, -0.07, 0.28),
+                                        (0.82, -0.07, 1.58), 0.060, dark, 8),
+                   "weapon_socket")
+            for side, sign in (("L", -1), ("R", 1)):
+                attach(add_leaf(f"splitter_blade_{side}",
+                                (0.82 + 0.25 * sign, -0.08, 1.61),
+                                (0.31, 0.065, 0.38), silver,
+                                (0, 0.10 * sign, 0.44 * sign)), "weapon_socket")
+            attach(add_cube("splitter_head_core", (0.82, -0.08, 1.60),
+                            (0.30, 0.13, 0.28), accent, 0.045), "weapon_socket")
+            attach(add_ico("splitter_rune", (0.82, -0.17, 1.61),
+                           (0.09, 0.025, 0.12), cyan, 1), "weapon_socket")
+            attach(add_ico("splitter_counterweight", (0.82, -0.07, 0.25),
+                           (0.13, 0.10, 0.13), accent, 1), "weapon_socket")
+        else:
+            raise ValueError(f"Unknown premium weapon: {item_id}/{visual_kind}")
+
+    elif slot == "helmet":
+        bone = "helmet_socket"
+        if item_id == "leather_cap":
+            attach(add_cone("leather_cap_dome", (0, 0.03, 1.98),
+                            0.36, 0.20, 0.38, leather, 10), bone)
+            attach(add_cube("leather_cap_brim", (0, -0.25, 1.91),
+                            (0.72, 0.18, 0.08), accent, 0.025), bone)
+            for side, sign in (("L", -1), ("R", 1)):
+                attach(add_leaf(f"leather_cap_flap_{side}", (0.29 * sign, -0.07, 1.78),
+                                (0.13, 0.055, 0.26), leather,
+                                (0, 0.1 * sign, 0.10 * sign)), bone)
+        elif item_id == "scout_hood":
+            attach(add_ico("scout_hood_shell", (0, 0.06, 1.83),
+                           (0.40, 0.31, 0.43), deep_leaf, 2), bone)
+            front_ring("scout_hood_face", (0, -0.25, 1.82), 0.30, 0.055, accent, bone)
+            attach(add_leaf("scout_hood_peak", (0, -0.28, 2.11),
+                            (0.15, 0.05, 0.24), leaf), bone)
+            attach(add_cube("scout_hood_shadow", (0, -0.285, 1.93),
+                            (0.48, 0.035, 0.08), dark, 0.02), bone)
+        elif item_id == "fern_guard":
+            front_ring("fern_guard_circlet", (0, -0.02, 2.00), 0.34, 0.035, accent, bone)
+            for index, (x, z, angle) in enumerate(((-0.24, 2.08, -0.50),
+                                                   (0, 2.20, 0),
+                                                   (0.24, 2.08, 0.50))):
+                attach(add_leaf(f"fern_guard_leaf_{index}", (x, -0.15, z),
+                                (0.13, 0.045, 0.29), leaf, (0, 0, angle)), bone)
+                attach(add_cube(f"fern_guard_rib_{index}", (x, -0.20, z),
+                                (0.025, 0.02, 0.20), highlight, 0.005), bone)
+        elif item_id == "antler_circlet":
+            front_ring("antler_circlet", (0, -0.01, 1.99), 0.34, 0.035, accent, bone)
+            for side, sign in (("L", -1), ("R", 1)):
+                trunk_start=(0.22 * sign, 0.0, 2.04); trunk_end=(0.37 * sign, 0.02, 2.48)
+                attach(add_cylinder_between(f"antler_trunk_{side}", trunk_start, trunk_end,
+                                            0.045, pale_wood, 7), bone)
+                attach(add_cylinder_between(f"antler_tine_low_{side}",
+                                            (0.30 * sign, 0.01, 2.26),
+                                            (0.52 * sign, 0.0, 2.35), 0.032,
+                                            parchment, 6), bone)
+                attach(add_cylinder_between(f"antler_tine_high_{side}",
+                                            (0.35 * sign, 0.02, 2.39),
+                                            (0.50 * sign, 0.02, 2.54), 0.028,
+                                            parchment, 6), bone)
+        elif item_id == "owlguard_helm":
+            attach(add_ico("owlguard_shell", (0, 0.01, 1.94),
+                           (0.40, 0.28, 0.40), dark, 2), bone)
+            for side, sign in (("L", -1), ("R", 1)):
+                front_ring(f"owlguard_eye_ring_{side}",
+                           (0.14 * sign, -0.27, 1.98), 0.13, 0.035, silver, bone)
+                attach(add_ico(f"owlguard_eye_{side}",
+                               (0.14 * sign, -0.305, 1.98),
+                               (0.060, 0.022, 0.070), cyan, 1), bone)
+                attach(add_leaf(f"owlguard_wing_{side}",
+                                (0.35 * sign, 0.0, 1.90),
+                                (0.16, 0.07, 0.33), accent,
+                                (0, 0.1 * sign, 0.24 * sign)), bone)
+            attach(add_cone("owlguard_beak", (0, -0.31, 1.82),
+                            0.12, 0.0, 0.30, highlight, 5,
+                            (math.pi / 2, 0, 0)), bone)
+        else:
+            raise ValueError(f"Unknown premium helmet: {item_id}")
+
+    elif slot == "armor":
+        bone = "armor_socket"
+        if item_id == "padded_vest":
+            attach(add_cube("padded_vest_body", (0, -0.30, 1.23),
+                            (0.65, 0.10, 0.67), leather, 0.065), bone)
+            attach(add_cube("padded_vest_center", (0, -0.405, 1.23),
+                            (0.10, 0.025, 0.58), accent, 0.015), bone)
+            for row in range(2):
+                for column, sign in enumerate((-1, 1)):
+                    attach(add_ico(f"padded_vest_stud_{row}_{column}",
+                                   (0.20 * sign, -0.415, 1.08 + row * 0.28),
+                                   (0.055, 0.018, 0.055), parchment, 1), bone)
+        elif item_id == "bark_tunic":
+            attach(add_leaf("bark_tunic_body", (0, -0.31, 1.25),
+                            (0.37, 0.08, 0.62), wood), bone)
+            for side, sign in (("L", -1), ("R", 1)):
+                attach(add_leaf(f"bark_tunic_plate_{side}",
+                                (0.25 * sign, -0.34, 1.25),
+                                (0.18, 0.05, 0.52), pale_wood,
+                                (0, 0.10 * sign, 0.10 * sign)), bone)
+            front_ring("bark_tunic_knot", (0, -0.405, 1.27), 0.12, 0.032, accent, bone)
+            attach(add_ico("bark_tunic_sap", (0, -0.44, 1.27),
+                           (0.06, 0.02, 0.08), highlight, 1), bone)
+        elif item_id == "ranger_mail":
+            attach(add_cube("ranger_mail_body", (0, -0.30, 1.24),
+                            (0.66, 0.09, 0.66), deep_leaf, 0.055), bone)
+            for row in range(3):
+                for column, sign in enumerate((-1, 1)):
+                    front_ring(f"ranger_mail_link_{row}_{column}",
+                               (0.16 * sign, -0.405, 1.04 + row * 0.20),
+                               0.075, 0.018, silver, bone)
+            for side, sign in (("L", -1), ("R", 1)):
+                attach(add_cube(f"ranger_mail_strap_{side}",
+                                (0.27 * sign, -0.39, 1.40),
+                                (0.09, 0.025, 0.45), accent, 0.015), bone)
+        elif item_id == "mossweave_coat":
+            attach(add_cone("mossweave_coat", (0, -0.20, 1.18),
+                            0.42, 0.30, 0.92, deep_leaf, 10), bone)
+            for index, (x, z, angle) in enumerate(((-0.25, 1.40, -0.30),
+                                                   (0, 1.50, 0),
+                                                   (0.25, 1.40, 0.30),
+                                                   (-0.18, 0.92, -0.15),
+                                                   (0.18, 0.92, 0.15))):
+                attach(add_leaf(f"mossweave_leaf_{index}", (x, -0.39, z),
+                                (0.16, 0.04, 0.28), leaf, (0, 0, angle)), bone)
+            attach(add_cube("mossweave_clasp", (0, -0.43, 1.30),
+                            (0.14, 0.03, 0.14), highlight, 0.025), bone)
+        elif item_id == "crystalbark_plate":
+            attach(add_cube("crystalbark_body", (0, -0.30, 1.24),
+                            (0.70, 0.12, 0.70), wood, 0.07), bone)
+            for side, sign in (("L", -1), ("R", 1)):
+                attach(add_leaf(f"crystalbark_edge_{side}",
+                                (0.29 * sign, -0.41, 1.24),
+                                (0.15, 0.045, 0.58), dark,
+                                (0, 0.08 * sign, 0.08 * sign)), bone)
+                attach(add_leaf(f"crystalbark_shard_{side}",
+                                (0.16 * sign, -0.46, 1.30),
+                                (0.105, 0.025, 0.30), accent,
+                                (0, 0, 0.18 * sign)), bone)
+            attach(add_ico("crystalbark_core", (0, -0.47, 1.21),
+                           (0.11, 0.025, 0.17), cyan, 2), bone)
+        elif item_id == "shadeleaf_mantle":
+            attach(add_cone("shadeleaf_shadow", (0, 0.04, 1.25),
+                            0.50, 0.24, 0.82, dark, 9), bone)
+            for index, (x, z, angle) in enumerate(((-0.30, 1.44, -0.36),
+                                                   (0, 1.51, 0),
+                                                   (0.30, 1.44, 0.36),
+                                                   (-0.22, 1.12, -0.20),
+                                                   (0.22, 1.12, 0.20))):
+                attach(add_leaf(f"shadeleaf_panel_{index}", (x, -0.33, z),
+                                (0.21, 0.05, 0.35),
+                                accent if index < 3 else violet,
+                                (0, 0, angle)), bone)
+            front_ring("shadeleaf_clasp", (0, -0.405, 1.44),
+                       0.12, 0.030, cyan, bone)
+        else:
+            raise ValueError(f"Unknown premium armor: {item_id}")
+
+    elif slot == "boots":
+        for side, sign in (("L", -1), ("R", 1)):
+            bone = f"boot_socket.{side}"
+            if item_id == "trail_boots":
+                attach(add_cube(f"trail_boot_{side}", (0.22 * sign, -0.10, 0.18),
+                                (0.28, 0.38, 0.30), leather, 0.055), bone)
+                attach(add_cube(f"trail_sole_{side}", (0.22 * sign, -0.13, 0.07),
+                                (0.31, 0.42, 0.09), dark, 0.025), bone)
+                front_ring(f"trail_cuff_{side}", (0.22 * sign, -0.05, 0.30),
+                           0.16, 0.030, accent, bone)
+            elif item_id == "hide_greaves":
+                attach(add_cube(f"hide_greave_{side}", (0.22 * sign, -0.08, 0.22),
+                                (0.30, 0.34, 0.38), leather, 0.05), bone)
+                for index in range(3):
+                    attach(add_ico(f"hide_fur_{side}_{index}",
+                                   (0.22 * sign + (index - 1) * 0.08,
+                                    -0.10, 0.40),
+                                   (0.10, 0.08, 0.09), parchment, 1), bone)
+                attach(add_leaf(f"hide_bone_guard_{side}",
+                                (0.22 * sign, -0.30, 0.23),
+                                (0.10, 0.035, 0.24), accent), bone)
+            elif item_id == "windstep_boots":
+                attach(add_cube(f"windstep_boot_{side}", (0.22 * sign, -0.10, 0.18),
+                                (0.28, 0.37, 0.30), deep_leaf, 0.055), bone)
+                front_ring(f"windstep_cuff_{side}", (0.22 * sign, -0.05, 0.30),
+                           0.16, 0.030, accent, bone)
+                for index in range(2):
+                    attach(add_leaf(f"windstep_wing_{side}_{index}",
+                                    (0.33 * sign + index * 0.07 * sign,
+                                     -0.10, 0.31 + index * 0.08),
+                                    (0.10, 0.035, 0.19),
+                                    leaf if index == 0 else highlight,
+                                    (0, 0.14 * sign, (0.45 + index * 0.18) * sign)), bone)
+            elif item_id == "rootguard_sabatons":
+                attach(add_cube(f"rootguard_boot_{side}", (0.22 * sign, -0.10, 0.18),
+                                (0.32, 0.41, 0.32), dark, 0.05), bone)
+                for index, x_offset in enumerate((-0.09, 0.09)):
+                    attach(add_leaf(f"rootguard_bark_{side}_{index}",
+                                    (0.22 * sign + x_offset, -0.31, 0.22),
+                                    (0.11, 0.035, 0.25), wood,
+                                    (0, 0, 0.10 * sign)), bone)
+                attach(add_ico(f"rootguard_knot_{side}",
+                               (0.22 * sign, -0.34, 0.32),
+                               (0.07, 0.025, 0.08), accent, 1), bone)
+            elif item_id == "stormrunner_boots":
+                attach(add_cube(f"stormrunner_boot_{side}",
+                                (0.22 * sign, -0.10, 0.18),
+                                (0.29, 0.39, 0.31), dark, 0.055), bone)
+                front_ring(f"stormrunner_cuff_{side}",
+                           (0.22 * sign, -0.05, 0.31), 0.16, 0.032, silver, bone)
+                for index in range(3):
+                    attach(add_leaf(f"stormrunner_arc_{side}_{index}",
+                                    (0.31 * sign + index * 0.055 * sign,
+                                     -0.13, 0.27 + index * 0.08),
+                                    (0.085, 0.030, 0.16),
+                                    accent if index < 2 else cyan,
+                                    (0, 0.15 * sign, (0.40 + index * 0.20) * sign)), bone)
+            else:
+                raise ValueError(f"Unknown premium boots: {item_id}")
+
+    elif slot in {"ring1", "ring2"}:
+        side = "L" if slot == "ring1" else "R"
+        sign = -1 if side == "L" else 1
+        bone = f"ring_socket.{side}"
+        x = 0.78 * sign
+        ring_material = {
+            "copper_leaf_ring": leather,
+            "river_pebble_ring": silver,
+            "acorn_band": leather,
+            "hunter_loop": dark,
+            "twine_circle": parchment,
+            "jade_sap_ring": accent,
+            "hawk_eye_band": highlight,
+            "silver_briar_ring": silver,
+            "dewstone_loop": silver,
+            "sapphire_luck_ring": silver,
+            "bloodroot_signet": dark,
+            "echo_band": accent,
+        }.get(item_id, accent)
+        front_ring(f"{item_id}_band", (x, -0.07, 1.0),
+                   0.115 if tier != "COMMON" else 0.105, 0.027, ring_material, bone)
+
+        if item_id == "copper_leaf_ring":
+            attach(add_leaf("copper_leaf_gem", (x, -0.19, 1.09),
+                            (0.075, 0.028, 0.13), leaf, (0, 0, 0.28 * sign)), bone)
+        elif item_id == "river_pebble_ring":
+            attach(add_ico("river_pebble", (x, -0.18, 1.08),
+                           (0.09, 0.035, 0.07), accent, 2), bone)
+            attach(add_cube("river_glint", (x - 0.025 * sign, -0.22, 1.10),
+                            (0.025, 0.015, 0.035), highlight, 0.005), bone)
+        elif item_id == "acorn_band":
+            attach(add_ico("acorn_seed", (x, -0.18, 1.07),
+                           (0.075, 0.035, 0.10), wood, 2), bone)
+            front_ring("acorn_cap", (x, -0.20, 1.14), 0.07, 0.022, accent, bone)
+        elif item_id == "hunter_loop":
+            attach(add_cone("hunter_tooth", (x, -0.18, 1.08),
+                            0.075, 0.0, 0.20, parchment, 6), bone)
+            attach(add_leaf("hunter_fletch", (x + 0.075 * sign, -0.16, 1.09),
+                            (0.045, 0.022, 0.08), leaf,
+                            (0, 0, 0.45 * sign)), bone)
+        elif item_id == "twine_circle":
+            front_ring("twine_second_loop", (x + 0.045 * sign, -0.09, 1.04),
+                       0.09, 0.023, leather, bone)
+            attach(add_ico("twine_knot", (x, -0.18, 1.09),
+                           (0.055, 0.025, 0.055), accent, 1), bone)
+        elif item_id == "jade_sap_ring":
+            attach(add_leaf("jade_sap_gem", (x, -0.19, 1.09),
+                            (0.08, 0.030, 0.14), leaf), bone)
+            attach(add_ico("jade_sap_drop", (x, -0.225, 1.08),
+                           (0.035, 0.015, 0.05), highlight, 1), bone)
+        elif item_id == "hawk_eye_band":
+            front_ring("hawk_eye_socket", (x, -0.18, 1.09),
+                       0.095, 0.028, accent, bone)
+            attach(add_ico("hawk_eye", (x, -0.22, 1.09),
+                           (0.048, 0.018, 0.060), dark, 1), bone)
+            attach(add_ico("hawk_eye_glint", (x - 0.015 * sign, -0.24, 1.11),
+                           (0.015, 0.008, 0.018), highlight, 1), bone)
+        elif item_id == "silver_briar_ring":
+            for index, angle in enumerate((-0.55, 0, 0.55)):
+                attach(add_cone(f"briar_thorn_{index}",
+                                (x + (index - 1) * 0.065 * sign, -0.16,
+                                 1.10 + abs(index - 1) * 0.025),
+                                0.035, 0.0, 0.12, accent, 5,
+                                (0, angle * sign, 0)), bone)
+        elif item_id == "dewstone_loop":
+            attach(add_leaf("dewstone", (x, -0.20, 1.09),
+                            (0.08, 0.028, 0.13), cyan), bone)
+            attach(add_ico("dewstone_glint", (x - 0.025 * sign, -0.23, 1.12),
+                           (0.022, 0.010, 0.030), highlight, 1), bone)
+        elif item_id == "sapphire_luck_ring":
+            attach(add_ico("sapphire_center", (x, -0.20, 1.09),
+                           (0.085, 0.035, 0.11), accent, 2), bone)
+            for index, gem_sign in enumerate((-1, 1)):
+                attach(add_leaf(f"sapphire_leaf_{index}",
+                                (x + 0.085 * gem_sign * sign, -0.18, 1.09),
+                                (0.045, 0.020, 0.085), cyan,
+                                (0, 0, 0.50 * gem_sign)), bone)
+        elif item_id == "bloodroot_signet":
+            attach(add_ico("bloodroot_gem", (x, -0.20, 1.09),
+                           (0.09, 0.035, 0.11), crimson, 2), bone)
+            for index, root_sign in enumerate((-1, 1)):
+                attach(add_cylinder_between(f"bloodroot_tendril_{index}",
+                                            (x, -0.17, 1.05),
+                                            (x + 0.10 * root_sign * sign,
+                                             -0.15, 0.99), 0.018, accent, 5), bone)
+        elif item_id == "echo_band":
+            front_ring("echo_inner", (x, -0.18, 1.09),
+                       0.072, 0.020, cyan, bone)
+            front_ring("echo_outer", (x, -0.17, 1.09),
+                       0.125, 0.018, highlight, bone)
+        else:
+            raise ValueError(f"Unknown premium ring: {item_id}")
+    else:
+        raise ValueError(f"Unsupported equipment slot: {slot}")
+    return objects
+
+
 def add_equipment_variant(
     armature: bpy.types.Object,
     slot: str,
     variant_index: int,
     tier_color: str,
     visual_kind: str | None = None,
+    item_id: str | None = None,
+    tier: str | None = None,
 ) -> list[bpy.types.Object]:
-    """Attach a deterministic equipment mesh to the stable Hero socket bones."""
+    """Attach a deterministic premium equipment mesh to stable Hero sockets."""
     if variant_index in {35, 36, 37, 38, 39}:
         return _add_premium_legendary_piece(armature, slot, variant_index)
-    material = MATERIALS.get(f"equipment_{slot}_{variant_index}", tier_color, slot in {"weapon", "helmet", "armor"})
-    dark = MATERIALS.get("equipment_dark", "#2A3438", True)
-    objects: list[bpy.types.Object] = []
-    motif = variant_index % 4
-    if slot == "weapon":
-        kind = visual_kind or ("bow" if motif in {0, 3} else "spear")
-        if kind == "bow":
-            _add_bow(armature, objects, material, dark)
-        else:
-            shaft_top = 1.48 if kind == "sword" else 1.72
-            shaft = add_cylinder_between(
-                f"weapon_{variant_index}_shaft", (0.82, -0.10, 0.42),
-                (0.82, -0.08, shaft_top), 0.045, dark, 6,
-            )
-            _bone_part(shaft, armature, "weapon_socket", objects)
-            if kind == "axe":
-                blade = add_cube(
-                    f"weapon_{variant_index}_axe", (0.96, -0.08, 1.62),
-                    (0.34, 0.10, 0.28), material, 0.035,
-                )
-            else:
-                blade_depth = 0.55 if kind in {"spear", "glaive"} else 0.48
-                blade = add_cone(
-                    f"weapon_{variant_index}_{kind}",
-                    (0.82, -0.08, shaft_top + blade_depth * 0.46),
-                    0.24 if kind == "glaive" else 0.18,
-                    0, blade_depth, material, 4,
-                )
-            _bone_part(blade, armature, "weapon_socket", objects)
-    elif slot == "helmet":
-        crown = add_cone(f"helmet_{variant_index}", (0, 0, 2.05), 0.35 + motif * 0.025, 0.05, 0.48 + motif * 0.04, material, 6 + motif)
-        _bone_part(crown, armature, "helmet_socket", objects)
-    elif slot == "armor":
-        plate = add_cube(f"armor_{variant_index}", (0, -0.28, 1.24), (0.62 + motif * 0.04, 0.08, 0.62), material, 0.04)
-        _bone_part(plate, armature, "armor_socket", objects)
-    elif slot == "boots":
-        for side, sign in (("L", -1), ("R", 1)):
-            boot = add_cube(f"boots_{variant_index}_{side}", (0.22 * sign, -0.10, 0.18), (0.27, 0.36, 0.28 + motif * 0.02), material, 0.04)
-            _bone_part(boot, armature, f"boot_socket.{side}", objects)
-    elif slot in {"ring1", "ring2"}:
-        side = "L" if slot == "ring1" else "R"
-        sign = -1 if side == "L" else 1
-        ring = add_torus(f"{slot}_{variant_index}", (0.78 * sign, -0.07, 1.0), 0.10 + motif * 0.008, 0.025, material, (math.radians(90), 0, 0))
-        _bone_part(ring, armature, f"ring_socket.{side}", objects)
-    else:
-        raise ValueError(f"Unsupported equipment slot: {slot}")
-    return objects
+    if item_id is None or tier is None:
+        raise ValueError("Premium equipment generation requires item id and tier")
+    return _add_premium_equipment_piece(
+        armature, slot, variant_index, tier_color, visual_kind, item_id, tier
+    )
