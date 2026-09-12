@@ -13,10 +13,13 @@ import com.amirrezahadipoor.herodefense.input.InventoryTouchLayout;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
+import com.amirrezahadipoor.herodefense.render.InventoryItemDetails.Details;
+import com.amirrezahadipoor.herodefense.render.InventoryItemDetails.StatComparison;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -102,6 +105,12 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             );
         }
         panel(
+            InventoryTouchLayout.DETAILS_X,
+            InventoryTouchLayout.DETAILS_Y,
+            InventoryTouchLayout.DETAILS_WIDTH,
+            InventoryTouchLayout.DETAILS_HEIGHT
+        );
+        panel(
             InventoryTouchLayout.EQUIP_X,
             InventoryTouchLayout.ACTION_Y,
             InventoryTouchLayout.ACTION_WIDTH,
@@ -140,6 +149,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
                 font.draw(batch, item.name, x + 76f, y + 40f);
             }
         }
+        font.getData().setScale(0.95f);
         for (int row = 0; row < InventoryTouchLayout.VISIBLE_ROWS; row++) {
             int itemIndex = controller.firstVisibleIndex() + row;
             if (itemIndex >= state.inventory.size()) continue;
@@ -151,10 +161,67 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             font.draw(batch, item.name, InventoryTouchLayout.LIST_X + 94f, y + 62f);
             font.draw(batch, item.tier + " · " + item.sellPrice + " coins", InventoryTouchLayout.LIST_X + 94f, y + 28f);
         }
+        drawDetails(batch, state, controller.selectedItem(state));
+        font.getData().setScale(1.3f);
+        font.setColor(Color.valueOf("E7D8B1"));
         font.draw(batch, "Equip", InventoryTouchLayout.EQUIP_X + 102f, 145f);
         font.draw(batch, "Sell", InventoryTouchLayout.SELL_X + 112f, 145f);
         batch.end();
         disposeHiddenIcons(visibleIcons);
+    }
+
+    private void drawDetails(SpriteBatch batch, GameState state, Item selected) {
+        float x = InventoryTouchLayout.DETAILS_X + 16f;
+        float top = InventoryTouchLayout.DETAILS_Y + InventoryTouchLayout.DETAILS_HEIGHT - 24f;
+        font.getData().setScale(1.0f);
+        if (selected == null) {
+            font.setColor(Color.valueOf("AAB8AE"));
+            font.draw(batch, "Select an item to inspect", x, top);
+            font.draw(batch, "all stats and comparison.", x, top - 38f);
+            return;
+        }
+
+        Details details = InventoryItemDetails.inspect(state, selected);
+        font.setColor(rarityColor(details.rarity()));
+        font.draw(batch, details.name(), x, top);
+        font.setColor(Color.valueOf("E7D8B1"));
+        font.draw(batch, "Rarity: " + prettyOrUnknown(details.rarity()), x, top - 42f);
+        font.draw(
+            batch,
+            "Slot: " + (details.slot() == null ? "Unknown" : pretty(details.slot().name())),
+            x,
+            top - 78f
+        );
+        font.draw(
+            batch,
+            "Status: " + (details.equipped() ? "Equipped" : "In Inventory"),
+            x,
+            top - 114f
+        );
+        font.draw(
+            batch,
+            "Compared: " + (
+                details.comparedItemName() == null ? "Empty slot" : details.comparedItemName()
+            ),
+            x,
+            top - 150f
+        );
+        font.setColor(Color.valueOf("D6AD4C"));
+        font.draw(batch, "Stat bonuses", x, top - 194f);
+        font.setColor(Color.valueOf("E7D8B1"));
+        if (details.stats().isEmpty()) {
+            font.draw(batch, "None", x, top - 232f);
+            return;
+        }
+        for (int index = 0; index < details.stats().size(); index++) {
+            StatComparison comparison = details.stats().get(index);
+            String line = pretty(comparison.stat().name())
+                + " " + signed(comparison.candidateValue());
+            if (details.comparedItemName() != null) {
+                line += "  (diff " + signed(comparison.difference()) + ")";
+            }
+            font.draw(batch, line, x, top - 232f - index * 34f);
+        }
     }
 
     private void drawIcon(
@@ -205,8 +272,30 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         shapes.rect(x, y + height - 5f, width, 5f);
     }
 
+    private static Color rarityColor(String rarity) {
+        if (rarity == null) return Color.valueOf("E7D8B1");
+        return switch (rarity) {
+            case "UNCOMMON" -> Color.valueOf("74C365");
+            case "RARE" -> Color.valueOf("6FADEB");
+            case "LEGENDARY" -> Color.valueOf("F2B84B");
+            default -> Color.valueOf("E7D8B1");
+        };
+    }
+
+    private static String signed(float value) {
+        int rounded = Math.round(value);
+        if (Math.abs(value - rounded) < 0.001f) {
+            return String.format(Locale.ROOT, "%+d", rounded);
+        }
+        return String.format(Locale.ROOT, "%+.1f", value);
+    }
+
+    private static String prettyOrUnknown(String value) {
+        return value == null || value.isBlank() ? "Unknown" : pretty(value);
+    }
+
     private static String pretty(String value) {
-        String text = value.replace('_', ' ').toLowerCase(java.util.Locale.ROOT);
+        String text = value.replace('_', ' ').toLowerCase(Locale.ROOT);
         return Character.toUpperCase(text.charAt(0)) + text.substring(1);
     }
 

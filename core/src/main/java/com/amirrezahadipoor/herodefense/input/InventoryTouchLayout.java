@@ -15,12 +15,17 @@ public final class InventoryTouchLayout {
     public static final float SLOT_HEIGHT = 90f;
     public static final float SLOT_ROW_STRIDE = 110f;
 
-    public static final float LIST_X = 55f;
-    public static final float LIST_WIDTH = 610f;
+    public static final float LIST_X = 40f;
+    public static final float LIST_WIDTH = 320f;
     public static final float LIST_TOP_Y = 650f;
     public static final float LIST_ROW_HEIGHT = 90f;
     public static final float LIST_ROW_STRIDE = 100f;
     public static final int VISIBLE_ROWS = 4;
+
+    public static final float DETAILS_X = 380f;
+    public static final float DETAILS_Y = 250f;
+    public static final float DETAILS_WIDTH = 300f;
+    public static final float DETAILS_HEIGHT = 400f;
 
     public static final float EQUIP_X = 55f;
     public static final float SELL_X = 385f;
