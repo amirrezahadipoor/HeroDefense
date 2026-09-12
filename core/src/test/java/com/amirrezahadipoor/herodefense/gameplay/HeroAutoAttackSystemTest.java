@@ -42,6 +42,21 @@ final class HeroAutoAttackSystemTest {
     }
 
     @Test
+    void persistentPowerAndLifestealEffectsApplyToTheVeryNextAttack() {
+        GameState state = GameState.newRun(13L);
+        state.permanentEffects.put("generalPower", 0.5f);
+        state.permanentEffects.put("lifesteal", 0.1f);
+        state.hero.health = 50f;
+        Enemy target = enemy(state, 90f, 0f);
+        state.aliveEnemies.add(target);
+
+        system.update(state, 0f);
+        assertEquals(15f, state.projectiles.get(0).damage);
+        system.update(state, 0.2f);
+        assertEquals(51.5f, state.hero.health);
+    }
+
+    @Test
     void agilityDerivedIntervalIsAppliedToCooldown() {
         GameState state = GameState.newRun(12L);
         state.hero.stats.agility = 10;

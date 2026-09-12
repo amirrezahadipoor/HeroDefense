@@ -5,6 +5,7 @@ import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Hero;
 import com.amirrezahadipoor.herodefense.model.Projectile;
+import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 
 /** Deterministic nearest-target bow attacks for the stationary Hero. */
 public final class HeroAutoAttackSystem {
@@ -82,7 +83,8 @@ public final class HeroAutoAttackSystem {
         Projectile projectile = new Projectile(
             state.allocateEntityId(), hero.id, target.id, hero.x, hero.y
         );
-        projectile.damage = hero.damagePerAttack();
+        projectile.damage = hero.damagePerAttack()
+            * (1f + effectValue(state, BossRewardCardSystem.GENERAL_POWER_KEY));
         float distance = (float) Math.sqrt(hero.distanceSquaredTo(target.x, target.y));
         projectile.remainingLifetimeSeconds = distance / PROJECTILE_SPEED + 0.25f;
         setVelocityToward(projectile, target);
@@ -106,7 +108,16 @@ public final class HeroAutoAttackSystem {
             if (distanceSquared <= travel * travel) {
                 projectile.x = target.x;
                 projectile.y = target.y;
+                float healthBefore = target.health;
                 target.receiveDamage(projectile.damage);
+                float damageDealt = Math.max(0f, healthBefore - target.health);
+                float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY);
+                if (lifesteal > 0f && state.hero.alive) {
+                    state.hero.health = Math.min(
+                        state.hero.maxHealth,
+                        state.hero.health + damageDealt * lifesteal
+                    );
+                }
                 projectile.active = false;
             } else {
                 setVelocityToward(projectile, target);
@@ -129,6 +140,11 @@ public final class HeroAutoAttackSystem {
             }
         }
         return null;
+    }
+
+    private static float effectValue(GameState state, String key) {
+        Float value = state.permanentEffects.get(key);
+        return value == null ? 0f : Math.max(0f, value);
     }
 
     private static void setVelocityToward(Projectile projectile, Enemy target) {

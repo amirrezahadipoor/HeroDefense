@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.amirrezahadipoor.herodefense.gameplay.BossFactory;
 import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
+import com.amirrezahadipoor.herodefense.gameplay.BossWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.ContinuousWaveRun;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
@@ -20,11 +22,13 @@ import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
+import com.amirrezahadipoor.herodefense.input.RewardCardTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
+import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 
 /** Android-only libGDX game loop and top-level state coordinator. */
@@ -32,6 +36,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private BossRewardCardSystem bossRewardCardSystem;
     private BossSpecialAttackSystem bossSpecialAttackSystem;
     private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
@@ -56,7 +61,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(heroDamageSystem);
         enemyMovementSystem = new EnemyMovementSystem();
         EnemyWaveSpawner enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
-        waveLifecycleSystem = new WaveLifecycleSystem(enemyWaveSpawner, new ContinuousWaveRun());
+        bossRewardCardSystem = new BossRewardCardSystem();
+        waveLifecycleSystem = new WaveLifecycleSystem(
+            enemyWaveSpawner,
+            new BossWaveSpawner(new BossFactory()),
+            bossRewardCardSystem,
+            new ContinuousWaveRun()
+        );
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
@@ -157,6 +168,19 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             @Override
             public boolean onTouchUp(float worldX, float worldY, int pointer, boolean isTap) {
                 if (!isTap) {
+                    return true;
+                }
+                if (flow.state() == GameScreenState.CARD_CHOICE) {
+                    int choiceIndex = RewardCardTouchLayout.cardIndexAt(worldX, worldY);
+                    if (bossRewardCardSystem.chooseCard(gameState, choiceIndex)) {
+                        WaveCompletion result = waveLifecycleSystem.continueAfterBossReward(gameState);
+                        flow.transitionTo(
+                            result == WaveCompletion.RUN_COMPLETED
+                                ? GameScreenState.GAME_OVER
+                                : GameScreenState.PLAYING
+                        );
+                        saveNow();
+                    }
                     return true;
                 }
                 if (flow.state() == GameScreenState.LEVEL_UP) {
