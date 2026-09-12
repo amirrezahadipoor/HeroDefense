@@ -15,6 +15,7 @@ final class PotionDropSystemTest {
 
     @Test
     void usesEightPercentDropBoundary() {
+        assertEquals(0.08f, PotionDropSystem.DROP_RATE);
         assertTrue(drops.isDrop(0f));
         assertTrue(drops.isDrop(0.079999f));
         assertFalse(drops.isDrop(0.08f));
@@ -30,6 +31,14 @@ final class PotionDropSystemTest {
             drops.tierForRoll(60, 0.999f).ordinal()
                 < drops.tierForRoll(100, 0.999f).ordinal()
         );
+
+        // At Wave 100 the six tiers carry weights 1:2:3:4:5:6 (21 total).
+        assertEquals(PotionTier.TIER_1, drops.tierForRoll(100, 0.02f));
+        assertEquals(PotionTier.TIER_2, drops.tierForRoll(100, 0.08f));
+        assertEquals(PotionTier.TIER_3, drops.tierForRoll(100, 0.20f));
+        assertEquals(PotionTier.TIER_4, drops.tierForRoll(100, 0.40f));
+        assertEquals(PotionTier.TIER_5, drops.tierForRoll(100, 0.60f));
+        assertEquals(PotionTier.TIER_6, drops.tierForRoll(100, 0.85f));
     }
 
     @Test
