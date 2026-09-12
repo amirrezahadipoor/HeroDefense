@@ -42,6 +42,7 @@ public final class AndroidTouchSmokeTest {
             HeroDefenseGame game = gameFrom(scenario);
             await("libGDX touch input", game::readyForTouch);
             await("main menu", () -> game.screenState() == GameScreenState.MENU);
+            settleTouchSurface(device);
             int[] surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
@@ -92,6 +93,7 @@ public final class AndroidTouchSmokeTest {
             HeroDefenseGame game = gameFrom(scenario);
             await("libGDX touch input", game::readyForTouch);
             await("saved run menu", () -> game.screenState() == GameScreenState.MENU);
+            settleTouchSurface(device);
             int[] surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
@@ -120,6 +122,12 @@ public final class AndroidTouchSmokeTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         device.waitForIdle();
         return device;
+    }
+
+    private static void settleTouchSurface(UiDevice device) {
+        // RESUMED can precede the first fully input-ready SurfaceView frame on CI emulators.
+        SystemClock.sleep(1_500L);
+        device.waitForIdle();
     }
 
     private static int[] gameSurfaceFrom(ActivityScenario<AndroidLauncher> scenario) {
