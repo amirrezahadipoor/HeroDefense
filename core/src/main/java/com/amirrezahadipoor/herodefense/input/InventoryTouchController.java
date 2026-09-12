@@ -1,7 +1,6 @@
 package com.amirrezahadipoor.herodefense.input;
 
 import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
-import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
@@ -83,9 +82,7 @@ public final class InventoryTouchController {
 
         if (InventoryTouchLayout.sellAt(x, y)) {
             Item selected = selectedItem(state);
-            if (selected != null && EquipmentCatalog.byId(selected.id) != null) {
-                state.inventory.remove(selectedIndex);
-                state.coins += Math.max(0, selected.sellPrice);
+            if (equipmentSystem.sell(state, selected)) {
                 selectedIndex = -1;
                 clampAfterMutation(state);
                 return Action.SOLD;

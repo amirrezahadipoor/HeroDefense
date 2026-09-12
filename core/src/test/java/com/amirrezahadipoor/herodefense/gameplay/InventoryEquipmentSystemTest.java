@@ -1,10 +1,12 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
@@ -46,5 +48,21 @@ final class InventoryEquipmentSystemTest {
         assertSame(second, equipment.unequip(state, EquipmentSlot.WEAPON));
         assertNull(equipment.equipped(state, EquipmentSlot.WEAPON));
         assertTrue(state.inventory.contains(second));
+    }
+
+    @Test
+    void sellsOnlyUnequippedCatalogItemsAndCreditsTheirPositiveCoinValue() {
+        GameState state = GameState.newRun(15L);
+        Item sale = EquipmentCatalog.all().get(0).createItem();
+        Item unknown = new Item("potion", "Potion", "POTION", "COMMON");
+        state.inventory.add(sale);
+        state.inventory.add(unknown);
+        int before = state.coins;
+
+        assertTrue(equipment.sell(state, sale));
+        assertEquals(before + sale.sellPrice, state.coins);
+        assertFalse(state.inventory.contains(sale));
+        assertFalse(equipment.sell(state, unknown));
+        assertTrue(state.inventory.contains(unknown));
     }
 }

@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
@@ -49,6 +50,18 @@ public final class InventoryEquipmentSystem {
 
     public Item equipped(GameState state, EquipmentSlot slot) {
         return state == null || slot == null ? null : state.equippedItems.get(slot.name());
+    }
+
+    /** Sells only known equipment that is currently in the unequipped inventory. */
+    public boolean sell(GameState state, Item item) {
+        if (state == null || item == null || !state.inventory.contains(item)
+            || EquipmentCatalog.byId(item.id) == null || item.sellPrice <= 0) {
+            return false;
+        }
+        state.inventory.remove(item);
+        long updatedCoins = (long) state.coins + item.sellPrice;
+        state.coins = (int) Math.min(Integer.MAX_VALUE, Math.max(0L, updatedCoins));
+        return true;
     }
 
     private void synchronizeHealth(GameState state, float previousMaxHealth) {

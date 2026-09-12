@@ -118,7 +118,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ## Phase 9 — Economy & Shop
 
 - [x] Award coins for enemy and boss kills.
-- [ ] Sell unwanted non-potion items for coins.
+- [x] Sell unwanted non-potion items for coins.
 - [ ] Add a touch-only in-game shop for direct stat upgrades; no real-money purchases.
 - [ ] Tune shop pricing in Phase 14.
 
