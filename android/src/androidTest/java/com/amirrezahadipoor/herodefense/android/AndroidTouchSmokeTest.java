@@ -50,7 +50,7 @@ public final class AndroidTouchSmokeTest {
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
 
-            tapWorld(device, surface, 630f, 1150f); // Pause HUD target
+            tapWorld(device, surface, 600f, 1150f); // Pause HUD target, clear of edge gestures
             await("paused", () -> game.screenState() == GameScreenState.PAUSED);
             tapWorld(device, surface, 360f, 830f); // Inventory
             await("inventory opens", game::inventoryOpen);
