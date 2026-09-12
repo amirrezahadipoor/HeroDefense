@@ -25,6 +25,11 @@ For wave `w` clamped to 1–100:
 - Each effective Luck point multiplies every band by `1.02`; at most one item drops from a kill.
 - The single cumulative roll checks Legendary first, then Rare, Uncommon, and Common.
 
+## Health potions
+
+- Tier heals are `15%`, `25%`, `40%`, `60%`, `80%`, and `100%` of current maximum HP.
+- Healing is capped at max HP, full-health use is rejected, and a successful use consumes exactly one potion.
+
 ## Reward-card budget
 
 - Boss `b` (1–20) uses multiplier `1 + 0.05 × (b−1)`, rising smoothly from `1.00` to `1.95`.
