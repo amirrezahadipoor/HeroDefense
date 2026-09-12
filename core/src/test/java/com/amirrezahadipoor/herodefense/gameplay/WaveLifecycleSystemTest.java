@@ -40,7 +40,7 @@ final class WaveLifecycleSystemTest {
         GameState state = GameState.newRun(3L);
         state.waveNumber = GameState.FINAL_WAVE;
         lifecycle.startCurrentWave(state);
-        for (Enemy enemy : state.aliveEnemies) enemy.receiveDamage(Float.MAX_VALUE);
+        state.aliveBosses.get(0).receiveDamage(Float.MAX_VALUE);
 
         assertEquals(WaveCompletion.RUN_COMPLETED, lifecycle.updateAfterCombat(state));
         assertTrue(state.runComplete);

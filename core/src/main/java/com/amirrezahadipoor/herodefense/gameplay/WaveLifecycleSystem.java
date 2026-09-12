@@ -4,11 +4,21 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 
 /** Starts a wave and immediately rolls a cleared wave into the next one. */
 public final class WaveLifecycleSystem {
-    private final EnemyWaveSpawner spawner;
+    private final EnemyWaveSpawner regularSpawner;
+    private final BossWaveSpawner bossSpawner;
     private final ContinuousWaveRun continuousRun;
 
-    public WaveLifecycleSystem(EnemyWaveSpawner spawner, ContinuousWaveRun continuousRun) {
-        this.spawner = spawner;
+    public WaveLifecycleSystem(EnemyWaveSpawner regularSpawner, ContinuousWaveRun continuousRun) {
+        this(regularSpawner, new BossWaveSpawner(new BossFactory()), continuousRun);
+    }
+
+    public WaveLifecycleSystem(
+        EnemyWaveSpawner regularSpawner,
+        BossWaveSpawner bossSpawner,
+        ContinuousWaveRun continuousRun
+    ) {
+        this.regularSpawner = regularSpawner;
+        this.bossSpawner = bossSpawner;
         this.continuousRun = continuousRun;
     }
 
@@ -16,11 +26,15 @@ public final class WaveLifecycleSystem {
         if (state == null || state.runComplete || state.waveActive) {
             return false;
         }
-        spawner.spawnRegularEnemies(
-            state,
-            state.waveNumber,
-            spawner.regularCountForWave(state.waveNumber)
-        );
+        if (bossSpawner.isBossWave(state.waveNumber)) {
+            bossSpawner.spawn(state, state.waveNumber);
+        } else {
+            regularSpawner.spawnRegularEnemies(
+                state,
+                state.waveNumber,
+                regularSpawner.regularCountForWave(state.waveNumber)
+            );
+        }
         state.waveActive = true;
         return true;
     }
