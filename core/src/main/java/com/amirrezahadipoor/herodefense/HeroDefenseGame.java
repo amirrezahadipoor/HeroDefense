@@ -31,6 +31,8 @@ import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
+import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
@@ -43,6 +45,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private static final float MAX_FRAME_DELTA = 1f / 15f;
 
     private GameFlowController flow;
+    private AutoPotionSystem autoPotionSystem;
     private BossRewardCardSystem bossRewardCardSystem;
     private EquipmentSpriteRenderer equipmentSpriteRenderer;
     private BossSpecialAttackSystem bossSpecialAttackSystem;
@@ -68,6 +71,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void create() {
         flow = new GameFlowController();
+        autoPotionSystem = new AutoPotionSystem(new HealthPotionSystem());
         HeroDamageSystem heroDamageSystem = new HeroDamageSystem();
         bossSpecialAttackSystem = new BossSpecialAttackSystem(heroDamageSystem);
         dropPickupSystem = new DropPickupSystem();
@@ -266,6 +270,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAutoAttackSystem.update(gameState, simulationDelta);
         bossSpecialAttackSystem.update(gameState, simulationDelta);
         boolean gameOver = enemyMeleeAttackSystem.update(gameState, simulationDelta);
+        if (!gameOver) {
+            autoPotionSystem.update(gameState);
+        }
         itemDropSystem.processDefeatedEnemies(gameState);
         dropPickupSystem.update(gameState, simulationDelta);
         if (gameOver) {

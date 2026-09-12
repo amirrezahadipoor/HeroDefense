@@ -112,7 +112,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ## Phase 8 — Health Potions
 
 - [x] Implement six potion tiers with Phase 14 heal amounts.
-- [ ] Auto-use the weakest available potion below a tunable HP threshold (default 35%).
+- [x] Auto-use the weakest available potion below a tunable HP threshold (default 35%).
 - [ ] Implement low-chance, wave-weighted potion drops.
 
 ## Phase 9 — Economy & Shop
