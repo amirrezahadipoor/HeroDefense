@@ -26,6 +26,7 @@ import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
+import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
@@ -44,6 +45,7 @@ import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
+import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HudRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
@@ -75,6 +77,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private WaveLifecycleSystem waveLifecycleSystem;
     private HeroAnimationController heroAnimationController;
     private HeroAutoAttackSystem heroAutoAttackSystem;
+    private GameOverOverlayRenderer gameOverOverlayRenderer;
     private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
     private HudRenderer hudRenderer;
@@ -145,6 +148,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
         viewport.apply(true);
         spriteBatch = new SpriteBatch();
+        gameOverOverlayRenderer = new GameOverOverlayRenderer();
         heroSpriteRenderer = new HeroSpriteRenderer();
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
@@ -201,6 +205,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         saveNow();
+        if (gameOverOverlayRenderer != null) {
+            gameOverOverlayRenderer.close();
+        }
         if (heroSpriteRenderer != null) {
             heroSpriteRenderer.close();
         }
@@ -275,6 +282,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     } else if (action != SettingsTouchLayout.Action.NONE) {
                         settingsRepository.save(settings);
                     }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.GAME_OVER) {
+                    if (GameOverTouchLayout.restartAt(worldX, worldY)) startNewRun();
                     return true;
                 }
                 if (flow.state() == GameScreenState.CARD_CHOICE) {
@@ -454,6 +465,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings);
         } else if (flow.state() == GameScreenState.LEVEL_UP) {
             levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+        } else if (flow.state() == GameScreenState.GAME_OVER) {
+            gameOverOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.SHOP) {

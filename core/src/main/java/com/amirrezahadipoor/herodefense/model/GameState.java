@@ -24,6 +24,8 @@ public final class GameState {
     public int heroExperience;
     public int unspentTalentPoints;
     public int defeatedBosses;
+    public int totalKills;
+    public int totalKillCoinsEarned;
     public float worldTreeHealth = 1000f;
     public float worldTreeMaxHealth = 1000f;
     public float simulationSpeed = 1f;
@@ -111,6 +113,8 @@ public final class GameState {
         coins = Math.max(0, coins);
         heroExperience = Math.max(0, heroExperience);
         unspentTalentPoints = Math.max(0, unspentTalentPoints);
+        totalKills = Math.max(0, totalKills);
+        totalKillCoinsEarned = Math.max(0, totalKillCoinsEarned);
         simulationSpeed = simulationSpeed == 2f || simulationSpeed == 3f ? simulationSpeed : 1f;
         if (combatRandomState == 0L) {
             combatRandomState = initialRandomState(runSeed);

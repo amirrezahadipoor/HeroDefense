@@ -132,7 +132,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Add touch-only post-boss three-card selection.
 - [x] Add touch/drag Inventory and Equipment screens.
 - [x] Add touch-only Shop screen.
-- [ ] Add Game Over summary and tap-to-restart at Wave 1.
+- [x] Add Game Over summary and tap-to-restart at Wave 1.
 - [ ] Author/render required UI icons under the Phase 2 style guide.
 
 ## Phase 11 — Audio

@@ -31,6 +31,8 @@ final class KillRewardSystemTest {
         assertEquals(2, first.kills());
         assertTrue(first.coins() > 0);
         assertTrue(first.experience() > 0);
+        assertEquals(2, state.totalKills);
+        assertEquals(first.coins(), state.totalKillCoinsEarned);
 
         assertEquals(0, rewards.processDefeatedEnemies(state).kills());
         assertEquals(coinsAfterFirst, state.coins);

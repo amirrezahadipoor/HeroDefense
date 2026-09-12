@@ -37,6 +37,8 @@ public final class KillRewardSystem {
         float incomeMultiplier = 1f + effectValue(state, BossRewardCardSystem.COIN_INCOME_KEY);
         int coins = Math.max(0, Math.round(baseCoins * incomeMultiplier));
         state.coins = saturatedAdd(state.coins, coins);
+        state.totalKills = saturatedAdd(state.totalKills, kills);
+        state.totalKillCoinsEarned = saturatedAdd(state.totalKillCoinsEarned, coins);
         int levels = progression.grantExperience(state, experience);
         return new KillRewardResult(kills, coins, experience, levels);
     }
