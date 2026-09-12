@@ -150,7 +150,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 13 — Testing
 
-- [ ] Run Android builds in a headless emulator, driving interaction only through simulated touch events.
+- [x] Run Android builds in a headless emulator, driving interaction only through simulated touch events.
 - [ ] Automate a touch smoke test: menu, waves, inventory, and reward card.
 - [ ] Manually verify on at least one real mid-range Android touchscreen before release.
 
