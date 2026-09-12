@@ -7,7 +7,7 @@ import com.amirrezahadipoor.herodefense.model.HeroStat;
 /** Coin-only permanent stat upgrades; no platform billing or real-money path exists. */
 public final class StatShopSystem {
     public static final int MAX_PURCHASES_PER_STAT = 20;
-    private static final float PRICE_GROWTH = 1.22f;
+    public static final int PRICE_STEP_PER_LEVEL = 20;
     private final HeroStatCalculator statCalculator = new HeroStatCalculator();
 
     public int purchasedLevels(GameState state, HeroStat stat) {
@@ -20,7 +20,7 @@ public final class StatShopSystem {
         if (state == null || stat == null) return Integer.MAX_VALUE;
         int level = purchasedLevels(state, stat);
         if (level >= MAX_PURCHASES_PER_STAT) return Integer.MAX_VALUE;
-        return Math.max(1, Math.round(basePrice(stat) * (float) Math.pow(PRICE_GROWTH, level)));
+        return basePrice(stat) + PRICE_STEP_PER_LEVEL * level;
     }
 
     public boolean purchase(GameState state, HeroStat stat) {

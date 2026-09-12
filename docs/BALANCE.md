@@ -8,7 +8,7 @@ For wave `w` clamped to 1–100:
 
 - The required starting candidate was `20 × 1.045^w`; deterministic simulation tuned the shipped baseline to `20 × 1.035^w` to remove late-run clear-time and incoming-damage spikes.
 - Shipped HP checkpoints: Wave 1 `20.70`, Wave 25 `47.26`, Wave 50 `111.70`, Wave 75 `263.97`, and Wave 100 `623.83`.
-- Baseline damage: `0.18 × 1.002^(w−1)`, reaching `0.2194` at Wave 100 before archetype scaling.
+- Baseline damage: `0.27 × 1.002^(w−1)`, reaching `0.3291` at Wave 100 before archetype scaling.
 - A regular hit is capped at 28% of the max HP of a reference Hero who invests one of every five earned points in Health.
 - Archetype HP multipliers, relative to the 20-HP Rootling: Rootling `1.00`, Stonekin `1.70`, Gloom Wolf `0.85`, Fungal Brute `2.30`.
 - Archetype damage multipliers, relative to the authored 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
@@ -48,8 +48,10 @@ The relative targets express intended contemporary-run impact. Every authored it
 ## Direct stat shop
 
 - Strength, Agility, Luck, Dodge, and Health can each be purchased up to 20 times with earned coins only.
-- Base prices are `55`, `60`, `50`, `50`, and `65` coins respectively; each repeat purchase costs `1.22^n` times its base.
+- Base prices are `55`, `60`, `50`, `50`, and `65` coins respectively; purchase level `n` adds `20n` coins. This linear schedule tracks the 20 boss milestones without an unaffordable late-run exponential.
 - The shop is entered and operated exclusively through touch targets from the paused run.
+- For boss index `b` (1–20), the boss grants `50 + 20b` coins while a stat's contemporary purchase level `b−1` costs `base + 20(b−1)`. The reward alone therefore buys one upgrade in every case and is no more than 1.40× its price.
+- Equipment resale is supplemental rather than the primary income source: Common `12`, Uncommon `30`, Rare `75`, and Legendary `180` coins.
 
 ## Kill rewards
 
@@ -88,6 +90,6 @@ The deterministic regression gate requires all of the following:
 - No single wave may exceed 35% gross damage or 120 seconds to clear.
 - Every metric must be finite and no wave may hit the simulator's timeout.
 
-After tuning, baseline seed `0x4845524F444546` completed 100/100 waves with `7.866184%` average gross damage, `26.5138%` maximum single-wave damage, `47.43463 s` average clear time, and `98.999 s` maximum clear time. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
+After enemy and economy tuning, baseline seed `0x4845524F444546` completed 100/100 waves with `7.365432%` average gross damage, `19.6691%` maximum single-wave damage, `34.0728 s` average clear time, and `60.499 s` maximum clear time. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
 
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

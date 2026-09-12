@@ -28,7 +28,7 @@ public final class KillRewardSystem {
         for (Boss boss : state.aliveBosses) {
             if (claim(boss)) {
                 kills++;
-                baseCoins += 50 + boss.bossNumber * 20;
+                baseCoins += bossCoinReward(boss.bossNumber);
                 experience += 100 + boss.bossNumber * 30;
             }
         }
@@ -47,6 +47,10 @@ public final class KillRewardSystem {
         if (enemy == null || enemy.alive || enemy.killRewardsGranted) return false;
         enemy.killRewardsGranted = true;
         return true;
+    }
+
+    public static int bossCoinReward(int bossNumber) {
+        return 50 + Math.max(1, bossNumber) * 20;
     }
 
     private static int regularCoins(Enemy enemy, int waveNumber) {
