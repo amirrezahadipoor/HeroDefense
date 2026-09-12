@@ -192,7 +192,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 15 — Release Preparation
 
-- [ ] Finalize CI to build, sign, and output a Cafe Bazaar-ready APK.
+- [x] Finalize CI to build, sign, and output a Cafe Bazaar-ready APK.
 - [ ] Prepare store icon, screenshots, and English description matching the visual style.
 - [ ] Perform final repository/APK size checks.
 - [ ] Push final changes and create a Git release tag.

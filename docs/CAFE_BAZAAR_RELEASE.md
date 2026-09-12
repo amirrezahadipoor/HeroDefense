@@ -31,6 +31,10 @@ Before upload, the workflow:
 
 The output is an APK, not an Android App Bundle, because the requested release target is Cafe Bazaar.
 
+## Verified execution
+
+Workflow run [`34717926965`](https://github.com/amirrezahadipoor/Herodefense/actions/runs/34717926965) passed on commit `8c9ec38` on 2026-09-13. Core tests, release lint, signed assembly, APK verification, artifact upload, and keystore cleanup all passed. The uploaded artifact is `hero-defense-0.1.0-cafe-bazaar` (24,123,865-byte artifact archive; GitHub artifact SHA-256 `be3ec0301197f690c09159ac5bdd9931b161ddfb4e160b66a552ee45a9f391fb`). Android `apksigner` confirmed one RSA-4096 signer plus valid v1 and v2 signatures. The signing certificate SHA-256 is `e89cc045c432edddc52ffcc7faf5d6be92efc9cd352ace19896213415be87b53`.
+
 ## Local equivalent
 
 Keep all values outside the repository, then run:
