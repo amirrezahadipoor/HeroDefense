@@ -1,0 +1,67 @@
+# Gradle caches and generated output
+.gradle/
+**/.gradle/
+**/build/
+**/out/
+.gradle-build/
+
+# Android build/install artifacts
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.hprof
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Local Android SDK/NDK configuration and installations
+local.properties
+**/local.properties
+android-sdk/
+sdk/
+ndk/
+cmdline-tools/
+build-tools/
+platform-tools/
+platforms/
+
+# Signing credentials and environment secrets
+*.jks
+*.keystore
+*.p12
+*.pem
+.env
+.env.*
+!.env.example
+
+# Blender application downloads/installations and transient files
+blender-*/
+blender*.tar.*
+blender*.zip
+*.blend1
+*.blend2
+*.blend@
+
+# Editor and operating-system noise
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*~
+*.swp
+
+# Python caches used by asset tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Test reports, logs, and temporary files
+reports/
+*.log
+*.tmp
+.tmp/
