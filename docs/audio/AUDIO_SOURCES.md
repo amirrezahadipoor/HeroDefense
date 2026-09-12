@@ -7,7 +7,7 @@ Selected on 2026-09-12 before any audio asset was committed.
 | Seamless background music | `Heavenly Loop.ogg` | [Heavenly Loop by isaiah658](https://opengameart.org/content/heavenly-loop) | CC0 1.0 |
 | Enemy/Hero hit | `Audio/chop.ogg` | [Kenney RPG Audio](https://kenney.nl/assets/rpg-audio) | CC0 1.0 |
 | Enemy death | `Audio/dropLeather.ogg` | [Kenney RPG Audio](https://kenney.nl/assets/rpg-audio) | CC0 1.0 |
-| Item drop/pickup | `Audio/handleSmallLeather2.ogg` | [Kenney RPG Audio](https://kenney.nl/assets/rpg-audio) | CC0 1.0 |
+| Item drop/pickup | `Audio/drop_002.ogg` | [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds) | CC0 1.0 |
 | Level up | `Audio/confirmation_004.ogg` | [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds) | CC0 1.0 |
 | Boss entrance | `Audio/doorOpen_2.ogg` | [Kenney RPG Audio](https://kenney.nl/assets/rpg-audio) | CC0 1.0 |
 

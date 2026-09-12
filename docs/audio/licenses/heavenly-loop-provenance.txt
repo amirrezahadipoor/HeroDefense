@@ -1,0 +1,8 @@
+Asset: Heavenly Loop.ogg
+Author: isaiah658
+Source page: https://opengameart.org/content/heavenly-loop
+Direct source file: https://opengameart.org/sites/default/files/Heavenly%20Loop_0.ogg
+License shown on source page at download time: Creative Commons Zero (CC0) 1.0
+License URL: https://creativecommons.org/publicdomain/zero/1.0/
+Attribution notice on source page: Credit is not required but appreciated.
+Verified and downloaded: 2026-09-12
