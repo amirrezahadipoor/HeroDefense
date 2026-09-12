@@ -29,7 +29,7 @@ A single-hero action-defense game for Android. The Hero (an Elf) stands fixed at
 
 - [x] Create a new, separate repository (fully separate from the earlier Tower Defense project).
 - [x] Set up the libGDX project skeleton with **two modules only**: `core` and `android`; no desktop or browser module.
-- [ ] Configure Gradle so wrapper/dependency downloads happen in `/tmp` or a cache outside the committed folder.
+- [x] Configure Gradle so wrapper/dependency downloads happen in `/tmp` or a cache outside the committed folder.
 - [ ] Write a precise `.gitignore`: no build output, APKs, Gradle caches, SDK files, or Blender install files enter Git.
 - [ ] Store the GitHub token as a GitHub Actions secret; never hardcode it in source.
 - [ ] Add `.github/workflows/build-android.yml`: build on every push, run in a headless Android emulator with simulated touch, and upload the APK artifact. Final signing can come later.
