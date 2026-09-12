@@ -22,6 +22,8 @@ import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
 import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
+import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
+import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
@@ -61,6 +63,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
+    private KillRewardSystem killRewardSystem;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private SpriteBatch spriteBatch;
@@ -90,6 +93,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAnimationController = new HeroAnimationController();
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
+        killRewardSystem = new KillRewardSystem(heroProgressionSystem);
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
         potionDropSystem = new PotionDropSystem();
@@ -278,9 +282,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         itemDropSystem.processDefeatedEnemies(gameState);
         potionDropSystem.processDefeatedEnemies(gameState);
+        KillRewardResult killRewards = killRewardSystem.processDefeatedEnemies(gameState);
         dropPickupSystem.update(gameState, simulationDelta);
         if (gameOver) {
             flow.transitionTo(GameScreenState.GAME_OVER);
+            saveNow();
+        } else if (killRewards.levelsGained() > 0) {
+            flow.transitionTo(GameScreenState.LEVEL_UP);
             saveNow();
         } else {
             WaveCompletion waveCompletion = waveLifecycleSystem.updateAfterCombat(gameState);

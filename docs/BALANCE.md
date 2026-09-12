@@ -19,6 +19,12 @@ For wave `w` clamped to 1–100:
 - Boss contact damage on milestone wave `w`: baseline regular damage at `w` × `3`.
 - Boss movement, reach, interval, and special behavior remain identity-specific.
 
+## Kill rewards
+
+- Regular kill coins use each enemy archetype's base reward times `1 + 0.025 × wave`.
+- Boss `n` grants `50 + 20n` coins; the permanent coin-income card multiplies both reward sources.
+- Regular XP uses archetype values; boss `n` grants `100 + 30n` XP. Rewards are claimed once before dead entities are removed.
+
 ## Equipment drops
 
 - Per defeated enemy before Luck: Common `6%`, Uncommon `3%`, Rare `0.8%`, Legendary `0.15%`.
