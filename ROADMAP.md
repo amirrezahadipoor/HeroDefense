@@ -137,7 +137,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 ## Phase 11 — Audio
 
-- [ ] Find free background music and effects for hit, death, item drop, level up, and boss entrance.
+- [x] Find free background music and effects for hit, death, item drop, level up, and boss entrance.
 - [ ] Verify and record each audio file's license at download time; prefer CC0/no attribution.
 - [ ] Implement libGDX `Music` and `Sound` playback.
 
