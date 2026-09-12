@@ -130,7 +130,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Add touch-only Main Menu: new game, continue, settings.
 - [x] Add touch-only Level-Up stat selection.
 - [x] Add touch-only post-boss three-card selection.
-- [ ] Add touch/drag Inventory and Equipment screens.
+- [x] Add touch/drag Inventory and Equipment screens.
 - [ ] Add touch-only Shop screen.
 - [ ] Add Game Over summary and tap-to-restart at Wave 1.
 - [ ] Author/render required UI icons under the Phase 2 style guide.
