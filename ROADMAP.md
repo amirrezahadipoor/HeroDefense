@@ -206,7 +206,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 ### 16.1 Navigation Reliability
 
 - [x] Reproduce, root-cause, and fix the intermittent Resume touch failure; nested `PAUSED → SHOP` had overwritten Pause's return destination. Unit regression coverage and the expanded Android touch-emulator journey pass.
-- [ ] Add always-visible, generous Inventory and Shop touch targets to the live gameplay HUD so neither requires opening Pause first.
+- [x] Add always-visible, generous Inventory and Shop touch targets to the live gameplay HUD so neither requires opening Pause first.
 - [ ] Automatically pause all combat simulation while Inventory or Shop is open, and restore the correct prior state when closing either screen.
 - [ ] Show complete item details inside Inventory: name, rarity, slot, every stat bonus, equipped state, and a clear comparison against the currently equipped item.
 
