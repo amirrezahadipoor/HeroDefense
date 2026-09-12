@@ -159,7 +159,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ### 14.1 Enemy Growth
 
 - [x] Define regular enemy HP with a gentle exponential, starting from `EnemyHP(w) = 20 × (1 + 0.045)^w`, then tune.
-- [ ] Define enemy damage growth and cap it to prevent one-shots against reasonably built Heroes.
+- [x] Define enemy damage growth and cap it to prevent one-shots against reasonably built Heroes.
 - [ ] Start boss tuning at `BossHP(w) = EnemyHP(w) × 15` and `BossDamage(w) = EnemyDamage(w) × 3`.
 
 ### 14.2 Hero Growth
