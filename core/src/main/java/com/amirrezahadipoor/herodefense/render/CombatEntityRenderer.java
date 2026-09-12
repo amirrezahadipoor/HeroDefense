@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
@@ -43,6 +44,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
 
     private final Map<String, EntityClips> clipsByKey = new LinkedHashMap<>();
     private final Map<String, Texture> dropTextures = new HashMap<>();
+    private final RarityGlowRenderer dropGlowRenderer = new RarityGlowRenderer();
     private final Texture pixel;
 
     public CombatEntityRenderer() {
@@ -154,10 +156,53 @@ public final class CombatEntityRenderer implements AutoCloseable {
             float alpha = 0.96f * (1f - progress * 0.24f);
             float x = dropDrawX(drop);
             float y = dropDrawY(drop, runTimeSeconds);
+            VisualRarity rarity = dropRarity(drop);
+            drawRarityTrail(batch, drop, rarity, runTimeSeconds);
             batch.setColor(1f, 1f, 1f, alpha);
-            batch.draw(texture, x - size * 0.5f, y - size * 0.5f, size, size);
+            if (rarity.isGlowing()) {
+                dropGlowRenderer.draw(
+                    batch,
+                    new TextureRegion(texture),
+                    x - size * 0.5f,
+                    y - size * 0.5f,
+                    size,
+                    size,
+                    rarity,
+                    runTimeSeconds
+                );
+            } else {
+                batch.draw(texture, x - size * 0.5f, y - size * 0.5f, size, size);
+            }
         }
         batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    private void drawRarityTrail(
+        SpriteBatch batch,
+        DropEntity drop,
+        VisualRarity rarity,
+        float runTimeSeconds
+    ) {
+        if (!rarity.isGlowing() || drop.collectionStage != DropCollectionStage.HOMING) return;
+        float current = dropHomingProgress(drop);
+        float pulse = 0.82f + 0.18f * MathUtils.sin(runTimeSeconds * 8f + drop.id);
+        for (int step = 1; step <= 3; step++) {
+            float sample = Math.max(0f, current - step * 0.11f);
+            float x = dropDrawX(drop, sample);
+            float y = dropDrawY(drop, runTimeSeconds, sample);
+            float size = 16f - step * 3f;
+            float alpha = (0.34f - step * 0.07f) * pulse;
+            batch.setColor(rarity.red(), rarity.green(), rarity.blue(), alpha);
+            batch.draw(pixel, x - size * 0.5f, y - size * 0.5f, size, size);
+        }
+    }
+
+    static VisualRarity dropRarity(DropEntity drop) {
+        if (drop == null || !"ITEM".equals(drop.dropType)) return VisualRarity.COMMON;
+        EquipmentDefinition item = EquipmentCatalog.byId(drop.itemId);
+        return item == null
+            ? VisualRarity.COMMON
+            : VisualRarity.fromTier(item.tier().name());
     }
 
     static float dropHomingProgress(DropEntity drop) {
@@ -170,12 +215,22 @@ public final class CombatEntityRenderer implements AutoCloseable {
     }
 
     static float dropDrawX(DropEntity drop) {
-        float eased = smoothStep(dropHomingProgress(drop));
-        return MathUtils.lerp(drop.x, DROP_TARGET_X, eased);
+        return dropDrawX(drop, dropHomingProgress(drop));
+    }
+
+    private static float dropDrawX(DropEntity drop, float progress) {
+        return MathUtils.lerp(drop.x, DROP_TARGET_X, smoothStep(progress));
     }
 
     static float dropDrawY(DropEntity drop, float runTimeSeconds) {
-        float progress = dropHomingProgress(drop);
+        return dropDrawY(drop, runTimeSeconds, dropHomingProgress(drop));
+    }
+
+    private static float dropDrawY(
+        DropEntity drop,
+        float runTimeSeconds,
+        float progress
+    ) {
         float eased = smoothStep(progress);
         float bob = MathUtils.sin(runTimeSeconds * 5f + drop.id * 0.31f)
             * 5f
@@ -308,6 +363,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
         clipsByKey.clear();
         for (Texture texture : dropTextures.values()) texture.dispose();
         dropTextures.clear();
+        dropGlowRenderer.close();
         pixel.dispose();
     }
 
