@@ -113,7 +113,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 - [x] Implement six potion tiers with Phase 14 heal amounts.
 - [x] Auto-use the weakest available potion below a tunable HP threshold (default 35%).
-- [ ] Implement low-chance, wave-weighted potion drops.
+- [x] Implement low-chance, wave-weighted potion drops.
 
 ## Phase 9 — Economy & Shop
 

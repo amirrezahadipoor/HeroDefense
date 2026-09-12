@@ -147,7 +147,10 @@ public final class GameState {
     }
 
     private static long initialRandomState(long seed) {
-        long mixed = seed ^ 0x9E3779B97F4A7C15L;
+        long mixed = seed + 0x9E3779B97F4A7C15L;
+        mixed = (mixed ^ (mixed >>> 30)) * 0xBF58476D1CE4E5B9L;
+        mixed = (mixed ^ (mixed >>> 27)) * 0x94D049BB133111EBL;
+        mixed ^= mixed >>> 31;
         return mixed == 0L ? 0xD1B54A32D192ED03L : mixed;
     }
 

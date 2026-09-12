@@ -29,6 +29,8 @@ For wave `w` clamped to 1–100:
 
 - Tier heals are `15%`, `25%`, `40%`, `60%`, `80%`, and `100%` of current maximum HP.
 - Healing is capped at max HP, full-health use is rejected, and a successful use consumes exactly one potion.
+- Each defeated enemy has an independent `8%` potion chance.
+- Tiers unlock progressively; within the unlocked set, tier `n` receives weight `n`, shifting drops toward contemporary potions without removing weaker stock.
 
 ## Reward-card budget
 

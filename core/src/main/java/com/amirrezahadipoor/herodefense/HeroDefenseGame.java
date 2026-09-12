@@ -33,6 +33,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
+import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
@@ -60,6 +61,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
+    private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
@@ -90,6 +92,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroProgressionSystem = new HeroProgressionSystem();
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
+        potionDropSystem = new PotionDropSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         new StarterLoadoutSystem().provisionOnce(gameState);
@@ -274,6 +277,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             autoPotionSystem.update(gameState);
         }
         itemDropSystem.processDefeatedEnemies(gameState);
+        potionDropSystem.processDefeatedEnemies(gameState);
         dropPickupSystem.update(gameState, simulationDelta);
         if (gameOver) {
             flow.transitionTo(GameScreenState.GAME_OVER);
