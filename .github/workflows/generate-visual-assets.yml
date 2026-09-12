@@ -1,0 +1,64 @@
+name: Generate visual asset batch
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: Procedural Blender asset batch
+        required: true
+        default: pilot
+        type: choice
+        options:
+          - pilot
+          - characters
+          - world-tree
+          - equipment
+          - environment
+          - all
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      HERO_TOOLS_ROOT: /tmp/hero-defense-tools
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install transient Blender runtime library
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends libxkbcommon0
+
+      - name: Install checksum-pinned Blender outside repository
+        id: blender
+        run: |
+          path=$(./scripts/install-blender-temp.sh | tail -n 1)
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+
+      - name: Render requested batch headlessly
+        run: >-
+          "${{ steps.blender.outputs.path }}"
+          --background
+          --factory-startup
+          --python tools/blender/generate_assets.py
+          --
+          --batch "${{ inputs.batch }}"
+          --output /tmp/hero-defense-rendered
+
+      - name: Enforce generated-artifact size budget
+        run: |
+          size=$(du -sb /tmp/hero-defense-rendered | cut -f1)
+          test "$size" -lt 100000000
+          echo "Rendered batch bytes: $size"
+
+      - name: Upload reviewable render batch
+        uses: actions/upload-artifact@v4
+        with:
+          name: hero-defense-${{ inputs.batch }}-sprites
+          path: /tmp/hero-defense-rendered/
+          if-no-files-found: error
+          retention-days: 14

@@ -52,7 +52,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 - [x] Install/run checksum-pinned Blender 4.2 LTS only in a disposable cache/CI environment; never commit Blender itself.
 - [x] Write the style guide first: polygon budgets, toon color bands, outlines, fixed camera, and fixed lighting.
-- [ ] Implement a headless `bpy` pipeline (`blender --background --python ...`) that:
+- [x] Implement a headless `bpy` pipeline (`blender --background --python ...`) that:
   - creates low-poly toon models for the Hero, enemies, and bosses;
   - creates separate mesh/material variants for weapons, helmets, armor, boots, and rings;
   - rigs each character with a real Armature;
