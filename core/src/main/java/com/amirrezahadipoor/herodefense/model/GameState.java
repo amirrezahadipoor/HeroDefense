@@ -90,8 +90,7 @@ public final class GameState {
             hero = new Hero(1L, ARENA_CENTER_X, ARENA_CENTER_Y);
         }
         hero.keepAt(ARENA_CENTER_X, ARENA_CENTER_Y);
-        hero.maxHealth = Math.max(1f, hero.maxHealth);
-        hero.health = Math.max(0f, Math.min(hero.maxHealth, hero.health));
+        hero.validateAndRepair();
         if (aliveEnemies == null) aliveEnemies = new ArrayList<>();
         if (aliveBosses == null) aliveBosses = new ArrayList<>();
         if (projectiles == null) projectiles = new ArrayList<>();

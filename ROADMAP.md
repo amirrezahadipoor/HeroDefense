@@ -70,7 +70,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 ## Phase 3 — Hero Implementation
 
 - [x] Keep the Hero fixed at the center of the arena.
-- [ ] Implement five base stats: Strength → damage, Agility → attack speed, Luck → drop chance, Dodge → evasion, Health → max HP.
+- [x] Implement five base stats: Strength → damage, Agility → attack speed, Luck → drop chance, Dodge → evasion, Health → max HP.
 - [ ] Implement auto-attack against the nearest/first enemy in range; derive interval from Agility.
 - [ ] Roll Dodge against every incoming hit before applying damage.
 - [ ] Drive Blender-rendered Idle/Attack/Hit/Death frames from real gameplay state.
