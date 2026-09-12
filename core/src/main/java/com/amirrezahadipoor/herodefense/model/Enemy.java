@@ -11,6 +11,7 @@ public class Enemy extends ArenaEntity {
     public float attackIntervalSeconds;
     public float attackCooldownSeconds;
     public int spawnLane;
+    public boolean itemDropRolled;
     public boolean alive = true;
 
     public Enemy() {

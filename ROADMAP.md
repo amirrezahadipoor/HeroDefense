@@ -107,7 +107,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Connect equipped items to rendered mesh/material sprite variants.
 - [x] Show runtime Rare/Legendary glow when equipped.
 - [x] Add touch inventory UI for viewing, equipping/unequipping, and selling non-potion items.
-- [ ] Implement low item-drop chances modified by Luck using Phase 14 rates.
+- [x] Implement low item-drop chances modified by Luck using Phase 14 rates.
 
 ## Phase 8 — Health Potions
 

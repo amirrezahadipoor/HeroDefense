@@ -11,6 +11,7 @@ import com.amirrezahadipoor.herodefense.gameplay.BossFactory;
 import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.BossWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.ContinuousWaveRun;
+import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
@@ -20,6 +21,7 @@ import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
+import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
@@ -44,6 +46,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private BossRewardCardSystem bossRewardCardSystem;
     private EquipmentSpriteRenderer equipmentSpriteRenderer;
     private BossSpecialAttackSystem bossSpecialAttackSystem;
+    private DropPickupSystem dropPickupSystem;
     private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
     private WaveLifecycleSystem waveLifecycleSystem;
@@ -53,6 +56,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private HeroSpriteRenderer heroSpriteRenderer;
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
+    private ItemDropSystem itemDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
@@ -66,6 +70,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         flow = new GameFlowController();
         HeroDamageSystem heroDamageSystem = new HeroDamageSystem();
         bossSpecialAttackSystem = new BossSpecialAttackSystem(heroDamageSystem);
+        dropPickupSystem = new DropPickupSystem();
         enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(heroDamageSystem);
         enemyMovementSystem = new EnemyMovementSystem();
         EnemyWaveSpawner enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
@@ -80,6 +85,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroAutoAttackSystem = new HeroAutoAttackSystem();
         heroProgressionSystem = new HeroProgressionSystem();
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
+        itemDropSystem = new ItemDropSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         gameState = saves.load().orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
         new StarterLoadoutSystem().provisionOnce(gameState);
@@ -259,7 +265,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         enemyMovementSystem.update(gameState, simulationDelta);
         heroAutoAttackSystem.update(gameState, simulationDelta);
         bossSpecialAttackSystem.update(gameState, simulationDelta);
-        if (enemyMeleeAttackSystem.update(gameState, simulationDelta)) {
+        boolean gameOver = enemyMeleeAttackSystem.update(gameState, simulationDelta);
+        itemDropSystem.processDefeatedEnemies(gameState);
+        dropPickupSystem.update(gameState, simulationDelta);
+        if (gameOver) {
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
         } else {
