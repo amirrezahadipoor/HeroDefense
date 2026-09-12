@@ -31,6 +31,23 @@ final class DifficultyCurveTest {
     }
 
     @Test
+    void bossesUseFifteenTimesBaselineHpAndThreeTimesBaselineDamage() {
+        int wave = 50;
+        assertEquals(
+            curve.baselineRegularHealth(wave) * 15f,
+            curve.bossHealth(wave),
+            0.001f
+        );
+        assertEquals(
+            curve.baselineRegularDamage(wave) * 3f,
+            curve.bossDamage(wave),
+            0.001f
+        );
+        assertTrue(curve.bossHealth(wave) > curve.regularHealth(EnemyType.FUNGAL_BRUTE, wave));
+        assertTrue(curve.bossDamage(wave) > curve.regularDamage(EnemyType.FUNGAL_BRUTE, wave));
+    }
+
+    @Test
     void waveSpawnerAppliesCurrentWaveStats() {
         GameState state = GameState.newRun(77L);
         EnemyWaveSpawner spawner = new EnemyWaveSpawner(new EnemyFactory());

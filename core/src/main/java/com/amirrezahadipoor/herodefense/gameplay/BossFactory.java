@@ -4,8 +4,18 @@ import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.BossType;
 import com.amirrezahadipoor.herodefense.model.GameState;
 
-/** Creates a boss with its authored identity; wave multipliers are applied separately. */
+/** Creates a boss with its authored identity and milestone-wave multipliers. */
 public final class BossFactory {
+    private final DifficultyCurve difficultyCurve;
+
+    public BossFactory() {
+        this(new DifficultyCurve());
+    }
+
+    public BossFactory(DifficultyCurve difficultyCurve) {
+        this.difficultyCurve = difficultyCurve;
+    }
+
     public Boss create(
         GameState state,
         BossType type,
@@ -23,6 +33,7 @@ public final class BossFactory {
         boss.attackRange = type.attackRange();
         boss.attackIntervalSeconds = type.attackIntervalSeconds();
         boss.spawnLane = spawnLane;
+        difficultyCurve.applyToBoss(boss, bossNumber * 5);
         return boss;
     }
 }

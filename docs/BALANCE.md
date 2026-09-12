@@ -13,4 +13,10 @@ For wave `w` clamped to 1–100:
 - Archetype damage multipliers, relative to the 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
 - Movement speed, melee reach, and attack interval remain archetype properties rather than wave-scaled values.
 
+## Boss growth
+
+- Boss HP on milestone wave `w`: baseline regular HP at `w` × `15`.
+- Boss contact damage on milestone wave `w`: baseline regular damage at `w` × `3`.
+- Boss movement, reach, interval, and special behavior remain identity-specific.
+
 This is the first playable curve, not a claim of final balance. Phase 14 simulation and manual checkpoints must validate and, if necessary, revise the coefficients.

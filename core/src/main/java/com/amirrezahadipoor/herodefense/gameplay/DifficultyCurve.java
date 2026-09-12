@@ -10,6 +10,8 @@ public final class DifficultyCurve {
     public static final float ENEMY_HEALTH_GROWTH = 1.045f;
     public static final float BASE_ENEMY_DAMAGE = 5f;
     public static final float ENEMY_DAMAGE_GROWTH = 1.025f;
+    public static final float BOSS_HEALTH_MULTIPLIER = 15f;
+    public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;
 
     public float baselineRegularHealth(int waveNumber) {
@@ -21,11 +23,14 @@ public final class DifficultyCurve {
         return baselineRegularHealth(waveNumber) * type.baseHealth() / BASE_ENEMY_HEALTH;
     }
 
-    public float uncappedRegularDamage(EnemyType type, int waveNumber) {
+    public float baselineRegularDamage(int waveNumber) {
         int wave = clampWave(waveNumber);
-        float baseline = BASE_ENEMY_DAMAGE
+        return BASE_ENEMY_DAMAGE
             * (float) Math.pow(ENEMY_DAMAGE_GROWTH, Math.max(0, wave - 1));
-        return baseline * type.baseDamage() / BASE_ENEMY_DAMAGE;
+    }
+
+    public float uncappedRegularDamage(EnemyType type, int waveNumber) {
+        return baselineRegularDamage(waveNumber) * type.baseDamage() / BASE_ENEMY_DAMAGE;
     }
 
     public float regularDamage(EnemyType type, int waveNumber) {
@@ -40,11 +45,25 @@ public final class DifficultyCurve {
         return 100f + expectedHealthPoints * 10f;
     }
 
+    public float bossHealth(int waveNumber) {
+        return baselineRegularHealth(waveNumber) * BOSS_HEALTH_MULTIPLIER;
+    }
+
+    public float bossDamage(int waveNumber) {
+        return baselineRegularDamage(waveNumber) * BOSS_DAMAGE_MULTIPLIER;
+    }
+
     public void applyToRegularEnemy(Enemy enemy, EnemyType type, int waveNumber) {
         float health = regularHealth(type, waveNumber);
         enemy.health = health;
         enemy.maxHealth = health;
         enemy.damage = regularDamage(type, waveNumber);
+    }
+
+    public void applyToBoss(Enemy boss, int waveNumber) {
+        boss.health = bossHealth(waveNumber);
+        boss.maxHealth = boss.health;
+        boss.damage = bossDamage(waveNumber);
     }
 
     private static int clampWave(int waveNumber) {

@@ -26,6 +26,15 @@ final class BossWaveSpawnerTest {
     }
 
     @Test
+    void spawnedBossReceivesMilestoneWaveMultipliers() {
+        GameState state = GameState.newRun(7L);
+        Boss boss = spawner.spawn(state, 25);
+        DifficultyCurve curve = new DifficultyCurve();
+        assertEquals(curve.bossHealth(25), boss.maxHealth, 0.001f);
+        assertEquals(curve.bossDamage(25), boss.damage, 0.001f);
+    }
+
+    @Test
     void onlyPositiveFifthWavesThroughOneHundredAreBossWaves() {
         assertFalse(spawner.isBossWave(1));
         assertTrue(spawner.isBossWave(5));
