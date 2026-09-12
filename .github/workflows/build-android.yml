@@ -37,6 +37,13 @@ jobs:
       - name: Assemble debug APK
         run: ./scripts/gradle.sh :android:assembleDebug --stacktrace
 
+      - name: Verify packaged libGDX natives for every supported ABI
+        run: |
+          apk=android/build/outputs/apk/debug/android-debug.apk
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            unzip -l "$apk" "lib/$abi/libgdx.so" | grep -q "lib/$abi/libgdx.so"
+          done
+
       - name: Run in headless emulator using touch-only smoke test
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -48,13 +55,12 @@ jobs:
             -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
             -camera-back none -camera-front none
           script: |
-            ./scripts/gradle.sh :android:connectedDebugAndroidTest --stacktrace
-            adb shell am force-stop com.amirrezahadipoor.herodefense.debug
-            adb shell monkey -p com.amirrezahadipoor.herodefense.debug 1
-            sleep 3
-            adb shell input tap 540 1500
-            adb shell input swipe 300 1200 780 1200 300
-            adb shell pidof com.amirrezahadipoor.herodefense.debug
+            adb logcat -c
+            if ! ./scripts/gradle.sh :android:connectedDebugAndroidTest --stacktrace; then
+              mkdir -p android/build/reports/androidTests/diagnostics
+              adb logcat -d > android/build/reports/androidTests/diagnostics/emulator-logcat.txt
+              exit 1
+            fi
 
       - name: Upload debug APK
         if: always()

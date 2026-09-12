@@ -9,7 +9,7 @@ import java.util.Objects;
 public final class GameFlowController {
     private static final Map<GameScreenState, EnumSet<GameScreenState>> ALLOWED = buildTransitions();
 
-    private GameScreenState state = GameScreenState.MENU;
+    private volatile GameScreenState state = GameScreenState.MENU;
     private GameScreenState returnState = GameScreenState.PLAYING;
 
     public GameScreenState state() {

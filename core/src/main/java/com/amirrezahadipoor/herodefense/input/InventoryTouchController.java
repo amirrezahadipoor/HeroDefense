@@ -18,7 +18,7 @@ public final class InventoryTouchController {
 
     private static final float ROW_DRAG_THRESHOLD = 55f;
     private final InventoryEquipmentSystem equipmentSystem;
-    private boolean open;
+    private volatile boolean open;
     private int selectedIndex = -1;
     private int firstVisibleIndex;
     private float accumulatedDrag;

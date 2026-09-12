@@ -126,6 +126,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameSettings settings;
     private GameState gameState;
     private boolean continueAvailable;
+    private volatile boolean readyForTouch;
     private OrthographicCamera camera;
     private Viewport viewport;
     private float simulationSeconds;
@@ -192,6 +193,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         touchFeedbackRenderer = new TouchFeedbackRenderer();
         uiIconRenderer = new UiIconRenderer();
         installTouchInput();
+        readyForTouch = true;
     }
 
     @Override
@@ -211,6 +213,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         drawCurrentState();
     }
 
+    public boolean readyForTouch() {
+        return readyForTouch;
+    }
+
     public GameScreenState screenState() {
         return flow.state();
     }
@@ -221,6 +227,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     public GameState gameState() {
         return gameState;
+    }
+
+    /** Read-only test visibility; inventory actions themselves still require touch. */
+    public boolean inventoryOpen() {
+        return inventoryTouchController != null && inventoryTouchController.isOpen();
     }
 
     /** Awards kill XP and opens the touch allocation overlay whenever a level is gained. */

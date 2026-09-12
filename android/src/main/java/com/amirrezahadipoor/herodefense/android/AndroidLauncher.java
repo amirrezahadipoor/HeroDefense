@@ -7,6 +7,8 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.amirrezahadipoor.herodefense.HeroDefenseGame;
 
 public final class AndroidLauncher extends AndroidApplication {
+    private HeroDefenseGame game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,6 +16,11 @@ public final class AndroidLauncher extends AndroidApplication {
         configuration.useImmersiveMode = true;
         configuration.useAccelerometer = false;
         configuration.useCompass = false;
-        initialize(new HeroDefenseGame(), configuration);
+        game = new HeroDefenseGame();
+        initialize(game, configuration);
+    }
+
+    HeroDefenseGame gameForTests() {
+        return game;
     }
 }
