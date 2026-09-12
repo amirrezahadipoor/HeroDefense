@@ -12257,6 +12257,342 @@
       "unique_attack": "thorn_cage"
     },
     {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_agility",
+      "sheet": "icons/ui_agility.png",
+      "touchOnlyUI": true,
+      "triangles": 264,
+      "uiIcon": "agility"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_close",
+      "sheet": "icons/ui_close.png",
+      "touchOnlyUI": true,
+      "triangles": 88,
+      "uiIcon": "close"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_coin",
+      "sheet": "icons/ui_coin.png",
+      "touchOnlyUI": true,
+      "triangles": 88,
+      "uiIcon": "coin"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_continue",
+      "sheet": "icons/ui_continue.png",
+      "touchOnlyUI": true,
+      "triangles": 54,
+      "uiIcon": "continue"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_dodge",
+      "sheet": "icons/ui_dodge.png",
+      "touchOnlyUI": true,
+      "triangles": 124,
+      "uiIcon": "dodge"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_health",
+      "sheet": "icons/ui_health.png",
+      "touchOnlyUI": true,
+      "triangles": 54,
+      "uiIcon": "health"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_inventory",
+      "sheet": "icons/ui_inventory.png",
+      "touchOnlyUI": true,
+      "triangles": 132,
+      "uiIcon": "inventory"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_luck",
+      "sheet": "icons/ui_luck.png",
+      "touchOnlyUI": true,
+      "triangles": 124,
+      "uiIcon": "luck"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_new_game",
+      "sheet": "icons/ui_new_game.png",
+      "touchOnlyUI": true,
+      "triangles": 196,
+      "uiIcon": "new_game"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_pause",
+      "sheet": "icons/ui_pause.png",
+      "touchOnlyUI": true,
+      "triangles": 88,
+      "uiIcon": "pause"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_restart",
+      "sheet": "icons/ui_restart.png",
+      "touchOnlyUI": true,
+      "triangles": 106,
+      "uiIcon": "restart"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_settings",
+      "sheet": "icons/ui_settings.png",
+      "touchOnlyUI": true,
+      "triangles": 448,
+      "uiIcon": "settings"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_shop",
+      "sheet": "icons/ui_shop.png",
+      "touchOnlyUI": true,
+      "triangles": 264,
+      "uiIcon": "shop"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_speed",
+      "sheet": "icons/ui_speed.png",
+      "touchOnlyUI": true,
+      "triangles": 108,
+      "uiIcon": "speed"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_strength",
+      "sheet": "icons/ui_strength.png",
+      "touchOnlyUI": true,
+      "triangles": 108,
+      "uiIcon": "strength"
+    },
+    {
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameSize": 96,
+      "key": "ui_wave",
+      "sheet": "icons/ui_wave.png",
+      "touchOnlyUI": true,
+      "triangles": 60,
+      "uiIcon": "wave"
+    },
+    {
       "armature": "void_knight_armature",
       "atlas": "sprites/void_knight.atlas",
       "boneAnimated": true,
@@ -12641,7 +12977,7 @@
   ],
   "blenderVersion": "4.2.23",
   "frameRate": 12,
-  "generatedBatch": "characters",
+  "generatedBatch": "ui",
   "palette": {
     "amber": "#E19C3B",
     "crimson": "#B84245",

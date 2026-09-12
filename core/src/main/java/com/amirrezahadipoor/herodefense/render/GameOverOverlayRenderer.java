@@ -19,7 +19,9 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         font.getData().setScale(1.35f);
     }
 
-    public void draw(SpriteBatch batch, Matrix4 projection, GameState state) {
+    public void draw(
+        SpriteBatch batch, Matrix4 projection, GameState state, UiIconRenderer icons
+    ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
@@ -64,7 +66,8 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         font.draw(batch, "Bosses defeated", 145f, 520f);
         font.draw(batch, Integer.toString(state.defeatedBosses), 530f, 520f);
         font.getData().setScale(1.55f);
-        font.draw(batch, "Restart at Wave 1", 230f, 305f);
+        icons.draw(batch, "restart", 150f, 245f, 92f);
+        font.draw(batch, "Restart at Wave 1", 255f, 305f);
         font.getData().setScale(1.35f);
         batch.end();
     }

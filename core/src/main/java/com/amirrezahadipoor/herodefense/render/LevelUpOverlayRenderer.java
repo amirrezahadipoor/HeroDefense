@@ -22,7 +22,9 @@ public final class LevelUpOverlayRenderer implements AutoCloseable {
         font.getData().setScale(1.25f);
     }
 
-    public void draw(SpriteBatch batch, Matrix4 projection, GameState state) {
+    public void draw(
+        SpriteBatch batch, Matrix4 projection, GameState state, UiIconRenderer icons
+    ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
@@ -60,11 +62,12 @@ public final class LevelUpOverlayRenderer implements AutoCloseable {
         for (int row = 0; row < HeroStat.values().length; row++) {
             HeroStat stat = HeroStat.values()[row];
             float y = LevelUpTouchLayout.BOTTOM + row * LevelUpTouchLayout.ROW_STRIDE;
+            icons.draw(batch, stat.name().toLowerCase(Locale.ROOT), 105f, y + 25f, 80f);
             font.getData().setScale(1.28f);
-            font.draw(batch, pretty(stat), 120f, y + 88f);
+            font.draw(batch, pretty(stat), 205f, y + 88f);
             font.getData().setScale(1f);
-            font.draw(batch, description(stat), 120f, y + 42f);
-            font.draw(batch, "Current " + value(state, stat), 475f, y + 66f);
+            font.draw(batch, description(stat), 205f, y + 42f);
+            font.draw(batch, "Current " + value(state, stat), 500f, y + 66f);
         }
         font.getData().setScale(1.25f);
         batch.end();

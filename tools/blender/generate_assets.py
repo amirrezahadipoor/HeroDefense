@@ -37,7 +37,9 @@ from hd_pipeline.config import (  # noqa: E402
 from hd_pipeline.environment import (  # noqa: E402
     build_crystal_prop,
     build_ground_tile,
+    UI_ICON_KEYS,
     build_potion_icon,
+    build_ui_icon,
     build_world_tree,
 )
 from hd_pipeline.models import MATERIALS, add_equipment_variant, build_character, build_hero  # noqa: E402
@@ -66,7 +68,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "characters", "world-tree", "equipment", "environment", "all"),
+        choices=("pilot", "characters", "world-tree", "equipment", "environment", "ui", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -401,6 +403,18 @@ def render_environment(output: Path, only: set[str]) -> list[dict]:
     return entries
 
 
+def render_ui(output: Path, only: set[str]) -> list[dict]:
+    entries = []
+    for key in UI_ICON_KEYS:
+        if not only or key in only:
+            entries.append(render_static_model(
+                key, "icons", "item",
+                lambda value=key: build_ui_icon(value), output,
+                {"assetKind": "ui", "iconKey": key},
+            ))
+    return entries
+
+
 def _run_frame_worker(payload: dict) -> None:
     output_path = Path(payload["output"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -475,6 +489,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
             build_crystal_prop(int(payload["variant"]))
         elif asset_kind == "potion":
             build_potion_icon(int(payload["tier"]))
+        elif asset_kind == "ui":
+            build_ui_icon(payload["iconKey"])
         else:
             raise ValueError(f"Unknown static worker asset: {asset_kind}")
     else:
@@ -517,6 +533,8 @@ def main() -> None:
         generated.extend(render_equipment(args.catalog.resolve(), output, args.keep_frames, only))
     if args.batch in {"environment", "all"}:
         generated.extend(render_environment(output, only))
+    if args.batch in {"ui", "all"}:
+        generated.extend(render_ui(output, only))
 
     by_key = {entry["key"]: entry for entry in existing}
     by_key.update({entry["key"]: entry for entry in generated})

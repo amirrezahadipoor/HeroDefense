@@ -27,7 +27,8 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         SpriteBatch batch,
         Matrix4 projection,
         GameState state,
-        StatShopSystem shop
+        StatShopSystem shop,
+        UiIconRenderer icons
     ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -53,16 +54,17 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("E7D8B1"));
+        icons.draw(batch, "close", 588f, 1138f, 64f);
         font.draw(batch, "World Tree Armory", 225f, 1215f);
         font.draw(batch, "Coins: " + state.coins, 55f, 1148f);
-        font.draw(batch, "Close", 588f, 1182f);
         for (int index = 0; index < HeroStat.values().length; index++) {
             HeroStat stat = HeroStat.values()[index];
             float y = StatShopTouchLayout.ROW_TOP - StatShopTouchLayout.ROW_HEIGHT
                 - index * StatShopTouchLayout.ROW_STRIDE;
             int purchased = shop.purchasedLevels(state, stat);
-            font.draw(batch, pretty(stat), 80f, y + 92f);
-            font.draw(batch, "Upgrade " + purchased + "/" + StatShopSystem.MAX_PURCHASES_PER_STAT, 80f, y + 43f);
+            icons.draw(batch, stat.name().toLowerCase(Locale.ROOT), 68f, y + 26f, 82f);
+            font.draw(batch, pretty(stat), 165f, y + 92f);
+            font.draw(batch, "Upgrade " + purchased + "/" + StatShopSystem.MAX_PURCHASES_PER_STAT, 165f, y + 43f);
             if (purchased >= StatShopSystem.MAX_PURCHASES_PER_STAT) {
                 font.draw(batch, "MAX", 535f, y + 68f);
             } else {

@@ -54,6 +54,7 @@ import com.amirrezahadipoor.herodefense.render.MainMenuRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.UiIconRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 import com.amirrezahadipoor.herodefense.settings.GameSettings;
@@ -96,6 +97,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
     private StatShopSystem statShopSystem;
+    private UiIconRenderer uiIconRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
     private LocalSettingsRepository settingsRepository;
@@ -158,6 +160,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
+        uiIconRenderer = new UiIconRenderer();
         installTouchInput();
     }
 
@@ -234,6 +237,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (statShopOverlayRenderer != null) {
             statShopOverlayRenderer.close();
+        }
+        if (uiIconRenderer != null) {
+            uiIconRenderer.close();
         }
         if (spriteBatch != null) {
             spriteBatch.dispose();
@@ -457,27 +463,35 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             spriteBatch.end();
         }
         if (flow.state() == GameScreenState.PLAYING) {
-            hudRenderer.draw(spriteBatch, camera.combined, gameState);
+            hudRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
         }
         if (flow.state() == GameScreenState.MENU) {
-            mainMenuRenderer.draw(spriteBatch, camera.combined, continueAvailable);
+            mainMenuRenderer.draw(spriteBatch, camera.combined, continueAvailable, uiIconRenderer);
         } else if (flow.state() == GameScreenState.SETTINGS) {
-            settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings);
+            settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings, uiIconRenderer);
         } else if (flow.state() == GameScreenState.LEVEL_UP) {
-            levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+            levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
         } else if (flow.state() == GameScreenState.GAME_OVER) {
-            gameOverOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+            gameOverOverlayRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.SHOP) {
-            statShopOverlayRenderer.draw(spriteBatch, camera.combined, gameState, statShopSystem);
+            statShopOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, statShopSystem, uiIconRenderer
+            );
         } else if (flow.state() == GameScreenState.PAUSED) {
             if (inventoryTouchController.isOpen()) {
                 inventoryOverlayRenderer.drawInventory(
-                    spriteBatch, camera.combined, gameState, inventoryTouchController
+                    spriteBatch,
+                    camera.combined,
+                    gameState,
+                    inventoryTouchController,
+                    uiIconRenderer
                 );
             } else {
-                inventoryOverlayRenderer.drawPauseMenu(spriteBatch, camera.combined);
+                inventoryOverlayRenderer.drawPauseMenu(
+                    spriteBatch, camera.combined, uiIconRenderer
+                );
             }
         }
     }

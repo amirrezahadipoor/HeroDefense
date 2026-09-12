@@ -126,6 +126,142 @@ def build_crystal_prop(variant: int = 0) -> BuiltModel:
     return BuiltModel(None, objects, {"variant": variant, "prop": "crystal_cluster"})
 
 
+UI_ICON_KEYS = (
+    "ui_health",
+    "ui_wave",
+    "ui_coin",
+    "ui_pause",
+    "ui_speed",
+    "ui_inventory",
+    "ui_shop",
+    "ui_settings",
+    "ui_restart",
+    "ui_new_game",
+    "ui_continue",
+    "ui_close",
+    "ui_strength",
+    "ui_agility",
+    "ui_luck",
+    "ui_dodge",
+)
+
+
+def build_ui_icon(key: str) -> BuiltModel:
+    """Build one low-poly, front-facing mobile UI symbol from locked-palette materials."""
+    if key not in UI_ICON_KEYS:
+        raise ValueError(f"Unknown UI icon: {key}")
+    gold = MATERIALS.get("ui_gold", PALETTE["hero_gold"], True)
+    green = MATERIALS.get("ui_green", PALETTE["hero_green"])
+    leaf = MATERIALS.get("ui_leaf", PALETTE["hero_leaf"])
+    parchment = MATERIALS.get("ui_parchment", PALETTE["parchment"])
+    wood = MATERIALS.get("ui_wood", PALETTE["wood"])
+    cyan = MATERIALS.get("ui_cyan", PALETTE["cyan"])
+    crimson = MATERIALS.get("ui_crimson", PALETTE["crimson"])
+    stone = MATERIALS.get("ui_stone", PALETTE["stone"])
+    objects = []
+
+    def cube(name, location, scale, material, rotation_y=0.0, bevel=0.04):
+        obj = add_cube(name, location, scale, material, bevel)
+        obj.rotation_euler.y = rotation_y
+        objects.append(obj)
+        return obj
+
+    def arrow(name, x, z, material, direction=1.0, scale=1.0):
+        cube(f"{name}_shaft", (x - 0.12 * direction * scale, 0, z),
+             (0.58 * scale, 0.18, 0.16 * scale), material)
+        tip = add_cone(
+            f"{name}_tip", (x + 0.43 * direction * scale, 0, z),
+            0.30 * scale, 0.0, 0.55 * scale, material, 6,
+            (0, math.radians(90) * direction, 0),
+        )
+        objects.append(tip)
+
+    def heart(material):
+        objects.append(add_ico("heart_left", (-0.25, 0, 1.22), (0.42, 0.25, 0.42), material, 1))
+        objects.append(add_ico("heart_right", (0.25, 0, 1.22), (0.42, 0.25, 0.42), material, 1))
+        point = add_cone("heart_point", (0, 0, 0.86), 0.50, 0.0, 0.90, material, 8, (math.pi, 0, 0))
+        objects.append(point)
+
+    def sword(material):
+        blade = add_cylinder_between("sword_blade", (-0.48, 0, 0.54), (0.48, 0, 1.55), 0.10, material, 6)
+        objects.append(blade)
+        cube("sword_guard", (-0.43, 0, 0.62), (0.58, 0.20, 0.10), gold, -0.79)
+        cube("sword_grip", (-0.67, 0, 0.36), (0.13, 0.17, 0.45), wood, -0.79)
+
+    def shield(material):
+        objects.append(add_ico("shield_body", (0, 0, 1.0), (0.72, 0.22, 0.82), material, 2))
+        cube("shield_ridge", (0, -0.25, 1.0), (0.10, 0.08, 1.05), gold)
+
+    if key in {"ui_health"}:
+        heart(crimson)
+    elif key == "ui_wave":
+        for index, height in enumerate((0.72, 1.0, 1.28)):
+            x = -0.52 + index * 0.52
+            objects.append(add_cone(f"wave_{index}", (x, 0, 0.55 + height / 2), 0.28, 0.08, height, cyan, 6))
+    elif key == "ui_coin":
+        objects.append(add_cone("coin", (0, 0, 1.0), 0.72, 0.72, 0.22, gold, 12, (math.pi / 2, 0, 0)))
+        cube("coin_leaf", (0, -0.15, 1.0), (0.15, 0.07, 0.62), green, -0.55)
+    elif key == "ui_pause":
+        cube("pause_left", (-0.26, 0, 1.0), (0.30, 0.25, 1.25), parchment)
+        cube("pause_right", (0.26, 0, 1.0), (0.30, 0.25, 1.25), parchment)
+    elif key == "ui_speed":
+        for index in range(2):
+            arrow(f"arrow_{index}", -0.30 + index * 0.60, 1.0, leaf, 1.0, 0.90)
+    elif key == "ui_continue":
+        arrow("continue_arrow", 0.0, 1.0, leaf, 1.0, 1.12)
+    elif key == "ui_inventory":
+        cube("pack_body", (0, 0, 0.90), (1.15, 0.48, 1.05), wood, bevel=0.10)
+        cube("pack_flap", (0, -0.28, 1.30), (1.0, 0.12, 0.36), green, bevel=0.08)
+        cube("pack_buckle", (0, -0.42, 0.98), (0.24, 0.10, 0.26), gold)
+    elif key == "ui_shop":
+        cube("shop_body", (0, 0, 0.76), (1.20, 0.42, 0.88), wood, bevel=0.06)
+        for index, material in enumerate((green, parchment, green, parchment)):
+            cube(f"awning_{index}", (-0.45 + index * 0.30, -0.25, 1.43), (0.30, 0.16, 0.38), material)
+        cube("shop_door", (0, -0.26, 0.64), (0.34, 0.10, 0.62), stone)
+    elif key == "ui_settings":
+        objects.append(add_torus("gear_ring", (0, 0, 1.0), 0.48, 0.16, stone, (math.pi / 2, 0, 0)))
+        for index in range(8):
+            angle = index * math.tau / 8
+            cube(
+                f"gear_tooth_{index}",
+                (math.cos(angle) * 0.68, 0, 1.0 + math.sin(angle) * 0.68),
+                (0.24, 0.20, 0.24), stone, -angle,
+            )
+    elif key == "ui_restart":
+        objects.append(add_torus("restart_ring", (0, 0, 1.0), 0.53, 0.11, leaf, (math.pi / 2, 0, 0)))
+        tip = add_cone("restart_tip", (-0.58, 0, 1.28), 0.24, 0.0, 0.48, leaf, 6, (0, -0.75, 0))
+        objects.append(tip)
+    elif key in {"ui_new_game", "ui_strength"}:
+        sword(parchment)
+        if key == "ui_new_game":
+            cube("new_plus_h", (0.47, -0.18, 0.52), (0.55, 0.12, 0.12), leaf)
+            cube("new_plus_v", (0.47, -0.18, 0.52), (0.12, 0.12, 0.55), leaf)
+    elif key == "ui_close":
+        cube("close_a", (0, 0, 1.0), (0.20, 0.24, 1.30), crimson, 0.78)
+        cube("close_b", (0, 0, 1.0), (0.20, 0.24, 1.30), crimson, -0.78)
+    elif key == "ui_agility":
+        for side in (-1, 1):
+            for index in range(3):
+                cube(
+                    f"wing_{side}_{index}",
+                    (side * (0.25 + index * 0.22), 0, 1.15 - index * 0.18),
+                    (0.42, 0.16, 0.18), leaf, side * (0.35 + index * 0.18),
+                )
+    elif key == "ui_luck":
+        for index in range(4):
+            angle = index * math.tau / 4
+            objects.append(add_ico(
+                f"clover_{index}",
+                (math.cos(angle) * 0.34, 0, 1.02 + math.sin(angle) * 0.34),
+                (0.40, 0.20, 0.40), leaf, 1,
+            ))
+        cube("clover_stem", (0.20, 0, 0.55), (0.12, 0.14, 0.62), green, -0.35)
+    elif key == "ui_dodge":
+        shield(cyan)
+
+    return BuiltModel(None, objects, {"uiIcon": key.removeprefix("ui_"), "touchOnlyUI": True})
+
+
 def build_potion_icon(tier: int) -> BuiltModel:
     glass = MATERIALS.get(f"potion_glass_{tier}", "#B9D6CF")
     liquid_colors = ("#6CCB78", "#63C8B7", "#5EA7D8", "#986BD2", "#D35F9A", "#F0B84B")

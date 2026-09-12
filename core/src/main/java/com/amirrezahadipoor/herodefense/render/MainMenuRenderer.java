@@ -18,7 +18,12 @@ public final class MainMenuRenderer implements AutoCloseable {
         font.getData().setScale(1.45f);
     }
 
-    public void draw(SpriteBatch batch, Matrix4 projection, boolean continueAvailable) {
+    public void draw(
+        SpriteBatch batch,
+        Matrix4 projection,
+        boolean continueAvailable,
+        UiIconRenderer icons
+    ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
@@ -40,11 +45,14 @@ public final class MainMenuRenderer implements AutoCloseable {
         font.draw(batch, "Defend the World Tree through 100 waves", 120f, 990f);
         font.getData().setScale(1.45f);
         font.setColor(Color.valueOf("F3E4BC"));
-        font.draw(batch, "New Game", 278f, 778f);
+        icons.draw(batch, "new_game", 150f, 720f, 84f);
+        icons.draw(batch, "continue", 150f, 530f, 84f);
+        icons.draw(batch, "settings", 150f, 340f, 84f);
+        font.draw(batch, "New Game", 268f, 778f);
         font.setColor(continueAvailable ? Color.valueOf("F3E4BC") : Color.valueOf("77776F"));
-        font.draw(batch, "Continue", 285f, 588f);
+        font.draw(batch, "Continue", 275f, 588f);
         font.setColor(Color.valueOf("F3E4BC"));
-        font.draw(batch, "Settings", 286f, 398f);
+        font.draw(batch, "Settings", 276f, 398f);
         batch.end();
     }
 

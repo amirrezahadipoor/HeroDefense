@@ -24,7 +24,9 @@ public final class HudRenderer implements AutoCloseable {
         font.getData().setScale(1.15f);
     }
 
-    public void draw(SpriteBatch batch, Matrix4 projection, GameState state) {
+    public void draw(
+        SpriteBatch batch, Matrix4 projection, GameState state, UiIconRenderer icons
+    ) {
         float healthRatio = state.hero.maxHealth <= 0f
             ? 0f
             : Math.max(0f, Math.min(1f, state.hero.health / state.hero.maxHealth));
@@ -46,11 +48,15 @@ public final class HudRenderer implements AutoCloseable {
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("F3E4BC"));
-        font.draw(batch, "HP " + Math.round(state.hero.health) + "/" + Math.round(state.hero.maxHealth), 45f, 1223f);
-        font.draw(batch, "Wave " + state.waveNumber + "/" + GameState.FINAL_WAVE, 35f, 1128f);
-        font.draw(batch, "Coins " + state.coins, 225f, 1128f);
-        font.draw(batch, Math.round(state.simulationSpeed) + "x", 474f, 1128f);
-        font.draw(batch, "Pause", 594f, 1128f);
+        icons.draw(batch, "health", 35f, 1194f, 36f);
+        icons.draw(batch, "wave", 35f, 1081f, 52f);
+        icons.draw(batch, "coin", 215f, 1081f, 52f);
+        icons.draw(batch, "speed", 438f, 1080f, 54f);
+        icons.draw(batch, "pause", 603f, 1080f, 54f);
+        font.draw(batch, "HP " + Math.round(state.hero.health) + "/" + Math.round(state.hero.maxHealth), 80f, 1223f);
+        font.draw(batch, state.waveNumber + "/" + GameState.FINAL_WAVE, 92f, 1128f);
+        font.draw(batch, Integer.toString(state.coins), 272f, 1128f);
+        font.draw(batch, Math.round(state.simulationSpeed) + "x", 492f, 1128f);
         batch.end();
     }
 

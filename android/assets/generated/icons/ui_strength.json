@@ -1,0 +1,21 @@
+{
+  "clips": {
+    "idle": [
+      {
+        "height": 96,
+        "index": 0,
+        "width": 96,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "icons",
+  "frameClass": "item",
+  "frameSize": 96,
+  "key": "ui_strength",
+  "sheet": "icons/ui_strength.png",
+  "touchOnlyUI": true,
+  "triangles": 108,
+  "uiIcon": "strength"
+}

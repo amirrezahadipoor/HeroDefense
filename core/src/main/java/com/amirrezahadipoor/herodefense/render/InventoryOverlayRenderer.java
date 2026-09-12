@@ -30,7 +30,9 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         font.getData().setScale(1.3f);
     }
 
-    public void drawPauseMenu(SpriteBatch batch, Matrix4 projection) {
+    public void drawPauseMenu(
+        SpriteBatch batch, Matrix4 projection, UiIconRenderer uiIcons
+    ) {
         beginShapes(projection);
         shapes.setColor(0.03f, 0.06f, 0.075f, 0.90f);
         shapes.rect(0f, 0f, 720f, 1280f);
@@ -43,10 +45,13 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("E7D8B1"));
+        uiIcons.draw(batch, "continue", 205f, 550f, 92f);
+        uiIcons.draw(batch, "inventory", 205f, 785f, 92f);
+        uiIcons.draw(batch, "shop", 205f, 955f, 92f);
         font.draw(batch, "Paused", 295f, 1170f);
-        font.draw(batch, "Resume", 300f, 615f);
-        font.draw(batch, "Inventory", 280f, 845f);
-        font.draw(batch, "Stat Shop", 282f, 1015f);
+        font.draw(batch, "Resume", 315f, 615f);
+        font.draw(batch, "Inventory", 315f, 845f);
+        font.draw(batch, "Stat Shop", 315f, 1015f);
         batch.end();
     }
 
@@ -54,7 +59,8 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         SpriteBatch batch,
         Matrix4 projection,
         GameState state,
-        InventoryTouchController controller
+        InventoryTouchController controller,
+        UiIconRenderer uiIcons
     ) {
         Set<String> visibleIcons = new HashSet<>();
         beginShapes(projection);
@@ -113,8 +119,8 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("E7D8B1"));
+        uiIcons.draw(batch, "close", 588f, 1128f, 64f);
         font.draw(batch, "Equipment & Inventory", 205f, 1225f);
-        font.draw(batch, "Close", 588f, 1172f);
         for (int index = 0; index < EquipmentSlot.values().length; index++) {
             EquipmentSlot slot = EquipmentSlot.values()[index];
             int column = index % 2;

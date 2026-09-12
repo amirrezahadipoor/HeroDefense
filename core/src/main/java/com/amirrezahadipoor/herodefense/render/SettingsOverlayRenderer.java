@@ -18,7 +18,9 @@ public final class SettingsOverlayRenderer implements AutoCloseable {
         font.getData().setScale(1.5f);
     }
 
-    public void draw(SpriteBatch batch, Matrix4 projection, GameSettings settings) {
+    public void draw(
+        SpriteBatch batch, Matrix4 projection, GameSettings settings, UiIconRenderer icons
+    ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
@@ -34,14 +36,13 @@ public final class SettingsOverlayRenderer implements AutoCloseable {
         batch.setProjectionMatrix(projection);
         batch.begin();
         font.setColor(Color.valueOf("F3E4BC"));
-        font.draw(batch, "Settings", 285f, 1060f);
+        icons.draw(batch, "settings", 215f, 990f, 82f);
+        icons.draw(batch, "close", 588f, 1138f, 64f);
+        font.draw(batch, "Settings", 315f, 1060f);
         font.draw(batch, "Sound effects", 140f, 792f);
         font.draw(batch, settings.soundEnabled ? "ON" : "OFF", 515f, 792f);
         font.draw(batch, "Music", 140f, 592f);
         font.draw(batch, settings.musicEnabled ? "ON" : "OFF", 515f, 592f);
-        font.getData().setScale(1.05f);
-        font.draw(batch, "Close", 590f, 1182f);
-        font.getData().setScale(1.5f);
         batch.end();
     }
 
