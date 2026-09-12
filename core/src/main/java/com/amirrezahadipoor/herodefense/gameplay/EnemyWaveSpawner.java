@@ -48,7 +48,9 @@ public final class EnemyWaveSpawner {
                 default -> throw new IllegalStateException("Unhandled spawn lane: " + lane);
             }
             EnemyType type = types[Math.floorMod(waveNumber - 1 + index, types.length)];
-            Enemy enemy = factory.create(state, type, x, y, lane.id());
+            Enemy enemy = factory.createForWave(
+                state, type, x, y, lane.id(), waveNumber
+            );
             state.aliveEnemies.add(enemy);
         }
     }

@@ -82,7 +82,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Spawn enemies from three directions and have them converge on the Hero.
 - [x] While the Hero lives, enemies attack the Hero; when the Hero dies, destroy the World Tree and enter Game Over.
 - [x] Advance seamlessly through waves 1–100 without loading screens.
-- [ ] Apply the wave-number difficulty formula defined in Phase 14.
+- [x] Apply the wave-number difficulty formula defined in Phase 14.
 - [ ] Advance automatically after the current wave is fully cleared.
 
 ## Phase 5 — Boss System

@@ -6,6 +6,16 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 
 /** Creates regular melee enemies from the typed gameplay/asset catalog. */
 public final class EnemyFactory {
+    private final DifficultyCurve difficultyCurve;
+
+    public EnemyFactory() {
+        this(new DifficultyCurve());
+    }
+
+    public EnemyFactory(DifficultyCurve difficultyCurve) {
+        this.difficultyCurve = difficultyCurve;
+    }
+
     public Enemy create(GameState state, EnemyType type, float x, float y, int spawnLane) {
         if (state == null || type == null) {
             throw new IllegalArgumentException("State and enemy type are required");
@@ -18,6 +28,19 @@ public final class EnemyFactory {
         enemy.attackRange = type.attackRange();
         enemy.attackIntervalSeconds = type.attackIntervalSeconds();
         enemy.spawnLane = spawnLane;
+        return enemy;
+    }
+
+    public Enemy createForWave(
+        GameState state,
+        EnemyType type,
+        float x,
+        float y,
+        int spawnLane,
+        int waveNumber
+    ) {
+        Enemy enemy = create(state, type, x, y, spawnLane);
+        difficultyCurve.applyToRegularEnemy(enemy, type, waveNumber);
         return enemy;
     }
 }
