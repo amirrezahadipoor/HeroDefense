@@ -46,6 +46,7 @@ import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.Boss;
+import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
 import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -541,8 +542,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private void emitPendingPickupParticles(GameState state, float deltaSeconds) {
         for (DropEntity drop : state.drops) {
-            if (drop == null || !drop.active || drop.pickupDelaySeconds > deltaSeconds) continue;
-            if ("ITEM".equals(drop.dropType) || "POTION".equals(drop.dropType)) {
+            if (drop == null || !drop.active || drop.collectionEffectEmitted) continue;
+            boolean enteringHoming = drop.collectionStage == DropCollectionStage.HOMING
+                || drop.pickupDelaySeconds <= deltaSeconds;
+            if (enteringHoming
+                && ("ITEM".equals(drop.dropType) || "POTION".equals(drop.dropType))) {
+                drop.collectionEffectEmitted = true;
                 particleSystem.emitItemPickup(drop.x, drop.y + 25f);
             }
         }

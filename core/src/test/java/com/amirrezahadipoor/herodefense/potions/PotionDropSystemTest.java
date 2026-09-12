@@ -53,7 +53,7 @@ final class PotionDropSystemTest {
         assertEquals(0, drops.processDefeatedEnemies(state));
         com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem pickup =
             new com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem();
-        assertEquals(1, pickup.update(state, 1f));
+        assertEquals(1, pickup.update(state, 1.2f));
         assertEquals(1, state.healthPotions.stream().mapToInt(Integer::intValue).sum());
     }
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.amirrezahadipoor.herodefense.model.Boss;
+import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
 import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -28,7 +29,10 @@ final class GameStateCodecTest {
         boss.health = boss.maxHealth = 900f;
         source.aliveBosses.add(boss);
         source.projectiles.add(new Projectile(source.allocateEntityId(), source.hero.id, enemy.id, 1f, 2f));
-        source.drops.add(new DropEntity(source.allocateEntityId(), "COIN", 3f, 4f, 12));
+        DropEntity drop = new DropEntity(source.allocateEntityId(), "COIN", 3f, 4f, 12);
+        drop.collectionStage = DropCollectionStage.HOMING;
+        drop.homingElapsedSeconds = 0.2f;
+        source.drops.add(drop);
 
         Item item = new Item("weapon_01", "Ashwood Bow", "WEAPON", "COMMON");
         item.statBonuses.put("STRENGTH", 2f);
@@ -46,6 +50,8 @@ final class GameStateCodecTest {
         assertEquals(73f, restored.hero.health);
         assertEquals("STONEKIN", restored.aliveEnemies.get(0).enemyType);
         assertEquals("THORN_MATRIARCH", restored.aliveBosses.get(0).bossType);
+        assertEquals(DropCollectionStage.HOMING, restored.drops.get(0).collectionStage);
+        assertEquals(0.2f, restored.drops.get(0).homingElapsedSeconds);
         assertEquals("Ashwood Bow", restored.inventory.get(0).name);
         assertEquals(3, restored.healthPotions.get(2));
         assertEquals(4, restored.shopUpgradeLevels.get("STRENGTH"));

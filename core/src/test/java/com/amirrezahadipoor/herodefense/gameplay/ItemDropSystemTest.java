@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
+import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.EnemyType;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -54,7 +55,12 @@ final class ItemDropSystemTest {
 
         DropPickupSystem pickup = new DropPickupSystem();
         assertEquals(0, pickup.update(state, 0.5f));
-        assertEquals(1, pickup.update(state, 0.2f));
+        assertEquals(DropCollectionStage.GROUND, state.drops.get(0).collectionStage);
+        assertEquals(0, pickup.update(state, 0.2f));
+        assertEquals(DropCollectionStage.HOMING, state.drops.get(0).collectionStage);
+        assertEquals(0, state.inventory.size());
+        assertEquals(0, pickup.update(state, 0.3f));
+        assertEquals(1, pickup.update(state, 0.11f));
         assertEquals(1, state.inventory.size());
         assertEquals(0, state.drops.size());
     }

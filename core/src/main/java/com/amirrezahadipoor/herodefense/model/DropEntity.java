@@ -6,6 +6,9 @@ public final class DropEntity extends ArenaEntity {
     public String itemId = "";
     public int quantity = 1;
     public float pickupDelaySeconds;
+    public DropCollectionStage collectionStage = DropCollectionStage.GROUND;
+    public float homingElapsedSeconds;
+    public boolean collectionEffectEmitted;
 
     public DropEntity() {
         super();
