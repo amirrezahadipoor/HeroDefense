@@ -1,0 +1,21 @@
+{
+  "clips": {
+    "idle": [
+      {
+        "height": 192,
+        "index": 0,
+        "width": 192,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "environment",
+  "frameClass": "environment",
+  "frameSize": 192,
+  "key": "ground_tile_2",
+  "sheet": "environment/ground_tile_2.png",
+  "tileable": false,
+  "triangles": 144,
+  "variant": 2
+}

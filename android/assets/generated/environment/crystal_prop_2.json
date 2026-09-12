@@ -1,0 +1,21 @@
+{
+  "clips": {
+    "idle": [
+      {
+        "height": 192,
+        "index": 0,
+        "width": 192,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "environment",
+  "frameClass": "environment",
+  "frameSize": 192,
+  "key": "crystal_prop_2",
+  "prop": "crystal_cluster",
+  "sheet": "environment/crystal_prop_2.png",
+  "triangles": 50,
+  "variant": 2
+}

@@ -77,6 +77,7 @@ All character, equipment, item, prop, and tree renders use the named `HD_CAMERA`
 | Orthographic scale, boss | `4.4` |
 | Orthographic scale, item icon | `2.2` |
 | Orthographic scale, World Tree | `6.0` |
+| Orthographic scale, ground/prop | `5.1` |
 | Framing shift | Character/environment `0`, Tree `+0.12`, Boss `+0.06`, item icon `-0.12`; projection angle remains identical |
 | Character forward direction | `(0, -1, 0)` toward camera |
 | Frame center | pelvis at X center; ground plane at 12% frame height |
