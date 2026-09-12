@@ -89,3 +89,5 @@ The deterministic regression gate requires all of the following:
 - Every metric must be finite and no wave may hit the simulator's timeout.
 
 After tuning, baseline seed `0x4845524F444546` completed 100/100 waves with `7.866184%` average gross damage, `26.5138%` maximum single-wave damage, `47.43463 s` average clear time, and `98.999 s` maximum clear time. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
+
+Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.
