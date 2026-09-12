@@ -44,22 +44,37 @@ public final class AndroidTouchSmokeTest {
             await("main menu", () -> game.screenState() == GameScreenState.MENU);
             int[] surface = gameSurfaceFrom(scenario);
 
+            long touchCount = game.handledTouchUpCount();
             tapWorld(device, surface, 360f, 760f); // New Game
+            await("new-game touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 760f);
             await("wave starts", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().waveNumber);
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
 
-            tapWorld(device, surface, 600f, 1150f); // Pause HUD target, clear of edge gestures
+            tapWorld(
+                device,
+                surface,
+                600f + correction[0],
+                1115f + correction[1]
+            ); // Pause HUD target, calibrated from the preceding real touch.
             await("paused", () -> game.screenState() == GameScreenState.PAUSED);
-            tapWorld(device, surface, 360f, 830f); // Inventory
+            tapWorld(device, surface, 360f + correction[0], 830f + correction[1]); // Inventory
             await("inventory opens", game::inventoryOpen);
 
-            swipeWorld(device, surface, 360f, 580f, 360f, 730f); // Drag-only inventory gesture
+            swipeWorld(
+                device,
+                surface,
+                360f + correction[0],
+                580f + correction[1],
+                360f + correction[0],
+                730f + correction[1]
+            ); // Drag-only inventory gesture
             assertTrue(game.inventoryOpen());
-            tapWorld(device, surface, 620f, 1160f); // Inventory close
+            tapWorld(device, surface, 620f + correction[0], 1160f + correction[1]); // Close
             await("inventory closes", () -> !game.inventoryOpen());
-            tapWorld(device, surface, 360f, 600f); // Resume
+            tapWorld(device, surface, 360f + correction[0], 600f + correction[1]); // Resume
             await("play resumes", () -> game.screenState() == GameScreenState.PLAYING);
 
             assertEquals(
@@ -79,11 +94,14 @@ public final class AndroidTouchSmokeTest {
             await("saved run menu", () -> game.screenState() == GameScreenState.MENU);
             int[] surface = gameSurfaceFrom(scenario);
 
+            long touchCount = game.handledTouchUpCount();
             tapWorld(device, surface, 360f, 570f); // Continue
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
             await("reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
             assertEquals(3, game.gameState().pendingRewardCards.size());
 
-            tapWorld(device, surface, 360f, 890f); // First card
+            tapWorld(device, surface, 360f + correction[0], 890f + correction[1]); // First card
             await("card applied", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().chosenRewardCards.size());
             assertEquals(6, game.gameState().waveNumber);
@@ -153,6 +171,16 @@ public final class AndroidTouchSmokeTest {
             Math.round(left + worldX * scale),
             Math.round(top + (WORLD_HEIGHT - worldY) * scale)
         };
+    }
+
+    private static float[] touchCorrection(
+        HeroDefenseGame game, float expectedWorldX, float expectedWorldY
+    ) {
+        float actualX = game.lastTouchWorldX();
+        float actualY = game.lastTouchWorldY();
+        assertFalse(Float.isNaN(actualX));
+        assertFalse(Float.isNaN(actualY));
+        return new float[] {expectedWorldX - actualX, expectedWorldY - actualY};
     }
 
     private static void await(String label, BooleanSupplier condition) {

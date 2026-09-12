@@ -127,6 +127,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameState gameState;
     private boolean continueAvailable;
     private volatile boolean readyForTouch;
+    private volatile long handledTouchUpCount;
+    private volatile float lastTouchWorldX = Float.NaN;
+    private volatile float lastTouchWorldY = Float.NaN;
     private OrthographicCamera camera;
     private Viewport viewport;
     private float simulationSeconds;
@@ -234,6 +237,19 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         return inventoryTouchController != null && inventoryTouchController.isOpen();
     }
 
+    /** Read-only test visibility used to confirm device touches reached libGDX coordinates. */
+    public long handledTouchUpCount() {
+        return handledTouchUpCount;
+    }
+
+    public float lastTouchWorldX() {
+        return lastTouchWorldX;
+    }
+
+    public float lastTouchWorldY() {
+        return lastTouchWorldY;
+    }
+
     /** Awards kill XP and opens the touch allocation overlay whenever a level is gained. */
     public int grantHeroExperience(int experience) {
         int levelsGained = heroProgressionSystem.grantExperience(gameState, experience);
@@ -336,6 +352,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
             @Override
             public boolean onTouchUp(float worldX, float worldY, int pointer, boolean isTap) {
+                lastTouchWorldX = worldX;
+                lastTouchWorldY = worldY;
+                handledTouchUpCount++;
                 if (!isTap) {
                     return true;
                 }
