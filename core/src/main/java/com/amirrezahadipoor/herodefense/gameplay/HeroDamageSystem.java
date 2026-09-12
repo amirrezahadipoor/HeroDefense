@@ -5,11 +5,25 @@ import com.amirrezahadipoor.herodefense.model.IncomingHitResult;
 
 /** Routes every positive enemy hit through one persisted Dodge roll. */
 public final class HeroDamageSystem {
+    private final HeroStatCalculator statCalculator;
+
+    public HeroDamageSystem() {
+        this(new HeroStatCalculator());
+    }
+
+    public HeroDamageSystem(HeroStatCalculator statCalculator) {
+        this.statCalculator = statCalculator;
+    }
+
     public IncomingHitResult applyIncomingHit(GameState state, float damage) {
         if (state == null || state.hero == null || !state.hero.alive || damage <= 0f) {
             return IncomingHitResult.IGNORED;
         }
         float dodgeRoll = state.nextCombatRandomFloat();
-        return state.hero.receiveIncomingHit(damage, dodgeRoll);
+        return state.hero.receiveIncomingHit(
+            damage,
+            dodgeRoll,
+            statCalculator.dodgeChance(state)
+        );
     }
 }

@@ -103,7 +103,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 
 - [x] Implement six equipment slots: Weapon, Helmet, Armor, Boots, Ring 1, Ring 2.
 - [x] Define 40 items over four tiers: Common, Uncommon, Rare, Legendary.
-- [ ] Give each item a name, slot, tier, stat bonuses, and icon.
+- [x] Give each item a name, slot, tier, stat bonuses, and icon.
 - [ ] Connect equipped items to rendered mesh/material sprite variants.
 - [ ] Show runtime Rare/Legendary glow when equipped.
 - [ ] Add touch inventory UI for viewing, equipping/unequipping, and selling non-potion items.

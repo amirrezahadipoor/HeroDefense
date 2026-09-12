@@ -1,7 +1,9 @@
 package com.amirrezahadipoor.herodefense.items;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.ItemTier;
@@ -30,9 +32,19 @@ final class EquipmentCatalogTest {
     }
 
     @Test
-    void rosterCoversEveryEquipmentSlotAndSupportsStableLookup() {
+    void everyItemHasNameSlotTierBonusesAndReviewedIconPath() {
         EnumSet<EquipmentSlot> slots = EnumSet.noneOf(EquipmentSlot.class);
-        for (EquipmentDefinition item : EquipmentCatalog.all()) slots.add(item.slot());
+        Set<String> names = new HashSet<>();
+        for (EquipmentDefinition item : EquipmentCatalog.all()) {
+            slots.add(item.slot());
+            names.add(item.name());
+            assertFalse(item.name().isBlank());
+            assertFalse(item.statBonuses().isEmpty());
+            assertTrue(item.statBonuses().values().stream().allMatch(value -> value > 0));
+            assertEquals("generated/icons/equipment_" + item.id() + ".png", item.iconPath());
+            assertEquals(item.iconPath(), item.createItem().iconKey);
+        }
+        assertEquals(40, names.size());
         assertEquals(EnumSet.allOf(EquipmentSlot.class), slots);
         assertNotNull(EquipmentCatalog.byId("worldbranch"));
     }

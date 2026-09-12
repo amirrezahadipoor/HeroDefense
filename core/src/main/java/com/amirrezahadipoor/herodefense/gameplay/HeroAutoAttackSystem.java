@@ -13,6 +13,16 @@ public final class HeroAutoAttackSystem {
     public static final float PROJECTILE_SPEED = 900f;
     private static final int MAX_SHOTS_PER_UPDATE = 4;
 
+    private final HeroStatCalculator statCalculator;
+
+    public HeroAutoAttackSystem() {
+        this(new HeroStatCalculator());
+    }
+
+    public HeroAutoAttackSystem(HeroStatCalculator statCalculator) {
+        this.statCalculator = statCalculator;
+    }
+
     public void update(GameState state, float deltaSeconds) {
         if (state == null || state.hero == null || !state.hero.alive || deltaSeconds < 0f) {
             return;
@@ -31,7 +41,7 @@ public final class HeroAutoAttackSystem {
         int shots = 0;
         while (hero.attackCooldownSeconds <= 0f && shots < MAX_SHOTS_PER_UPDATE) {
             fire(state, hero, target);
-            hero.attackCooldownSeconds += hero.attackIntervalSeconds();
+            hero.attackCooldownSeconds += statCalculator.attackIntervalSeconds(state);
             shots++;
         }
     }
@@ -78,12 +88,12 @@ public final class HeroAutoAttackSystem {
             || (candidateDistance != Float.POSITIVE_INFINITY && current == null);
     }
 
-    private static void fire(GameState state, Hero hero, Enemy target) {
+    private void fire(GameState state, Hero hero, Enemy target) {
         hero.beginAttackAnimation();
         Projectile projectile = new Projectile(
             state.allocateEntityId(), hero.id, target.id, hero.x, hero.y
         );
-        projectile.damage = hero.damagePerAttack()
+        projectile.damage = statCalculator.damage(state)
             * (1f + effectValue(state, BossRewardCardSystem.GENERAL_POWER_KEY));
         float distance = (float) Math.sqrt(hero.distanceSquaredTo(target.x, target.y));
         projectile.remainingLifetimeSeconds = distance / PROJECTILE_SPEED + 0.25f;

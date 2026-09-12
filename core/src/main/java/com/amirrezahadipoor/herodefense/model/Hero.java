@@ -41,13 +41,21 @@ public final class Hero extends ArenaEntity {
     }
 
     public IncomingHitResult receiveIncomingHit(float amount, float dodgeRoll) {
+        return receiveIncomingHit(amount, dodgeRoll, dodgeChance());
+    }
+
+    public IncomingHitResult receiveIncomingHit(
+        float amount,
+        float dodgeRoll,
+        float effectiveDodgeChance
+    ) {
         if (!alive || amount <= 0f) {
             return IncomingHitResult.IGNORED;
         }
         if (dodgeRoll < 0f || dodgeRoll >= 1f || Float.isNaN(dodgeRoll)) {
             throw new IllegalArgumentException("Dodge roll must be in [0, 1)");
         }
-        if (dodgeRoll < dodgeChance()) {
+        if (dodgeRoll < Math.max(0f, Math.min(1f, effectiveDodgeChance))) {
             return IncomingHitResult.DODGED;
         }
         health = Math.max(0f, health - amount);

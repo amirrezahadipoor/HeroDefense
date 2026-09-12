@@ -131,6 +131,7 @@ public final class GameState {
         if (drops == null) drops = new ArrayList<>();
         if (inventory == null) inventory = new ArrayList<>();
         if (equippedItems == null) equippedItems = new LinkedHashMap<>();
+        synchronizeEquipmentHealth();
         if (permanentEffects == null) permanentEffects = new LinkedHashMap<>();
         if (chosenRewardCards == null) chosenRewardCards = new LinkedHashMap<>();
         if (pendingRewardCards == null) pendingRewardCards = new ArrayList<>();
@@ -147,6 +148,17 @@ public final class GameState {
     private static long initialRandomState(long seed) {
         long mixed = seed ^ 0x9E3779B97F4A7C15L;
         return mixed == 0L ? 0xD1B54A32D192ED03L : mixed;
+    }
+
+    private void synchronizeEquipmentHealth() {
+        int bonusPoints = 0;
+        for (Item item : equippedItems.values()) {
+            if (item == null || item.statBonuses == null) continue;
+            Float bonus = item.statBonuses.get(HeroStat.HEALTH.name());
+            if (bonus != null && bonus > 0f) bonusPoints += Math.round(bonus);
+        }
+        hero.maxHealth = hero.stats.maxHealth() + bonusPoints * HeroStats.MAX_HEALTH_PER_POINT;
+        hero.health = Math.max(0f, Math.min(hero.maxHealth, hero.health));
     }
 
     private void ensurePotionSlots() {
