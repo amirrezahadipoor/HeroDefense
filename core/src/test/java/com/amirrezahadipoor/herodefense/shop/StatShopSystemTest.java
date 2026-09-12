@@ -35,6 +35,23 @@ final class StatShopSystemTest {
     }
 
     @Test
+    void tunedPricesRiseLinearlyThroughTwentyPurchasesThenCloseTheStat() {
+        GameState state = GameState.newRun(44L);
+        for (HeroStat stat : HeroStat.values()) {
+            state.shopUpgradeLevels.put(stat.name(), 0);
+            int previous = shop.price(state, stat);
+            for (int level = 1; level < StatShopSystem.MAX_PURCHASES_PER_STAT; level++) {
+                state.shopUpgradeLevels.put(stat.name(), level);
+                int current = shop.price(state, stat);
+                assertEquals(StatShopSystem.PRICE_STEP_PER_LEVEL, current - previous);
+                previous = current;
+            }
+            state.shopUpgradeLevels.put(stat.name(), StatShopSystem.MAX_PURCHASES_PER_STAT);
+            assertEquals(Integer.MAX_VALUE, shop.price(state, stat));
+        }
+    }
+
+    @Test
     void rejectsPurchaseWithoutEnoughInGameCoins() {
         GameState state = GameState.newRun(43L);
         state.coins = 0;

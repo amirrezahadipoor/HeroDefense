@@ -120,7 +120,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Award coins for enemy and boss kills.
 - [x] Sell unwanted non-potion items for coins.
 - [x] Add a touch-only in-game shop for direct stat upgrades; no real-money purchases.
-- [ ] Tune shop pricing in Phase 14.
+- [x] Tune shop pricing in Phase 14.
 
 ## Phase 10 — UI / UX / HUD
 
