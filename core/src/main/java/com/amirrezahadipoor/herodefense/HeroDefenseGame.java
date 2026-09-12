@@ -56,6 +56,8 @@ import com.amirrezahadipoor.herodefense.polish.HitStopSystem;
 import com.amirrezahadipoor.herodefense.polish.ParticleSystem;
 import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.polish.TouchFeedbackSystem;
+import com.amirrezahadipoor.herodefense.render.ArenaEnvironmentRenderer;
+import com.amirrezahadipoor.herodefense.render.CombatEntityRenderer;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
@@ -83,10 +85,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private GameFlowController flow;
     private GameAudioManager audioManager;
+    private ArenaEnvironmentRenderer arenaEnvironmentRenderer;
     private AutoPotionSystem autoPotionSystem;
     private BossRewardCardSystem bossRewardCardSystem;
     private EquipmentSpriteRenderer equipmentSpriteRenderer;
     private BossSpecialAttackSystem bossSpecialAttackSystem;
+    private CombatEntityRenderer combatEntityRenderer;
     private DropPickupSystem dropPickupSystem;
     private EnemyMeleeAttackSystem enemyMeleeAttackSystem;
     private EnemyMovementSystem enemyMovementSystem;
@@ -182,6 +186,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
         viewport.apply(true);
         spriteBatch = new SpriteBatch();
+        arenaEnvironmentRenderer = new ArenaEnvironmentRenderer();
+        combatEntityRenderer = new CombatEntityRenderer();
         gameOverOverlayRenderer = new GameOverOverlayRenderer();
         heroSpriteRenderer = new HeroSpriteRenderer();
         hudRenderer = new HudRenderer();
@@ -277,6 +283,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         saveNow();
         if (audioManager != null) {
             audioManager.close();
+        }
+        if (arenaEnvironmentRenderer != null) {
+            arenaEnvironmentRenderer.close();
+        }
+        if (combatEntityRenderer != null) {
+            combatEntityRenderer.close();
         }
         if (gameOverOverlayRenderer != null) {
             gameOverOverlayRenderer.close();
@@ -633,9 +645,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             camera.update();
             spriteBatch.setProjectionMatrix(camera.combined);
             spriteBatch.begin();
+            arenaEnvironmentRenderer.draw(spriteBatch, gameState, simulationSeconds);
+            combatEntityRenderer.drawActors(spriteBatch, gameState, simulationSeconds);
             int heroFrame = heroAnimationController.frameIndex(gameState.hero);
             heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
             equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
+            combatEntityRenderer.drawEffects(spriteBatch, gameState, simulationSeconds);
             spriteBatch.end();
             particleRenderer.draw(camera.combined, particleSystem);
             camera.position.set(baseCameraX, baseCameraY, camera.position.z);
