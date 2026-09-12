@@ -47,6 +47,7 @@ import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HudRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.LevelUpOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.MainMenuRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
@@ -81,6 +82,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
     private KillRewardSystem killRewardSystem;
+    private LevelUpOverlayRenderer levelUpOverlayRenderer;
     private MainMenuRenderer mainMenuRenderer;
     private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
@@ -145,6 +147,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
+        levelUpOverlayRenderer = new LevelUpOverlayRenderer();
         mainMenuRenderer = new MainMenuRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
@@ -207,6 +210,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (inventoryOverlayRenderer != null) {
             inventoryOverlayRenderer.close();
+        }
+        if (levelUpOverlayRenderer != null) {
+            levelUpOverlayRenderer.close();
         }
         if (mainMenuRenderer != null) {
             mainMenuRenderer.close();
@@ -445,6 +451,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             mainMenuRenderer.draw(spriteBatch, camera.combined, continueAvailable);
         } else if (flow.state() == GameScreenState.SETTINGS) {
             settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings);
+        } else if (flow.state() == GameScreenState.LEVEL_UP) {
+            levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.SHOP) {

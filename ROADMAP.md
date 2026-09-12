@@ -128,7 +128,7 @@ The source of truth is procedural Python. Real 3D rigs and bones provide coheren
 - [x] Pause/resume all simulation from a tap target.
 - [x] Cycle 1×/2×/3× simulation speed from a tap target.
 - [x] Add touch-only Main Menu: new game, continue, settings.
-- [ ] Add touch-only Level-Up stat selection.
+- [x] Add touch-only Level-Up stat selection.
 - [ ] Add touch-only post-boss three-card selection.
 - [ ] Add touch/drag Inventory and Equipment screens.
 - [ ] Add touch-only Shop screen.
