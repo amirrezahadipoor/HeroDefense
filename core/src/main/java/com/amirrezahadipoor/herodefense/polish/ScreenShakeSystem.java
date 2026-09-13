@@ -14,6 +14,16 @@ public final class ScreenShakeSystem {
         trigger(0.34f, 14f);
     }
 
+    /** Arrival rumble: longer than a Hero hit but weaker than a boss kill. */
+    public void triggerBossEntrance() {
+        trigger(0.24f, 8f);
+    }
+
+    /** Slow low-amplitude fall as the World Tree collapses. */
+    public void triggerTreeFall() {
+        trigger(0.60f, 9f);
+    }
+
     public void update(float deltaSeconds) {
         if (deltaSeconds <= 0f || remaining <= 0f) return;
         remaining = Math.max(0f, remaining - deltaSeconds);

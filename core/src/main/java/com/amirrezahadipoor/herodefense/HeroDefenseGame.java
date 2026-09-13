@@ -147,6 +147,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Viewport viewport;
     private float simulationSeconds;
+    private float ambientSeconds;
     private float gameOverPresentationSeconds;
 
     @Override
@@ -235,6 +236,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
+        }
+        ambientSeconds += deltaSeconds;
+        if (flow.state() == GameScreenState.GAME_OVER) {
+            // Combat has stopped; let the final death, shockwave, and leaf motes settle.
+            screenShakeSystem.update(deltaSeconds);
+            particleSystem.update(deltaSeconds);
         }
         if (flow.state() == GameScreenState.GAME_OVER && !gameState.runComplete) {
             gameOverPresentationSeconds = Math.min(
@@ -581,20 +588,50 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             waveLifecycleSystem.startCurrentWave(gameState);
             if (livingBossCount(gameState) > bossesBefore) {
                 audioManager.play(AudioCue.BOSS_ENTRANCE);
+                presentBossEntrance(gameState);
             }
         }
     }
 
     private void emitDefeatParticles(GameState state) {
-        for (Enemy enemy : state.aliveEnemies) emitDefeatParticles(enemy);
-        for (Boss boss : state.aliveBosses) emitDefeatParticles(boss);
+        for (Enemy enemy : state.aliveEnemies) emitDefeatParticles(enemy, false);
+        for (Boss boss : state.aliveBosses) emitDefeatParticles(boss, true);
     }
 
-    private void emitDefeatParticles(Enemy enemy) {
+    private void emitDefeatParticles(Enemy enemy, boolean boss) {
         if (enemy == null || enemy.alive || enemy.defeatParticlesEmitted) return;
         enemy.defeatParticlesEmitted = true;
-        particleSystem.emitDeath(enemy.x, enemy.y + 30f);
+        if (boss) {
+            particleSystem.emitBossDeath(enemy.x, enemy.y + 40f);
+        } else {
+            particleSystem.emitDeath(enemy.x, enemy.y + 30f);
+        }
         particleSystem.emitCoins(enemy.x, enemy.y + 50f);
+    }
+
+    private void presentBossEntrance(GameState state) {
+        for (Boss boss : state.aliveBosses) {
+            if (boss == null || !boss.alive || boss.entrancePresented) continue;
+            boss.entrancePresented = true;
+            particleSystem.emitBossEntrance(boss.x, boss.y + 10f);
+        }
+        screenShakeSystem.triggerBossEntrance();
+    }
+
+    /** Sparkles where a homing drop lands on the Inventory control, before the drop is removed. */
+    private void emitCollectionSparkles(GameState state, float deltaSeconds) {
+        for (DropEntity drop : state.drops) {
+            if (drop == null || !drop.active
+                || drop.collectionStage != DropCollectionStage.HOMING) {
+                continue;
+            }
+            if (drop.homingElapsedSeconds + deltaSeconds >= DropPickupSystem.HOMING_DURATION_SECONDS
+                && ("ITEM".equals(drop.dropType) || "POTION".equals(drop.dropType))) {
+                particleSystem.emitCollectionSparkle(
+                    CombatEntityRenderer.DROP_TARGET_X, CombatEntityRenderer.DROP_TARGET_Y + 30f
+                );
+            }
+        }
     }
 
     private void emitPendingPickupParticles(GameState state, float deltaSeconds) {
@@ -685,8 +722,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (killRewards.levelsGained() > 0) audioManager.play(AudioCue.LEVEL_UP);
         emitPendingPickupParticles(gameState, simulationDelta);
+        emitCollectionSparkles(gameState, simulationDelta);
         dropPickupSystem.update(gameState, simulationDelta);
         if (gameOver) {
+            particleSystem.emitTreeDestruction(WorldLayout.WORLD_TREE_X, WorldLayout.WORLD_TREE_Y);
+            screenShakeSystem.triggerTreeFall();
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
         } else if (killRewards.levelsGained() > 0) {
@@ -697,6 +737,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             WaveCompletion waveCompletion = waveLifecycleSystem.updateAfterCombat(gameState);
             if (livingBossCount(gameState) > bossesBeforeWaveAdvance) {
                 audioManager.play(AudioCue.BOSS_ENTRANCE);
+                presentBossEntrance(gameState);
             }
             if (waveCompletion == WaveCompletion.BOSS_REWARD) {
                 flow.transitionTo(GameScreenState.CARD_CHOICE);
@@ -742,6 +783,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 simulationSeconds,
                 presentationDeltaSeconds
             );
+            spriteBatch.end();
+            particleRenderer.drawAmbient(camera.combined, ambientSeconds);
+            spriteBatch.begin();
             combatEntityRenderer.drawActors(spriteBatch, gameState, simulationSeconds);
             int heroFrame = heroAnimationController.frameIndex(gameState.hero);
             heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);

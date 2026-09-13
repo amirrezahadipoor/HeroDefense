@@ -6,6 +6,8 @@ public final class Boss extends Enemy {
     public String uniqueAttack = "GROUND_SLAM";
     public float specialCooldownSeconds;
     public float specialAnimationSeconds;
+    /** Presentation-only flag so a loaded save never replays the arrival shockwave. */
+    public boolean entrancePresented;
     public int specialUseCount;
     public int bossNumber;
 

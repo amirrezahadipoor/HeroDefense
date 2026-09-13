@@ -35,11 +35,12 @@ public final class CombatEntityRenderer implements AutoCloseable {
     static final float REGULAR_FEET_RATIO = 23f / 192f;
     static final float BOSS_FEET_RATIO = 30f / 256f;
     private static final float ATTACK_CLIP_SECONDS = 8f / FRAME_RATE;
-    static final float DROP_TARGET_X = HudTouchLayout.INVENTORY_X
+    public static final float DROP_TARGET_X = HudTouchLayout.INVENTORY_X
         + HudTouchLayout.UTILITY_BUTTON_WIDTH * 0.5f;
-    static final float DROP_TARGET_Y = HudTouchLayout.UTILITY_BUTTON_Y
+    public static final float DROP_TARGET_Y = HudTouchLayout.UTILITY_BUTTON_Y
         + HudTouchLayout.UTILITY_BUTTON_HEIGHT * 0.5f;
     private static final float DROP_HOMING_ARC_HEIGHT = 86f;
+    static final int PROJECTILE_TRAIL_STEPS = 3;
     private static final Set<String> BOSS_ASSET_KEYS = bossAssetKeys();
 
     private final Map<String, EntityClips> clipsByKey = new LinkedHashMap<>();
@@ -117,21 +118,46 @@ public final class CombatEntityRenderer implements AutoCloseable {
     private void drawProjectiles(SpriteBatch batch, GameState state) {
         for (Projectile projectile : state.projectiles) {
             if (projectile == null || !projectile.active) continue;
+            float angle = MathUtils.atan2(projectile.velocityY, projectile.velocityX)
+                * MathUtils.radiansToDegrees;
+            float speed = (float) Math.sqrt(
+                projectile.velocityX * projectile.velocityX
+                    + projectile.velocityY * projectile.velocityY
+            );
+            float nx = speed <= 0f ? 1f : projectile.velocityX / speed;
+            float ny = speed <= 0f ? 0f : projectile.velocityY / speed;
+            for (int step = 1; step <= PROJECTILE_TRAIL_STEPS; step++) {
+                float back = step * 9f;
+                float alpha = projectileTrailAlpha(step);
+                if (projectile.critical) {
+                    batch.setColor(0.35f, 0.92f, 0.96f, alpha);
+                } else {
+                    batch.setColor(0.93f, 0.71f, 0.25f, alpha);
+                }
+                float size = 5f - step;
+                batch.draw(
+                    pixel,
+                    projectile.x - nx * back - size * 0.5f,
+                    projectile.y - ny * back - size * 0.5f,
+                    size,
+                    size
+                );
+            }
             if (projectile.critical) {
                 batch.setColor(0.35f, 0.92f, 0.96f, 1f);
             } else {
                 batch.setColor(0.93f, 0.71f, 0.25f, 1f);
             }
-            float angle = MathUtils.atan2(projectile.velocityY, projectile.velocityX)
-                * MathUtils.radiansToDegrees;
+            float length = projectile.critical ? 26f : 22f;
+            float thickness = projectile.critical ? 7f : 6f;
             batch.draw(
                 pixel,
-                projectile.x - 11f,
-                projectile.y - 3f,
-                11f,
-                3f,
-                22f,
-                6f,
+                projectile.x - length * 0.5f,
+                projectile.y - thickness * 0.5f,
+                length * 0.5f,
+                thickness * 0.5f,
+                length,
+                thickness,
                 1f,
                 1f,
                 angle,
@@ -142,8 +168,14 @@ public final class CombatEntityRenderer implements AutoCloseable {
                 false,
                 false
             );
+            batch.setColor(1f, 1f, 1f, 0.85f);
+            batch.draw(pixel, projectile.x + nx * 6f - 2f, projectile.y + ny * 6f - 2f, 4f, 4f);
         }
         batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    static float projectileTrailAlpha(int step) {
+        return Math.max(0f, 0.55f - step * 0.15f);
     }
 
     private void drawDrops(SpriteBatch batch, GameState state, float runTimeSeconds) {
