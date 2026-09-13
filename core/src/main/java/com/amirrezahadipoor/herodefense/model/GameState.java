@@ -15,6 +15,8 @@ public final class GameState {
     public static final int PLANTING_WAVE = 100;
     /** Mirrors {@code HeroProgressionSystem.LEVEL_CAP}; kept here so save repair has no gameplay dependency. */
     public static final int MAX_HERO_LEVEL = 200;
+    /** Mirrors {@code ItemForgeSystem.MAX_UPGRADE}. */
+    public static final int MAX_ITEM_UPGRADE = 5;
     /** Seconds the monsters spend tearing down the trees after the Hero falls. */
     public static final float TREE_SIEGE_SECONDS = 3.2f;
     public static final float ARENA_CENTER_X = WorldLayout.HERO_CENTER_X;
@@ -162,6 +164,10 @@ public final class GameState {
         if (drops == null) drops = new ArrayList<>();
         if (inventory == null) inventory = new ArrayList<>();
         if (equippedItems == null) equippedItems = new LinkedHashMap<>();
+        inventory.removeIf(item -> item == null);
+        equippedItems.values().removeIf(item -> item == null);
+        for (Item item : inventory) item.upgradeLevel = Math.max(0, Math.min(MAX_ITEM_UPGRADE, item.upgradeLevel));
+        for (Item item : equippedItems.values()) item.upgradeLevel = Math.max(0, Math.min(MAX_ITEM_UPGRADE, item.upgradeLevel));
         synchronizeEquipmentHealth();
         if (permanentEffects == null) permanentEffects = new LinkedHashMap<>();
         if (shopUpgradeLevels == null) shopUpgradeLevels = new LinkedHashMap<>();

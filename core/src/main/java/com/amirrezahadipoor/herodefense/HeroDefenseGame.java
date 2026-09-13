@@ -913,7 +913,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             screenShakeSystem.triggerTreeFall();
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
-        } else if (killRewards.levelsGained() > 0) {
+        } else if (killRewards.levelsGained() > 0 && gameState.hero.alive) {
+            // A last-breath kill during the tree siege must not open Level-Up over the defeat.
             flow.transitionTo(GameScreenState.LEVEL_UP);
             saveNow();
         } else {

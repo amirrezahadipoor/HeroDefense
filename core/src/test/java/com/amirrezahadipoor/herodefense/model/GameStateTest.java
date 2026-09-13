@@ -74,4 +74,16 @@ final class GameStateTest {
         assertFalse(midCeremony.secondTreePlanted);
         assertTrue(midCeremony.ceremonyPending);
     }
+
+    @Test
+    void repairClampsAnvilLevelsAndDropsNullItems() {
+        GameState state = GameState.newRun(11L);
+        Item forged = new Item();
+        forged.upgradeLevel = 42;
+        state.inventory.add(forged);
+        state.inventory.add(null);
+        state.validateAndRepair();
+        assertEquals(1, state.inventory.size());
+        assertEquals(GameState.MAX_ITEM_UPGRADE, state.inventory.get(0).upgradeLevel);
+    }
 }
