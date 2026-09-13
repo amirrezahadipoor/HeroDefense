@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.amirrezahadipoor.herodefense.gameplay.ItemForgeSystem;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchLayout;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
+import com.amirrezahadipoor.herodefense.settings.GameSettings;
 import com.amirrezahadipoor.herodefense.render.InventoryItemDetails.Details;
 import com.amirrezahadipoor.herodefense.render.InventoryItemDetails.StatComparison;
 
@@ -30,6 +33,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     private static final Color POSITIVE = Color.valueOf("69C884");
     private static final Color NEGATIVE = Color.valueOf("DF6A65");
     private static final Color MUTED = Color.valueOf("777D76");
+    private static final Color FORGE = Color.valueOf("E08A4C");
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -46,6 +50,18 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         UiIconRenderer uiIcons,
         UiFrameRenderer frames
     ) {
+        drawInventory(batch, projection, state, controller, uiIcons, frames, null);
+    }
+
+    public void drawInventory(
+        SpriteBatch batch,
+        Matrix4 projection,
+        GameState state,
+        InventoryTouchController controller,
+        UiIconRenderer uiIcons,
+        UiFrameRenderer frames,
+        GameSettings settings
+    ) {
         Set<String> visibleIcons = new HashSet<>();
         Item selected = controller.selectedItem(state);
         beginShapes(projection);
@@ -58,7 +74,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
 
         batch.setProjectionMatrix(projection);
         batch.begin();
-        drawInventoryFrames(batch, state, controller, frames);
+        drawInventoryFrames(batch, state, controller, frames, settings);
         if (controller.feedbackMessage() != null) {
             frames.draw(batch, UiFrameRenderer.Kind.PANEL, 110f, 195f, 500f, 60f, true, false);
         }
@@ -103,6 +119,18 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         ));
         drawText(batch, "EQUIPMENT & INVENTORY", 40f, 1232f, 1.35f, GOLD);
         drawText(batch, "Tap a loadout slot to unequip", 40f, 1189f, 0.76f, SUBTLE);
+        drawText(batch, "AUTO-SELL", InventoryTouchLayout.AUTO_SELL_LABEL_X, 1102f, 0.62f, GOLD);
+        drawText(batch, "on pickup", InventoryTouchLayout.AUTO_SELL_LABEL_X, 1072f, 0.54f, SUBTLE);
+        for (int index = 0; index < InventoryTouchLayout.AUTO_SELL_TIERS.length; index++) {
+            ItemTier tier = InventoryTouchLayout.AUTO_SELL_TIERS[index];
+            boolean on = settings != null && settings.autoSells(tier);
+            float chipX = InventoryTouchLayout.autoSellChipX(index);
+            float centerX = chipX + InventoryTouchLayout.AUTO_SELL_WIDTH * 0.5f;
+            drawCentered(batch, autoSellChipLabel(tier, on), centerX,
+                InventoryTouchLayout.AUTO_SELL_Y + 52f, 0.56f, on ? rarityColor(tier.name()) : MUTED);
+            drawCentered(batch, on ? "ON" : "OFF", centerX,
+                InventoryTouchLayout.AUTO_SELL_Y + 26f, 0.60f, on ? POSITIVE : MUTED);
+        }
         drawText(batch, "EQUIPPED LOADOUT", 40f, 1023f, 0.72f, GOLD);
         drawText(
             batch,
@@ -165,8 +193,21 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             InventoryTouchLayout.SELL_X, InventoryTouchLayout.ACTION_Y,
             InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT
         );
+        int forgeCost = ItemForgeSystem.nextCost(selected);
+        boolean forgeable = forgeCost > 0;
+        UiFrameRenderer.State forgeState = frames.resolve(
+            forgeable, false,
+            InventoryTouchLayout.FORGE_X, InventoryTouchLayout.ACTION_Y,
+            InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT
+        );
         float equipOffset = MainMenuRenderer.pressedOffset(equipState);
         float sellOffset = MainMenuRenderer.pressedOffset(sellState);
+        float forgeOffset = MainMenuRenderer.pressedOffset(forgeState);
+        float forgeCenterX = InventoryTouchLayout.FORGE_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f;
+        drawCentered(batch, forgeButtonLabel(selected), forgeCenterX, 158f + forgeOffset, 0.86f,
+            forgeable ? FORGE : MUTED);
+        drawCentered(batch, forgeCostLabel(selected), forgeCenterX, 118f + forgeOffset, 0.70f,
+            forgeable ? (state.coins >= forgeCost ? GOLD : NEGATIVE) : MUTED);
         String equipLabel = selected != null
             && InventoryItemDetails.inspect(state, selected).comparedItemName() != null
             ? "REPLACE"
@@ -175,17 +216,13 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             batch, equipLabel,
             InventoryTouchLayout.EQUIP_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f,
             145f + equipOffset,
-            1.02f,
+            0.96f,
             hasSelection ? IVORY : MUTED
         );
-        drawCentered(
-            batch,
-            selected == null ? "SELL" : "SELL  $ " + selected.sellPrice,
-            InventoryTouchLayout.SELL_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f,
-            145f + sellOffset,
-            1.02f,
-            hasSelection ? GOLD : MUTED
-        );
+        float sellCenterX = InventoryTouchLayout.SELL_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f;
+        drawCentered(batch, "SELL", sellCenterX, 158f + sellOffset, 0.86f, hasSelection ? GOLD : MUTED);
+        drawCentered(batch, selected == null ? "--" : "$ " + selected.sellPrice,
+            sellCenterX, 118f + sellOffset, 0.70f, hasSelection ? IVORY : MUTED);
         String feedback = controller.feedbackMessage();
         if (feedback != null) {
             Color feedbackColor = new Color(GOLD);
@@ -200,7 +237,8 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         SpriteBatch batch,
         GameState state,
         InventoryTouchController controller,
-        UiFrameRenderer frames
+        UiFrameRenderer frames,
+        GameSettings settings
     ) {
         frames.draw(
             batch, UiFrameRenderer.Kind.BUTTON,
@@ -208,6 +246,15 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             InventoryTouchLayout.CLOSE_SIZE, InventoryTouchLayout.CLOSE_SIZE,
             true, false
         );
+        for (int index = 0; index < InventoryTouchLayout.AUTO_SELL_TIERS.length; index++) {
+            boolean on = settings != null && settings.autoSells(InventoryTouchLayout.AUTO_SELL_TIERS[index]);
+            frames.draw(
+                batch, UiFrameRenderer.Kind.SLOT,
+                InventoryTouchLayout.autoSellChipX(index), InventoryTouchLayout.AUTO_SELL_Y,
+                InventoryTouchLayout.AUTO_SELL_WIDTH, InventoryTouchLayout.AUTO_SELL_HEIGHT,
+                settings != null, on
+            );
+        }
         for (int index = 0; index < EquipmentSlot.values().length; index++) {
             int column = index % 2;
             int row = index / 2;
@@ -254,6 +301,32 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT,
             hasSelection, false
         );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            InventoryTouchLayout.FORGE_X, InventoryTouchLayout.ACTION_Y,
+            InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT,
+            ItemForgeSystem.nextCost(controller.selectedItem(state)) > 0, false
+        );
+    }
+
+    /** Anvil button copy: "ANVIL +N" while a step remains, explicit reasons otherwise. */
+    static String forgeButtonLabel(Item selected) {
+        if (selected == null) return "ANVIL";
+        if (!ItemForgeSystem.isForgeable(selected)) return "ANVIL";
+        int level = ItemForgeSystem.upgradeLevel(selected);
+        if (level >= ItemForgeSystem.MAX_UPGRADE) return "ANVIL  MAX";
+        return "ANVIL  +" + (level + 1);
+    }
+
+    static String forgeCostLabel(Item selected) {
+        if (selected == null) return "--";
+        if (!ItemForgeSystem.isForgeable(selected)) return "RARE+ ONLY";
+        int cost = ItemForgeSystem.nextCost(selected);
+        return cost > 0 ? "$ " + cost : "+" + ItemForgeSystem.MAX_UPGRADE + " REACHED";
+    }
+
+    static String autoSellChipLabel(ItemTier tier, boolean on) {
+        return pretty(tier.name()).toUpperCase(Locale.ROOT);
     }
 
     private void drawDetails(SpriteBatch batch, GameState state, Item selected) {
@@ -295,6 +368,11 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             0.60f,
             SUBTLE
         );
+        if (ItemForgeSystem.isForgeable(selected)) {
+            int level = ItemForgeSystem.upgradeLevel(selected);
+            drawText(batch, "REFORGED +" + level + " / +" + ItemForgeSystem.MAX_UPGRADE,
+                x + 150f, top - 73f, 0.56f, level > 0 ? FORGE : SUBTLE);
+        }
         drawText(batch, "STAT COMPARISON", x, top - 151f, 0.64f, GOLD);
         if (details.stats().isEmpty()) {
             drawText(batch, "No stat bonuses", x, top - 194f, 0.68f, MUTED);

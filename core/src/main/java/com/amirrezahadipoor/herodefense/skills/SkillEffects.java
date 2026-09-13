@@ -32,48 +32,86 @@ public final class SkillEffects {
     /** Eagle Range: bow range added per level over the 420-unit base. */
     public static final float RANGE_PER_LEVEL = 22f;
 
+    /**
+     * Endless levels (Phase 18): past {@link SkillId#CORE_LEVELS} each further level is worth a
+     * geometrically shrinking share of a core level, so growth continues forever but converges.
+     * Chance-type effects also hit hard ceilings so no roll ever becomes a certainty.
+     */
+    public static final float ENDLESS_DECAY_PER_TEN_LEVELS = 0.5f;
+    public static final float CHAIN_CHANCE_CAP = 0.90f;
+    public static final float STUN_CHANCE_CAP = 0.45f;
+    public static final float STUN_DURATION_CAP = 2.5f;
+    public static final float CRITICAL_CHANCE_CAP = 0.60f;
+    public static final int CHAIN_TARGETS_CAP = 8;
+    public static final float EXTRA_ARROWS_CAP = 6f;
+    public static final float BONUS_RANGE_CAP = 520f;
+
     private SkillEffects() {
     }
 
     public static int level(GameState state, SkillId skill) {
         if (state == null || skill == null || state.skillLevels == null) return 0;
         Integer value = state.skillLevels.get(skill.saveKey());
-        return value == null ? 0 : Math.max(0, Math.min(SkillId.MAX_LEVEL, value));
+        return value == null ? 0 : Math.max(0, value);
+    }
+
+    /**
+     * Effective "core-equivalent" level: levels 1..10 count fully; each block of ten beyond
+     * that is worth half the previous block (10 → 10, 20 → 15, 30 → 17.5, ∞ → 20).
+     */
+    public static float effectiveLevel(int level) {
+        int clamped = Math.max(0, level);
+        if (clamped <= SkillId.CORE_LEVELS) return clamped;
+        float effective = SkillId.CORE_LEVELS;
+        float weight = 1f;
+        int remaining = clamped - SkillId.CORE_LEVELS;
+        while (remaining > 0) {
+            weight *= ENDLESS_DECAY_PER_TEN_LEVELS;
+            int block = Math.min(SkillId.CORE_LEVELS, remaining);
+            effective += block * weight;
+            remaining -= block;
+        }
+        return effective;
     }
 
     public static float chainChance(int level) {
-        return level <= 0 ? 0f : CHAIN_BASE_CHANCE + CHAIN_CHANCE_PER_LEVEL * (clamp(level) - 1);
+        if (level <= 0) return 0f;
+        return Math.min(CHAIN_CHANCE_CAP,
+            CHAIN_BASE_CHANCE + CHAIN_CHANCE_PER_LEVEL * (effectiveLevel(level) - 1f));
     }
 
     /** Number of additional enemies one lightning proc arcs to. */
     public static int chainTargets(int level) {
         if (level <= 0) return 0;
-        return 1 + (clamp(level) - 1) / 3;
+        return Math.min(CHAIN_TARGETS_CAP, 1 + (Math.round(effectiveLevel(level)) - 1) / 3);
     }
 
     /** Expected extra arrows per volley; whole part guaranteed, fraction is a roll. */
     public static float extraArrows(int level) {
-        return clamp(level) * MULTI_SHOT_ARROWS_PER_LEVEL;
+        return Math.min(EXTRA_ARROWS_CAP, effectiveLevel(level) * MULTI_SHOT_ARROWS_PER_LEVEL);
     }
 
     public static float stunChance(int level) {
-        return clamp(level) * STUN_CHANCE_PER_LEVEL;
+        return Math.min(STUN_CHANCE_CAP, effectiveLevel(level) * STUN_CHANCE_PER_LEVEL);
     }
 
     public static float stunDuration(int level) {
-        return level <= 0 ? 0f : STUN_BASE_DURATION + STUN_DURATION_PER_LEVEL * (clamp(level) - 1);
+        if (level <= 0) return 0f;
+        return Math.min(STUN_DURATION_CAP,
+            STUN_BASE_DURATION + STUN_DURATION_PER_LEVEL * (effectiveLevel(level) - 1f));
     }
 
     public static float criticalChance(int level) {
-        return BASE_CRITICAL_CHANCE + clamp(level) * CRITICAL_CHANCE_PER_LEVEL;
+        return Math.min(CRITICAL_CHANCE_CAP,
+            BASE_CRITICAL_CHANCE + effectiveLevel(level) * CRITICAL_CHANCE_PER_LEVEL);
     }
 
     public static float criticalMultiplier(int level) {
-        return BASE_CRITICAL_MULTIPLIER + clamp(level) * CRITICAL_MULTIPLIER_PER_LEVEL;
+        return BASE_CRITICAL_MULTIPLIER + effectiveLevel(level) * CRITICAL_MULTIPLIER_PER_LEVEL;
     }
 
     public static float bonusRange(int level) {
-        return clamp(level) * RANGE_PER_LEVEL;
+        return Math.min(BONUS_RANGE_CAP, effectiveLevel(level) * RANGE_PER_LEVEL);
     }
 
     /** Expected damage multiplier from criticals alone at a given mastery level. */
@@ -81,7 +119,4 @@ public final class SkillEffects {
         return 1f + criticalChance(level) * (criticalMultiplier(level) - 1f);
     }
 
-    private static int clamp(int level) {
-        return Math.max(0, Math.min(SkillId.MAX_LEVEL, level));
-    }
 }

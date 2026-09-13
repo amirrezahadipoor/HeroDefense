@@ -148,7 +148,7 @@ public final class AndroidTouchSmokeTest {
             captureScreen("inventory-details-premium-v2.png");
 
             int coinsBefore = game.gameState().coins;
-            tapWorld(surface, 525f + correction[0], 135f + correction[1]);
+            tapWorld(surface, 590f + correction[0], 135f + correction[1]); // SELL (right third)
             await("visible sell confirmation", () -> game.inventoryFeedbackMessage() != null);
             assertTrue(game.gameState().coins > coinsBefore);
             SystemClock.sleep(100L);
@@ -262,10 +262,10 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(800L);
             captureScreen("level-up-premium-v2.png");
 
-            tapWorld(surface, 360f + correction[0], 295f + correction[1]); // Strength row
+            tapWorld(surface, 360f + correction[0], 895f + correction[1]); // Strength row (top, Shop order)
             await("first point spent", () -> game.gameState().unspentTalentPoints == 1);
             assertEquals(GameScreenState.LEVEL_UP, game.screenState());
-            tapWorld(surface, 360f + correction[0], 895f + correction[1]); // Health row
+            tapWorld(surface, 360f + correction[0], 295f + correction[1]); // Health row (bottom)
             await("second point resumes play", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().hero.stats.strength);
             assertEquals(1, game.gameState().hero.stats.health);
@@ -302,6 +302,45 @@ public final class AndroidTouchSmokeTest {
     }
 
     @Test
+    public void touchWatchesAndSkipsThePlantingCeremony() {
+        prepareCeremonySave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("ceremony save menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue into the boss 20 reward
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("boss 20 reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
+            tapWorld(surface, 360f + correction[0], 890f + correction[1]); // Choose first card
+            await("planting ceremony", () ->
+                game.screenState() == GameScreenState.CINEMATIC && game.gameState().ceremonyPending
+            );
+            assertEquals(GameState.PLANTING_WAVE + 1, game.gameState().waveNumber);
+            assertFalse(game.gameState().waveActive);
+            SystemClock.sleep(2_600L); // Hero has walked out and is pressing the seed
+            captureScreen("ceremony-plant-premium-v2.png");
+            SystemClock.sleep(1_900L); // Watering can tilted, droplets falling
+            captureScreen("ceremony-water-premium-v2.png");
+
+            tapWorld(surface, 360f + correction[0], 640f + correction[1]); // Any tap skips
+            await("wave 101 begins", () ->
+                game.screenState() == GameScreenState.PLAYING
+                    && game.gameState().secondTreePlanted
+                    && !game.gameState().ceremonyPending
+                    && game.gameState().waveActive
+            );
+            assertEquals(GameState.PLANTING_WAVE + 1, game.gameState().waveNumber);
+            assertTrue(game.gameState().hero.alive);
+            SystemClock.sleep(600L);
+            captureScreen("second-tree-standing-premium-v2.png");
+        }
+    }
+
+    @Test
     public void touchRestartsFromPremiumDefeatSummary() {
         prepareDefeatSave();
         try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
@@ -315,7 +354,15 @@ public final class AndroidTouchSmokeTest {
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
             float[] correction = touchCorrection(game, 360f, 570f);
             await("doomed wave", () -> game.screenState() == GameScreenState.PLAYING);
+            // Phase 18: the Hero's death starts a short tree siege before the sanctuary falls.
             await("hero falls to the first melee hit", 20_000L, () ->
+                !game.gameState().hero.alive
+            );
+            assertTrue(game.screenState() == GameScreenState.PLAYING
+                || game.screenState() == GameScreenState.GAME_OVER);
+            SystemClock.sleep(900L); // Survivors are marching on the World Tree
+            captureScreen("tree-siege-premium-v2.png");
+            await("tree siege ends in defeat", 20_000L, () ->
                 game.screenState() == GameScreenState.GAME_OVER
             );
             assertFalse(game.gameState().runComplete);
@@ -353,7 +400,7 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(420L); // Arrival shockwaves are mid-expansion
             captureScreen("vfx-boss-entrance-premium-v2.png");
             SystemClock.sleep(1_300L);
-            for (int frame = 0; frame < 4; frame++) { // Burst so trails and impacts are caught in flight
+            for (int frame = 0; frame < 6; frame++) { // Burst so trails and impacts are caught in flight
                 captureScreen("vfx-combat-" + frame + "-premium-v2.png");
                 SystemClock.sleep(230L);
             }
@@ -366,6 +413,11 @@ public final class AndroidTouchSmokeTest {
         state.waveNumber = 5;
         state.heroLevel = 4;
         state.waveActive = false; // Continue starts the wave, so the entrance plays organically
+        // Maxed Phase 17 skills so the combat burst shows arcs, volleys, stuns, and damage numbers.
+        for (com.amirrezahadipoor.herodefense.skills.SkillId skill
+            : com.amirrezahadipoor.herodefense.skills.SkillId.values()) {
+            state.skillLevels.put(skill.saveKey(), com.amirrezahadipoor.herodefense.skills.SkillId.CORE_LEVELS);
+        }
         writeSave(state);
     }
 
@@ -581,12 +633,25 @@ public final class AndroidTouchSmokeTest {
 
     private static void prepareVictorySave() {
         GameState state = GameState.newRun(884L);
-        state.waveNumber = 100;
+        state.waveNumber = GameState.FINAL_WAVE;
+        state.heroLevel = 96;
+        state.totalKills = 9_840;
+        state.totalKillCoinsEarned = 112_500;
+        state.defeatedBosses = GameState.FINAL_WAVE / 5 - 1;
+        state.secondTreePlanted = true;
+        new BossRewardCardSystem().prepareChoices(state, GameState.FINAL_WAVE / 5);
+        writeSave(state);
+    }
+
+    /** Boss 20 reward is pending on wave 100: choosing it starts the planting ceremony. */
+    private static void prepareCeremonySave() {
+        GameState state = GameState.newRun(886L);
+        state.waveNumber = GameState.PLANTING_WAVE;
         state.heroLevel = 64;
         state.totalKills = 4_120;
         state.totalKillCoinsEarned = 38_500;
-        state.defeatedBosses = 19;
-        new BossRewardCardSystem().prepareChoices(state, 20);
+        state.defeatedBosses = GameState.PLANTING_WAVE / 5 - 1;
+        new BossRewardCardSystem().prepareChoices(state, GameState.PLANTING_WAVE / 5);
         writeSave(state);
     }
 

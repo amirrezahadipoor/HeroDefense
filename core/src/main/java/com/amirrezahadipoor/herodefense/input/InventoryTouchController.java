@@ -1,11 +1,16 @@
 package com.amirrezahadipoor.herodefense.input;
 
 import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
+import com.amirrezahadipoor.herodefense.gameplay.ItemForgeSystem;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
+import com.amirrezahadipoor.herodefense.settings.GameSettings;
 
-/** Touch/touch-drag controller for viewing, equipping, unequipping, and selling. */
+import java.util.Locale;
+
+/** Touch/touch-drag controller for viewing, equipping, unequipping, reforging, and selling. */
 public final class InventoryTouchController {
     public enum Action {
         NONE,
@@ -13,12 +18,16 @@ public final class InventoryTouchController {
         EQUIPPED,
         UNEQUIPPED,
         SOLD,
+        FORGED,
+        FORGE_REFUSED,
+        AUTO_SELL_TOGGLED,
         CLOSED
     }
 
     private static final float ROW_DRAG_THRESHOLD = 55f;
     private static final float FEEDBACK_DURATION_SECONDS = 1.25f;
     private final InventoryEquipmentSystem equipmentSystem;
+    private final ItemForgeSystem forgeSystem;
     private volatile boolean open;
     private int selectedIndex = -1;
     private int firstVisibleIndex;
@@ -29,7 +38,16 @@ public final class InventoryTouchController {
     private float feedbackRemainingSeconds;
 
     public InventoryTouchController(InventoryEquipmentSystem equipmentSystem) {
+        this(equipmentSystem, new ItemForgeSystem());
+    }
+
+    public InventoryTouchController(InventoryEquipmentSystem equipmentSystem, ItemForgeSystem forgeSystem) {
         this.equipmentSystem = equipmentSystem;
+        this.forgeSystem = forgeSystem;
+    }
+
+    public ItemForgeSystem forgeSystem() {
+        return forgeSystem;
     }
 
     public void open() {
@@ -53,6 +71,7 @@ public final class InventoryTouchController {
     }
 
     public void update(float realDeltaSeconds) {
+        forgeSystem.update(realDeltaSeconds);
         if (realDeltaSeconds <= 0f || feedbackRemainingSeconds <= 0f) return;
         feedbackRemainingSeconds = Math.max(0f, feedbackRemainingSeconds - realDeltaSeconds);
         if (feedbackRemainingSeconds == 0f) clearFeedback();
@@ -65,6 +84,8 @@ public final class InventoryTouchController {
             case EQUIPPED -> "EQUIPPED  |  " + name;
             case UNEQUIPPED -> "RETURNED TO BAG  |  " + name;
             case SOLD -> "SOLD  |  +$ " + feedbackCoinDelta + "  |  " + name;
+            case FORGED, FORGE_REFUSED -> forgeSystem.feedbackMessage();
+            case AUTO_SELL_TOGGLED -> name;
             default -> null;
         };
     }
@@ -79,10 +100,35 @@ public final class InventoryTouchController {
     }
 
     public Action tap(GameState state, float x, float y) {
+        return tap(state, null, x, y);
+    }
+
+    /** {@code settings} may be null when the auto-sell chips are not interactive. */
+    public Action tap(GameState state, GameSettings settings, float x, float y) {
         if (!open || state == null) return Action.NONE;
         if (InventoryTouchLayout.closeAt(x, y)) {
             open = false;
             return Action.CLOSED;
+        }
+
+        ItemTier autoSellTier = InventoryTouchLayout.autoSellTierAt(x, y);
+        if (autoSellTier != null) {
+            if (settings == null || !settings.toggleAutoSell(autoSellTier)) return Action.NONE;
+            String tierName = autoSellTier.name().charAt(0)
+                + autoSellTier.name().substring(1).toLowerCase(Locale.ROOT);
+            showFeedback(Action.AUTO_SELL_TOGGLED,
+                "AUTO-SELL " + tierName.toUpperCase(Locale.ROOT)
+                    + (settings.autoSells(autoSellTier) ? "  |  ON" : "  |  OFF"), 0);
+            return Action.AUTO_SELL_TOGGLED;
+        }
+
+        if (InventoryTouchLayout.forgeAt(x, y)) {
+            Item selected = selectedItem(state);
+            if (selected == null) return Action.NONE;
+            ItemForgeSystem.Result result = forgeSystem.forge(state, selected);
+            Action action = result == ItemForgeSystem.Result.FORGED ? Action.FORGED : Action.FORGE_REFUSED;
+            showFeedback(action, selected.name, 0);
+            return action;
         }
 
         EquipmentSlot slot = InventoryTouchLayout.slotAt(x, y);

@@ -25,7 +25,11 @@ public final class HeroAutoAttackSystem {
     private static final int MAX_SHOTS_PER_UPDATE = 4;
     private static final int MAX_EXTRA_ARROWS = 4;
 
+    /** Presentation events are capped so a maxed Multi Shot volley cannot flood a frame. */
+    public static final int MAX_EVENTS_PER_UPDATE = 48;
+
     private final List<Enemy> scratchTargets = new ArrayList<>();
+    private final List<CombatEvent> events = new ArrayList<>();
 
     private final HeroStatCalculator statCalculator;
 
@@ -51,7 +55,7 @@ public final class HeroAutoAttackSystem {
             hero.attackCooldownSeconds = Math.max(0f, hero.attackCooldownSeconds);
             return new HeroAttackUpdateResult(
                 0, impacts.hits, impacts.criticalHits, impacts.x, impacts.y,
-                impacts.chainArcs, impacts.stuns
+                impacts.chainArcs, impacts.stuns, events
             );
         }
 
@@ -63,7 +67,7 @@ public final class HeroAutoAttackSystem {
         }
         return new HeroAttackUpdateResult(
             shots, impacts.hits, impacts.criticalHits, impacts.x, impacts.y,
-            impacts.chainArcs, impacts.stuns
+            impacts.chainArcs, impacts.stuns, events
         );
     }
 
@@ -177,6 +181,7 @@ public final class HeroAutoAttackSystem {
         float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY);
         float impactX = Float.NaN;
         float impactY = Float.NaN;
+        events.clear();
         for (Projectile projectile : state.projectiles) {
             if (projectile == null || !projectile.active || projectile.sourceId != state.hero.id) {
                 continue;
@@ -200,12 +205,15 @@ public final class HeroAutoAttackSystem {
                 impactY = target.y;
                 if (projectile.critical) criticalHits++;
                 float damageDealt = Math.max(0f, healthBefore - target.health);
+                emit(CombatEvent.hit(target.x, target.y + 40f, projectile.damage,
+                    projectile.critical, projectile.secondary));
                 if (stunLevel > 0 && target.alive
                     && state.nextCombatRandomFloat() < SkillEffects.stunChance(stunLevel)) {
                     float duration = SkillEffects.stunDuration(stunLevel);
                     if (target instanceof Boss) duration *= SkillEffects.BOSS_STUN_RESISTANCE;
                     target.stunRemainingSeconds = Math.max(target.stunRemainingSeconds, duration);
                     stuns++;
+                    emit(CombatEvent.stun(target.x, target.y + 70f, duration));
                 }
                 if (chainLevel > 0 && !projectile.secondary
                     && state.nextCombatRandomFloat() < SkillEffects.chainChance(chainLevel)) {
@@ -230,13 +238,19 @@ public final class HeroAutoAttackSystem {
         return new ImpactCounts(hits, criticalHits, impactX, impactY, chainArcs, stuns);
     }
 
+    private void emit(CombatEvent event) {
+        if (events.size() < MAX_EVENTS_PER_UPDATE) events.add(event);
+    }
+
     /** Arcs a share of the arrow's damage to the nearest foes around the struck target. */
     private int chainLightning(GameState state, Enemy struck, float arrowDamage, int level) {
         collectTargetsByDistance(state, struck.x, struck.y, SkillEffects.CHAIN_RADIUS, struck);
         int arcs = Math.min(SkillEffects.chainTargets(level), scratchTargets.size());
         float arcDamage = arrowDamage * SkillEffects.CHAIN_DAMAGE_SHARE;
         for (int index = 0; index < arcs; index++) {
-            scratchTargets.get(index).receiveDamage(arcDamage);
+            Enemy victim = scratchTargets.get(index);
+            victim.receiveDamage(arcDamage);
+            emit(CombatEvent.arc(struck.x, struck.y + 40f, victim.x, victim.y + 40f, arcDamage));
         }
         return arcs;
     }

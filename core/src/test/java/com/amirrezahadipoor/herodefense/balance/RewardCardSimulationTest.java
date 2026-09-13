@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.balance.BalanceSimulator.BalanceReport;
 import com.amirrezahadipoor.herodefense.balance.BalanceSimulator.WaveSample;
+import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ final class RewardCardSimulationTest {
             "card,boss,average_damage_fraction,average_clear_seconds,pressured_waves,"
                 + "maximum_damage_fraction,maximum_clear_seconds"
         );
-        for (int bossNumber = 1; bossNumber < 20; bossNumber++) {
+        // Bosses 1..39 have combat after them; boss 40 ends the run.
+        for (int bossNumber = 1; bossNumber < GameState.FINAL_WAVE / 5; bossNumber++) {
             for (RewardCardId card : RewardCardId.values()) {
                 verifyScenario(card, bossNumber);
             }
@@ -36,11 +38,11 @@ final class RewardCardSimulationTest {
             card,
             bossNumber
         );
-        assertTrue(report.reachedWave100(), scenario(card, bossNumber) + " did not finish");
+        assertTrue(report.reachedFinalWave(), scenario(card, bossNumber) + " did not finish");
         List<WaveSample> remaining = report.waves().stream()
             .filter(sample -> sample.wave() > bossNumber * 5)
             .toList();
-        assertEquals(100 - bossNumber * 5, remaining.size());
+        assertEquals(GameState.FINAL_WAVE - bossNumber * 5, remaining.size());
 
         float averageDamage = averageDamage(remaining);
         float averageClearTime = averageClearTime(remaining);

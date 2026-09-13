@@ -83,8 +83,9 @@ public final class BalanceSimulator {
 
     /** Forces one legal card effect into a selected boss offer for comparative simulations. */
     public BalanceReport runWithForcedCard(long seed, RewardCardId card, int bossNumber) {
-        if (card == null || bossNumber < 1 || bossNumber > 20) {
-            throw new IllegalArgumentException("Forced card and boss number 1..20 are required");
+        int lastBoss = GameState.FINAL_WAVE / 5;
+        if (card == null || bossNumber < 1 || bossNumber > lastBoss) {
+            throw new IllegalArgumentException("Forced card and boss number 1.." + lastBoss + " are required");
         }
         return run(seed, card, bossNumber);
     }
@@ -138,7 +139,11 @@ public final class BalanceSimulator {
                 WaveCompletion completion = waves.updateAfterCombat(state);
                 if (completion == WaveCompletion.BOSS_REWARD) {
                     chooseReward(state, forcedCard, forcedBossNumber);
-                    waves.continueAfterBossReward(state);
+                    completion = waves.continueAfterBossReward(state);
+                }
+                if (completion == WaveCompletion.PLANTING_CEREMONY) {
+                    // The ceremony is presentation only; the simulator plants instantly.
+                    waves.completePlantingCeremony(state);
                 }
                 elapsed += STEP_SECONDS;
             }
@@ -160,6 +165,7 @@ public final class BalanceSimulator {
             if (timedOut) break;
         }
         return new BalanceReport(samples, state.hero.alive && state.runComplete);
+
     }
 
     private void allocateTalentPoints(GameState state) {
@@ -183,8 +189,8 @@ public final class BalanceSimulator {
      * both tabs of the shop moving instead of hoarding.
      */
     private void buyBalancedShopUpgrades(GameState state) {
-        int budget = BALANCED_STATS.length * StatShopSystem.MAX_PURCHASES_PER_STAT
-            + SkillId.values().length * SkillId.MAX_LEVEL;
+        // Endless shop: bound the greedy loop per visit rather than by a level cap.
+        int budget = 64;
         for (int purchase = 0; purchase < budget; purchase++) {
             HeroStat selectedStat = null;
             SkillId selectedSkill = null;
@@ -335,9 +341,15 @@ public final class BalanceSimulator {
     ) {
     }
 
-    public record BalanceReport(List<WaveSample> waves, boolean reachedWave100) {
+    /** {@code reachedFinalWave}: the Hero survived the whole 1..FINAL_WAVE run. */
+    public record BalanceReport(List<WaveSample> waves, boolean reachedFinalWave) {
         public BalanceReport {
             waves = List.copyOf(waves);
+        }
+
+        /** True once the run cleared the planting wave (the tuned first half). */
+        public boolean reachedWave100() {
+            return reachedFinalWave || waves.size() > GameState.PLANTING_WAVE;
         }
 
         public float averageDamageFraction() {

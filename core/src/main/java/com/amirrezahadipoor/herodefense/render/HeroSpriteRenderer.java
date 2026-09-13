@@ -15,7 +15,7 @@ import java.util.Map;
 public final class HeroSpriteRenderer implements AutoCloseable {
     private static final String ATLAS_PATH = "generated/sprites/hero.atlas";
     static final float FRAME_SIZE = 192f;
-    private static final float FEET_OFFSET_FROM_FRAME_BOTTOM = 23f;
+    static final float FEET_OFFSET_FROM_FRAME_BOTTOM = 23f;
 
     private final TextureAtlas atlas;
     private final Map<HeroAnimationState, Array<TextureAtlas.AtlasRegion>> frames =

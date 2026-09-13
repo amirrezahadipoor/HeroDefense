@@ -4,11 +4,12 @@ These coefficients are centralized in renderer-independent Java so the Phase 14 
 
 ## Regular enemy growth
 
-For wave `w` clamped to 1–100:
+For wave `w` clamped to 1–200 (Phase 18.4 extended the run; waves 1–100 keep the Phase 17 curve unchanged):
 
 - The required starting candidate was `20 × 1.045^w`; Phase 14 simulation tuned it to `1.035`, and the Phase 17 lifesteal-and-skills rebalance raised it to the shipped `20 × 1.037^w` (Wave 100 enemies carry 21% more HP than before).
 - Shipped HP checkpoints: Wave 1 `20.74`, Wave 25 `49.60`, Wave 50 `123.02`, Wave 75 `305.10`, and Wave 100 `756.67`.
 - Baseline damage: `0.27 × 1.003^(w−1)`, reaching `0.3632` at Wave 100 before archetype scaling (Phase 17 raised growth from `1.002`).
+- **Second half (waves 101–200, after the planting ceremony):** both curves continue from their Wave 100 values with their own growth, `HP × 1.021^(w−100)` and `damage × 1.006^(w−100)`. HP checkpoints: Wave 125 `1272.18`, Wave 150 `2138.91`, Wave 175 `3596.14`, Wave 200 `6046.16`; baseline damage reaches `0.6606` at Wave 200. The flatter growth reflects that endless stat/skill pricing (Phase 18.3) slows the Hero's own power curve after level 20/10; candidates `1.022–1.030` HP growth and `1.008–1.014` damage growth were rejected because they pushed single waves past the 35% ceiling after wave 170 (up to 123% of max HP at `1.028/1.014`), while `1.020/1.006` left the second half at 2–5% pressure with no meaningful spikes.
 - A regular hit is capped at 28% of the max HP of a reference Hero who invests one of every five earned points in Health.
 - Archetype HP multipliers, relative to the 20-HP Rootling: Rootling `1.00`, Stonekin `1.70`, Gloom Wolf `0.85`, Fungal Brute `2.30`.
 - Archetype damage multipliers, relative to the authored 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
@@ -85,12 +86,12 @@ Five coin-only skills, each with ten levels. Level `n` (0-based) costs `round5(b
 
 ## Reward-card budget
 
-- Boss `b` (1–20) uses multiplier `1 + 0.05 × (b−1)`, rising smoothly from `1.00` to `1.95`.
+- Boss `b` (1–40) uses multiplier `1 + 0.05 × (b−1)`, rising smoothly from `1.00` to `1.95` at boss 20 and on to `2.95` at boss 40 (`RewardPowerBudget.MAX_BOSS = 40`).
 - Percentage effects multiply their base magnitude by that budget.
 - Base-stat cards award the rounded budget in whole stat points: one point early and two points late.
 - Every displayed description is generated from the same budget object used to apply the effect.
 
-The card regression runs all eight card identities as the forced choice at every boss with future combat (Bosses 1–19), for 152 complete simulations. Each remaining segment must retain at least 5% average gross damage, 25 seconds average clear time, and pressure on at least 90% of waves, while still respecting the 35% damage and 120-second spike ceilings. The calibrated scenarios retained at least `6.8017%` average damage and `33.822624 s` average clear time; their worst single wave was `30.708814%` damage and `100.86547 s`. Boss 20 is omitted because no wave remains after its reward.
+The card regression runs all eight card identities as the forced choice at every boss with future combat (Bosses 1–39), for 312 complete 200-wave simulations. Each remaining segment must retain at least 5% average gross damage, 25 seconds average clear time, and pressure on at least 90% of waves, while still respecting the 35% damage and 120-second spike ceilings. The calibrated scenarios retained at least `6.8017%` average damage and `33.822624 s` average clear time; their worst single wave was `30.708814%` damage and `100.86547 s`. Boss 40 is omitted because no wave remains after its reward. After the Phase 18.4 extension the 312 scenarios retained at least `6.22%` average damage and `33.58 s` average clear time; their worst single wave was `29.60%` damage and `82.90 s`.
 
 ## Renderer-independent simulation gate
 
@@ -98,11 +99,15 @@ The card regression runs all eight card identities as the forced choice at every
 
 The deterministic regression gate requires all of the following:
 
-- Complete exactly 100 waves with the Hero alive.
+- Complete exactly 200 waves with the Hero alive (the simulator plants the second tree instantly at the Wave 100 ceremony).
 - Average gross incoming damage from enemy attacks, divided by contemporary maximum HP, must be 5%–15% across the run. Gross damage is measured before potion and lifesteal recovery so healing cannot hide pressure.
 - No single wave may exceed 35% gross damage or 120 seconds to clear.
 - Every metric must be finite and no wave may hit the simulator's timeout.
 
 After the Phase 17 rebalance, baseline seed `0x4845524F444546` and eight further seeds all completed 100/100 waves; across those nine runs the average gross damage was `9.3%`, the worst single wave `28.4%`, and the longest clear `68.2 s`. Every forced-card scenario (all cards at all 19 bosses) also stays under the 35% / 120 s spikes (worst `29.6%`, `71.2 s`). Candidates `1.038–1.040` HP growth were rejected: they pushed single-wave damage past 35% under the forced Dodge/Lifesteal card scenarios. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
+
+### Phase 18.4 result (waves 1–200)
+
+With the second-half curve `1.021 / 1.006`, baseline seed `0x4845524F444546` and eight further seeds all completed 200/200 waves; across those nine runs the average gross damage was `10.0%`, the worst single wave `28.8%`, and the longest clear `72.3 s`. The baseline's second half sits at 2–6% gross damage per wave with 24–43 s clears and a slowly falling DPS-to-HP ratio (`0.027` at Wave 100 → `0.011` at Wave 200), so the run keeps tightening without a cliff. The acceptance gate (`GATE_WAVE = FINAL_WAVE`) and the forced-card regression (Bosses 1–39) now cover the full run.
 
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

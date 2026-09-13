@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.WorldLayout;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.EnemyType;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -28,5 +29,27 @@ final class EnemyMovementSystemTest {
         assertEquals(enemy.attackRange, (float) Math.sqrt(
             enemy.distanceSquaredTo(state.hero.x, state.hero.y)
         ), 0.001f);
+    }
+
+    @Test
+    void afterTheHeroFallsEnemiesMarchOnTheNearestTreeInstead() {
+        GameState state = GameState.newRun(9L);
+        Enemy left = factory.create(state, EnemyType.GLOOM_WOLF, 80f, 300f, 0);
+        Enemy right = factory.create(state, EnemyType.GLOOM_WOLF, 700f, 900f, 0);
+        right.stunRemainingSeconds = 2f;
+        state.aliveEnemies.add(left);
+        state.aliveEnemies.add(right);
+        state.secondTreePlanted = true;
+        state.hero.alive = false;
+
+        movement.update(state, 100f);
+
+        float leftToTree = (float) Math.sqrt(
+            left.distanceSquaredTo(WorldLayout.WORLD_TREE_X, WorldLayout.WORLD_TREE_Y));
+        float rightToSapling = (float) Math.sqrt(
+            right.distanceSquaredTo(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y));
+        assertEquals(EnemyMovementSystem.TREE_SIEGE_STOP_DISTANCE, leftToTree, 0.001f);
+        assertEquals(EnemyMovementSystem.TREE_SIEGE_STOP_DISTANCE, rightToSapling, 0.001f);
+        assertEquals(0f, right.stunRemainingSeconds);
     }
 }

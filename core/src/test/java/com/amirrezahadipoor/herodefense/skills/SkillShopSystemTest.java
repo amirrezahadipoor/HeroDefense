@@ -30,7 +30,7 @@ final class SkillShopSystemTest {
             assertTrue(SkillShopSystem.priceForLevel(skill, 0) >= 180, skill.name());
             int previous = 0;
             int total = 0;
-            for (int level = 0; level < SkillId.MAX_LEVEL; level++) {
+            for (int level = 0; level < SkillId.CORE_LEVELS; level++) {
                 int price = SkillShopSystem.priceForLevel(skill, level);
                 assertTrue(price > previous, skill.name());
                 assertEquals(0, price % 5, skill.name());
@@ -38,22 +38,33 @@ final class SkillShopSystemTest {
                 total += price;
             }
             assertTrue(total >= 5_000, skill.name() + " must be a long-term coin sink");
+            // Endless tier keeps climbing steeply but stays representable.
+            for (int level = SkillId.CORE_LEVELS; level < 120; level++) {
+                int price = SkillShopSystem.priceForLevel(skill, level);
+                assertTrue(price >= previous, skill.name() + " level " + level);
+                assertTrue(price <= SkillShopSystem.PRICE_CEILING);
+                assertEquals(0, price % 5);
+                previous = price;
+            }
+            assertTrue(SkillShopSystem.priceForLevel(skill, 11)
+                > SkillShopSystem.priceForLevel(skill, 10) * 1.4f, skill.name());
         }
     }
 
     @Test
-    void insufficientCoinsAndMaxLevelAreRefusedWithSpecificFeedback() {
+    void insufficientCoinsIsRefusedAndEndlessLevelsAreAllowed() {
         GameState state = GameState.newRun(2L);
         state.coins = 0;
         assertFalse(shop.purchase(state, SkillId.STUN_CHANCE));
         assertEquals(SkillShopSystem.PurchaseResult.INSUFFICIENT_COINS, shop.feedbackResult());
         assertTrue(shop.feedbackMessage().startsWith("NEED $"));
 
-        state.skillLevels.put(SkillId.STUN_CHANCE.saveKey(), SkillId.MAX_LEVEL);
+        state.skillLevels.put(SkillId.STUN_CHANCE.saveKey(), SkillId.CORE_LEVELS);
         state.coins = 1_000_000;
-        assertFalse(shop.purchase(state, SkillId.STUN_CHANCE));
-        assertEquals(SkillShopSystem.PurchaseResult.MAXED, shop.feedbackResult());
-        assertEquals(1_000_000, state.coins);
+        assertTrue(shop.purchase(state, SkillId.STUN_CHANCE));
+        assertEquals(SkillShopSystem.PurchaseResult.PURCHASED, shop.feedbackResult());
+        assertEquals(SkillId.CORE_LEVELS + 1, shop.level(state, SkillId.STUN_CHANCE));
+        assertTrue(state.coins < 1_000_000);
 
         shop.update(10f);
         assertNull(shop.feedbackMessage());

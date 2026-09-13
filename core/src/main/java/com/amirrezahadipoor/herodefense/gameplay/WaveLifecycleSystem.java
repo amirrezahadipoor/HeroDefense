@@ -32,7 +32,8 @@ public final class WaveLifecycleSystem {
     }
 
     public boolean startCurrentWave(GameState state) {
-        if (state == null || state.runComplete || state.waveActive || state.awaitingBossReward) {
+        if (state == null || state.runComplete || state.waveActive || state.awaitingBossReward
+            || state.ceremonyPending) {
             return false;
         }
         if (bossSpawner.isBossWave(state.waveNumber)) {
@@ -68,6 +69,15 @@ public final class WaveLifecycleSystem {
             startCurrentWave(state);
         }
         return result;
+    }
+
+    /** Called when the planting ceremony ends: the second tree stands and wave 101 begins. */
+    public boolean completePlantingCeremony(GameState state) {
+        if (state == null || !state.ceremonyPending) return false;
+        state.ceremonyPending = false;
+        state.secondTreePlanted = true;
+        state.anchorHeroAtArenaCenter();
+        return startCurrentWave(state);
     }
 
     /** Continues the same run after another system has applied and cleared one card. */

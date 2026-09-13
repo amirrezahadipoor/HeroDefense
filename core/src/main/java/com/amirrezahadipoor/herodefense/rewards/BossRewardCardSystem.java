@@ -25,8 +25,8 @@ public final class BossRewardCardSystem {
     }
 
     public void prepareChoices(GameState state, int bossNumber) {
-        if (state == null || bossNumber < 1 || bossNumber > 20) {
-            throw new IllegalArgumentException("Boss reward number must be 1..20");
+        if (state == null || bossNumber < 1 || bossNumber > RewardPowerBudget.MAX_BOSS) {
+            throw new IllegalArgumentException("Boss reward number must be 1.." + RewardPowerBudget.MAX_BOSS);
         }
         if (state.awaitingBossReward
             && state.pendingRewardBossNumber == bossNumber

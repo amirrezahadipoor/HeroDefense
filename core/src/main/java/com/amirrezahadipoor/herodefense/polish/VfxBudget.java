@@ -8,6 +8,10 @@ public final class VfxBudget {
     /** Critical and boss events may exceed the normal hit only through these multipliers. */
     public static final float CRITICAL_MULTIPLIER = 1.5f;
     public static final float BOSS_MULTIPLIER = 2.0f;
+    /** Phase 18 skill effects: each arc/stun is cheaper than a normal hit so volleys stay bounded. */
+    public static final int CRITICAL_SPARKS = 4;
+    public static final int CHAIN_ARC_MAX_MOTES = 4;
+    public static final int STUN_SPARKS = 3;
     public static final int AMBIENT_MOTE_COUNT = 14;
     public static final float AMBIENT_MAX_ALPHA = 0.22f;
 

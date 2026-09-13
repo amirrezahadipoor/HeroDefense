@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 final class GameFlowControllerTest {
     @Test
     void exposesEveryRequiredStateAndStartsAtMenu() {
-        assertEquals(9, GameScreenState.values().length);
+        assertEquals(10, GameScreenState.values().length);
         assertEquals(GameScreenState.MENU, new GameFlowController().state());
     }
 
@@ -44,5 +44,20 @@ final class GameFlowControllerTest {
     void rejectsInvalidMenuToGameOverTransition() {
         GameFlowController flow = new GameFlowController();
         assertThrows(IllegalStateException.class, () -> flow.transitionTo(GameScreenState.GAME_OVER));
+    }
+
+    @Test
+    void cinematicIsReachableOnlyFromCombatOrCardChoiceAndReturnsToCombat() {
+        GameFlowController flow = new GameFlowController();
+        flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.CARD_CHOICE);
+        flow.transitionTo(GameScreenState.CINEMATIC);
+        assertFalse(flow.simulationRunning());
+        assertFalse(flow.canTransitionTo(GameScreenState.PAUSED));
+        assertFalse(flow.canTransitionTo(GameScreenState.SHOP));
+        assertFalse(flow.canTransitionTo(GameScreenState.GAME_OVER));
+        flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.CINEMATIC);
+        assertEquals(GameScreenState.CINEMATIC, flow.state());
     }
 }

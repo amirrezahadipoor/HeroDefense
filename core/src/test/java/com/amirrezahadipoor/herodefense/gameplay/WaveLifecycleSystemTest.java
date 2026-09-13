@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import org.junit.jupiter.api.Test;
 
 final class WaveLifecycleSystemTest {
@@ -52,5 +54,50 @@ final class WaveLifecycleSystemTest {
         assertEquals(WaveCompletion.RUN_COMPLETED, lifecycle.continueAfterBossReward(state));
         assertTrue(state.runComplete);
         assertEquals(0, state.livingEnemyCount());
+    }
+
+    @Test
+    void clearingWaveOneHundredBossFreezesCombatUntilTheCeremonyCompletes() {
+        GameState state = GameState.newRun(100L);
+        state.waveNumber = GameState.PLANTING_WAVE;
+        assertTrue(lifecycle.startCurrentWave(state));
+        assertTrue(state.aliveBosses.size() > 0);
+        for (Boss boss : state.aliveBosses) boss.receiveDamage(Float.MAX_VALUE);
+        assertEquals(WaveCompletion.BOSS_REWARD, lifecycle.updateAfterCombat(state));
+        assertTrue(new BossRewardCardSystem().chooseCard(state, 0));
+
+        assertEquals(WaveCompletion.PLANTING_CEREMONY, lifecycle.continueAfterBossReward(state));
+        assertTrue(state.ceremonyPending);
+        assertFalse(state.secondTreePlanted);
+        assertEquals(GameState.PLANTING_WAVE + 1, state.waveNumber);
+        assertFalse(state.waveActive);
+        assertEquals(0, state.livingEnemyCount());
+        assertFalse(lifecycle.startCurrentWave(state));
+
+        assertTrue(lifecycle.completePlantingCeremony(state));
+        assertFalse(state.ceremonyPending);
+        assertTrue(state.secondTreePlanted);
+        assertTrue(state.waveActive);
+        assertTrue(state.livingEnemyCount() > 0);
+        assertFalse(lifecycle.completePlantingCeremony(state));
+    }
+
+    @Test
+    void reloadedSaveKeepsTheCeremonyPendingAndRepairsWaveActive() {
+        GameState state = GameState.newRun(101L);
+        state.waveNumber = GameState.PLANTING_WAVE + 1;
+        state.ceremonyPending = true;
+        state.waveActive = true;
+        state.validateAndRepair();
+        assertTrue(state.ceremonyPending);
+        assertFalse(state.waveActive);
+
+        GameState early = GameState.newRun(102L);
+        early.waveNumber = 40;
+        early.ceremonyPending = true;
+        early.secondTreePlanted = true;
+        early.validateAndRepair();
+        assertFalse(early.ceremonyPending);
+        assertFalse(early.secondTreePlanted);
     }
 }

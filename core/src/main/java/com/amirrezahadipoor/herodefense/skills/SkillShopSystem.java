@@ -28,10 +28,22 @@ public final class SkillShopSystem {
         return priceForLevel(skill, level(state, skill));
     }
 
-    /** Price of buying level {@code currentLevel + 1}; MAX_VALUE once maxed. */
+    /** Prices never exceed this, so very deep endless levels stay representable and legible. */
+    public static final int PRICE_CEILING = 9_999_995;
+
+    /**
+     * Price of buying level {@code currentLevel + 1}. Core levels follow the base curve; every
+     * endless level beyond {@link SkillId#CORE_LEVELS} multiplies the price by
+     * {@link SkillId#ENDLESS_PRICE_GROWTH} again. There is no cap on levels.
+     */
     public static int priceForLevel(SkillId skill, int currentLevel) {
-        if (currentLevel >= SkillId.MAX_LEVEL) return Integer.MAX_VALUE;
-        double price = basePrice(skill) * Math.pow(PRICE_GROWTH, currentLevel);
+        int level = Math.max(0, currentLevel);
+        int core = Math.min(SkillId.CORE_LEVELS, level);
+        double price = basePrice(skill) * Math.pow(PRICE_GROWTH, core);
+        if (level > SkillId.CORE_LEVELS) {
+            price *= Math.pow(SkillId.ENDLESS_PRICE_GROWTH, level - SkillId.CORE_LEVELS);
+        }
+        if (price >= PRICE_CEILING) return PRICE_CEILING;
         return (int) Math.round(price / 5.0) * 5;
     }
 
@@ -61,7 +73,6 @@ public final class SkillShopSystem {
         return switch (feedbackResult) {
             case PURCHASED -> "LEARNED  |  " + name + " +1  |  -$ " + feedbackCoins;
             case INSUFFICIENT_COINS -> "NEED $ " + feedbackCoins + " MORE  |  " + name;
-            case MAXED -> "MASTERED  |  " + name;
             default -> null;
         };
     }
@@ -74,10 +85,6 @@ public final class SkillShopSystem {
     public boolean purchase(GameState state, SkillId skill) {
         if (state == null || state.hero == null || skill == null) return false;
         int current = level(state, skill);
-        if (current >= SkillId.MAX_LEVEL) {
-            showFeedback(PurchaseResult.MAXED, skill, 0);
-            return false;
-        }
         int price = price(state, skill);
         if (state.coins < price) {
             showFeedback(PurchaseResult.INSUFFICIENT_COINS, skill, price - state.coins);

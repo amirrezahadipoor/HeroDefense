@@ -262,11 +262,39 @@ Deepen the coin economy with expensive long-horizon skills, make the Hero a pure
 - [x] Drops now linger 2.6 s on the ground before homing so loot is clearly visible.
 - [x] Rebalance for lifesteal and the new skills: regular HP `20 × 1.037^w`, damage `0.27 × 1.003^(w−1)`; the simulator's coin policy now buys skills, and the baseline, eight extra seeds, and all forced-card scenarios pass the gate (see `docs/BALANCE.md`).
 
+## Phase 18 — Juice, Endless Growth, and the Second Tree
+
+Make every new skill visibly and audibly powerful, show the Hero's growth on screen, and turn Wave 100 from an ending into the planting of a second World Tree that opens Waves 101–200 with uncapped progression.
+
+### 18.1 Combat Feel
+
+- [x] Floating damage numbers: normal, critical (larger, gold), chain arc (cyan), and stun ("STUN") pop-ups with deterministic positions and pooled rendering (`CombatEvent` stream from the attack system, `FloatingDamageTextSystem`, 40-label pool).
+- [x] Dedicated VFX: chain-lightning arc beams between struck foes, multi-shot fan trails, stun sparks orbiting frozen enemies, and a stronger critical impact burst with a short screen shake (`CHAIN_BEAM/CHAIN_FLASH/STUN_SPARK/CRITICAL_SPARK` particle families within the VFX budget; per-arrow impact bursts).
+- [x] Lift the Phase 16 audio freeze: added CC0 critical, kill, chain-lightning, stun, multi-shot, and purchase sounds (Kenney Impact/RPG/Interface packs) with per-file SHA-256 records in `docs/audio/AUDIO_LICENSES.md`; per-cue rate limiting via `AudioThrottle`, hash-bound by `AudioContractTest`.
+
+### 18.2 Hero Progression Surfaces
+
+- [x] Hero EXP bar in the live HUD with level badge and level-up flash (slim cyan bar under the health bar, `LV n` badge, `x / y XP` readout, ivory flash for 0.9 s on level gain).
+- [x] Level-Up overlay lists stats in the Shop order (Strength, Agility, Luck, Dodge, Health) top-to-bottom; `LevelUpTouchLayout.rowBottom` inverted, smoke taps updated.
+
+### 18.3 Endless Progression
+
+- [x] Remove stat and skill purchase caps: stats linear through 20 then ×1.25 per level; skills base curve through 10 then ×1.45 per level; `SkillEffects.effectiveLevel` halves the gain of each further ten-level block (converges to 20 core-equivalent) with hard ceilings on every chance/count effect; shop shows `LEVEL n | ENDLESS`; save repair no longer clamps skill levels; simulator greedy loop bounded per visit.
+- [x] Anvil: `ItemForgeSystem` reforges Rare/Legendary items up to +5 (Rare $150, Legendary $350, ×1.6 per step), +1 to every stat bonus per step, `+N` name suffix, sell price grows by half the spend, equipped items update max HP live; ANVIL button sits between EQUIP and SELL with cost/reason copy; `upgradeLevel` persisted on the item.
+- [x] Inventory auto-sell chips for Common, Uncommon, and Rare in the inventory header; ticked tiers are sold by `DropPickupSystem` on entry with a gold `+$ n` pop-up over the Hero; persisted in device settings (`inventory.autoSell.*`), never touches equipped items or Legendaries.
+
+### 18.4 The Second World Tree
+
+- [x] Render and review Hero Walk, Plant, and Water clips plus seed, watering can, and a sapling-to-tree growth sequence through the Blender pipeline. (`hero_ceremony` walk 8 / plant 10 / water 10 and `world_tree_sapling` grow 12 / idle 6; accepted in `docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md`, promoted by `tools/visual/promote_ceremony_batch.py`, hash-guarded by `PremiumCeremonyAssetContractTest`.)
+- [x] Wave 100 cinematic: combat pauses, the Hero walks beside the World Tree, plants a seed, waters it, a second tree grows in place, and the Hero walks back to the anchor and resumes auto-combat; the player never controls the Hero. Touch-skippable, save-safe, deterministic. (`GameScreenState.CINEMATIC`, `gameplay/PlantingCeremony` timeline, `ceremonyPending` persisted and replayed on continue, `WaveCompletion.PLANTING_CEREMONY`, water-drop particles.)
+- [x] Waves 101–200 with the second tree standing as a permanent monument; Game Over now shows the monsters destroying every planted tree instead of ending abruptly. (`FINAL_WAVE = 200`, `secondTreePlanted` idle sway via `SaplingTreeRenderer`; on Hero death survivors march on the nearest tree for `TREE_SIEGE_SECONDS` while its health drains, then both trees fall.)
+- [x] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated. (Waves 1–100 unchanged; waves 101–200 continue at `HP × 1.021^(w−100)`, `damage × 1.006^(w−100)`; 9/9 seeds finish, avg 10.0%, worst wave 28.8%, 312 forced-card scenarios pass.)
+
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
 - Keep only push-able files in the workspace; SDKs, Blender, caches, and helpers belong in `/tmp` or CI.
-- Verify every audio license before committing the file.
+- Verify every audio license before committing the file (audio unfrozen in Phase 18; CC0 only).
 - Review every Blender-rendered batch before accepting it.
 - Treat the visual style guide as non-negotiable.
 - Use touch/tap/drag everywhere, including automated tests; no keyboard or mouse-only paths.

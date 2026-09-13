@@ -31,7 +31,7 @@ final class EnemyMeleeAttackSystemTest {
     }
 
     @Test
-    void lethalFailedDodgeDestroysTreeAndReportsGameOver() {
+    void lethalHitStartsTreeSiegeBeforeTheTreeFalls() {
         GameState state = GameState.newRun(31L);
         state.hero.health = 4f;
         Enemy enemy = factory.create(
@@ -39,8 +39,28 @@ final class EnemyMeleeAttackSystemTest {
         );
         state.aliveEnemies.add(enemy);
 
-        assertTrue(attacks.update(state, 0f));
+        assertFalse(attacks.update(state, 0f));
         assertFalse(state.hero.alive);
+        assertEquals(GameState.TREE_SIEGE_SECONDS, state.treeSiegeRemainingSeconds);
+        assertEquals(state.worldTreeMaxHealth, state.worldTreeHealth);
+
+        assertFalse(attacks.update(state, GameState.TREE_SIEGE_SECONDS * 0.5f));
+        assertTrue(state.worldTreeHealth > 0f);
+        assertTrue(state.worldTreeHealth < state.worldTreeMaxHealth);
+
+        assertTrue(attacks.update(state, GameState.TREE_SIEGE_SECONDS));
+        assertEquals(0f, state.worldTreeHealth);
+        assertTrue(attacks.update(state, 0f));
+    }
+
+    @Test
+    void loadedSaveWithDeadHeroAndNoSiegeLeftEndsImmediately() {
+        GameState state = GameState.newRun(32L);
+        state.hero.health = 0f;
+        state.hero.alive = false;
+        state.treeSiegeRemainingSeconds = 0f;
+
+        assertTrue(attacks.update(state, 0f));
         assertEquals(0f, state.worldTreeHealth);
     }
 }

@@ -12,12 +12,20 @@ final class ContinuousWaveRunTest {
     private final ContinuousWaveRun run = new ContinuousWaveRun();
 
     @Test
-    void advancesOneStateAndOneHeroSeamlesslyFromWaveOneThroughOneHundred() {
+    void advancesOneStateAndOneHeroSeamlesslyFromWaveOneThroughTwoHundred() {
         GameState state = GameState.newRun(90L);
         Hero originalHero = state.hero;
 
         for (int expectedWave = 2; expectedWave <= GameState.FINAL_WAVE; expectedWave++) {
-            assertEquals(WaveCompletion.NEXT_WAVE, run.completeCurrentWave(state));
+            WaveCompletion completion = run.completeCurrentWave(state);
+            if (expectedWave == GameState.PLANTING_WAVE + 1) {
+                assertEquals(WaveCompletion.PLANTING_CEREMONY, completion);
+                assertTrue(state.ceremonyPending);
+                state.ceremonyPending = false;
+                state.secondTreePlanted = true;
+            } else {
+                assertEquals(WaveCompletion.NEXT_WAVE, completion);
+            }
             assertEquals(expectedWave, state.waveNumber);
             assertSame(originalHero, state.hero);
         }

@@ -18,6 +18,8 @@ public final class GameAudioManager implements AutoCloseable {
     private GameSettings settings;
     private boolean appBackgrounded;
 
+    private final AudioThrottle throttle = new AudioThrottle();
+
     public GameAudioManager(GameSettings settings) {
         this.settings = settings;
         music = Gdx.audio.newMusic(Gdx.files.internal(MUSIC_PATH));
@@ -41,8 +43,14 @@ public final class GameAudioManager implements AutoCloseable {
 
     public void play(AudioCue cue) {
         if (cue == null || !AudioPlaybackPolicy.shouldPlayEffects(settings, appBackgrounded)) return;
+        if (!throttle.allow(cue)) return;
         Sound sound = effects.get(cue);
         if (sound != null) sound.play(cue.volume());
+    }
+
+    /** Advance the per-cue rate limiter with real (not simulation) time. */
+    public void tick(float realDeltaSeconds) {
+        throttle.advance(realDeltaSeconds);
     }
 
     public void pauseForBackground() {

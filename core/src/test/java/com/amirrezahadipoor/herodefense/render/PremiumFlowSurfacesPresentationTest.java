@@ -83,8 +83,9 @@ final class PremiumFlowSurfacesPresentationTest {
         for (HeroStat stat : HeroStat.values()) {
             assertTrue(LevelUpOverlayRenderer.gainPerPoint(stat).startsWith("+"), stat.name());
         }
-        assertEquals(LevelUpTouchLayout.BOTTOM, LevelUpOverlayRenderer.rowY(0));
-        assertTrue(LevelUpOverlayRenderer.rowY(4) + LevelUpTouchLayout.BUTTON_HEIGHT
+        assertEquals(LevelUpTouchLayout.BOTTOM, LevelUpOverlayRenderer.rowY(HeroStat.values().length - 1));
+        assertEquals(LevelUpTouchLayout.rowBottom(0), LevelUpOverlayRenderer.rowY(0));
+        assertTrue(LevelUpOverlayRenderer.rowY(0) + LevelUpTouchLayout.BUTTON_HEIGHT
             < LevelUpOverlayRenderer.HEADER_PANEL_Y);
     }
 
@@ -111,7 +112,7 @@ final class PremiumFlowSurfacesPresentationTest {
     void endOfRunDistinguishesVictoryFromDefeatAndKeepsRevealTiming() {
         assertNotEquals(GameOverOverlayRenderer.title(true), GameOverOverlayRenderer.title(false));
         assertTrue(GameOverOverlayRenderer.subtitle(false, 37).contains("wave 37"));
-        assertTrue(GameOverOverlayRenderer.subtitle(true, 100).contains("100 waves"));
+        assertTrue(GameOverOverlayRenderer.subtitle(true, 200).contains("200 waves"));
         assertEquals(0f, GameOverOverlayRenderer.revealProgress(0.5f, false));
         assertTrue(GameOverOverlayRenderer.isInteractive(0f, true));
         float lastRow = GameOverOverlayRenderer.summaryRowY(GameOverOverlayRenderer.SUMMARY_ROWS - 1);

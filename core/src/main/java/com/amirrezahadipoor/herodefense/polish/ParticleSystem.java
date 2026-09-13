@@ -16,7 +16,34 @@ public final class ParticleSystem {
         int motes = critical ? Math.round(VfxBudget.NORMAL_HIT_MAX_MOTES * VfxBudget.CRITICAL_MULTIPLIER)
             : VfxBudget.NORMAL_HIT_MAX_MOTES;
         emitBurst(ParticleType.HIT, x, y, motes, critical ? 120f : 80f, 0.22f, critical ? 6f : 4.5f);
-        if (critical) add(ParticleType.CRITICAL_RING, x, y, 0f, 0f, 0.24f, 44f);
+        if (critical) {
+            add(ParticleType.CRITICAL_RING, x, y, 0f, 0f, 0.24f, 44f);
+            add(ParticleType.CRITICAL_RING, x, y, 0f, 0f, 0.34f, 70f);
+            // Four radial gold sparks read as a "star" burst at phone scale.
+            for (int index = 0; index < VfxBudget.CRITICAL_SPARKS; index++) {
+                float angle = (float) (Math.PI * 0.25f + index * Math.PI * 0.5f);
+                add(ParticleType.CRITICAL_SPARK, x, y,
+                    (float) Math.cos(angle) * 210f, (float) Math.sin(angle) * 210f, 0.20f, 5f);
+            }
+        }
+    }
+
+    /** One jagged beam plus a terminal flash and a few cyan motes per chain-lightning arc. */
+    public void emitChainArc(float fromX, float fromY, float toX, float toY) {
+        Particle beam = addAndGet(ParticleType.CHAIN_BEAM, fromX, fromY, 0f, 0f, 0.22f, 3.5f);
+        beam.endX = toX;
+        beam.endY = toY;
+        add(ParticleType.CHAIN_FLASH, toX, toY, 0f, 0f, 0.16f, 14f);
+        emitBurst(ParticleType.HIT, toX, toY, VfxBudget.CHAIN_ARC_MAX_MOTES, 90f, 0.18f, 3.5f);
+    }
+
+    /** Three stars orbiting the head for the whole stun; capped so a crowd stays readable. */
+    public void emitStunSparks(float x, float y, float durationSeconds) {
+        for (int index = 0; index < VfxBudget.STUN_SPARKS; index++) {
+            Particle spark = addAndGet(ParticleType.STUN_SPARK, x, y, 0f, 0f,
+                Math.min(1.6f, durationSeconds), 4.5f);
+            spark.endX = index * (float) (Math.PI * 2.0 / VfxBudget.STUN_SPARKS);
+        }
     }
 
     /** Collapse dust plus one soft ground ring so every kill reads at phone scale. */
@@ -70,6 +97,21 @@ public final class ParticleSystem {
         }
     }
 
+    /** A short arc of droplets from the watering-can spout toward the soil (ceremony only). */
+    public void emitWaterDrops(float spoutX, float spoutY) {
+        for (int index = 0; index < 3; index++) {
+            add(
+                ParticleType.WATER_DROP,
+                spoutX + (index - 1) * 3f,
+                spoutY,
+                34f + index * 9f,
+                -20f - index * 6f,
+                0.34f + index * 0.04f,
+                2.6f + index * 0.4f
+            );
+        }
+    }
+
     public void update(float deltaSeconds) {
         if (deltaSeconds <= 0f) return;
         for (Particle particle : particles) {
@@ -98,6 +140,7 @@ public final class ParticleSystem {
         return switch (type) {
             case TREE_LEAF -> 0.4f;
             case BOSS_DUST -> 4.0f;
+            case WATER_DROP -> 0.2f;
             default -> 3.2f;
         };
     }
@@ -107,9 +150,25 @@ public final class ParticleSystem {
             case COIN, COLLECTION_SPARKLE -> 22f;
             case TREE_LEAF -> -14f;
             case BOSS_DUST -> -30f;
-            case IMPACT_CORE, CRITICAL_RING, DEATH_RING, BOSS_SHOCKWAVE -> 0f;
+            case IMPACT_CORE, CRITICAL_RING, DEATH_RING, BOSS_SHOCKWAVE,
+                CHAIN_BEAM, CHAIN_FLASH, STUN_SPARK -> 0f;
+            case CRITICAL_SPARK -> -20f;
+            case WATER_DROP -> -420f;
             default -> -48f;
         };
+    }
+
+    private Particle addAndGet(
+        ParticleType type,
+        float x,
+        float y,
+        float velocityX,
+        float velocityY,
+        float lifetime,
+        float size
+    ) {
+        add(type, x, y, velocityX, velocityY, lifetime, size);
+        return particles.get(particles.size() - 1);
     }
 
     private void add(

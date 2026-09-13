@@ -8,8 +8,11 @@ import com.amirrezahadipoor.herodefense.model.HeroStat;
 public final class StatShopSystem {
     public enum PurchaseResult { NONE, PURCHASED, INSUFFICIENT_COINS, MAXED }
 
-    public static final int MAX_PURCHASES_PER_STAT = 20;
+    /** Levels priced linearly; beyond this every purchase multiplies the price (endless). */
+    public static final int CORE_LEVELS = 20;
     public static final int PRICE_STEP_PER_LEVEL = 20;
+    public static final float ENDLESS_PRICE_GROWTH = 1.25f;
+    public static final int PRICE_CEILING = 9_999_995;
     private static final float FEEDBACK_DURATION_SECONDS = 1.25f;
     private final HeroStatCalculator statCalculator = new HeroStatCalculator();
     private PurchaseResult feedbackResult = PurchaseResult.NONE;
@@ -20,14 +23,24 @@ public final class StatShopSystem {
     public int purchasedLevels(GameState state, HeroStat stat) {
         if (state == null || stat == null) return 0;
         Integer value = state.shopUpgradeLevels.get(stat.name());
-        return value == null ? 0 : Math.max(0, Math.min(MAX_PURCHASES_PER_STAT, value));
+        return value == null ? 0 : Math.max(0, value);
     }
 
     public int price(GameState state, HeroStat stat) {
         if (state == null || stat == null) return Integer.MAX_VALUE;
-        int level = purchasedLevels(state, stat);
-        if (level >= MAX_PURCHASES_PER_STAT) return Integer.MAX_VALUE;
-        return basePrice(stat) + PRICE_STEP_PER_LEVEL * level;
+        return priceForLevel(stat, purchasedLevels(state, stat));
+    }
+
+    /** Linear through the core levels, then geometric with no level cap. */
+    public static int priceForLevel(HeroStat stat, int purchasedLevels) {
+        int level = Math.max(0, purchasedLevels);
+        int core = Math.min(CORE_LEVELS, level);
+        double price = basePrice(stat) + PRICE_STEP_PER_LEVEL * core;
+        if (level > CORE_LEVELS) {
+            price *= Math.pow(ENDLESS_PRICE_GROWTH, level - CORE_LEVELS);
+        }
+        if (price >= PRICE_CEILING) return PRICE_CEILING;
+        return (int) Math.round(price / 5.0) * 5;
     }
 
     public void update(float realDeltaSeconds) {
@@ -45,7 +58,6 @@ public final class StatShopSystem {
         return switch (feedbackResult) {
             case PURCHASED -> "PURCHASED  |  " + pretty(feedbackStat) + " +1  |  -$ " + feedbackCoins;
             case INSUFFICIENT_COINS -> "NEED $ " + feedbackCoins + " MORE  |  " + pretty(feedbackStat);
-            case MAXED -> "MAX LEVEL  |  " + pretty(feedbackStat);
             default -> null;
         };
     }
@@ -59,10 +71,6 @@ public final class StatShopSystem {
         if (state == null || state.hero == null || stat == null) return false;
         int oldLevel = purchasedLevels(state, stat);
         int price = price(state, stat);
-        if (oldLevel >= MAX_PURCHASES_PER_STAT) {
-            showFeedback(PurchaseResult.MAXED, stat, 0);
-            return false;
-        }
         if (state.coins < price) {
             showFeedback(PurchaseResult.INSUFFICIENT_COINS, stat, price - state.coins);
             return false;
