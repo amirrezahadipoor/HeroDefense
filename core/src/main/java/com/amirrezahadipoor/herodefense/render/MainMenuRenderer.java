@@ -43,6 +43,8 @@ public final class MainMenuRenderer implements AutoCloseable {
         SpriteBatch batch,
         Matrix4 projection,
         boolean continueAvailable,
+        boolean terminalResult,
+        boolean victoryResult,
         int coins,
         UiIconRenderer icons,
         UiFrameRenderer frames
@@ -110,8 +112,16 @@ public final class MainMenuRenderer implements AutoCloseable {
             690f, newGameState, true
         );
         drawMenuAction(
-            batch, icons, "continue", "CONTINUE", "Return to the active wave",
-            500f, continueState, continueAvailable
+            batch,
+            icons,
+            terminalResult ? "wave" : "continue",
+            terminalResult ? "VIEW RESULT" : "CONTINUE",
+            terminalResult
+                ? (victoryResult ? "Review the saved World Tree" : "Review the fallen defense")
+                : "Return to the active wave",
+            500f,
+            continueState,
+            continueAvailable
         );
         drawMenuAction(
             batch, icons, "settings", "SETTINGS", "Comfort, music, and effects",

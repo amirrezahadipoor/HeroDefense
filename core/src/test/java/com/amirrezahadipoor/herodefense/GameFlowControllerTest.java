@@ -2,7 +2,6 @@ package com.amirrezahadipoor.herodefense;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,8 +40,10 @@ final class GameFlowControllerTest {
     }
 
     @Test
-    void rejectsInvalidMenuToGameOverTransition() {
+    void menuCanOpenAPersistedTerminalRunSummary() {
         GameFlowController flow = new GameFlowController();
-        assertThrows(IllegalStateException.class, () -> flow.transitionTo(GameScreenState.GAME_OVER));
+        flow.transitionTo(GameScreenState.GAME_OVER);
+        assertEquals(GameScreenState.GAME_OVER, flow.state());
+        assertFalse(flow.simulationRunning());
     }
 }

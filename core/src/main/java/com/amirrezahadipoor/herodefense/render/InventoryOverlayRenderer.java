@@ -52,35 +52,46 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         UiFrameRenderer frames
     ) {
         beginShapes(projection);
-        shapes.setColor(0.03f, 0.06f, 0.075f, 0.90f);
+        shapes.setColor(0.006f, 0.022f, 0.021f, 0.94f);
         shapes.rect(0f, 0f, 720f, 1280f);
-        panel(180f, 480f, 360f, 240f);
-        panel(180f, 760f, 360f, 140f);
-        panel(180f, 930f, 360f, 140f);
         shapes.end();
         endShapes();
 
         batch.setProjectionMatrix(projection);
         batch.begin();
+        frames.draw(batch, UiFrameRenderer.Kind.PANEL, 120f, 1090f, 480f, 140f, true, false);
         frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 480f, 360f, 240f, true, false);
         frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 760f, 360f, 140f, true, false);
         frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 930f, 360f, 140f, true, false);
-        font.getData().setScale(1.3f);
-        font.setColor(Color.valueOf("E7D8B1"));
-        uiIcons.draw(batch, "continue", 205f, 550f, 92f, frames.resolve(
-            true, false, 180f, 480f, 360f, 240f
-        ));
-        uiIcons.draw(batch, "inventory", 205f, 785f, 92f, frames.resolve(
-            true, false, 180f, 760f, 360f, 140f
-        ));
-        uiIcons.draw(batch, "shop", 205f, 955f, 92f, frames.resolve(
-            true, false, 180f, 930f, 360f, 140f
-        ));
-        font.draw(batch, "Paused", 295f, 1170f);
-        font.draw(batch, "Resume", 315f, 615f);
-        font.draw(batch, "Inventory", 315f, 845f);
-        font.draw(batch, "Stat Shop", 315f, 1015f);
+        UiFrameRenderer.State resumeState = frames.resolve(true, false, 180f, 480f, 360f, 240f);
+        UiFrameRenderer.State inventoryState = frames.resolve(true, false, 180f, 760f, 360f, 140f);
+        UiFrameRenderer.State shopState = frames.resolve(true, false, 180f, 930f, 360f, 140f);
+        drawCentered(batch, "COMBAT PAUSED", 360f, 1182f, 1.42f, GOLD);
+        drawCentered(batch, "The battlefield is safely frozen", 360f, 1134f, 0.72f, SUBTLE);
+        drawPauseAction(batch, uiIcons, "shop", "STAT SHOP", "Spend earned coins",
+            930f, 140f, shopState);
+        drawPauseAction(batch, uiIcons, "inventory", "INVENTORY", "Inspect and equip items",
+            760f, 140f, inventoryState);
+        drawPauseAction(batch, uiIcons, "continue", "RESUME BATTLE", "Return to the current wave",
+            480f, 240f, resumeState);
         batch.end();
+    }
+
+    private void drawPauseAction(
+        SpriteBatch batch,
+        UiIconRenderer icons,
+        String icon,
+        String title,
+        String subtitle,
+        float y,
+        float height,
+        UiFrameRenderer.State state
+    ) {
+        float offset = MainMenuRenderer.pressedOffset(state);
+        float iconSize = height > 180f ? 104f : 82f;
+        icons.draw(batch, icon, 205f, y + (height - iconSize) * 0.5f + offset, iconSize, state);
+        drawText(batch, title, 326f, y + height * 0.62f + offset, 1.04f, IVORY);
+        drawText(batch, subtitle, 326f, y + height * 0.38f + offset, 0.64f, SUBTLE);
     }
 
     public void drawInventory(

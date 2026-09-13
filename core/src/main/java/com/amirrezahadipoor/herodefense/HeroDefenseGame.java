@@ -190,7 +190,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         audioManager = new GameAudioManager(settings);
         Optional<GameState> loadedRun = saves.load();
         gameState = loadedRun.orElseGet(() -> GameState.newRun(System.currentTimeMillis()));
-        continueAvailable = loadedRun.isPresent() && canContinue(gameState);
+        continueAvailable = loadedRun.isPresent() && canOpenFromMenu(gameState);
         new StarterLoadoutSystem().provisionOnce(gameState);
         camera = new OrthographicCamera();
         viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
@@ -380,7 +380,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private void saveNow() {
         if (saves != null && gameState != null) {
             saves.save(gameState);
-            continueAvailable = canContinue(gameState);
+            continueAvailable = canOpenFromMenu(gameState);
         }
     }
 
@@ -564,7 +564,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     }
 
     private void continueRun() {
-        if (!continueAvailable || !canContinue(gameState)) return;
+        if (!continueAvailable) return;
+        if (terminalResult(gameState)) {
+            flow.transitionTo(GameScreenState.GAME_OVER);
+            gameOverPresentationSeconds = gameState.runComplete ? 10f : 0f;
+            return;
+        }
+        if (!canContinue(gameState)) return;
         flow.transitionTo(GameScreenState.PLAYING);
         if (gameState.awaitingBossReward) {
             flow.transitionTo(GameScreenState.CARD_CHOICE);
@@ -625,6 +631,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private static boolean canContinue(GameState state) {
         return state != null && state.hero != null && state.hero.alive && !state.runComplete;
+    }
+
+    private static boolean terminalResult(GameState state) {
+        return state != null && state.hero != null && (state.runComplete || !state.hero.alive);
+    }
+
+    private static boolean canOpenFromMenu(GameState state) {
+        return canContinue(state) || terminalResult(state);
     }
 
     private void updatePlaying(float deltaSeconds) {
@@ -759,25 +773,32 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 spriteBatch,
                 camera.combined,
                 continueAvailable,
+                terminalResult(gameState),
+                gameState.runComplete,
                 gameState.coins,
                 uiIconRenderer,
                 uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.SETTINGS) {
-            settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings, uiIconRenderer);
+            settingsOverlayRenderer.draw(
+                spriteBatch, camera.combined, settings, uiIconRenderer, uiFrameRenderer
+            );
         } else if (flow.state() == GameScreenState.LEVEL_UP) {
-            levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
+            levelUpOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
+            );
         } else if (flow.state() == GameScreenState.GAME_OVER) {
             gameOverOverlayRenderer.draw(
                 spriteBatch,
                 camera.combined,
                 gameState,
                 uiIconRenderer,
-                gameOverPresentationSeconds
+                gameOverPresentationSeconds,
+                uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(
-                spriteBatch, camera.combined, gameState, uiIconRenderer
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.SHOP) {
             statShopOverlayRenderer.draw(
