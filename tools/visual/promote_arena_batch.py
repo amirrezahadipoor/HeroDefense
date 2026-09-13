@@ -78,6 +78,10 @@ def main() -> None:
             "reviewDocument": REVIEW_DOCUMENT,
             "categoryReview": review,
         })
+        if key == "crystal_prop_0":
+            candidate_asset["pilotReviewDocument"] = (
+                "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md"
+            )
         by_key[key] = candidate_asset
         metadata_path = destination / "environment" / f"{key}.json"
         metadata_path.parent.mkdir(parents=True, exist_ok=True)

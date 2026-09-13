@@ -1,5 +1,12 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+    "category": "arena_environment",
+    "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+    "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+    "status": "accepted"
+  },
   "clips": {
     "idle": [
       {
@@ -14,17 +21,24 @@
   },
   "family": "environment",
   "frameClass": "environment",
+  "frameHeight": 192,
   "frameSize": 192,
+  "frameWidth": 192,
   "key": "crystal_prop_0",
+  "materialCount": 8,
+  "meshParts": 36,
+  "modelRevision": "arena-crystal-premium-v2",
+  "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.5
   },
-  "prop": "faceted_crystal_cluster",
+  "prop": "azure-waystone-fan",
   "renderSamples": 16,
   "renderSupersample": 2,
-  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+  "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+  "runtimeGlow": false,
   "sheet": "environment/crystal_prop_0.png",
   "sheetHeight": 192,
   "sheetWidth": 192,
@@ -36,7 +50,14 @@
       "width": 192
     }
   ],
-  "triangles": 316,
+  "silhouetteLandmarks": [
+    "faceted bedrock",
+    "guard ring",
+    "identity shard rhythm",
+    "moss grounding"
+  ],
+  "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
+  "triangles": 868,
   "variant": 0,
   "visualQuality": "premium-v2"
 }

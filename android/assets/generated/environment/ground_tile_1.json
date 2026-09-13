@@ -1,5 +1,12 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+    "category": "arena_environment",
+    "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+    "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+    "status": "accepted"
+  },
   "clips": {
     "idle": [
       {
@@ -14,13 +21,23 @@
   },
   "family": "environment",
   "frameClass": "environment",
+  "frameHeight": 192,
   "frameSize": 192,
+  "frameWidth": 192,
+  "groundIdentity": "waystone-crossing",
   "key": "ground_tile_1",
+  "materialCount": 6,
+  "meshParts": 24,
+  "modelRevision": "arena-ground-premium-v2",
+  "overlapProfile": "staggered-soft-edge-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.5
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
   "sheet": "environment/ground_tile_1.png",
   "sheetHeight": 192,
   "sheetWidth": 192,
@@ -32,7 +49,9 @@
       "width": 192
     }
   ],
+  "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
   "tileable": false,
-  "triangles": 144,
-  "variant": 1
+  "triangles": 524,
+  "variant": 1,
+  "visualQuality": "premium-v2"
 }

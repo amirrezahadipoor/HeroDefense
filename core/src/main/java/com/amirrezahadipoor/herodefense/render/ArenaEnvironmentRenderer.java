@@ -13,6 +13,18 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
     private static final float TREE_SIZE = 330f;
     private static final float TREE_FEET_OFFSET = 31f;
 
+    // X, Y, width, height, variant, shade. Edge patches frame rather than stripe the lane.
+    private static final float[][] GROUND_PLACEMENTS = {
+        {-72f, 20f, 292f, 190f, 0f, 0.96f},
+        {500f, 34f, 286f, 186f, 1f, 0.95f},
+        {-58f, 318f, 266f, 176f, 2f, 0.90f},
+        {516f, 368f, 258f, 171f, 0f, 0.88f},
+        {-50f, 640f, 244f, 164f, 1f, 0.83f},
+        {528f, 696f, 236f, 159f, 2f, 0.81f},
+        {-42f, 954f, 224f, 153f, 0f, 0.76f},
+        {540f, 1000f, 216f, 148f, 1f, 0.73f}
+    };
+
     // X, Y, draw size, variant. Smaller upper props reinforce portrait depth.
     private static final float[][] CRYSTAL_PLACEMENTS = {
         {-8f, 120f, 172f, 0f},
@@ -77,18 +89,13 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
 
     private void drawGround(SpriteBatch batch) {
         float originalColor = batch.getPackedColor();
-        for (int row = 0; row < 8; row++) {
-            float depth = row / 7f;
-            float width = 252f - depth * 42f;
-            float height = 184f - depth * 32f;
-            float shade = 0.96f - depth * 0.23f;
-            batch.setColor(shade * 0.92f, shade, shade * 0.95f, 0.96f);
-            for (int column = 0; column < 4; column++) {
-                int variant = (row * 2 + column) % ground.length;
-                float x = -46f + column * 193f + (row % 2) * 31f;
-                float y = 10f + row * 143f;
-                batch.draw(ground[variant], x, y, width, height);
-            }
+        for (float[] placement : GROUND_PLACEMENTS) {
+            float shade = placement[5];
+            batch.setColor(shade * 0.92f, shade, shade * 0.95f, 0.92f);
+            int variant = Math.round(placement[4]);
+            batch.draw(
+                ground[variant], placement[0], placement[1], placement[2], placement[3]
+            );
         }
         batch.setPackedColor(originalColor);
     }

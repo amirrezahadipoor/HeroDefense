@@ -453,21 +453,16 @@ def compose_arena(root: Path, candidate: bool, actors_root: Path | None = None) 
     if candidate:
         backdrop = asset_image(root, "arena_backdrop").resize(VIEWPORT, Image.Resampling.BILINEAR)
         scene = backdrop.copy()
-        for row in range(8):
-            depth = row / 7
-            tile_width = round(252 - depth * 42)
-            tile_height = round(184 - depth * 32)
-            shade = 0.96 - depth * 0.23
-            for column in range(4):
-                variant = (row * 2 + column) % 3
-                tile = asset_image(root, f"ground_tile_{variant}")
-                tile = tint(tile, shade * 0.92, shade, shade * 0.95, 0.96)
-                world_paste(
-                    scene, tile,
-                    -46 + column * 193 + (row % 2) * 31,
-                    10 + row * 143,
-                    tile_width, tile_height,
-                )
+        ground_placements = (
+            (-72, 20, 292, 190, 0, 0.96), (500, 34, 286, 186, 1, 0.95),
+            (-58, 318, 266, 176, 2, 0.90), (516, 368, 258, 171, 0, 0.88),
+            (-50, 640, 244, 164, 1, 0.83), (528, 696, 236, 159, 2, 0.81),
+            (-42, 954, 224, 153, 0, 0.76), (540, 1000, 216, 148, 1, 0.73),
+        )
+        for x, y, tile_width, tile_height, variant, shade in ground_placements:
+            tile = asset_image(root, f"ground_tile_{variant}")
+            tile = tint(tile, shade * 0.92, shade, shade * 0.95, 0.92)
+            world_paste(scene, tile, x, y, tile_width, tile_height)
         placements = ((-8, 120, 172, 0), (556, 205, 164, 1),
                       (4, 820, 148, 2), (568, 884, 136, 0))
     else:

@@ -316,6 +316,70 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "backdrop": "layered-heartwood-arena",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
+      "clearLaneFraction": 0.55,
+      "clips": {
+        "idle": [
+          {
+            "height": 640,
+            "index": 0,
+            "page": 0,
+            "width": 360,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "compositionProfile": "portrait-clear-lane-v2",
+      "depthBands": 5,
+      "family": "environment",
+      "frameClass": "arena",
+      "frameHeight": 640,
+      "frameSize": 360,
+      "frameWidth": 360,
+      "key": "arena_backdrop",
+      "materialCount": 9,
+      "meshParts": 63,
+      "modelRevision": "forest-sanctuary-backdrop-v2",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+      "sheet": "environment/arena_backdrop.png",
+      "sheetHeight": 640,
+      "sheetWidth": 360,
+      "sheets": [
+        {
+          "decodedBytes": 921600,
+          "file": "environment/arena_backdrop.png",
+          "height": 640,
+          "width": 360
+        }
+      ],
+      "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
+      "triangles": 1704,
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -330,17 +394,24 @@
       },
       "family": "environment",
       "frameClass": "environment",
+      "frameHeight": 192,
       "frameSize": 192,
+      "frameWidth": 192,
       "key": "crystal_prop_0",
+      "materialCount": 8,
+      "meshParts": 36,
+      "modelRevision": "arena-crystal-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
-      "prop": "faceted_crystal_cluster",
+      "prop": "azure-waystone-fan",
       "renderSamples": 16,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+      "runtimeGlow": false,
       "sheet": "environment/crystal_prop_0.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -352,12 +423,26 @@
           "width": 192
         }
       ],
-      "triangles": 316,
+      "silhouetteLandmarks": [
+        "faceted bedrock",
+        "guard ring",
+        "identity shard rhythm",
+        "moss grounding"
+      ],
+      "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
+      "triangles": 868,
       "variant": 0,
       "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -372,14 +457,23 @@
       },
       "family": "environment",
       "frameClass": "environment",
+      "frameHeight": 192,
       "frameSize": 192,
+      "frameWidth": 192,
       "key": "crystal_prop_1",
+      "materialCount": 8,
+      "meshParts": 36,
+      "modelRevision": "arena-crystal-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
-      "prop": "crystal_cluster",
+      "prop": "violet-moon-geode",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+      "runtimeGlow": false,
       "sheet": "environment/crystal_prop_1.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -391,11 +485,26 @@
           "width": 192
         }
       ],
-      "triangles": 50,
-      "variant": 1
+      "silhouetteLandmarks": [
+        "faceted bedrock",
+        "guard ring",
+        "identity shard rhythm",
+        "moss grounding"
+      ],
+      "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
+      "triangles": 1080,
+      "variant": 1,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -410,14 +519,23 @@
       },
       "family": "environment",
       "frameClass": "environment",
+      "frameHeight": 192,
       "frameSize": 192,
+      "frameWidth": 192,
       "key": "crystal_prop_2",
+      "materialCount": 9,
+      "meshParts": 36,
+      "modelRevision": "arena-crystal-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
-      "prop": "crystal_cluster",
+      "prop": "amber-root-lantern",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+      "runtimeGlow": false,
       "sheet": "environment/crystal_prop_2.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -429,8 +547,16 @@
           "width": 192
         }
       ],
-      "triangles": 50,
-      "variant": 2
+      "silhouetteLandmarks": [
+        "faceted bedrock",
+        "guard ring",
+        "identity shard rhythm",
+        "moss grounding"
+      ],
+      "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
+      "triangles": 896,
+      "variant": 2,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -13606,6 +13732,13 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -13620,13 +13753,23 @@
       },
       "family": "environment",
       "frameClass": "environment",
+      "frameHeight": 192,
       "frameSize": 192,
+      "frameWidth": 192,
+      "groundIdentity": "root-path",
       "key": "ground_tile_0",
+      "materialCount": 6,
+      "meshParts": 23,
+      "modelRevision": "arena-ground-premium-v2",
+      "overlapProfile": "staggered-soft-edge-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_0.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -13638,12 +13781,21 @@
           "width": 192
         }
       ],
+      "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
       "tileable": false,
-      "triangles": 144,
-      "variant": 0
+      "triangles": 504,
+      "variant": 0,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -13658,13 +13810,23 @@
       },
       "family": "environment",
       "frameClass": "environment",
+      "frameHeight": 192,
       "frameSize": 192,
+      "frameWidth": 192,
+      "groundIdentity": "waystone-crossing",
       "key": "ground_tile_1",
+      "materialCount": 6,
+      "meshParts": 24,
+      "modelRevision": "arena-ground-premium-v2",
+      "overlapProfile": "staggered-soft-edge-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_1.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -13676,12 +13838,21 @@
           "width": 192
         }
       ],
+      "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
       "tileable": false,
-      "triangles": 144,
-      "variant": 1
+      "triangles": 524,
+      "variant": 1,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "category": "arena_environment",
+        "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -13696,13 +13867,23 @@
       },
       "family": "environment",
       "frameClass": "environment",
+      "frameHeight": 192,
       "frameSize": 192,
+      "frameWidth": 192,
+      "groundIdentity": "moss-clearing",
       "key": "ground_tile_2",
+      "materialCount": 6,
+      "meshParts": 23,
+      "modelRevision": "arena-ground-premium-v2",
+      "overlapProfile": "staggered-soft-edge-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_2.png",
       "sheetHeight": 192,
       "sheetWidth": 192,
@@ -13714,9 +13895,11 @@
           "width": 192
         }
       ],
+      "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
       "tileable": false,
-      "triangles": 144,
-      "variant": 2
+      "triangles": 504,
+      "variant": 2,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16433,7 +16616,7 @@
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
   "frameRate": 12,
-  "generatedBatch": "world-tree",
+  "generatedBatch": "arena",
   "maxAtlasPageSize": 2048,
   "opaqueRenderSamples": 16,
   "overlayRenderSamples": 8,
