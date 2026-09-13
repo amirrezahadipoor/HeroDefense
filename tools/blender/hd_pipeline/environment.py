@@ -1237,6 +1237,13 @@ def build_potion_icon(tier: int) -> BuiltModel:
             "potion_stopper_seed", (0, -0.04, 1.50),
             (0.13, 0.07, 0.18), leaf,
         ))
+    # Lift the family slightly inside the locked item camera so the tier-four+
+    # foot construction retains robust transparent safety below its outline.
+    view = (Vector(CAMERA_TARGET) - Vector(CAMERA_LOCATION)).normalized()
+    camera_up = view.to_track_quat("-Z", "Y") @ Vector((0.0, 1.0, 0.0))
+    for obj in objects:
+        obj.location += camera_up * 0.08
+
     return BuiltModel(None, objects, {
         "tier": tier,
         "heal_icon": True,

@@ -357,7 +357,18 @@ def create_integrated_surface(baseline: Path, candidate: Path, output: Path) -> 
         icon = asset(candidate, key).resize((88, 88), Image.Resampling.LANCZOS)
         canvas.alpha_composite(icon, (start_x, start_y))
         end_x, end_y = 1660, 285
-        draw.line((start_x + 44, start_y + 34, end_x, end_y), fill=(102, 172, 124), width=3)
+        origin_x, origin_y = start_x + 44, start_y + 34
+        control_x = (origin_x + end_x) * 0.5
+        control_y = min(origin_y, end_y) - 90 - index * 8
+        points = []
+        for step in range(25):
+            t = step / 24
+            inverse = 1.0 - t
+            points.append((
+                inverse * inverse * origin_x + 2 * inverse * t * control_x + t * t * end_x,
+                inverse * inverse * origin_y + 2 * inverse * t * control_y + t * t * end_y,
+            ))
+        draw.line(points, fill=(102, 172, 124), width=3)
         draw.polygon(((end_x, end_y), (end_x - 17, end_y + 6), (end_x - 8, end_y + 20)), fill=GOLD)
     text(draw, (1410, 875), "Each tier rests visibly before a clear collection arc.", 18, False, "ma")
     canvas.save(output, optimize=True)
