@@ -11,6 +11,7 @@ on:
         options:
           - pilot
           - premium-pilot
+          - enemies
           - characters
           - world-tree
           - equipment

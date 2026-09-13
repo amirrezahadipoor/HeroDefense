@@ -80,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "characters", "world-tree", "equipment", "environment", "ui", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "characters", "world-tree", "equipment", "environment", "ui", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -106,7 +106,8 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
     model = build_character(asset.builder)
     if model.armature is None:
         raise RuntimeError(f"Character {asset.key} did not create an armature")
-    actions = author_standard_actions(model.armature, asset.key)
+    animation_profile = model.metadata.get("animationProfile", "standard")
+    actions = author_standard_actions(model.armature, asset.key, animation_profile)
     if ISOLATED_RENDERING:
         frame_paths = {}
         for clip, count in CLIPS.items():
@@ -139,6 +140,13 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
     atlas_path = sprite_directory / f"{asset.key}.atlas"
     _write_libgdx_atlas(atlas_path, pages, regions)
     triangles = triangle_count(model.render_objects)
+    mesh_parts = [obj for obj in model.render_objects if obj.type == "MESH"]
+    material_names = {
+        slot.material.name
+        for obj in mesh_parts
+        for slot in obj.material_slots
+        if slot.material is not None
+    }
     entry = {
         "key": asset.key,
         "family": asset.family,
@@ -154,9 +162,14 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
         "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
         "frameRate": FRAME_RATE,
+        "renderSupersample": RENDER_SUPERSAMPLE,
+        "renderSamples": OPAQUE_RENDER_SAMPLES,
         "triangles": triangles,
+        "meshParts": len(mesh_parts),
+        "materialCount": len(material_names),
         "armature": model.armature.name,
         "bones": sorted(bone.name for bone in model.armature.data.bones),
+        "rigBoneCount": len(model.armature.data.bones),
         "boneAnimated": True,
         **model.metadata,
     }
@@ -523,7 +536,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
 
     if payload["kind"] == "character":
         model = build_character(payload["builder"])
-        actions = author_standard_actions(model.armature, payload["key"])
+        animation_profile = model.metadata.get("animationProfile", "standard")
+        actions = author_standard_actions(model.armature, payload["key"], animation_profile)
         model.armature.animation_data.action = actions[payload["clip"]]
     elif payload["kind"] == "equipment":
         hero = build_hero()
@@ -593,6 +607,12 @@ def main() -> None:
     if args.batch in {"pilot", "all"}:
         pilot = (REGULAR_CHARACTERS[0], REGULAR_CHARACTERS[1])
         generated.extend(render_character(asset, output, args.keep_frames) for asset in pilot if not only or asset.key in only)
+    if args.batch == "enemies":
+        generated.extend(
+            render_character(asset, output, args.keep_frames)
+            for asset in REGULAR_CHARACTERS[1:]
+            if not only or asset.key in only
+        )
     if args.batch in {"characters", "all"}:
         generated.extend(
             render_character(asset, output, args.keep_frames)

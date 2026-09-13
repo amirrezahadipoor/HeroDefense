@@ -86,7 +86,52 @@ def parent_to_bone(obj: bpy.types.Object, armature: bpy.types.Object, bone_name:
     modifier.use_deform_preserve_volume = False
 
 
-def author_standard_actions(armature: bpy.types.Object, name: str) -> dict[str, bpy.types.Action]:
+def author_standard_actions(
+    armature: bpy.types.Object,
+    name: str,
+    profile: str = "standard",
+) -> dict[str, bpy.types.Action]:
+    """Author the locked clip contract with character-specific premium motion language.
+
+    Equipment overlays and characters not yet upgraded continue to use ``standard``.
+    Premium regular enemies opt into explicit profiles so their shared 25-bone export
+    contract can still communicate distinct mass, temperament, anticipation, and impact.
+    """
+    profile_authors = {
+        "standard": {
+            "idle": _author_idle,
+            "attack": _author_attack,
+            "hit": _author_hit,
+            "death": _author_death,
+        },
+        "rootling-skirmisher-v2": {
+            "idle": _author_rootling_idle,
+            "attack": _author_rootling_attack,
+            "hit": _author_rootling_hit,
+            "death": _author_rootling_death,
+        },
+        "stonekin-juggernaut-v2": {
+            "idle": _author_stonekin_idle,
+            "attack": _author_stonekin_attack,
+            "hit": _author_stonekin_hit,
+            "death": _author_stonekin_death,
+        },
+        "gloom-wolf-pouncer-v2": {
+            "idle": _author_gloom_wolf_idle,
+            "attack": _author_gloom_wolf_attack,
+            "hit": _author_gloom_wolf_hit,
+            "death": _author_gloom_wolf_death,
+        },
+        "fungal-brute-brawler-v2": {
+            "idle": _author_fungal_brute_idle,
+            "attack": _author_fungal_brute_attack,
+            "hit": _author_fungal_brute_hit,
+            "death": _author_fungal_brute_death,
+        },
+    }
+    if profile not in profile_authors:
+        raise ValueError(f"Unknown animation profile: {profile}")
+
     armature.animation_data_create()
     actions: dict[str, bpy.types.Action] = {}
     for clip, frame_count in CLIPS.items():
@@ -94,14 +139,7 @@ def author_standard_actions(armature: bpy.types.Object, name: str) -> dict[str, 
         action.use_fake_user = True
         armature.animation_data.action = action
         _reset_pose(armature)
-        if clip == "idle":
-            _author_idle(armature, frame_count)
-        elif clip == "attack":
-            _author_attack(armature, frame_count)
-        elif clip == "hit":
-            _author_hit(armature, frame_count)
-        elif clip == "death":
-            _author_death(armature, frame_count)
+        profile_authors[profile][clip](armature, frame_count)
         for curve in action.fcurves:
             for keyframe in curve.keyframe_points:
                 keyframe.interpolation = "BEZIER" if clip == "idle" else "LINEAR"
@@ -265,3 +303,345 @@ def _author_death(armature: bpy.types.Object, count: int) -> None:
     }
     _key(armature, count - 1, final_rotation, {"root": (0.0, 0.0, -0.46)})
     _key(armature, count, final_rotation, {"root": (0.0, 0.0, -0.46)})
+
+
+# Premium regular-enemy profiles -------------------------------------------------
+# These deliberately retain the universal clip counts while giving each enemy a
+# readable gameplay verb: feint-and-swipe, crushing slam, pounce, or body punch.
+
+
+def _author_rootling_idle(armature: bpy.types.Object, count: int) -> None:
+    crouch = {
+        "pelvis": (0.0, 0.0, -0.035), "chest": (-0.025, 0.0, -0.045),
+        "head": (0.025, -0.015, 0.075),
+        "upper_arm.L": (0.04, -0.06, -0.12), "forearm.L": (-0.05, 0.0, -0.06),
+        "upper_arm.R": (-0.025, 0.05, 0.10), "forearm.R": (0.035, 0.0, 0.04),
+    }
+    listen = {
+        "pelvis": (0.0, 0.0, 0.025), "chest": (0.035, 0.0, 0.045),
+        "head": (-0.045, 0.025, -0.085),
+        "upper_arm.L": (0.015, -0.035, -0.07), "forearm.L": (-0.02, 0.0, -0.025),
+        "upper_arm.R": (-0.012, 0.035, 0.065), "forearm.R": (0.015, 0.0, 0.02),
+    }
+    _key(armature, 1, crouch, {"chest": (0.0, 0.0, -0.008)})
+    _key(armature, 1 + count // 2, listen, {"chest": (0.0, 0.0, 0.026)})
+    _key(armature, count, crouch, {"chest": (0.0, 0.0, -0.008)})
+
+
+def _author_rootling_attack(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "forearm.L": (0.0, 0.0, 0.0),
+        "upper_arm.R": (0.0, 0.0, 0.0), "forearm.R": (0.0, 0.0, 0.0),
+        "thigh.L": (0.0, 0.0, 0.0), "thigh.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 3, {
+        "pelvis": (0.05, 0.0, -0.20), "chest": (0.06, 0.0, -0.48), "head": (-0.08, 0.0, 0.20),
+        "upper_arm.L": (-0.50, -0.22, -0.86), "forearm.L": (-0.42, 0.0, -0.28),
+        "upper_arm.R": (-0.72, 0.26, 0.78), "forearm.R": (-0.62, 0.0, 0.28),
+        "thigh.L": (-0.10, 0.0, 0.08), "thigh.R": (0.08, 0.0, -0.08),
+    }, {"root": (-0.045, 0.02, -0.045)})
+    _key(armature, 5, {
+        "pelvis": (-0.08, 0.0, 0.30), "chest": (-0.10, 0.0, 0.63), "head": (0.05, 0.0, -0.22),
+        "upper_arm.L": (0.46, 0.16, 0.67), "forearm.L": (0.31, 0.0, 0.23),
+        "upper_arm.R": (0.70, -0.22, -1.02), "forearm.R": (0.38, 0.0, -0.24),
+        "thigh.L": (0.08, 0.0, -0.06), "thigh.R": (-0.08, 0.0, 0.06),
+    }, {"root": (0.06, -0.09, 0.015)})
+    _key(armature, 6, {
+        "pelvis": (-0.04, 0.0, 0.16), "chest": (-0.05, 0.0, 0.34), "head": (0.02, 0.0, -0.11),
+        "upper_arm.L": (0.25, 0.08, 0.35), "forearm.L": (0.16, 0.0, 0.12),
+        "upper_arm.R": (0.42, -0.12, -0.65), "forearm.R": (0.20, 0.0, -0.12),
+        "thigh.L": (0.04, 0.0, -0.03), "thigh.R": (-0.04, 0.0, 0.03),
+    }, {"root": (0.03, -0.04, 0.006)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_rootling_hit(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 2, {
+        "pelvis": (-0.12, 0.0, 0.10), "chest": (-0.48, 0.0, 0.22), "head": (0.38, 0.0, -0.18),
+        "upper_arm.L": (0.60, 0.0, -0.38), "upper_arm.R": (0.52, 0.0, 0.36),
+    }, {"root": (0.11, 0.0, -0.03)})
+    _key(armature, 3, {
+        "pelvis": (0.05, 0.0, -0.04), "chest": (0.15, 0.0, -0.07), "head": (-0.12, 0.0, 0.06),
+        "upper_arm.L": (-0.13, 0.0, 0.08), "upper_arm.R": (-0.11, 0.0, -0.08),
+    }, {"root": (-0.025, 0.0, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_rootling_death(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "root": (0.0, 0.0, 0.0), "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0), "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 4, {
+        "root": (0.0, 0.30, -0.12), "pelvis": (0.15, 0.0, -0.20), "chest": (-0.55, 0.0, 0.22),
+        "head": (0.42, 0.0, -0.18), "upper_arm.L": (0.58, 0.0, -0.62), "upper_arm.R": (0.38, 0.0, 0.70),
+    }, {"root": (0.0, 0.0, -0.14)})
+    final = {
+        "root": (0.0, 1.28, -0.32), "pelvis": (0.18, 0.0, -0.32), "chest": (0.90, 0.0, 0.28),
+        "head": (0.62, 0.0, -0.20), "upper_arm.L": (0.88, 0.0, -0.78), "upper_arm.R": (0.66, 0.0, 0.82),
+    }
+    _key(armature, count - 1, final, {"root": (0.0, 0.0, -0.43)})
+    _key(armature, count, final, {"root": (0.0, 0.0, -0.43)})
+
+
+def _author_stonekin_idle(armature: bpy.types.Object, count: int) -> None:
+    settle = {
+        "pelvis": (0.0, 0.0, -0.018), "chest": (-0.012, 0.0, -0.018), "head": (0.008, 0.0, 0.018),
+        "upper_arm.L": (0.015, -0.025, -0.035), "forearm.L": (-0.012, 0.0, -0.018),
+        "upper_arm.R": (-0.012, 0.025, 0.030), "forearm.R": (0.010, 0.0, 0.015),
+    }
+    brace = {
+        "pelvis": (0.0, 0.0, 0.014), "chest": (0.018, 0.0, 0.022), "head": (-0.012, 0.0, -0.014),
+        "upper_arm.L": (0.008, -0.016, -0.022), "forearm.L": (-0.006, 0.0, -0.008),
+        "upper_arm.R": (-0.006, 0.016, 0.020), "forearm.R": (0.005, 0.0, 0.008),
+    }
+    _key(armature, 1, settle, {"root": (-0.008, 0.0, -0.006)})
+    _key(armature, 1 + count // 2, brace, {"root": (0.008, 0.0, 0.012)})
+    _key(armature, count, settle, {"root": (-0.008, 0.0, -0.006)})
+
+
+def _author_stonekin_attack(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "forearm.L": (0.0, 0.0, 0.0),
+        "upper_arm.R": (0.0, 0.0, 0.0), "forearm.R": (0.0, 0.0, 0.0),
+        "thigh.L": (0.0, 0.0, 0.0), "thigh.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 3, {
+        "pelvis": (0.10, 0.0, -0.05), "chest": (-0.22, 0.0, 0.06), "head": (0.14, 0.0, -0.04),
+        "upper_arm.L": (-1.05, -0.12, -0.72), "forearm.L": (-0.84, 0.0, -0.36),
+        "upper_arm.R": (-1.05, 0.12, 0.72), "forearm.R": (-0.84, 0.0, 0.36),
+        "thigh.L": (-0.08, 0.0, 0.03), "thigh.R": (0.08, 0.0, -0.03),
+    }, {"root": (0.0, 0.04, 0.055)})
+    _key(armature, 5, {
+        "pelvis": (-0.20, 0.0, 0.04), "chest": (0.68, 0.0, -0.08), "head": (-0.42, 0.0, 0.05),
+        "upper_arm.L": (0.88, 0.08, 0.30), "forearm.L": (0.58, 0.0, 0.16),
+        "upper_arm.R": (0.88, -0.08, -0.30), "forearm.R": (0.58, 0.0, -0.16),
+        "thigh.L": (0.13, 0.0, -0.03), "thigh.R": (-0.13, 0.0, 0.03),
+    }, {"root": (0.0, -0.08, -0.075)})
+    _key(armature, 6, {
+        "pelvis": (-0.12, 0.0, 0.02), "chest": (0.40, 0.0, -0.04), "head": (-0.24, 0.0, 0.03),
+        "upper_arm.L": (0.52, 0.04, 0.16), "forearm.L": (0.34, 0.0, 0.08),
+        "upper_arm.R": (0.52, -0.04, -0.16), "forearm.R": (0.34, 0.0, -0.08),
+        "thigh.L": (0.07, 0.0, -0.02), "thigh.R": (-0.07, 0.0, 0.02),
+    }, {"root": (0.0, -0.04, -0.035)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_stonekin_hit(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 2, {
+        "pelvis": (-0.05, 0.0, 0.035), "chest": (-0.20, 0.0, 0.08), "head": (0.13, 0.0, -0.05),
+        "upper_arm.L": (0.21, 0.0, -0.14), "upper_arm.R": (0.19, 0.0, 0.14),
+    }, {"root": (0.035, 0.0, -0.012)})
+    _key(armature, 3, {
+        "pelvis": (0.025, 0.0, -0.018), "chest": (0.08, 0.0, -0.03), "head": (-0.05, 0.0, 0.02),
+        "upper_arm.L": (-0.06, 0.0, 0.04), "upper_arm.R": (-0.05, 0.0, -0.04),
+    }, {"root": (-0.012, 0.0, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_stonekin_death(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "root": (0.0, 0.0, 0.0), "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0), "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+        "thigh.L": (0.0, 0.0, 0.0), "thigh.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 5, {
+        "root": (0.0, 0.22, 0.08), "pelvis": (0.12, 0.0, -0.10), "chest": (0.42, 0.0, 0.10),
+        "head": (0.28, 0.0, -0.08), "upper_arm.L": (0.48, 0.0, -0.30), "upper_arm.R": (0.30, 0.0, 0.46),
+        "thigh.L": (0.16, 0.0, -0.06), "thigh.R": (-0.12, 0.0, 0.05),
+    }, {"root": (0.0, 0.0, -0.19)})
+    final = {
+        "root": (0.0, 1.06, 0.14), "pelvis": (0.20, 0.0, -0.18), "chest": (0.76, 0.0, 0.14),
+        "head": (0.52, 0.0, -0.10), "upper_arm.L": (0.70, 0.0, -0.48), "upper_arm.R": (0.52, 0.0, 0.58),
+        "thigh.L": (0.28, 0.0, -0.10), "thigh.R": (-0.20, 0.0, 0.08),
+    }
+    _key(armature, count - 1, final, {"root": (0.0, 0.0, -0.48)})
+    _key(armature, count, final, {"root": (0.0, 0.0, -0.48)})
+
+
+def _author_gloom_wolf_idle(armature: bpy.types.Object, count: int) -> None:
+    stalk = {
+        "pelvis": (0.018, 0.0, -0.035), "spine": (-0.025, 0.0, -0.018), "chest": (0.035, 0.0, 0.025),
+        "head": (-0.035, -0.02, 0.045),
+        "upper_arm.L": (0.018, 0.0, -0.035), "upper_arm.R": (-0.018, 0.0, 0.035),
+        "thigh.L": (-0.015, 0.0, 0.025), "thigh.R": (0.015, 0.0, -0.025),
+    }
+    scent = {
+        "pelvis": (-0.016, 0.0, 0.025), "spine": (0.030, 0.0, 0.020), "chest": (-0.045, 0.0, -0.030),
+        "head": (0.055, 0.03, -0.065),
+        "upper_arm.L": (-0.012, 0.0, 0.025), "upper_arm.R": (0.012, 0.0, -0.025),
+        "thigh.L": (0.012, 0.0, -0.018), "thigh.R": (-0.012, 0.0, 0.018),
+    }
+    _key(armature, 1, stalk, {"root": (-0.015, 0.0, -0.012)})
+    _key(armature, 1 + count // 2, scent, {"root": (0.015, 0.0, 0.018)})
+    _key(armature, count, stalk, {"root": (-0.015, 0.0, -0.012)})
+
+
+def _author_gloom_wolf_attack(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "spine": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0), "upper_arm.L": (0.0, 0.0, 0.0), "forearm.L": (0.0, 0.0, 0.0),
+        "upper_arm.R": (0.0, 0.0, 0.0), "forearm.R": (0.0, 0.0, 0.0),
+        "thigh.L": (0.0, 0.0, 0.0), "shin.L": (0.0, 0.0, 0.0),
+        "thigh.R": (0.0, 0.0, 0.0), "shin.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 3, {
+        "pelvis": (-0.18, 0.0, -0.05), "spine": (0.22, 0.0, 0.04), "chest": (0.20, 0.0, -0.03),
+        "head": (-0.18, 0.0, 0.04), "upper_arm.L": (-0.35, 0.05, -0.10), "forearm.L": (0.44, 0.0, 0.04),
+        "upper_arm.R": (-0.31, -0.05, 0.10), "forearm.R": (0.40, 0.0, -0.04),
+        "thigh.L": (0.42, 0.0, -0.08), "shin.L": (-0.46, 0.0, 0.03),
+        "thigh.R": (0.36, 0.0, 0.08), "shin.R": (-0.40, 0.0, -0.03),
+    }, {"root": (0.0, 0.04, -0.11)})
+    _key(armature, 5, {
+        "pelvis": (0.24, 0.0, 0.05), "spine": (-0.26, 0.0, -0.05), "chest": (-0.38, 0.0, 0.04),
+        "head": (0.38, 0.0, -0.08), "upper_arm.L": (0.74, -0.05, -0.18), "forearm.L": (-0.28, 0.0, 0.10),
+        "upper_arm.R": (0.70, 0.05, 0.18), "forearm.R": (-0.25, 0.0, -0.10),
+        "thigh.L": (-0.55, 0.0, 0.12), "shin.L": (0.36, 0.0, -0.05),
+        "thigh.R": (-0.50, 0.0, -0.12), "shin.R": (0.33, 0.0, 0.05),
+    }, {"root": (0.0, -0.18, 0.14)})
+    _key(armature, 6, {
+        "pelvis": (0.12, 0.0, 0.02), "spine": (-0.14, 0.0, -0.02), "chest": (-0.20, 0.0, 0.02),
+        "head": (0.20, 0.0, -0.04), "upper_arm.L": (0.40, -0.02, -0.10), "forearm.L": (-0.15, 0.0, 0.05),
+        "upper_arm.R": (0.38, 0.02, 0.10), "forearm.R": (-0.13, 0.0, -0.05),
+        "thigh.L": (-0.28, 0.0, 0.06), "shin.L": (0.18, 0.0, -0.03),
+        "thigh.R": (-0.25, 0.0, -0.06), "shin.R": (0.17, 0.0, 0.03),
+    }, {"root": (0.0, -0.09, 0.06)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_gloom_wolf_hit(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "spine": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0), "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 2, {
+        "pelvis": (-0.18, 0.0, 0.12), "spine": (-0.28, 0.0, 0.10), "chest": (-0.42, 0.0, 0.18),
+        "head": (0.56, 0.0, -0.22), "upper_arm.L": (0.36, 0.0, -0.20), "upper_arm.R": (0.33, 0.0, 0.20),
+    }, {"root": (0.12, 0.0, -0.035)})
+    _key(armature, 3, {
+        "pelvis": (0.07, 0.0, -0.04), "spine": (0.11, 0.0, -0.04), "chest": (0.15, 0.0, -0.07),
+        "head": (-0.20, 0.0, 0.08), "upper_arm.L": (-0.10, 0.0, 0.06), "upper_arm.R": (-0.09, 0.0, -0.06),
+    }, {"root": (-0.035, 0.0, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_gloom_wolf_death(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "root": (0.0, 0.0, 0.0), "pelvis": (0.0, 0.0, 0.0), "spine": (0.0, 0.0, 0.0),
+        "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+        "thigh.L": (0.0, 0.0, 0.0), "thigh.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 4, {
+        "root": (0.0, 0.20, 0.18), "pelvis": (0.25, 0.0, -0.10), "spine": (0.36, 0.0, 0.08),
+        "chest": (0.48, 0.0, -0.08), "head": (0.46, 0.0, 0.10),
+        "upper_arm.L": (0.42, 0.0, -0.28), "upper_arm.R": (0.34, 0.0, 0.35),
+        "thigh.L": (-0.32, 0.0, 0.15), "thigh.R": (0.28, 0.0, -0.12),
+    }, {"root": (0.0, 0.0, -0.16)})
+    final = {
+        "root": (0.0, 1.30, 0.22), "pelvis": (0.46, 0.0, -0.16), "spine": (0.60, 0.0, 0.12),
+        "chest": (0.72, 0.0, -0.12), "head": (0.76, 0.0, 0.16),
+        "upper_arm.L": (0.72, 0.0, -0.40), "upper_arm.R": (0.62, 0.0, 0.48),
+        "thigh.L": (-0.52, 0.0, 0.22), "thigh.R": (0.46, 0.0, -0.18),
+    }
+    _key(armature, count - 1, final, {"root": (0.0, 0.0, -0.40)})
+    _key(armature, count, final, {"root": (0.0, 0.0, -0.40)})
+
+
+def _author_fungal_brute_idle(armature: bpy.types.Object, count: int) -> None:
+    sway_left = {
+        "pelvis": (0.0, 0.0, -0.028), "chest": (-0.030, 0.0, -0.055), "head": (0.050, 0.0, 0.085),
+        "upper_arm.L": (0.025, -0.045, -0.075), "forearm.L": (-0.022, 0.0, -0.030),
+        "upper_arm.R": (-0.018, 0.035, 0.060), "forearm.R": (0.016, 0.0, 0.022),
+    }
+    sway_right = {
+        "pelvis": (0.0, 0.0, 0.022), "chest": (0.038, 0.0, 0.065), "head": (-0.060, 0.0, -0.095),
+        "upper_arm.L": (0.012, -0.026, -0.044), "forearm.L": (-0.010, 0.0, -0.014),
+        "upper_arm.R": (-0.010, 0.026, 0.040), "forearm.R": (0.008, 0.0, 0.013),
+    }
+    _key(armature, 1, sway_left, {"chest": (-0.012, 0.0, -0.008)})
+    _key(armature, 1 + count // 2, sway_right, {"chest": (0.012, 0.0, 0.024)})
+    _key(armature, count, sway_left, {"chest": (-0.012, 0.0, -0.008)})
+
+
+def _author_fungal_brute_attack(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "forearm.L": (0.0, 0.0, 0.0),
+        "upper_arm.R": (0.0, 0.0, 0.0), "forearm.R": (0.0, 0.0, 0.0),
+        "thigh.L": (0.0, 0.0, 0.0), "thigh.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 3, {
+        "pelvis": (0.02, 0.0, -0.18), "chest": (0.14, 0.0, -0.46), "head": (-0.14, 0.0, 0.22),
+        "upper_arm.L": (-0.40, -0.18, -0.62), "forearm.L": (-0.52, 0.0, -0.18),
+        "upper_arm.R": (-0.82, 0.30, 0.88), "forearm.R": (-0.75, 0.0, 0.34),
+        "thigh.L": (-0.08, 0.0, 0.04), "thigh.R": (0.08, 0.0, -0.04),
+    }, {"root": (-0.035, 0.035, -0.055)})
+    _key(armature, 5, {
+        "pelvis": (-0.08, 0.0, 0.24), "chest": (-0.18, 0.0, 0.62), "head": (0.18, 0.0, -0.30),
+        "upper_arm.L": (0.36, 0.12, 0.46), "forearm.L": (0.25, 0.0, 0.16),
+        "upper_arm.R": (0.90, -0.24, -1.05), "forearm.R": (0.50, 0.0, -0.30),
+        "thigh.L": (0.10, 0.0, -0.04), "thigh.R": (-0.10, 0.0, 0.04),
+    }, {"root": (0.055, -0.085, 0.005)})
+    _key(armature, 6, {
+        "pelvis": (-0.04, 0.0, 0.13), "chest": (-0.10, 0.0, 0.34), "head": (0.10, 0.0, -0.16),
+        "upper_arm.L": (0.19, 0.06, 0.24), "forearm.L": (0.13, 0.0, 0.08),
+        "upper_arm.R": (0.50, -0.12, -0.60), "forearm.R": (0.27, 0.0, -0.16),
+        "thigh.L": (0.05, 0.0, -0.02), "thigh.R": (-0.05, 0.0, 0.02),
+    }, {"root": (0.025, -0.04, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_fungal_brute_hit(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0), "head": (0.0, 0.0, 0.0),
+        "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 2, {
+        "pelvis": (-0.10, 0.0, 0.06), "chest": (-0.36, 0.0, 0.18), "head": (0.52, 0.0, -0.28),
+        "upper_arm.L": (0.38, 0.0, -0.24), "upper_arm.R": (0.34, 0.0, 0.24),
+    }, {"root": (0.075, 0.0, -0.025)})
+    _key(armature, 3, {
+        "pelvis": (0.04, 0.0, -0.025), "chest": (0.12, 0.0, -0.06), "head": (-0.20, 0.0, 0.11),
+        "upper_arm.L": (-0.10, 0.0, 0.06), "upper_arm.R": (-0.09, 0.0, -0.06),
+    }, {"root": (-0.022, 0.0, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
+
+
+def _author_fungal_brute_death(armature: bpy.types.Object, count: int) -> None:
+    neutral = {
+        "root": (0.0, 0.0, 0.0), "pelvis": (0.0, 0.0, 0.0), "chest": (0.0, 0.0, 0.0),
+        "head": (0.0, 0.0, 0.0), "upper_arm.L": (0.0, 0.0, 0.0), "upper_arm.R": (0.0, 0.0, 0.0),
+    }
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 5, {
+        "root": (0.0, 0.30, 0.18), "pelvis": (-0.08, 0.0, -0.12), "chest": (0.46, 0.0, -0.12),
+        "head": (0.72, 0.0, 0.24), "upper_arm.L": (0.54, 0.0, -0.42), "upper_arm.R": (0.38, 0.0, 0.56),
+    }, {"root": (0.0, 0.0, -0.21)})
+    final = {
+        "root": (0.0, 1.16, 0.12), "pelvis": (-0.12, 0.0, -0.20), "chest": (0.78, 0.0, -0.18),
+        "head": (1.02, 0.0, 0.32), "upper_arm.L": (0.76, 0.0, -0.58), "upper_arm.R": (0.58, 0.0, 0.70),
+    }
+    _key(armature, count - 1, final, {"root": (0.0, 0.0, -0.47)})
+    _key(armature, count, final, {"root": (0.0, 0.0, -0.47)})

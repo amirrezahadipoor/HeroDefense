@@ -313,108 +313,387 @@ def _basic_humanoid(
 
 
 def build_rootling() -> BuiltModel:
-    armature, objects, mats = _basic_humanoid(
-        "rootling", "#68432F", "#C2A95D", "ico", 0.92
-    )
-    dark_bark = MATERIALS.get("rootling_dark_bark", "#352923")
-    moss = MATERIALS.get("rootling_moss", "#477A48")
-    leaf = MATERIALS.get("rootling_leaf", "#79B85B")
-    sap = MATERIALS.get("rootling_sap", "#F2C85B")
+    """Premium thorn-scout: wiry branch crown, bark plates, leaf mantle, and growth-ring focus."""
+    mats = {
+        "bark": MATERIALS.get("rootling_bark", "#744322"),
+        "bark_light": MATERIALS.get("rootling_bark_light", "#A86B2D"),
+        "bark_dark": MATERIALS.get("rootling_bark_dark", "#38261D"),
+        "leaf": MATERIALS.get("rootling_leaf", "#6E9E43"),
+        "leaf_light": MATERIALS.get("rootling_leaf_light", "#A9CB58"),
+        "sap": MATERIALS.get("rootling_sap", "#F3CE73"),
+    }
+    armature = create_standard_armature("rootling", 0.92)
+    objects: list[bpy.types.Object] = []
 
     def attach(obj: bpy.types.Object, bone: str) -> None:
         _bone_part(obj, armature, bone, objects)
 
-    # Layered bark plates establish the imp's hunched, armored chest read.
-    attach(add_leaf("rootling_chest_bark", (0, -0.31, 1.20),
-                    (0.29, 0.075, 0.43), dark_bark), "chest")
-    attach(add_torus("rootling_heart_knot", (0, -0.36, 1.12), 0.17, 0.045,
-                     mats["accent"], (math.pi / 2, 0, 0)), "chest")
-    attach(add_ico("rootling_sap_heart", (0, -0.405, 1.12),
-                   (0.075, 0.025, 0.10), sap, 1), "chest")
-    attach(add_leaf("rootling_moss_patch", (-0.22, -0.30, 1.36),
-                    (0.16, 0.035, 0.20), moss, (0, 0, -0.35)), "chest")
+    torso = add_cone("rootling_tapered_trunk", (0.0, 0.0, 1.05), 0.42, 0.31, 0.86, mats["bark"], 9)
+    attach(torso, "spine")
+    chest_plate = add_cube("rootling_split_bark_chest", (0.0, -0.30, 1.24), (0.42, 0.10, 0.42), mats["bark_dark"], 0.07)
+    attach(chest_plate, "chest")
+    pelvis = add_ico("rootling_knotted_hip", (0.0, 0.02, 0.72), (0.36, 0.26, 0.24), mats["bark_dark"])
+    attach(pelvis, "pelvis")
+    head = add_ico("rootling_carved_head", (0.0, -0.01, 1.72), (0.34, 0.29, 0.34), mats["bark"])
+    attach(head, "head")
+    jaw = add_cube("rootling_bark_jaw", (0.0, -0.30, 1.59), (0.28, 0.13, 0.12), mats["bark_dark"], 0.035)
+    attach(jaw, "head")
 
-    eye_material = MATERIALS.get("rootling_eye", "#FFE178")
-    for side, sign in (("L", -1), ("R", 1)):
-        attach(add_ico(f"rootling_eye_{side}", (0.09 * sign, -0.286, 1.78),
-                       (0.044, 0.020, 0.060), eye_material, 1), "head")
-        attach(add_cube(f"rootling_brow_{side}", (0.10 * sign, -0.293, 1.86),
-                        (0.14, 0.025, 0.035), dark_bark, 0.008), "head")
-        horn = add_cone(
-            f"rootling_branch_{side}", (0.22 * sign, 0.02, 2.03), 0.085, 0.025,
-            0.62, mats["accent"], 7, (0.0, math.radians(24 * sign), 0.0),
+    for side in (-1, 1):
+        eye = add_ico(f"rootling_eye_{side}", (0.115 * side, -0.285, 1.77), (0.045, 0.025, 0.060), mats["sap"])
+        attach(eye, "head")
+        brow = add_leaf(
+            f"rootling_brow_{side}",
+            (0.115 * side, -0.305, 1.86),
+            (0.15, 0.035, 0.055),
+            mats["bark_dark"],
+            (0.12, -0.35 * side, 0.08 * side),
         )
-        attach(horn, "head")
-        attach(add_cylinder_between(
-            f"rootling_twig_{side}", (0.25 * sign, 0.02, 2.13),
-            (0.48 * sign, 0.01, 2.27), 0.035, dark_bark, 6,
-        ), "head")
-        attach(add_leaf(
-            f"rootling_crown_leaf_{side}", (0.48 * sign, -0.01, 2.30),
-            (0.12, 0.045, 0.20), leaf, (0, 0.22 * sign, 0.28 * sign),
-        ), "head")
-        attach(add_ico(f"rootling_bark_shoulder_{side}", (0.43 * sign, -0.01, 1.39),
-                       (0.26, 0.18, 0.17), dark_bark, 1), f"upper_arm.{side}")
-        for claw_index in range(2):
-            attach(add_cone(
-                f"rootling_claw_{side}_{claw_index}",
-                (0.79 * sign + claw_index * 0.035 * sign, -0.10, 0.91),
-                0.035, 0.0, 0.18, mats["accent"], 5,
-                (math.radians(70), 0, math.radians(-8 * sign)),
-            ), f"hand.{side}")
-    attach(add_cube("rootling_mouth", (0, -0.302, 1.68),
-                    (0.15, 0.018, 0.025), dark_bark, 0.01), "head")
-    attach(add_leaf("rootling_back_leaf", (0.24, 0.18, 1.34),
-                    (0.20, 0.07, 0.36), moss, (0.18, 0.15, 0.28)), "chest")
-    return BuiltModel(armature, objects, {
-        "silhouette": "crowned_branch_imp",
-        "visualQuality": "premium-v2",
-    })
+        attach(brow, "head")
+        branch = add_cone(
+            f"rootling_crown_branch_{side}",
+            (0.23 * side, 0.0, 2.03),
+            0.075,
+            0.045,
+            0.58,
+            mats["bark_light"],
+            7,
+            (0.0, 0.34 * side, 0.0),
+        )
+        attach(branch, "head")
+        crown_leaf = add_leaf(
+            f"rootling_crown_leaf_{side}",
+            (0.34 * side, -0.005, 2.25),
+            (0.11, 0.055, 0.22),
+            mats["leaf_light"],
+            (0.18, 0.30 * side, -0.12 * side),
+        )
+        attach(crown_leaf, "head")
+
+    _humanoid_limbs(armature, objects, mats["bark"], mats["bark_dark"], mats["bark_light"], 0.92)
+    for side, bone in ((-1, "upper_arm.L"), (1, "upper_arm.R")):
+        shoulder = add_leaf(
+            f"rootling_leaf_mantle_{side}",
+            (0.39 * side, -0.02, 1.38),
+            (0.27, 0.12, 0.20),
+            mats["leaf"],
+            (0.18, 0.42 * side, 0.08 * side),
+        )
+        attach(shoulder, bone)
+        thorn = add_cone(
+            f"rootling_elbow_thorn_{side}",
+            (0.57 * side, 0.02, 1.12),
+            0.065,
+            0.0,
+            0.28,
+            mats["bark_light"],
+            7,
+            (0.0, 0.80 * side, 0.0),
+        )
+        attach(thorn, f"forearm.{('L' if side < 0 else 'R')}")
+
+    growth_ring = add_torus("rootling_growth_ring", (0.0, -0.39, 1.03), 0.17, 0.048, mats["sap"], (math.pi / 2, 0.0, 0.0))
+    attach(growth_ring, "spine")
+    heartwood = add_ico("rootling_heartwood", (0.0, -0.40, 1.03), (0.11, 0.035, 0.11), mats["bark_light"])
+    attach(heartwood, "spine")
+    for index, angle in enumerate((-0.78, 0.0, 0.78)):
+        leaf = add_leaf(
+            f"rootling_back_leaf_{index}",
+            ((index - 1) * 0.24, 0.20, 1.28 + 0.05 * (index % 2)),
+            (0.20, 0.07, 0.30),
+            mats["leaf" if index != 1 else "leaf_light"],
+            (0.24, angle, angle * 0.35),
+        )
+        attach(leaf, "chest")
+    for side in (-1, 1):
+        toe = add_leaf(
+            f"rootling_root_toe_{side}",
+            (0.22 * side, -0.30, 0.065),
+            (0.20, 0.28, 0.08),
+            mats["bark_dark"],
+            (0.0, 0.0, 0.05 * side),
+        )
+        attach(toe, f"foot.{('L' if side < 0 else 'R')}")
+    objects.append(add_contact_shadow(1.2, 0.56))
+    return BuiltModel(
+        armature,
+        objects,
+        {
+            "visualQuality": "premium-v2",
+            "modelRevision": "rootling-thorn-scout-v2",
+            "rigProfile": "premium-humanoid-v2",
+            "animationProfile": "rootling-skirmisher-v2",
+            "silhouette": "wiry thorn crown with asymmetric leaf mantle and rooted feet",
+            "materialStory": "warm bark, charcoal heartwood, restrained leaf greens, and one amber sap focus",
+        },
+    )
 
 
 def build_stonekin() -> BuiltModel:
-    armature, objects, mats = _basic_humanoid("stonekin", PALETTE["stone"], "#9CB1B5", "cube", 1.08)
-    for side, sign in (("L", -1), ("R", 1)):
-        shoulder = add_ico(f"stone_shoulder_{side}", (0.46 * sign, 0, 1.41), (0.24, 0.22, 0.20), mats["accent"])
-        _bone_part(shoulder, armature, f"upper_arm.{side}", objects)
-    rune = add_cube("stonekin_rune", (0, -0.31, 1.20), (0.22, 0.035, 0.28), MATERIALS.get("rune", PALETTE["cyan"]), 0.02)
-    _bone_part(rune, armature, "chest", objects)
-    return BuiltModel(armature, objects, {"silhouette": "block_golem"})
+    """Premium rune bulwark: an asymmetrical stack of chipped stone locked around a cyan core."""
+    mats = {
+        "basalt": MATERIALS.get("stonekin_basalt", "#34444C"),
+        "slate": MATERIALS.get("stonekin_slate", "#53666D"),
+        "edge": MATERIALS.get("stonekin_edge", "#82949A"),
+        "deep": MATERIALS.get("stonekin_deep", "#1D292F"),
+        "moss": MATERIALS.get("stonekin_moss", "#557044"),
+        "rune": MATERIALS.get("stonekin_rune", "#73D2D8"),
+    }
+    armature = create_standard_armature("stonekin", 1.08)
+    objects: list[bpy.types.Object] = []
+
+    def attach(obj: bpy.types.Object, bone: str) -> None:
+        _bone_part(obj, armature, bone, objects)
+
+    pelvis = add_ico("stonekin_foundation", (0.0, 0.02, 0.70), (0.46, 0.32, 0.29), mats["deep"])
+    attach(pelvis, "pelvis")
+    torso = add_cube("stonekin_keystone_torso", (0.0, 0.01, 1.12), (0.72, 0.52, 0.75), mats["basalt"], 0.11)
+    attach(torso, "spine")
+    chest = add_cube("stonekin_breast_slab", (0.0, -0.31, 1.27), (0.56, 0.12, 0.42), mats["slate"], 0.055)
+    attach(chest, "chest")
+    left_chest = add_cube("stonekin_split_chest_left", (-0.22, -0.39, 1.30), (0.25, 0.07, 0.31), mats["edge"], 0.035)
+    left_chest.rotation_euler[1] = -0.08
+    attach(left_chest, "chest")
+    waist = add_torus("stonekin_waist_bind", (0.0, -0.01, 0.82), 0.36, 0.065, mats["deep"])
+    attach(waist, "pelvis")
+
+    head = add_cube("stonekin_crag_head", (0.0, -0.01, 1.73), (0.48, 0.42, 0.42), mats["slate"], 0.085)
+    head.rotation_euler[2] = -0.035
+    attach(head, "head")
+    crown = add_cube("stonekin_broken_crown", (-0.07, 0.0, 1.98), (0.40, 0.32, 0.17), mats["basalt"], 0.055)
+    crown.rotation_euler[1] = -0.15
+    attach(crown, "head")
+    jaw = add_cube("stonekin_heavy_jaw", (0.03, -0.29, 1.58), (0.38, 0.17, 0.14), mats["deep"], 0.045)
+    attach(jaw, "head")
+    for side in (-1, 1):
+        eye = add_cube(f"stonekin_eye_{side}", (0.105 * side, -0.235, 1.76), (0.065, 0.035, 0.035), mats["rune"], 0.012)
+        eye.rotation_euler[2] = 0.08 * side
+        attach(eye, "head")
+        brow = add_cube(f"stonekin_brow_{side}", (0.12 * side, -0.26, 1.83), (0.17, 0.055, 0.055), mats["deep"], 0.02)
+        brow.rotation_euler[2] = 0.16 * side
+        attach(brow, "head")
+
+    _humanoid_limbs(armature, objects, mats["slate"], mats["deep"], mats["edge"], 1.16)
+    for side, letter in ((-1, "L"), (1, "R")):
+        shoulder_scale = (0.40 if side < 0 else 0.34, 0.31, 0.31 if side < 0 else 0.26)
+        shoulder = add_ico(f"stonekin_shoulder_boulder_{letter}", (0.45 * side, 0.0, 1.39), shoulder_scale, mats["edge" if side < 0 else "slate"])
+        shoulder.rotation_euler[1] = 0.16 * side
+        attach(shoulder, f"upper_arm.{letter}")
+        pauldron = add_cube(f"stonekin_shoulder_plate_{letter}", (0.52 * side, -0.16, 1.44), (0.31, 0.13, 0.25), mats["basalt"], 0.04)
+        pauldron.rotation_euler[1] = 0.18 * side
+        attach(pauldron, f"upper_arm.{letter}")
+        gauntlet = add_ico(f"stonekin_gauntlet_{letter}", (0.72 * side, -0.05, 1.00), (0.20, 0.17, 0.22), mats["basalt"])
+        attach(gauntlet, f"forearm.{letter}")
+        knuckle = add_cube(f"stonekin_knuckle_{letter}", (0.79 * side, -0.13, 0.92), (0.20, 0.14, 0.10), mats["edge"], 0.025)
+        attach(knuckle, f"hand.{letter}")
+        knee = add_cube(f"stonekin_knee_{letter}", (0.22 * side, -0.16, 0.38), (0.24, 0.17, 0.18), mats["slate"], 0.035)
+        attach(knee, f"shin.{letter}")
+        toe = add_cube(f"stonekin_slab_foot_{letter}", (0.22 * side, -0.24, 0.075), (0.31, 0.42, 0.17), mats["basalt"], 0.045)
+        attach(toe, f"foot.{letter}")
+
+    core_ring = add_torus("stonekin_rune_core_ring", (0.0, -0.405, 1.24), 0.17, 0.045, mats["rune"], (math.pi / 2, 0.0, 0.0))
+    attach(core_ring, "chest")
+    core = add_ico("stonekin_rune_core", (0.0, -0.42, 1.24), (0.10, 0.035, 0.14), mats["deep"])
+    core.rotation_euler[2] = math.pi / 4
+    attach(core, "chest")
+    for index, (x, z, angle) in enumerate(((-0.16, 1.07, -0.62), (0.15, 1.08, 0.62), (0.0, 1.40, 0.0))):
+        stroke = add_cube(f"stonekin_rune_stroke_{index}", (x, -0.425, z), (0.045, 0.025, 0.19), mats["rune"], 0.012)
+        stroke.rotation_euler[1] = angle
+        attach(stroke, "chest")
+    for index, (x, z, size) in enumerate(((-0.30, 1.91, 0.12), (0.29, 1.61, 0.10), (-0.38, 0.92, 0.085))):
+        chip = add_ico(f"stonekin_edge_chip_{index}", (x, -0.25, z), (size, 0.055, size * 0.72), mats["edge"])
+        attach(chip, "head" if z > 1.5 else "spine")
+    for index, (x, z) in enumerate(((-0.27, 1.50), (-0.20, 1.42), (0.30, 0.88))):
+        moss = add_leaf(f"stonekin_moss_{index}", (x, -0.37, z), (0.11, 0.03, 0.075), mats["moss"], (0.0, 0.0, 0.35 * (-1 if x < 0 else 1)))
+        attach(moss, "chest" if z > 1.0 else "spine")
+    objects.append(add_contact_shadow(1.42, 0.63))
+    return BuiltModel(
+        armature,
+        objects,
+        {
+            "visualQuality": "premium-v2",
+            "modelRevision": "stonekin-rune-bulwark-v2",
+            "rigProfile": "premium-heavy-humanoid-v2",
+            "animationProfile": "stonekin-juggernaut-v2",
+            "silhouette": "broad asymmetrical crag shoulders, broken crown, massive fists, and slab feet",
+            "materialStory": "charcoal basalt and cool slate with moss accents and one restrained cyan rune core",
+        },
+    )
 
 
 def build_gloom_wolf() -> BuiltModel:
-    dark = MATERIALS.get("gloom_wolf_fur", "#3F354C")
-    violet = MATERIALS.get("gloom_wolf_violet", PALETTE["enemy_violet"])
-    eye = MATERIALS.get("gloom_wolf_eye", PALETTE["cyan"])
-    armature = create_standard_armature("gloom_wolf", 0.82)
+    """Premium shadow stalker: a low four-legged wedge with a swept tail and moonlit face mask."""
+    mats = {
+        "void": MATERIALS.get("gloom_wolf_void", "#211B35"),
+        "fur": MATERIALS.get("gloom_wolf_fur", "#433367"),
+        "fur_light": MATERIALS.get("gloom_wolf_fur_light", "#69518F"),
+        "mask": MATERIALS.get("gloom_wolf_mask", "#171827"),
+        "moon": MATERIALS.get("gloom_wolf_moon", "#70D8D6"),
+        "fang": MATERIALS.get("gloom_wolf_fang", "#DED5B9"),
+    }
+    armature = create_standard_armature("gloom_wolf", 0.87)
     objects: list[bpy.types.Object] = []
-    body = add_ico("wolf_body", (0, 0.10, 0.90), (0.62, 0.40, 0.40), dark, 1)
-    _bone_part(body, armature, "spine", objects)
-    chest = add_ico("wolf_chest", (0, -0.30, 1.05), (0.48, 0.36, 0.44), violet, 1)
-    _bone_part(chest, armature, "chest", objects)
-    head = add_cone("wolf_head", (0, -0.58, 1.28), 0.32, 0.14, 0.62, dark, 7, (math.radians(90), 0, 0))
-    _bone_part(head, armature, "head", objects)
-    for side, sign in (("L", -1), ("R", 1)):
-        ear = add_cone(f"wolf_ear_{side}", (0.19 * sign, -0.43, 1.58), 0.12, 0.0, 0.38, violet, 5, (0, math.radians(8 * sign), 0))
-        _bone_part(ear, armature, "head", objects)
-        eye_obj = add_ico(f"wolf_eye_{side}", (0.12 * sign, -0.83, 1.36), (0.045, 0.03, 0.045), eye)
-        _bone_part(eye_obj, armature, "head", objects)
-    _humanoid_limbs(armature, objects, dark, dark, violet, 0.78)
-    tail = add_cone("wolf_tail", (0, 0.62, 0.94), 0.13, 0.02, 0.95, dark, 7, (math.radians(-55), 0, 0))
-    _bone_part(tail, armature, "pelvis", objects)
-    return BuiltModel(armature, objects, {"silhouette": "low_quadruped"})
+
+    def attach(obj: bpy.types.Object, bone: str) -> None:
+        _bone_part(obj, armature, bone, objects)
+
+    haunches = add_ico("gloom_wolf_haunches", (0.0, 0.16, 0.98), (0.64, 0.46, 0.47), mats["void"])
+    attach(haunches, "pelvis")
+    body = add_ico("gloom_wolf_long_body", (0.0, -0.01, 1.13), (0.67, 0.43, 0.47), mats["fur"])
+    body.rotation_euler[0] = -0.08
+    attach(body, "spine")
+    chest = add_ico("gloom_wolf_deep_chest", (0.0, -0.15, 1.31), (0.52, 0.38, 0.46), mats["fur_light"])
+    attach(chest, "chest")
+    ruff = add_cone("gloom_wolf_neck_ruff", (0.0, -0.06, 1.47), 0.46, 0.28, 0.43, mats["void"], 9)
+    attach(ruff, "neck")
+    head = add_ico("gloom_wolf_wedge_head", (0.0, -0.18, 1.64), (0.43, 0.38, 0.32), mats["fur"])
+    head.rotation_euler[0] = -0.10
+    attach(head, "head")
+    muzzle = add_cone("gloom_wolf_muzzle", (0.0, -0.49, 1.56), 0.25, 0.14, 0.42, mats["mask"], 7, (math.pi / 2, 0.0, 0.0))
+    attach(muzzle, "head")
+    nose = add_ico("gloom_wolf_nose", (0.0, -0.69, 1.56), (0.13, 0.08, 0.09), mats["void"])
+    attach(nose, "head")
+
+    for side, letter in ((-1, "L"), (1, "R")):
+        eye = add_leaf(f"gloom_wolf_eye_{letter}", (0.13 * side, -0.47, 1.69), (0.085, 0.028, 0.045), mats["moon"], (0.0, 0.0, 0.08 * side))
+        attach(eye, "head")
+        cheek = add_leaf(f"gloom_wolf_face_mask_{letter}", (0.19 * side, -0.43, 1.57), (0.18, 0.055, 0.15), mats["mask"], (0.0, 0.0, -0.18 * side))
+        attach(cheek, "head")
+        ear_outer = add_cone(f"gloom_wolf_ear_{letter}", (0.25 * side, -0.10, 1.96), 0.17, 0.015, 0.52, mats["void"], 6, (0.0, 0.22 * side, 0.0))
+        attach(ear_outer, "head")
+        ear_inner = add_leaf(f"gloom_wolf_ear_inner_{letter}", (0.25 * side, -0.30, 1.91), (0.075, 0.025, 0.18), mats["fur_light"], (0.0, 0.0, -0.10 * side))
+        attach(ear_inner, "head")
+        fang = add_cone(f"gloom_wolf_fang_{letter}", (0.075 * side, -0.64, 1.45), 0.035, 0.0, 0.16, mats["fang"], 6)
+        attach(fang, "head")
+
+        front_upper = add_cylinder_between(f"gloom_wolf_front_upper_{letter}", (0.37 * side, -0.08, 1.27), (0.40 * side, -0.11, 0.78), 0.115, mats["fur"])
+        attach(front_upper, f"upper_arm.{letter}")
+        front_lower = add_cylinder_between(f"gloom_wolf_front_lower_{letter}", (0.40 * side, -0.11, 0.78), (0.39 * side, -0.15, 0.28), 0.092, mats["void"])
+        attach(front_lower, f"forearm.{letter}")
+        front_paw = add_cube(f"gloom_wolf_front_paw_{letter}", (0.39 * side, -0.27, 0.16), (0.25, 0.34, 0.14), mats["void"], 0.045)
+        attach(front_paw, f"hand.{letter}")
+        rear_upper = add_cylinder_between(f"gloom_wolf_rear_upper_{letter}", (0.30 * side, 0.12, 0.92), (0.34 * side, 0.10, 0.49), 0.145, mats["fur"])
+        attach(rear_upper, f"thigh.{letter}")
+        rear_lower = add_cylinder_between(f"gloom_wolf_rear_lower_{letter}", (0.34 * side, 0.10, 0.49), (0.31 * side, -0.02, 0.19), 0.105, mats["void"])
+        attach(rear_lower, f"shin.{letter}")
+        rear_paw = add_cube(f"gloom_wolf_rear_paw_{letter}", (0.31 * side, -0.15, 0.11), (0.28, 0.39, 0.15), mats["void"], 0.045)
+        attach(rear_paw, f"foot.{letter}")
+        claw = add_cone(f"gloom_wolf_claw_{letter}", (0.39 * side, -0.46, 0.13), 0.035, 0.0, 0.18, mats["fang"], 6, (math.pi / 2, 0.0, 0.0))
+        attach(claw, f"hand.{letter}")
+
+    for index, (x, z, angle) in enumerate(((-0.38, 1.52, -0.62), (0.0, 1.57, 0.0), (0.38, 1.47, 0.62))):
+        tuft = add_cone(f"gloom_wolf_ruff_tuft_{index}", (x, 0.02, z), 0.15, 0.0, 0.40, mats["fur_light"], 6, (0.0, angle, 0.0))
+        attach(tuft, "chest")
+    for index, (x, z) in enumerate(((-0.24, 1.44), (0.0, 1.50), (0.24, 1.41))):
+        mark = add_leaf(f"gloom_wolf_moon_mark_{index}", (x, -0.49, z), (0.075, 0.025, 0.11), mats["fur_light"], (0.0, 0.0, 0.25 * index))
+        attach(mark, "chest")
+
+    tail_points = ((0.42, 0.16, 1.02), (0.74, 0.16, 1.24), (0.96, 0.10, 1.48), (1.08, -0.02, 1.30))
+    for index, (start, end) in enumerate(zip(tail_points, tail_points[1:])):
+        segment = add_cylinder_between(f"gloom_wolf_tail_{index}", start, end, 0.13 - index * 0.025, mats["fur" if index < 2 else "fur_light"], 7)
+        attach(segment, "pelvis")
+    tail_tip = add_leaf("gloom_wolf_tail_tip", tail_points[-1], (0.20, 0.14, 0.25), mats["void"], (0.2, -0.35, 0.15))
+    attach(tail_tip, "pelvis")
+    objects.append(add_contact_shadow(1.50, 0.68))
+    return BuiltModel(
+        armature,
+        objects,
+        {
+            "visualQuality": "premium-v2",
+            "modelRevision": "gloom-wolf-shadow-stalker-v2",
+            "rigProfile": "premium-quadruped-mapped-v2",
+            "animationProfile": "gloom-wolf-pouncer-v2",
+            "silhouette": "low four-legged wedge, tall alert ears, deep neck ruff, and a long swept tail",
+            "materialStory": "near-black violet masses, one readable mid-violet plane, moon-cyan eyes, and tiny ivory fangs",
+        },
+    )
 
 
 def build_fungal_brute() -> BuiltModel:
-    armature, objects, mats = _basic_humanoid("fungal_brute", "#6C7452", "#C45B76", "ico", 1.12)
-    cap = add_cone("fungal_cap", (0, 0, 2.05), 0.58, 0.07, 0.34, mats["accent"], 10)
-    _bone_part(cap, armature, "head", objects)
-    spots = MATERIALS.get("fungal_spots", "#E7D8B1")
-    for index, (x, y) in enumerate(((-0.22, -0.19), (0.12, -0.28), (0.28, 0.02))):
-        spot = add_ico(f"cap_spot_{index}", (x, y, 2.18), (0.075, 0.04, 0.03), spots)
-        _bone_part(spot, armature, "head", objects)
-    return BuiltModel(armature, objects, {"silhouette": "mushroom_brute"})
+    """Premium spore bruiser: huge layered cap, gilled face, root feet, and clustered shoulder buds."""
+    mats = {
+        "stem": MATERIALS.get("fungal_stem", "#8C8759"),
+        "stem_light": MATERIALS.get("fungal_stem_light", "#B9AE72"),
+        "gill": MATERIALS.get("fungal_gill", "#E1CCA2"),
+        "cap": MATERIALS.get("fungal_cap", "#A93F5B"),
+        "cap_dark": MATERIALS.get("fungal_cap_dark", "#6E2945"),
+        "spore": MATERIALS.get("fungal_spore", "#F0D78A"),
+        "root": MATERIALS.get("fungal_root", "#303A2C"),
+    }
+    armature = create_standard_armature("fungal_brute", 1.10)
+    objects: list[bpy.types.Object] = []
 
+    def attach(obj: bpy.types.Object, bone: str) -> None:
+        _bone_part(obj, armature, bone, objects)
+
+    pelvis = add_ico("fungal_brute_knotted_base", (0.0, 0.04, 0.70), (0.43, 0.31, 0.27), mats["root"])
+    attach(pelvis, "pelvis")
+    body = add_cone("fungal_brute_stem_body", (0.0, 0.0, 1.08), 0.50, 0.38, 0.86, mats["stem"], 9)
+    attach(body, "spine")
+    belly = add_ico("fungal_brute_belly", (0.0, -0.29, 1.03), (0.39, 0.15, 0.35), mats["stem_light"])
+    attach(belly, "spine")
+    chest_collar = add_torus("fungal_brute_collar", (0.0, -0.01, 1.42), 0.37, 0.07, mats["root"])
+    attach(chest_collar, "chest")
+
+    face = add_ico("fungal_brute_stalk_face", (0.0, -0.04, 1.56), (0.34, 0.27, 0.31), mats["gill"])
+    attach(face, "head")
+    jaw = add_cube("fungal_brute_heavy_jaw", (0.0, -0.28, 1.45), (0.28, 0.13, 0.12), mats["root"], 0.04)
+    attach(jaw, "head")
+    for side in (-1, 1):
+        eye = add_leaf(f"fungal_brute_eye_{side}", (0.105 * side, -0.275, 1.61), (0.06, 0.025, 0.042), mats["cap_dark"], (0.0, 0.0, 0.10 * side))
+        attach(eye, "head")
+        brow = add_leaf(f"fungal_brute_brow_{side}", (0.11 * side, -0.285, 1.69), (0.13, 0.025, 0.045), mats["root"], (0.0, 0.0, -0.13 * side))
+        attach(brow, "head")
+
+    undercap = add_cone("fungal_brute_gill_disc", (0.0, 0.0, 1.75), 0.61, 0.72, 0.16, mats["gill"], 12)
+    attach(undercap, "head")
+    brim = add_cone("fungal_brute_cap_brim", (0.0, 0.0, 1.84), 0.63, 0.78, 0.18, mats["cap_dark"], 12)
+    attach(brim, "head")
+    crown = add_cone("fungal_brute_cap_crown", (-0.05, 0.01, 1.99), 0.74, 0.18, 0.36, mats["cap"], 12)
+    attach(crown, "head")
+    crown_top = add_ico("fungal_brute_cap_peak", (-0.12, 0.01, 2.17), (0.30, 0.23, 0.14), mats["cap"])
+    attach(crown_top, "head")
+
+    for index, (x, z, size) in enumerate(((-0.43, 1.99, 0.11), (-0.18, 2.14, 0.08), (0.10, 2.10, 0.09), (0.35, 1.98, 0.10), (0.52, 1.88, 0.07))):
+        spot = add_ico(f"fungal_brute_cap_spot_{index}", (x, -0.30, z), (size, 0.035, size * 0.72), mats["spore"])
+        attach(spot, "head")
+    for index, x in enumerate((-0.40, -0.21, 0.0, 0.21, 0.40)):
+        gill = add_cube(f"fungal_brute_gill_rib_{index}", (x, -0.43, 1.75), (0.035, 0.035, 0.18 - abs(x) * 0.13), mats["stem_light"], 0.012)
+        gill.rotation_euler[1] = x * 0.55
+        attach(gill, "head")
+
+    _humanoid_limbs(armature, objects, mats["stem"], mats["root"], mats["cap_dark"], 1.28)
+    for side, letter in ((-1, "L"), (1, "R")):
+        shoulder = add_ico(f"fungal_brute_shoulder_{letter}", (0.43 * side, 0.0, 1.38), (0.31, 0.24, 0.27), mats["stem_light"])
+        attach(shoulder, f"upper_arm.{letter}")
+        cuff = add_torus(f"fungal_brute_cuff_{letter}", (0.65 * side, -0.03, 1.05), 0.13, 0.045, mats["root"], (0.0, math.pi / 2, 0.0))
+        attach(cuff, f"forearm.{letter}")
+        fist = add_ico(f"fungal_brute_spore_fist_{letter}", (0.78 * side, -0.06, 0.92), (0.18, 0.15, 0.20), mats["cap_dark"])
+        attach(fist, f"hand.{letter}")
+        root_foot = add_leaf(f"fungal_brute_root_foot_{letter}", (0.22 * side, -0.28, 0.07), (0.25, 0.38, 0.10), mats["root"], (0.0, 0.0, 0.06 * side))
+        attach(root_foot, f"foot.{letter}")
+
+    for index, (x, z, radius, cap_mat) in enumerate(((-0.45, 1.52, 0.19, mats["cap"]), (0.48, 1.30, 0.15, mats["cap_dark"]), (0.39, 1.51, 0.11, mats["cap"]))):
+        stalk = add_cylinder_between(f"fungal_brute_bud_stalk_{index}", (x, 0.10, z - 0.16), (x, 0.08, z), radius * 0.34, mats["gill"], 7)
+        attach(stalk, "chest")
+        bud = add_cone(f"fungal_brute_shoulder_bud_{index}", (x, 0.06, z + 0.06), radius * 0.65, radius, radius * 0.55, cap_mat, 8)
+        attach(bud, "chest")
+    for index, (x, z) in enumerate(((-0.20, 1.14), (0.0, 0.96), (0.22, 1.18))):
+        wart = add_torus(f"fungal_brute_belly_spore_{index}", (x, -0.45, z), 0.065, 0.025, mats["spore"], (math.pi / 2, 0.0, 0.0))
+        attach(wart, "spine")
+    objects.append(add_contact_shadow(1.48, 0.66))
+    return BuiltModel(
+        armature,
+        objects,
+        {
+            "visualQuality": "premium-v2",
+            "modelRevision": "fungal-brute-spore-bruiser-v2",
+            "rigProfile": "premium-heavy-humanoid-v2",
+            "animationProfile": "fungal-brute-brawler-v2",
+            "silhouette": "oversized layered cap, barrel stalk body, knotted arms, root feet, and asymmetric shoulder buds",
+            "materialStory": "earthy olive stem, wine-red cap, dark root masses, warm gills, and sparse golden spores",
+        },
+    )
 
 def build_ancient_golem() -> BuiltModel:
     stone = MATERIALS.get("ancient_stone", "#59686D")
