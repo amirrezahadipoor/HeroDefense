@@ -1,5 +1,13 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+    "category": "ui_assets",
+    "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+    "scope": "potion-and-reward-card-icon-supplement",
+    "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+    "status": "accepted"
+  },
   "clips": {
     "idle": [
       {
@@ -14,17 +22,24 @@
   },
   "family": "icons",
   "frameClass": "item",
+  "frameHeight": 96,
   "frameSize": 96,
+  "frameWidth": 96,
   "heal_icon": true,
   "key": "health_potion_6",
+  "materialCount": 7,
+  "meshParts": 18,
+  "modelRevision": "health-potion-premium-v2",
+  "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.5
   },
+  "potionFamily": "heartwood-elixir",
   "renderSamples": 16,
   "renderSupersample": 2,
-  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+  "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
   "sheet": "icons/health_potion_6.png",
   "sheetHeight": 96,
   "sheetWidth": 96,
@@ -37,6 +52,7 @@
     }
   ],
   "tier": 6,
-  "triangles": 646,
+  "tierConstruction": "legendary cradle rails and living stopper",
+  "triangles": 686,
   "visualQuality": "premium-v2"
 }

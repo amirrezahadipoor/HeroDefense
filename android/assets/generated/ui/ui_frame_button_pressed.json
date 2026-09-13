@@ -1,0 +1,62 @@
+{
+  "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+    "category": "ui_assets",
+    "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+    "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+    "status": "accepted"
+  },
+  "clips": {
+    "idle": [
+      {
+        "height": 96,
+        "index": 0,
+        "page": 0,
+        "width": 96,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "ui",
+  "frameClass": "item",
+  "frameHeight": 96,
+  "frameSize": 96,
+  "frameWidth": 96,
+  "key": "ui_frame_button_pressed",
+  "materialCount": 5,
+  "meshParts": 12,
+  "modelRevision": "forest-glass-nine-patch-v2",
+  "ninePatchInsets": {
+    "bottom": 24,
+    "left": 24,
+    "right": 24,
+    "top": 24
+  },
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+  "sheet": "ui/ui_frame_button_pressed.png",
+  "sheetHeight": 96,
+  "sheetWidth": 96,
+  "sheets": [
+    {
+      "decodedBytes": 36864,
+      "file": "ui/ui_frame_button_pressed.png",
+      "height": 96,
+      "width": 96
+    }
+  ],
+  "stateConstruction": "inset face and green confirmation notch",
+  "touchOnlyUI": true,
+  "triangles": 528,
+  "uiSkin": "button",
+  "uiState": "pressed",
+  "visualQuality": "premium-v2"
+}

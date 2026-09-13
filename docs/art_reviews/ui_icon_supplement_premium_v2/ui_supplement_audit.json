@@ -1,0 +1,247 @@
+{
+  "assets": [
+    {
+      "alphaMargins": {
+        "bottom": 12,
+        "left": 24,
+        "right": 24,
+        "top": 19
+      },
+      "baselineSheetSha256": "81c2b679a7d68d8d48df6d1b4511d7266dc52b535e174fbd477888e4ac47845c",
+      "decodedBytes": 36864,
+      "key": "health_potion_1",
+      "materialCount": 6,
+      "meshParts": 10,
+      "metadataSha256": "85bc3ed18237639fe92133ac0e1c7e7b5ead8991223e3ed131348dccb8955aee",
+      "modelRevision": "health-potion-premium-v2",
+      "sheetSha256": "9d070355681774be238e0b92f111e3b460a47ec2f469a65d8afefe5dac67c4ec",
+      "tier": 1,
+      "tierConstruction": "clean faceted vial",
+      "triangles": 450
+    },
+    {
+      "alphaMargins": {
+        "bottom": 12,
+        "left": 24,
+        "right": 24,
+        "top": 19
+      },
+      "baselineSheetSha256": "99ba74884467378304b0ab99fd7b89450cb21e34ab9e8c618532c25c457f5181",
+      "decodedBytes": 36864,
+      "key": "health_potion_2",
+      "materialCount": 7,
+      "meshParts": 11,
+      "metadataSha256": "c02807946c704769e712f332ea37061e0c7ec6d06a85b546144b102b4a679ba0",
+      "modelRevision": "health-potion-premium-v2",
+      "sheetSha256": "ac6d187c76c6d10a58ed17aab2ef1e176a36ebfc03d6cca57c8e84caa45944bd",
+      "tier": 2,
+      "tierConstruction": "single collar leaf",
+      "triangles": 470
+    },
+    {
+      "alphaMargins": {
+        "bottom": 12,
+        "left": 24,
+        "right": 24,
+        "top": 19
+      },
+      "baselineSheetSha256": "0cb5471b25d71f8c29ad45972a1faa1477d6e9cdd596d12528781e27a64a0973",
+      "decodedBytes": 36864,
+      "key": "health_potion_3",
+      "materialCount": 7,
+      "meshParts": 12,
+      "metadataSha256": "27b711afc2e2152071a52f5b072fe9cf85850eee2b3964e83e760efb6b8683fe",
+      "modelRevision": "health-potion-premium-v2",
+      "sheetSha256": "bebf90077c774c2681a88d2a7fc7c1f1d405c4d4737e7d9a767ef8fd048d82e0",
+      "tier": 3,
+      "tierConstruction": "paired collar leaves",
+      "triangles": 490
+    },
+    {
+      "alphaMargins": {
+        "bottom": 4,
+        "left": 24,
+        "right": 24,
+        "top": 19
+      },
+      "baselineSheetSha256": "912d166345c676ad7f975dddc877fbea562c89399f383b6c6485301de9247e03",
+      "decodedBytes": 36864,
+      "key": "health_potion_4",
+      "materialCount": 7,
+      "meshParts": 13,
+      "metadataSha256": "f11611400b248f76fa4789b57119a2b3d293afa88ca8bc3ced7254247bd2a455",
+      "modelRevision": "health-potion-premium-v2",
+      "sheetSha256": "9838a80efcfb2f037ff5fb7397849d7766aa5b5610f3583bcaa2ceda0ef69ab5",
+      "tier": 4,
+      "tierConstruction": "paired leaves and foot ring",
+      "triangles": 586
+    },
+    {
+      "alphaMargins": {
+        "bottom": 4,
+        "left": 24,
+        "right": 24,
+        "top": 19
+      },
+      "baselineSheetSha256": "e5e4b5b49ddede90d5fa2f2897599f2821071425d1689c9ef4d1bb91efd2f89e",
+      "decodedBytes": 36864,
+      "key": "health_potion_5",
+      "materialCount": 7,
+      "meshParts": 15,
+      "metadataSha256": "141effee3ed232caf0b19a2ac3b106dba3d1b53e04665bd356abffaa1e636785",
+      "modelRevision": "health-potion-premium-v2",
+      "sheetSha256": "e6c2f06d98e9321bcb8180dfe1fc4ba7133698af5b91b55f314f9874fcc16259",
+      "tier": 5,
+      "tierConstruction": "seeded shoulders and foot ring",
+      "triangles": 626
+    },
+    {
+      "alphaMargins": {
+        "bottom": 4,
+        "left": 23,
+        "right": 24,
+        "top": 14
+      },
+      "baselineSheetSha256": "380bfb315a9ea9bd649566cbc42b163730c56deedde3996d041ad14b5c21bfff",
+      "decodedBytes": 36864,
+      "key": "health_potion_6",
+      "materialCount": 7,
+      "meshParts": 18,
+      "metadataSha256": "f2937ae04270be1a3720f5331305e37c0b803d85fb615a6efa826f271f30c075",
+      "modelRevision": "health-potion-premium-v2",
+      "sheetSha256": "c6de431fb99aa34c8b6adc506fe8d23c210c4e85a0228ffc6b817a074b936b4e",
+      "tier": 6,
+      "tierConstruction": "legendary cradle rails and living stopper",
+      "triangles": 686
+    },
+    {
+      "alphaMargins": {
+        "bottom": 11,
+        "left": 18,
+        "right": 7,
+        "top": 9
+      },
+      "baselineSheetSha256": null,
+      "decodedBytes": 36864,
+      "key": "ui_general_power",
+      "materialCount": 5,
+      "meshParts": 10,
+      "metadataSha256": "1fa0bacf0cb01f94cf820ae0c832ba22b90602ee61eb04562463b90841250d7b",
+      "modelRevision": "ui-control-icon-premium-v2",
+      "newSemantic": true,
+      "semantic": "general_power",
+      "sheetSha256": "5aa275218b81ff8cfa9f07e092e364b130f1438b712d17a5f8c7769e0982af1e",
+      "triangles": 656
+    },
+    {
+      "alphaMargins": {
+        "bottom": 11,
+        "left": 19,
+        "right": 7,
+        "top": 9
+      },
+      "baselineSheetSha256": null,
+      "decodedBytes": 36864,
+      "key": "ui_lifesteal",
+      "materialCount": 6,
+      "meshParts": 9,
+      "metadataSha256": "3809b17868a53571ffb9e15f379a29de97a7f193a8abe25cbf714df1517d3a3d",
+      "modelRevision": "ui-control-icon-premium-v2",
+      "newSemantic": true,
+      "semantic": "lifesteal",
+      "sheetSha256": "195a240a57171215b0c072cebf465881762b2da62c52e2c87eab4648c8b6bd88",
+      "triangles": 534
+    }
+  ],
+  "baselineManifestSha256": "93cce88b09351b6cc39bd3067b4db0ad9841e0d40e956590832f23d31b455a70",
+  "batch": "ui-icon-supplement-premium-v2",
+  "candidateManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+  "candidatePayload": {
+    "asset_manifest.json": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+    "icons/health_potion_1.json": "85bc3ed18237639fe92133ac0e1c7e7b5ead8991223e3ed131348dccb8955aee",
+    "icons/health_potion_1.png": "9d070355681774be238e0b92f111e3b460a47ec2f469a65d8afefe5dac67c4ec",
+    "icons/health_potion_2.json": "c02807946c704769e712f332ea37061e0c7ec6d06a85b546144b102b4a679ba0",
+    "icons/health_potion_2.png": "ac6d187c76c6d10a58ed17aab2ef1e176a36ebfc03d6cca57c8e84caa45944bd",
+    "icons/health_potion_3.json": "27b711afc2e2152071a52f5b072fe9cf85850eee2b3964e83e760efb6b8683fe",
+    "icons/health_potion_3.png": "bebf90077c774c2681a88d2a7fc7c1f1d405c4d4737e7d9a767ef8fd048d82e0",
+    "icons/health_potion_4.json": "f11611400b248f76fa4789b57119a2b3d293afa88ca8bc3ced7254247bd2a455",
+    "icons/health_potion_4.png": "9838a80efcfb2f037ff5fb7397849d7766aa5b5610f3583bcaa2ceda0ef69ab5",
+    "icons/health_potion_5.json": "141effee3ed232caf0b19a2ac3b106dba3d1b53e04665bd356abffaa1e636785",
+    "icons/health_potion_5.png": "e6c2f06d98e9321bcb8180dfe1fc4ba7133698af5b91b55f314f9874fcc16259",
+    "icons/health_potion_6.json": "f2937ae04270be1a3720f5331305e37c0b803d85fb615a6efa826f271f30c075",
+    "icons/health_potion_6.png": "c6de431fb99aa34c8b6adc506fe8d23c210c4e85a0228ffc6b817a074b936b4e",
+    "icons/ui_general_power.json": "1fa0bacf0cb01f94cf820ae0c832ba22b90602ee61eb04562463b90841250d7b",
+    "icons/ui_general_power.png": "5aa275218b81ff8cfa9f07e092e364b130f1438b712d17a5f8c7769e0982af1e",
+    "icons/ui_lifesteal.json": "3809b17868a53571ffb9e15f379a29de97a7f193a8abe25cbf714df1517d3a3d",
+    "icons/ui_lifesteal.png": "195a240a57171215b0c072cebf465881762b2da62c52e2c87eab4648c8b6bd88"
+  },
+  "expectedKeys": [
+    "health_potion_1",
+    "health_potion_2",
+    "health_potion_3",
+    "health_potion_4",
+    "health_potion_5",
+    "health_potion_6",
+    "ui_general_power",
+    "ui_lifesteal"
+  ],
+  "newRewardIconKeys": [
+    "ui_general_power",
+    "ui_lifesteal"
+  ],
+  "potionKeys": [
+    "health_potion_1",
+    "health_potion_2",
+    "health_potion_3",
+    "health_potion_4",
+    "health_potion_5",
+    "health_potion_6"
+  ],
+  "reviewSheetCount": 5,
+  "reviewSheets": {
+    "ui_supplement_integrated.png": {
+      "bytes": 150227,
+      "sha256": "e78dcc08b11e9fc172ca2d6e2e4fc9f79e7af8dd2a59ac520962681c04297adb"
+    },
+    "ui_supplement_potions.png": {
+      "bytes": 177022,
+      "sha256": "378243a9fc301f923cd3bd04b9c2c28057c26f88b221133ac693ee2a5941923a"
+    },
+    "ui_supplement_readability.png": {
+      "bytes": 155757,
+      "sha256": "04528e8c3dcec7465b509089d60b9b0c4947fe664799efdab63695b24023fe6a"
+    },
+    "ui_supplement_reward_icons.png": {
+      "bytes": 141336,
+      "sha256": "c66d39f19a6d3abef4b599f043f2ad3759cea69cfa8edf7105eadb67631eb6cb"
+    },
+    "ui_supplement_value_progression.png": {
+      "bytes": 124100,
+      "sha256": "9a892a30980ee5d5fa15121f36be6b44b8799933ee866193644d2c9b36e026dc"
+    }
+  },
+  "rewardCardIconMap": {
+    "CRIMSON ROOT": "ui_lifesteal",
+    "FORTUNE LEAF": "ui_luck",
+    "FOX INSTINCT": "ui_dodge",
+    "GOLDEN SAP": "ui_coin",
+    "HEARTWOOD": "ui_health",
+    "MIGHT OF OAK": "ui_strength",
+    "VERDANT POWER": "ui_general_power",
+    "WINDSTEP": "ui_agility"
+  },
+  "schemaVersion": 1,
+  "summary": {
+    "assetCount": 8,
+    "coveredRewardCardCount": 8,
+    "decodedBudgetBytes": 524288,
+    "decodedBytes": 294912,
+    "maximumTriangles": 686,
+    "minimumAlphaMargin": 4,
+    "minimumMaterialCount": 5,
+    "minimumMeshParts": 9,
+    "minimumTriangles": 450,
+    "newRewardIconCount": 2,
+    "potionCount": 6
+  }
+}
