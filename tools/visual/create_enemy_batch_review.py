@@ -27,7 +27,7 @@ ENEMIES = (
 )
 EXPECTED_CLIPS = {"idle": 6, "attack": 8, "hit": 4, "death": 10}
 MIN_UNIQUE = {"idle": 5, "attack": 7, "hit": 3, "death": 9}
-EXPECTED_PIVOT = {"x": 0.5, "y": 0.16}
+EXPECTED_PIVOT = {"units": "normalized-bottom-left", "x": 0.5, "y": 0.12}
 
 
 def main() -> None:
@@ -74,8 +74,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         raise ValueError(f"Candidate must contain exactly {expected_keys}; found {candidate_keys}")
     if candidate_manifest.get("pipelineVersion", 0) < 3:
         raise ValueError("Candidate pipelineVersion must be at least 3")
-    if candidate_manifest.get("frameRate") != 8:
-        raise ValueError("Candidate frame rate must remain 8 fps")
+    if candidate_manifest.get("frameRate") != 12:
+        raise ValueError("Candidate frame rate must remain 12 fps")
     if candidate_manifest.get("renderSupersample") != 2:
         raise ValueError("Candidate must use 2x supersampling")
     if candidate_manifest.get("opaqueRenderSamples") != 16:
@@ -224,7 +224,7 @@ def validate_metadata(
         "sheetHeight": 768,
         "pivot": EXPECTED_PIVOT,
         "alphaMode": "STRAIGHT_RGBA",
-        "frameRate": 8,
+        "frameRate": 12,
         "renderSupersample": 2,
         "renderSamples": 16,
         "boneAnimated": True,

@@ -25,7 +25,7 @@ EXPECTED_SHEETS = {
 }
 EXPECTED_CLIPS = {"idle": 6, "attack": 8, "hit": 4, "death": 10}
 MIN_UNIQUE = {"idle": 5, "attack": 7, "hit": 3, "death": 9}
-EXPECTED_PIVOT = {"x": 0.5, "y": 0.16}
+EXPECTED_PIVOT = {"units": "normalized-bottom-left", "x": 0.5, "y": 0.12}
 
 
 def main() -> None:
@@ -114,7 +114,7 @@ def validate_candidate_payload(
     exact_global = {
         "pipelineVersion": 3,
         "generatedBatch": "enemies",
-        "frameRate": 8,
+        "frameRate": 12,
         "renderSupersample": 2,
         "opaqueRenderSamples": 16,
         "overlayRenderSamples": 8,
@@ -144,7 +144,7 @@ def validate_candidate_payload(
             "sheetHeight": 768,
             "pivot": EXPECTED_PIVOT,
             "alphaMode": "STRAIGHT_RGBA",
-            "frameRate": 8,
+            "frameRate": 12,
             "renderSupersample": 2,
             "renderSamples": 16,
             "rigBoneCount": 25,
