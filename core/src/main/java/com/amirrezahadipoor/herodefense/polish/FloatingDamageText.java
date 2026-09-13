@@ -2,7 +2,7 @@ package com.amirrezahadipoor.herodefense.polish;
 
 /** One short-lived damage / status pop-up anchored above a struck enemy. */
 public final class FloatingDamageText {
-    public enum Style { NORMAL, CRITICAL, CHAIN, STUN, SECONDARY }
+    public enum Style { NORMAL, CRITICAL, CHAIN, STUN, SECONDARY, COIN }
 
     public final Style style;
     public final String text;
@@ -51,6 +51,7 @@ public final class FloatingDamageText {
             case CHAIN -> 0.92f;
             case SECONDARY -> 0.78f;
             case NORMAL -> 0.88f;
+            case COIN -> 0.96f;
         };
         float punch = style == Style.CRITICAL ? 0.45f : 0.18f;
         float pop = p < 0.12f ? 1f + punch * (1f - p / 0.12f) : 1f;

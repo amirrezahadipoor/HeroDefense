@@ -35,6 +35,12 @@ public final class FloatingDamageTextSystem {
         }
     }
 
+    /** Gold "+$ n" pop-up above the Hero when auto-sell converts a drop into coins. */
+    public void emitCoins(int coins, float x, float y) {
+        if (coins <= 0) return;
+        add(Style.COIN, "+$ " + coins, x, y, CRITICAL_LIFETIME_SECONDS);
+    }
+
     public void emitAll(List<CombatEvent> events) {
         if (events == null) return;
         for (CombatEvent event : events) emit(event);

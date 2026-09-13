@@ -809,7 +809,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (killRewards.levelsGained() > 0) audioManager.play(AudioCue.LEVEL_UP);
         emitPendingPickupParticles(gameState, simulationDelta);
         emitCollectionSparkles(gameState, simulationDelta);
-        dropPickupSystem.update(gameState, simulationDelta);
+        dropPickupSystem.update(gameState, simulationDelta, settings);
+        if (dropPickupSystem.lastAutoSoldItems() > 0) {
+            floatingDamageTextSystem.emitCoins(
+                dropPickupSystem.lastAutoSoldCoins(),
+                gameState.hero.x, gameState.hero.y + 96f
+            );
+            audioManager.play(AudioCue.ITEM_DROP);
+        }
         if (gameOver) {
             particleSystem.emitTreeDestruction(WorldLayout.WORLD_TREE_X, WorldLayout.WORLD_TREE_Y);
             screenShakeSystem.triggerTreeFall();
@@ -943,7 +950,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 gameState,
                 inventoryTouchController,
                 uiIconRenderer,
-                uiFrameRenderer
+                uiFrameRenderer,
+                settings
             );
         } else if (flow.state() == GameScreenState.PAUSED) {
             pauseOverlayRenderer.draw(

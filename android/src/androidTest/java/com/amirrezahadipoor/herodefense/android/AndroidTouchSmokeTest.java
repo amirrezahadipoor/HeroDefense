@@ -148,7 +148,7 @@ public final class AndroidTouchSmokeTest {
             captureScreen("inventory-details-premium-v2.png");
 
             int coinsBefore = game.gameState().coins;
-            tapWorld(surface, 525f + correction[0], 135f + correction[1]);
+            tapWorld(surface, 590f + correction[0], 135f + correction[1]); // SELL (right third)
             await("visible sell confirmation", () -> game.inventoryFeedbackMessage() != null);
             assertTrue(game.gameState().coins > coinsBefore);
             SystemClock.sleep(100L);

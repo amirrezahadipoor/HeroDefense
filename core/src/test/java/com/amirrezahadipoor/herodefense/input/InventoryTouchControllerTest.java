@@ -9,6 +9,8 @@ import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
+import com.amirrezahadipoor.herodefense.settings.GameSettings;
 import org.junit.jupiter.api.Test;
 
 final class InventoryTouchControllerTest {
@@ -97,5 +99,63 @@ final class InventoryTouchControllerTest {
             controller.tap(state, 620f, 1160f)
         );
         assertFalse(controller.isOpen());
+    }
+
+    @Test
+    void anvilButtonReforgesSelectedRareItemsAndRefusesCommons() {
+        GameState state = GameState.newRun(73L);
+        Item bow = EquipmentCatalog.byId("starfall_bow").createItem();
+        Item cap = EquipmentCatalog.byId("leather_cap").createItem();
+        state.inventory.add(bow);
+        state.inventory.add(cap);
+        state.coins = 5_000;
+        controller.open();
+        float forgeX = InventoryTouchLayout.FORGE_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f;
+        float forgeY = InventoryTouchLayout.ACTION_Y + InventoryTouchLayout.ACTION_HEIGHT * 0.5f;
+
+        // Nothing selected: the anvil does nothing.
+        assertEquals(InventoryTouchController.Action.NONE, controller.tap(state, forgeX, forgeY));
+
+        controller.tap(state, 200f, 600f); // bow
+        assertEquals(InventoryTouchController.Action.FORGED, controller.tap(state, forgeX, forgeY));
+        assertEquals(1, bow.upgradeLevel);
+        assertEquals("Starfall Bow +1", bow.name);
+        assertTrue(controller.feedbackMessage().startsWith("REFORGED  |  Starfall Bow +1"));
+        assertEquals(bow, controller.selectedItem(state)); // selection is kept for repeat taps
+
+        controller.tap(state, 200f, 500f); // cap
+        assertEquals(InventoryTouchController.Action.FORGE_REFUSED, controller.tap(state, forgeX, forgeY));
+        assertEquals("ANVIL TAKES RARE & LEGENDARY ONLY", controller.feedbackMessage());
+        assertEquals(0, cap.upgradeLevel);
+    }
+
+    @Test
+    void autoSellChipsToggleSettingsAndAreInertWithoutSettings() {
+        GameState state = GameState.newRun(74L);
+        GameSettings settings = new GameSettings();
+        controller.open();
+        float y = InventoryTouchLayout.AUTO_SELL_Y + InventoryTouchLayout.AUTO_SELL_HEIGHT * 0.5f;
+        float rareX = InventoryTouchLayout.autoSellChipX(2) + InventoryTouchLayout.AUTO_SELL_WIDTH * 0.5f;
+        assertEquals(ItemTier.RARE, InventoryTouchLayout.autoSellTierAt(rareX, y));
+        assertEquals(InventoryTouchController.Action.NONE, controller.tap(state, null, rareX, y));
+        assertFalse(settings.autoSellRare);
+        assertEquals(InventoryTouchController.Action.AUTO_SELL_TOGGLED, controller.tap(state, settings, rareX, y));
+        assertTrue(settings.autoSellRare);
+        assertEquals("AUTO-SELL RARE  |  ON", controller.feedbackMessage());
+        assertEquals(InventoryTouchController.Action.AUTO_SELL_TOGGLED, controller.tap(state, settings, rareX, y));
+        assertFalse(settings.autoSellRare);
+        assertEquals("AUTO-SELL RARE  |  OFF", controller.feedbackMessage());
+        // Chips never overlap the close button or the loadout slots.
+        assertTrue(InventoryTouchLayout.autoSellChipX(2) + InventoryTouchLayout.AUTO_SELL_WIDTH
+            <= InventoryTouchLayout.CLOSE_X);
+        assertTrue(InventoryTouchLayout.AUTO_SELL_Y >= InventoryTouchLayout.SLOT_TOP_Y);
+        assertTrue(InventoryTouchLayout.AUTO_SELL_Y + InventoryTouchLayout.AUTO_SELL_HEIGHT
+            <= InventoryTouchLayout.CLOSE_Y + InventoryTouchLayout.CLOSE_SIZE);
+        // The three action buttons never overlap and stay inside the 720 design width.
+        assertTrue(InventoryTouchLayout.EQUIP_X + InventoryTouchLayout.ACTION_WIDTH
+            <= InventoryTouchLayout.FORGE_X);
+        assertTrue(InventoryTouchLayout.FORGE_X + InventoryTouchLayout.ACTION_WIDTH
+            <= InventoryTouchLayout.SELL_X);
+        assertTrue(InventoryTouchLayout.SELL_X + InventoryTouchLayout.ACTION_WIDTH <= 720f);
     }
 }

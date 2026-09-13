@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.input;
 
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
 
 /** Portrait hit-target geometry shared by inventory rendering and touch handling. */
 public final class InventoryTouchLayout {
@@ -27,11 +28,21 @@ public final class InventoryTouchLayout {
     public static final float DETAILS_WIDTH = 300f;
     public static final float DETAILS_HEIGHT = 400f;
 
-    public static final float EQUIP_X = 55f;
-    public static final float SELL_X = 385f;
+    public static final float EQUIP_X = 30f;
+    public static final float FORGE_X = 260f;
+    public static final float SELL_X = 490f;
     public static final float ACTION_Y = 80f;
-    public static final float ACTION_WIDTH = 280f;
+    public static final float ACTION_WIDTH = 200f;
     public static final float ACTION_HEIGHT = 110f;
+
+    /** Auto-sell chips (Common, Uncommon, Rare) in the header band left of the close button. */
+    public static final float AUTO_SELL_LABEL_X = 40f;
+    public static final float AUTO_SELL_FIRST_X = 200f;
+    public static final float AUTO_SELL_STRIDE = 120f;
+    public static final float AUTO_SELL_Y = 1046f;
+    public static final float AUTO_SELL_WIDTH = 110f;
+    public static final float AUTO_SELL_HEIGHT = 80f;
+    public static final ItemTier[] AUTO_SELL_TIERS = {ItemTier.COMMON, ItemTier.UNCOMMON, ItemTier.RARE};
 
     private InventoryTouchLayout() {
     }
@@ -68,6 +79,24 @@ public final class InventoryTouchLayout {
 
     public static boolean sellAt(float x, float y) {
         return inside(x, y, SELL_X, ACTION_Y, ACTION_WIDTH, ACTION_HEIGHT);
+    }
+
+    public static boolean forgeAt(float x, float y) {
+        return inside(x, y, FORGE_X, ACTION_Y, ACTION_WIDTH, ACTION_HEIGHT);
+    }
+
+    public static float autoSellChipX(int index) {
+        return AUTO_SELL_FIRST_X + index * AUTO_SELL_STRIDE;
+    }
+
+    /** Tier whose auto-sell chip contains the point, or null. */
+    public static ItemTier autoSellTierAt(float x, float y) {
+        for (int index = 0; index < AUTO_SELL_TIERS.length; index++) {
+            if (inside(x, y, autoSellChipX(index), AUTO_SELL_Y, AUTO_SELL_WIDTH, AUTO_SELL_HEIGHT)) {
+                return AUTO_SELL_TIERS[index];
+            }
+        }
+        return null;
     }
 
     private static boolean inside(

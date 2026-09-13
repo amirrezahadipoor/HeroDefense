@@ -12,6 +12,8 @@ public final class Item {
     public String iconKey = "";
     public String visualKey = "";
     public int sellPrice;
+    /** Anvil reforge steps applied (0..ItemForgeSystem.MAX_UPGRADE); shown as a +N suffix. */
+    public int upgradeLevel;
     public Map<String, Float> statBonuses = new LinkedHashMap<>();
 
     public Item() {

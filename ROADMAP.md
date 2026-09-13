@@ -280,8 +280,8 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 ### 18.3 Endless Progression
 
 - [x] Remove stat and skill purchase caps: stats linear through 20 then ×1.25 per level; skills base curve through 10 then ×1.45 per level; `SkillEffects.effectiveLevel` halves the gain of each further ten-level block (converges to 20 core-equivalent) with hard ceilings on every chance/count effect; shop shows `LEVEL n | ENDLESS`; save repair no longer clamps skill levels; simulator greedy loop bounded per visit.
-- [ ] Anvil tab: Rare and Legendary items can be reforged up to +5 with escalating coin costs, adding +1 to every stat bonus per step; item names show the +N suffix; persisted per item.
-- [ ] Inventory auto-sell toggles for Common, Uncommon, and Rare; ticked tiers are sold the moment they enter the inventory (persisted in settings, never affects equipped items).
+- [x] Anvil: `ItemForgeSystem` reforges Rare/Legendary items up to +5 (Rare $150, Legendary $350, ×1.6 per step), +1 to every stat bonus per step, `+N` name suffix, sell price grows by half the spend, equipped items update max HP live; ANVIL button sits between EQUIP and SELL with cost/reason copy; `upgradeLevel` persisted on the item.
+- [x] Inventory auto-sell chips for Common, Uncommon, and Rare in the inventory header; ticked tiers are sold by `DropPickupSystem` on entry with a gold `+$ n` pop-up over the Hero; persisted in device settings (`inventory.autoSell.*`), never touches equipped items or Legendaries.
 
 ### 18.4 The Second World Tree
 

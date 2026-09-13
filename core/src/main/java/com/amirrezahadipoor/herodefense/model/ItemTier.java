@@ -22,4 +22,13 @@ public enum ItemTier {
     public int statPointBudget() {
         return statPointBudget;
     }
+
+    /** Null for unknown or missing persisted values. */
+    public static ItemTier parse(String value) {
+        try {
+            return ItemTier.valueOf(value);
+        } catch (IllegalArgumentException | NullPointerException error) {
+            return null;
+        }
+    }
 }

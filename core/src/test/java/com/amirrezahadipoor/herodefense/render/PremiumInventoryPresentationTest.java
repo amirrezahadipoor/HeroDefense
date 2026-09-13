@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.input.InventoryTouchLayout;
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
+import com.amirrezahadipoor.herodefense.model.Item;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +23,7 @@ final class PremiumInventoryPresentationTest {
 
     @Test
     void inventoryRetainsLargeTouchActionsAndFourReadableRows() {
-        assertTrue(InventoryTouchLayout.ACTION_WIDTH >= 280f);
+        assertTrue(InventoryTouchLayout.ACTION_WIDTH >= 200f);
         assertTrue(InventoryTouchLayout.ACTION_HEIGHT >= 110f);
         assertTrue(InventoryTouchLayout.LIST_ROW_HEIGHT >= 90f);
         assertEquals(4, InventoryTouchLayout.VISIBLE_ROWS);
@@ -35,11 +37,21 @@ final class PremiumInventoryPresentationTest {
         ));
         for (String required : new String[] {
             "EQUIPPED LOADOUT", "BACKPACK", "ITEM DETAILS", "STAT COMPARISON",
-            "UP ", "DOWN ", "SAME", "REPLACE", "SELL  $ ",
+            "UP ", "DOWN ", "SAME", "REPLACE", "\"SELL\"", "ANVIL", "AUTO-SELL", "REFORGED +",
             "rarityAccent", "controller.feedbackMessage()",
             "UiFrameRenderer.Kind.SLOT", "UiFrameRenderer.Kind.BUTTON"
         }) {
             assertTrue(source.contains(required), required);
         }
+        Item bow = EquipmentCatalog.byId("starfall_bow").createItem();
+        assertEquals("ANVIL  +1", InventoryOverlayRenderer.forgeButtonLabel(bow));
+        assertEquals("$ 150", InventoryOverlayRenderer.forgeCostLabel(bow));
+        bow.upgradeLevel = 5;
+        assertEquals("ANVIL  MAX", InventoryOverlayRenderer.forgeButtonLabel(bow));
+        assertEquals("+5 REACHED", InventoryOverlayRenderer.forgeCostLabel(bow));
+        Item cap = EquipmentCatalog.byId("leather_cap").createItem();
+        assertEquals("ANVIL", InventoryOverlayRenderer.forgeButtonLabel(cap));
+        assertEquals("RARE+ ONLY", InventoryOverlayRenderer.forgeCostLabel(cap));
+        assertEquals("ANVIL", InventoryOverlayRenderer.forgeButtonLabel(null));
     }
 }
