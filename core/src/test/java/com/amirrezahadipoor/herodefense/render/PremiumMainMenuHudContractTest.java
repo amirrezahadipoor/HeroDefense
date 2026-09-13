@@ -39,6 +39,18 @@ final class PremiumMainMenuHudContractTest {
         assertTrue(HudTouchLayout.UTILITY_BUTTON_HEIGHT >= 104f);
         assertTrue(HudRenderer.HEALTH_BAR_WIDTH >= 580f);
         assertTrue(HudRenderer.HEALTH_BAR_HEIGHT >= 24f);
+        // EXP bar sits directly under the health bar inside the same panel and never overlaps it.
+        assertTrue(HudRenderer.EXP_BAR_Y + HudRenderer.EXP_BAR_HEIGHT <= HudRenderer.HEALTH_BAR_Y);
+        assertTrue(HudRenderer.EXP_BAR_Y >= HudRenderer.HEALTH_PANEL_Y);
+        assertEquals(HudRenderer.HEALTH_BAR_WIDTH, HudRenderer.EXP_BAR_WIDTH);
+        com.amirrezahadipoor.herodefense.model.GameState state =
+            com.amirrezahadipoor.herodefense.model.GameState.newRun(3L);
+        state.heroExperience = 25;
+        assertEquals(25f / 75f, HudRenderer.experienceRatio(state), 1e-5f);
+        assertEquals("25 / 75 XP", HudRenderer.experienceLabel(state));
+        state.heroLevel = 100;
+        assertEquals(1f, HudRenderer.experienceRatio(state));
+        assertEquals("MAX", HudRenderer.experienceLabel(state));
     }
 
     @Test

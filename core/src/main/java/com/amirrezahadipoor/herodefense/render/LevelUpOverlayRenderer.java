@@ -87,8 +87,9 @@ public final class LevelUpOverlayRenderer implements AutoCloseable {
         batch.end();
     }
 
+    /** Row 0 (Strength) is drawn at the top to match the Shop order. */
     static float rowY(int row) {
-        return LevelUpTouchLayout.BOTTOM + row * LevelUpTouchLayout.ROW_STRIDE;
+        return LevelUpTouchLayout.rowBottom(row);
     }
 
     static String pointsLabel(int unspentPoints) {

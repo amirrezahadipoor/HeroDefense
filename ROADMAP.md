@@ -274,8 +274,8 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 
 ### 18.2 Hero Progression Surfaces
 
-- [ ] Hero EXP bar in the live HUD with level badge and level-up flash.
-- [ ] Level-Up overlay lists stats in the Shop order (Strength, Agility, Luck, Dodge, Health) with matching icons.
+- [x] Hero EXP bar in the live HUD with level badge and level-up flash (slim cyan bar under the health bar, `LV n` badge, `x / y XP` readout, ivory flash for 0.9 s on level gain).
+- [x] Level-Up overlay lists stats in the Shop order (Strength, Agility, Luck, Dodge, Health) top-to-bottom; `LevelUpTouchLayout.rowBottom` inverted, smoke taps updated.
 
 ### 18.3 Endless Progression
 

@@ -83,8 +83,9 @@ final class PremiumFlowSurfacesPresentationTest {
         for (HeroStat stat : HeroStat.values()) {
             assertTrue(LevelUpOverlayRenderer.gainPerPoint(stat).startsWith("+"), stat.name());
         }
-        assertEquals(LevelUpTouchLayout.BOTTOM, LevelUpOverlayRenderer.rowY(0));
-        assertTrue(LevelUpOverlayRenderer.rowY(4) + LevelUpTouchLayout.BUTTON_HEIGHT
+        assertEquals(LevelUpTouchLayout.BOTTOM, LevelUpOverlayRenderer.rowY(HeroStat.values().length - 1));
+        assertEquals(LevelUpTouchLayout.rowBottom(0), LevelUpOverlayRenderer.rowY(0));
+        assertTrue(LevelUpOverlayRenderer.rowY(0) + LevelUpTouchLayout.BUTTON_HEIGHT
             < LevelUpOverlayRenderer.HEADER_PANEL_Y);
     }
 

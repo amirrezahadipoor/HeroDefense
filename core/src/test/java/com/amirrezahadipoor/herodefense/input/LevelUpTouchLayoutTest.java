@@ -11,10 +11,12 @@ final class LevelUpTouchLayoutTest {
     void mapsFiveLargeTapRowsToFiveStats() {
         float x = (LevelUpTouchLayout.LEFT + LevelUpTouchLayout.RIGHT) * 0.5f;
         for (int row = 0; row < HeroStat.values().length; row++) {
-            float y = LevelUpTouchLayout.BOTTOM
-                + row * LevelUpTouchLayout.ROW_STRIDE
-                + LevelUpTouchLayout.BUTTON_HEIGHT * 0.5f;
+            float y = LevelUpTouchLayout.rowBottom(row) + LevelUpTouchLayout.BUTTON_HEIGHT * 0.5f;
             assertEquals(HeroStat.values()[row], LevelUpTouchLayout.statAt(x, y));
+            // Same top-to-bottom order as the Shop: Strength highest, Health lowest.
+            if (row > 0) {
+                assertEquals(true, LevelUpTouchLayout.rowBottom(row) < LevelUpTouchLayout.rowBottom(row - 1));
+            }
         }
     }
 

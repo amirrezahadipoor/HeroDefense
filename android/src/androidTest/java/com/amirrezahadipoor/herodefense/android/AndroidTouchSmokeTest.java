@@ -262,10 +262,10 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(800L);
             captureScreen("level-up-premium-v2.png");
 
-            tapWorld(surface, 360f + correction[0], 295f + correction[1]); // Strength row
+            tapWorld(surface, 360f + correction[0], 895f + correction[1]); // Strength row (top, Shop order)
             await("first point spent", () -> game.gameState().unspentTalentPoints == 1);
             assertEquals(GameScreenState.LEVEL_UP, game.screenState());
-            tapWorld(surface, 360f + correction[0], 895f + correction[1]); // Health row
+            tapWorld(surface, 360f + correction[0], 295f + correction[1]); // Health row (bottom)
             await("second point resumes play", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().hero.stats.strength);
             assertEquals(1, game.gameState().hero.stats.health);

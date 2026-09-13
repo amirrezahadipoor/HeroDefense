@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
 
@@ -19,6 +20,10 @@ public final class HudRenderer implements AutoCloseable {
     static final float HEALTH_BAR_Y = 1203f;
     static final float HEALTH_BAR_WIDTH = 580f;
     static final float HEALTH_BAR_HEIGHT = 25f;
+    static final float EXP_BAR_X = 91f;
+    static final float EXP_BAR_Y = 1188f;
+    static final float EXP_BAR_WIDTH = 580f;
+    static final float EXP_BAR_HEIGHT = 9f;
     static final float INFO_PANEL_Y = 1065f;
     static final float INFO_PANEL_HEIGHT = 100f;
 
@@ -28,6 +33,13 @@ public final class HudRenderer implements AutoCloseable {
     private static final Color HEALTHY = Color.valueOf("48A96A");
     private static final Color WOUNDED = Color.valueOf("D39A43");
     private static final Color CRITICAL = Color.valueOf("C6534F");
+    private static final Color EXP = Color.valueOf("8FD4F2");
+    private static final Color EXP_FLASH = Color.valueOf("F3E4BC");
+
+    private static final HeroProgressionSystem PROGRESSION = new HeroProgressionSystem();
+    /** Real-time countdown of the level-up flash on the EXP bar. */
+    private float levelFlashSeconds;
+    private int lastSeenLevel = -1;
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -42,7 +54,22 @@ public final class HudRenderer implements AutoCloseable {
         UiIconRenderer icons,
         UiFrameRenderer frames
     ) {
+        draw(batch, projection, state, icons, frames, 0f);
+    }
+
+    public void draw(
+        SpriteBatch batch,
+        Matrix4 projection,
+        GameState state,
+        UiIconRenderer icons,
+        UiFrameRenderer frames,
+        float realDeltaSeconds
+    ) {
         float healthRatio = healthRatio(state.hero.health, state.hero.maxHealth);
+        float expRatio = experienceRatio(state);
+        if (lastSeenLevel >= 0 && state.heroLevel > lastSeenLevel) levelFlashSeconds = LEVEL_FLASH_SECONDS;
+        lastSeenLevel = state.heroLevel;
+        levelFlashSeconds = Math.max(0f, levelFlashSeconds - Math.max(0f, realDeltaSeconds));
         UiFrameRenderer.State speedState = frames.resolve(
             true, state.simulationSpeed > 1f,
             HudTouchLayout.SPEED_X, HudTouchLayout.buttonY(),
@@ -121,11 +148,31 @@ public final class HudRenderer implements AutoCloseable {
             Math.max(0f, (HEALTH_BAR_WIDTH - 6f) * healthRatio),
             3f
         );
+        // EXP: a slim cyan bar under the health bar; flashes ivory for a moment on level-up.
+        shapes.setColor(0.055f, 0.035f, 0.030f, 0.98f);
+        shapes.rect(EXP_BAR_X, EXP_BAR_Y + up, EXP_BAR_WIDTH, EXP_BAR_HEIGHT);
+        float flash = levelFlashSeconds / LEVEL_FLASH_SECONDS;
+        shapes.setColor(
+            EXP.r + (EXP_FLASH.r - EXP.r) * flash,
+            EXP.g + (EXP_FLASH.g - EXP.g) * flash,
+            EXP.b + (EXP_FLASH.b - EXP.b) * flash,
+            1f
+        );
+        float expFill = flash > 0f ? Math.max(expRatio, flash) : expRatio;
+        shapes.rect(
+            EXP_BAR_X + 1.5f,
+            EXP_BAR_Y + up + 1.5f,
+            Math.max(0f, (EXP_BAR_WIDTH - 3f) * expFill),
+            EXP_BAR_HEIGHT - 3f
+        );
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         batch.begin();
         icons.draw(batch, "health", 28f, 1194f + up, 50f);
+        drawShadowed(batch, "LV " + state.heroLevel, 102f, 1199f + up, 0.52f,
+            flash > 0f ? EXP_FLASH : EXP);
+        text.drawRightAligned(batch, experienceLabel(state), 671f, 1199f + up, 0.46f, SUBTLE);
         drawShadowed(batch, "HEALTH", 102f, 1244f + up, 0.68f, GOLD);
         drawShadowedCentered(
             batch,
@@ -187,6 +234,20 @@ public final class HudRenderer implements AutoCloseable {
         SpriteBatch batch, String label, float x, float y, float scale, Color color
     ) {
         text.draw(batch, label, x, y, scale, color);
+    }
+
+    static final float LEVEL_FLASH_SECONDS = 0.9f;
+
+    /** Progress toward the next level; a capped Hero shows a full bar. */
+    static float experienceRatio(GameState state) {
+        int required = PROGRESSION.experienceRequiredForNextLevel(state.heroLevel);
+        if (required <= 0) return 1f;
+        return Math.max(0f, Math.min(1f, state.heroExperience / (float) required));
+    }
+
+    static String experienceLabel(GameState state) {
+        int required = PROGRESSION.experienceRequiredForNextLevel(state.heroLevel);
+        return required <= 0 ? "MAX" : state.heroExperience + " / " + required + " XP";
     }
 
     static float healthRatio(float health, float maxHealth) {
