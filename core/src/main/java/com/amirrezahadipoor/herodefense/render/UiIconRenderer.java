@@ -36,8 +36,13 @@ public final class UiIconRenderer implements AutoCloseable {
         batch.setPackedColor(originalColor);
     }
 
+    /** Reviewed icon path for a key; every key the runtime draws must resolve here. */
+    public static String assetPath(String key) {
+        return "generated/icons/ui_" + key + ".png";
+    }
+
     private Texture load(String key) {
-        Texture texture = new Texture(Gdx.files.internal("generated/icons/ui_" + key + ".png"));
+        Texture texture = new Texture(Gdx.files.internal(assetPath(key)));
         texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         return texture;
     }
