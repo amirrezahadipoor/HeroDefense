@@ -785,8 +785,11 @@ def _author_boss_fall(
         final["weapon_socket"] = (0.92, -0.34, 0.24)
     _key(armature, 4, mid, {"root": (0.0, 0.0, -0.13)}, {"chest": (1.0, 1.0, 0.86 if wilt else 1.0)})
     _key(armature, 7, {**mid, "root": (0.0, 0.42, turn * 0.18), "chest": (0.68, 0.0, -turn * 0.8)}, {"root": (0.0, 0.03, -0.37)}, {"chest": (1.04, 1.04, 0.62 if wilt else 0.95)})
-    _key(armature, count - 1, final, {"root": (0.0, 0.05, -0.57)}, {"chest": (1.06, 1.06, 0.42 if wilt else 0.92)})
-    _key(armature, count, final, {"root": (0.0, 0.05, -0.57)}, {"chest": (1.06, 1.06, 0.42 if wilt else 0.92)})
+    # Compensate the screen-space center as broad wings/fists rotate into the floor.
+    final_location = {"root": (-0.45, 0.05, -0.57)}
+    final_scale = {"chest": (1.06, 1.06, 0.42 if wilt else 0.92)}
+    _key(armature, count - 1, final, final_location, final_scale)
+    _key(armature, count, final, final_location, final_scale)
 
 
 def _author_ancient_golem_idle(armature: bpy.types.Object, count: int) -> None:
@@ -818,8 +821,8 @@ def _author_ancient_golem_ground_slam(armature: bpy.types.Object, count: int) ->
     _key(armature, 5, {
         "pelvis": (0.22, 0.0, 0.0), "spine": (0.20, 0.0, 0.0),
         "chest": (0.28, 0.0, 0.0), "head": (-0.16, 0.0, 0.0),
-        "upper_arm.L": (0.45, -0.09, -0.22), "upper_arm.R": (0.45, 0.09, 0.22),
-        "forearm.L": (0.40, 0.0, 0.10), "forearm.R": (0.40, 0.0, -0.10),
+        "upper_arm.L": (0.08, -0.03, -0.04), "upper_arm.R": (0.08, 0.03, 0.04),
+        "forearm.L": (0.10, 0.0, 0.03), "forearm.R": (0.10, 0.0, -0.03),
     }, {"root": (0.0, -0.035, -0.105)}, {
         "chest": (1.035, 1.035, 0.95),
         "armor_socket": (1.25, 1.25, 1.25),
@@ -827,8 +830,8 @@ def _author_ancient_golem_ground_slam(armature: bpy.types.Object, count: int) ->
     _key(armature, 6, {
         "pelvis": (0.15, 0.0, 0.0), "spine": (0.13, 0.0, 0.0),
         "chest": (0.18, 0.0, 0.0), "head": (-0.10, 0.0, 0.0),
-        "upper_arm.L": (0.30, -0.05, -0.14), "upper_arm.R": (0.30, 0.05, 0.14),
-        "forearm.L": (0.25, 0.0, 0.06), "forearm.R": (0.25, 0.0, -0.06),
+        "upper_arm.L": (0.06, -0.02, -0.03), "upper_arm.R": (0.06, 0.02, 0.03),
+        "forearm.L": (0.07, 0.0, 0.02), "forearm.R": (0.07, 0.0, -0.02),
     }, {"root": (0.0, -0.018, -0.065)}, {
         "armor_socket": (1.10, 1.10, 1.10),
     })
