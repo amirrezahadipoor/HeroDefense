@@ -55,6 +55,7 @@ import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.polish.FloatingCoinTextSystem;
+import com.amirrezahadipoor.herodefense.polish.FloatingDamageTextSystem;
 import com.amirrezahadipoor.herodefense.polish.HitStopSystem;
 import com.amirrezahadipoor.herodefense.polish.ParticleSystem;
 import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
@@ -66,6 +67,7 @@ import com.amirrezahadipoor.herodefense.render.GameFonts;
 import com.amirrezahadipoor.herodefense.render.ScreenEdges;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.FloatingCoinTextRenderer;
+import com.amirrezahadipoor.herodefense.render.FloatingDamageTextRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.HudRenderer;
@@ -102,6 +104,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private EquipmentSpriteRenderer equipmentSpriteRenderer;
     private FloatingCoinTextRenderer floatingCoinTextRenderer;
     private FloatingCoinTextSystem floatingCoinTextSystem;
+    private FloatingDamageTextSystem floatingDamageTextSystem;
+    private FloatingDamageTextRenderer floatingDamageTextRenderer;
     private BossSpecialAttackSystem bossSpecialAttackSystem;
     private CombatEntityRenderer combatEntityRenderer;
     private DropPickupSystem dropPickupSystem;
@@ -185,6 +189,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
         floatingCoinTextSystem = new FloatingCoinTextSystem();
+        floatingDamageTextSystem = new FloatingDamageTextSystem();
         particleSystem = new ParticleSystem();
         pauseTouchController = new PauseTouchController();
         potionDropSystem = new PotionDropSystem();
@@ -218,6 +223,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         arenaEnvironmentRenderer = new ArenaEnvironmentRenderer();
         combatEntityRenderer = new CombatEntityRenderer();
         floatingCoinTextRenderer = new FloatingCoinTextRenderer();
+        floatingDamageTextRenderer = new FloatingDamageTextRenderer();
         gameOverOverlayRenderer = new GameOverOverlayRenderer();
         heroSpriteRenderer = new HeroSpriteRenderer();
         hudRenderer = new HudRenderer();
@@ -381,6 +387,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (combatEntityRenderer != null) {
             combatEntityRenderer.close();
+        }
+        if (floatingDamageTextRenderer != null) {
+            floatingDamageTextRenderer.close();
+            floatingDamageTextRenderer = null;
         }
         if (floatingCoinTextRenderer != null) {
             floatingCoinTextRenderer.close();
@@ -622,6 +632,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         hitStopSystem.clear();
         particleSystem.clear();
         floatingCoinTextSystem.clear();
+        floatingDamageTextSystem.clear();
         waveLifecycleSystem.startCurrentWave(gameState);
         flow.transitionTo(GameScreenState.PLAYING);
         saveNow();
@@ -726,6 +737,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         screenShakeSystem.update(simulationDelta);
         particleSystem.update(simulationDelta);
         floatingCoinTextSystem.update(simulationDelta);
+        floatingDamageTextSystem.update(simulationDelta);
         gameState.anchorHeroAtArenaCenter();
         heroAnimationController.update(gameState.hero, simulationDelta);
         enemyMovementSystem.update(gameState, simulationDelta);
@@ -738,6 +750,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 attackEvents.impactX(), attackEvents.impactY(), attackEvents.criticalHits() > 0
             );
         }
+        floatingDamageTextSystem.emitAll(attackEvents.events());
         if (attackEvents.criticalHits() > 0) hitStopSystem.triggerCriticalHit();
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
             audioManager.play(AudioCue.HIT);
@@ -844,6 +857,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             combatEntityRenderer.drawEffects(spriteBatch, gameState, simulationSeconds);
             spriteBatch.end();
             particleRenderer.draw(camera.combined, particleSystem);
+            floatingDamageTextRenderer.draw(
+                spriteBatch, camera.combined, floatingDamageTextSystem
+            );
             floatingCoinTextRenderer.draw(
                 spriteBatch, camera.combined, floatingCoinTextSystem
             );

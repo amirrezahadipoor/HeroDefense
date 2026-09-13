@@ -25,9 +25,12 @@ final class HeroAutoAttackSystemTest {
         assertEquals(1, state.projectiles.size());
         assertEquals(16f, state.projectiles.get(0).damage);
 
-        system.update(state, 0.2f);
+        HeroAttackUpdateResult impact = system.update(state, 0.2f);
         assertEquals(84f, nearest.health);
         assertEquals(100f, farther.health);
+        assertEquals(1, impact.events().size());
+        assertEquals(CombatEvent.Kind.HIT, impact.events().get(0).kind());
+        assertEquals(16f, impact.events().get(0).amount());
     }
 
     @Test
@@ -141,13 +144,24 @@ final class HeroAutoAttackSystemTest {
 
         int arcs = 0;
         int stuns = 0;
+        boolean sawArcEvent = false;
+        boolean sawStunEvent = false;
         for (int i = 0; i < 400; i++) {
             HeroAttackUpdateResult result = system.update(state, 0.25f);
             arcs += result.chainArcs();
             stuns += result.stuns();
+            for (CombatEvent event : result.events()) {
+                if (event.kind() == CombatEvent.Kind.CHAIN_ARC) {
+                    sawArcEvent = true;
+                    assertEquals(struck.x, event.fromX());
+                    assertEquals(neighbour.x, event.x());
+                }
+                if (event.kind() == CombatEvent.Kind.STUN) sawStunEvent = true;
+            }
         }
         assertTrue(arcs > 0, "chain lightning never arced");
         assertTrue(stuns > 0, "stun never rolled");
+        assertTrue(sawArcEvent && sawStunEvent, "presentation events must mirror the rolls");
         assertTrue(neighbour.health < neighbour.maxHealth);
 
         struck.stunRemainingSeconds = 1f;
