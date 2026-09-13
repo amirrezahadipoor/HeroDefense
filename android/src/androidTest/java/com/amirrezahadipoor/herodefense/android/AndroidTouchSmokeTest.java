@@ -369,7 +369,7 @@ public final class AndroidTouchSmokeTest {
         // Maxed Phase 17 skills so the combat burst shows arcs, volleys, stuns, and damage numbers.
         for (com.amirrezahadipoor.herodefense.skills.SkillId skill
             : com.amirrezahadipoor.herodefense.skills.SkillId.values()) {
-            state.skillLevels.put(skill.saveKey(), com.amirrezahadipoor.herodefense.skills.SkillId.MAX_LEVEL);
+            state.skillLevels.put(skill.saveKey(), com.amirrezahadipoor.herodefense.skills.SkillId.CORE_LEVELS);
         }
         writeSave(state);
     }

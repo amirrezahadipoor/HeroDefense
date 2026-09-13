@@ -183,8 +183,8 @@ public final class BalanceSimulator {
      * both tabs of the shop moving instead of hoarding.
      */
     private void buyBalancedShopUpgrades(GameState state) {
-        int budget = BALANCED_STATS.length * StatShopSystem.MAX_PURCHASES_PER_STAT
-            + SkillId.values().length * SkillId.MAX_LEVEL;
+        // Endless shop: bound the greedy loop per visit rather than by a level cap.
+        int budget = 64;
         for (int purchase = 0; purchase < budget; purchase++) {
             HeroStat selectedStat = null;
             SkillId selectedSkill = null;

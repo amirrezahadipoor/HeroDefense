@@ -279,7 +279,7 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 
 ### 18.3 Endless Progression
 
-- [ ] Remove stat and skill purchase caps: stats switch to a geometric price curve after level 20 and skills continue past level 10 with diminishing per-level gains; simulator and gate updated.
+- [x] Remove stat and skill purchase caps: stats linear through 20 then ×1.25 per level; skills base curve through 10 then ×1.45 per level; `SkillEffects.effectiveLevel` halves the gain of each further ten-level block (converges to 20 core-equivalent) with hard ceilings on every chance/count effect; shop shows `LEVEL n | ENDLESS`; save repair no longer clamps skill levels; simulator greedy loop bounded per visit.
 - [ ] Anvil tab: Rare and Legendary items can be reforged up to +5 with escalating coin costs, adding +1 to every stat bonus per step; item names show the +N suffix; persisted per item.
 - [ ] Inventory auto-sell toggles for Common, Uncommon, and Rare; ticked tiers are sold the moment they enter the inventory (persisted in settings, never affects equipped items).
 

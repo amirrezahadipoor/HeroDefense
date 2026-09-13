@@ -144,7 +144,7 @@ public final class GameState {
         if (shopUpgradeLevels == null) shopUpgradeLevels = new LinkedHashMap<>();
         shopUpgradeLevels.replaceAll((key, value) -> value == null ? 0 : Math.max(0, value));
         if (skillLevels == null) skillLevels = new LinkedHashMap<>();
-        skillLevels.replaceAll((key, value) -> value == null ? 0 : Math.max(0, Math.min(10, value)));
+        skillLevels.replaceAll((key, value) -> value == null ? 0 : Math.max(0, value));
         if (chosenRewardCards == null) chosenRewardCards = new LinkedHashMap<>();
         if (pendingRewardCards == null) pendingRewardCards = new ArrayList<>();
         if (pendingRewardCards.size() != 3) {

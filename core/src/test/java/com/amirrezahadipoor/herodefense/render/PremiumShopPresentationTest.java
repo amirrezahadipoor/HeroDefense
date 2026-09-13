@@ -15,6 +15,10 @@ final class PremiumShopPresentationTest {
     @Test
     void affordabilityLabelsNeverDependOnColorAlone() {
         assertEquals("MAXED", StatShopOverlayRenderer.affordabilityLabel(true, false, 0, 0));
+        assertEquals("LEVEL 7 / 10", StatShopOverlayRenderer.levelLabel(7, 10));
+        assertEquals("LEVEL 23  |  ENDLESS", StatShopOverlayRenderer.levelLabel(23, 20));
+        assertEquals(1f, StatShopOverlayRenderer.tierProgress(31, 20));
+        assertEquals(0.5f, StatShopOverlayRenderer.tierProgress(5, 10));
         assertEquals("AFFORDABLE",
             StatShopOverlayRenderer.affordabilityLabel(false, true, 55, 80));
         assertEquals("NEED $ 20",

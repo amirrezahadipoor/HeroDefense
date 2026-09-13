@@ -105,8 +105,8 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
                 StatShopTouchLayout.ROW_HEIGHT - 32f);
             shapes.setColor(0.070f, 0.105f, 0.092f, 0.95f);
             shapes.rect(170f, y + 14f, 205f, 8f);
-            shapes.setColor(row.maxed() ? GOLD : row.accent());
-            shapes.rect(170f, y + 14f, 205f * row.level() / row.maxLevel(), 8f);
+            shapes.setColor(row.level() > row.maxLevel() ? GOLD : row.accent());
+            shapes.rect(170f, y + 14f, 205f * tierProgress(row.level(), row.maxLevel()), 8f);
         }
         shapes.end();
         endShapes();
@@ -149,7 +149,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             drawText(batch, row.title(), 170f, y + 102f + offset, 0.98f,
                 row.affordable() || row.maxed() ? IVORY : MUTED);
             drawText(batch, row.benefit(), 170f, y + 66f + offset, 0.66f, SUBTLE);
-            drawText(batch, "LEVEL " + row.level() + " / " + row.maxLevel(),
+            drawText(batch, levelLabel(row.level(), row.maxLevel()),
                 170f, y + 44f + offset, 0.58f, GOLD);
             Color affordabilityColor = row.maxed() ? GOLD : row.affordable() ? POSITIVE : NEGATIVE;
             drawCentered(batch,
@@ -187,14 +187,13 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         for (int index = 0; index < stats.length; index++) {
             HeroStat stat = stats[index];
             int purchased = shop.purchasedLevels(state, stat);
-            boolean maxed = purchased >= StatShopSystem.MAX_PURCHASES_PER_STAT;
-            int price = maxed ? 0 : shop.price(state, stat);
+            int price = shop.price(state, stat);
             rows[index] = new Row(
                 stat.name().toLowerCase(Locale.ROOT),
                 pretty(stat).toUpperCase(Locale.ROOT),
                 statBenefit(stat),
-                purchased, StatShopSystem.MAX_PURCHASES_PER_STAT,
-                price, maxed, !maxed && state.coins >= price, POSITIVE
+                purchased, StatShopSystem.CORE_LEVELS,
+                price, false, state.coins >= price, POSITIVE
             );
         }
         return rows;
@@ -206,17 +205,31 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         for (int index = 0; index < ids.length; index++) {
             SkillId skill = ids[index];
             int level = skills.level(state, skill);
-            boolean maxed = level >= SkillId.MAX_LEVEL;
-            int price = maxed ? 0 : skills.price(state, skill);
+            int price = skills.price(state, skill);
             rows[index] = new Row(
                 skill.iconKey(),
                 skill.displayName().toUpperCase(Locale.ROOT),
                 skillBenefit(skill, level),
-                level, SkillId.MAX_LEVEL,
-                price, maxed, !maxed && state.coins >= price, ARCANE
+                level, SkillId.CORE_LEVELS,
+                price, false, state.coins >= price, ARCANE
             );
         }
         return rows;
+    }
+
+    /**
+     * Levels are endless: the label shows "LEVEL n / core" through the core tier and then
+     * "LEVEL n  |  ENDLESS" so the player sees both the number and that growth continues.
+     */
+    static String levelLabel(int level, int coreLevels) {
+        if (level <= coreLevels) return "LEVEL " + level + " / " + coreLevels;
+        return "LEVEL " + level + "  |  ENDLESS";
+    }
+
+    /** Bar fill: fraction of the core tier, then a full gold bar once endless. */
+    static float tierProgress(int level, int coreLevels) {
+        if (coreLevels <= 0) return 1f;
+        return Math.max(0f, Math.min(1f, level / (float) coreLevels));
     }
 
     static String affordabilityLabel(boolean maxed, boolean affordable, int price, int coins) {
@@ -237,7 +250,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
 
     /** Describes the concrete next-level effect so a player knows exactly what a purchase buys. */
     static String skillBenefit(SkillId skill, int level) {
-        int next = Math.min(SkillId.MAX_LEVEL, level + 1);
+        int next = level + 1;
         return switch (skill) {
             case CHAIN_LIGHTNING -> String.format(Locale.ROOT, "%d%% arc to %d foe%s for %d%% dmg",
                 Math.round(SkillEffects.chainChance(next) * 100f), SkillEffects.chainTargets(next),

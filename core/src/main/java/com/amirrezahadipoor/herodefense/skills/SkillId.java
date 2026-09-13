@@ -3,8 +3,10 @@ package com.amirrezahadipoor.herodefense.skills;
 import java.util.Locale;
 
 /**
- * Five expensive, coin-only combat skills. Each has exactly {@link #MAX_LEVEL} purchasable
- * levels; every level's effect is a pure function of the level so saves stay deterministic.
+ * Five expensive, coin-only combat skills. The first {@link #CORE_LEVELS} levels are the
+ * linearly priced core progression; beyond that levels are endless with geometric pricing
+ * and diminishing effect. Every level's effect is a pure function of the level so saves stay
+ * deterministic.
  */
 public enum SkillId {
     CHAIN_LIGHTNING("Chain Lightning", "Arrows arc lightning to nearby foes"),
@@ -13,7 +15,10 @@ public enum SkillId {
     CRITICAL_MASTERY("Critical Mastery", "Sharper crits: more often, harder"),
     LONG_RANGE("Eagle Range", "Bow reaches farther across the arena");
 
-    public static final int MAX_LEVEL = 10;
+    /** Levels priced on the base curve and counted at full effect. */
+    public static final int CORE_LEVELS = 10;
+    /** Endless: past the core levels each purchase multiplies the price again. */
+    public static final float ENDLESS_PRICE_GROWTH = 1.45f;
 
     private final String displayName;
     private final String summary;

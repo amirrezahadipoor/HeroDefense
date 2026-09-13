@@ -35,20 +35,41 @@ final class StatShopSystemTest {
     }
 
     @Test
-    void tunedPricesRiseLinearlyThroughTwentyPurchasesThenCloseTheStat() {
+    void tunedPricesRiseLinearlyThroughTwentyPurchasesThenGeometricallyForever() {
         GameState state = GameState.newRun(44L);
         for (HeroStat stat : HeroStat.values()) {
             state.shopUpgradeLevels.put(stat.name(), 0);
             int previous = shop.price(state, stat);
-            for (int level = 1; level < StatShopSystem.MAX_PURCHASES_PER_STAT; level++) {
+            for (int level = 1; level <= StatShopSystem.CORE_LEVELS; level++) {
                 state.shopUpgradeLevels.put(stat.name(), level);
                 int current = shop.price(state, stat);
                 assertEquals(StatShopSystem.PRICE_STEP_PER_LEVEL, current - previous);
                 previous = current;
             }
-            state.shopUpgradeLevels.put(stat.name(), StatShopSystem.MAX_PURCHASES_PER_STAT);
-            assertEquals(Integer.MAX_VALUE, shop.price(state, stat));
+            // Endless tier: never MAX_VALUE, strictly rising, multiples of 5, bounded ceiling.
+            for (int level = StatShopSystem.CORE_LEVELS + 1; level <= 200; level++) {
+                state.shopUpgradeLevels.put(stat.name(), level);
+                int current = shop.price(state, stat);
+                assertTrue(current >= previous, stat.name() + " level " + level);
+                assertTrue(current <= StatShopSystem.PRICE_CEILING);
+                assertEquals(0, current % 5);
+                previous = current;
+            }
+            assertTrue(StatShopSystem.priceForLevel(stat, 21) > StatShopSystem.priceForLevel(stat, 20) * 1.2f);
         }
+    }
+
+    @Test
+    void purchasesBeyondTheOldCapKeepWorking() {
+        GameState state = GameState.newRun(46L);
+        state.shopUpgradeLevels.put(HeroStat.STRENGTH.name(), 20);
+        state.hero.stats.strength = 20;
+        state.coins = 10_000;
+        assertTrue(shop.purchase(state, HeroStat.STRENGTH));
+        assertEquals(21, shop.purchasedLevels(state, HeroStat.STRENGTH));
+        assertEquals(21, state.hero.stats.strength);
+        assertTrue(shop.purchase(state, HeroStat.STRENGTH));
+        assertEquals(22, shop.purchasedLevels(state, HeroStat.STRENGTH));
     }
 
     @Test
@@ -64,10 +85,6 @@ final class StatShopSystemTest {
         assertEquals(StatShopSystem.PurchaseResult.PURCHASED, shop.feedbackResult());
         assertEquals("PURCHASED  |  Strength +1  |  -$ 55", shop.feedbackMessage());
 
-        state.shopUpgradeLevels.put(HeroStat.LUCK.name(), StatShopSystem.MAX_PURCHASES_PER_STAT);
-        assertFalse(shop.purchase(state, HeroStat.LUCK));
-        assertEquals(StatShopSystem.PurchaseResult.MAXED, shop.feedbackResult());
-        assertEquals("MAX LEVEL  |  Luck", shop.feedbackMessage());
         assertEquals(1f, shop.feedbackAlpha());
         shop.update(1.1f);
         assertTrue(shop.feedbackAlpha() > 0f);
