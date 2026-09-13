@@ -52,6 +52,31 @@ final class StatShopSystemTest {
     }
 
     @Test
+    void purchaseFailureAndSuccessFeedbackIsSpecificAndExpires() {
+        GameState state = GameState.newRun(45L);
+        state.coins = 0;
+        assertFalse(shop.purchase(state, HeroStat.STRENGTH));
+        assertEquals(StatShopSystem.PurchaseResult.INSUFFICIENT_COINS, shop.feedbackResult());
+        assertEquals("NEED $ 55 MORE  |  Strength", shop.feedbackMessage());
+
+        state.coins = 55;
+        assertTrue(shop.purchase(state, HeroStat.STRENGTH));
+        assertEquals(StatShopSystem.PurchaseResult.PURCHASED, shop.feedbackResult());
+        assertEquals("PURCHASED  |  Strength +1  |  -$ 55", shop.feedbackMessage());
+
+        state.shopUpgradeLevels.put(HeroStat.LUCK.name(), StatShopSystem.MAX_PURCHASES_PER_STAT);
+        assertFalse(shop.purchase(state, HeroStat.LUCK));
+        assertEquals(StatShopSystem.PurchaseResult.MAXED, shop.feedbackResult());
+        assertEquals("MAX LEVEL  |  Luck", shop.feedbackMessage());
+        assertEquals(1f, shop.feedbackAlpha());
+        shop.update(1.1f);
+        assertTrue(shop.feedbackAlpha() > 0f);
+        shop.update(0.2f);
+        assertEquals(StatShopSystem.PurchaseResult.NONE, shop.feedbackResult());
+        assertEquals(null, shop.feedbackMessage());
+    }
+
+    @Test
     void rejectsPurchaseWithoutEnoughInGameCoins() {
         GameState state = GameState.newRun(43L);
         state.coins = 0;

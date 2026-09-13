@@ -228,6 +228,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
         touchFeedbackSystem.update(deltaSeconds);
         inventoryTouchController.update(deltaSeconds);
+        statShopSystem.update(deltaSeconds);
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
@@ -272,6 +273,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     /** Read-only test visibility; action feedback still originates only from touch. */
     public String inventoryFeedbackMessage() {
         return inventoryTouchController == null ? null : inventoryTouchController.feedbackMessage();
+    }
+
+    /** Read-only test visibility; Shop feedback still originates only from touch. */
+    public String shopFeedbackMessage() {
+        return statShopSystem == null ? null : statShopSystem.feedbackMessage();
     }
 
     /** Read-only test visibility used to confirm device touches reached libGDX coordinates. */
@@ -775,7 +781,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             );
         } else if (flow.state() == GameScreenState.SHOP) {
             statShopOverlayRenderer.draw(
-                spriteBatch, camera.combined, gameState, statShopSystem, uiIconRenderer
+                spriteBatch,
+                camera.combined,
+                gameState,
+                statShopSystem,
+                uiIconRenderer,
+                uiFrameRenderer,
+                flow.returnState() == GameScreenState.PAUSED
             );
         } else if (flow.state() == GameScreenState.INVENTORY) {
             inventoryOverlayRenderer.drawInventory(

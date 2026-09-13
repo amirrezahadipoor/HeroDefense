@@ -1,0 +1,55 @@
+{
+  "archiveSha256": "1a89b0591564cb3917b50274f0463a6d56b97e22161797802a9015c5bae01649",
+  "artifact": 10319755714,
+  "batch": "shop-premium-v2",
+  "coverage": {
+    "affordabilityStates": [
+      "AFFORDABLE",
+      "NEED_COINS",
+      "MAXED"
+    ],
+    "currency": "earned_coins_only",
+    "feedbackStates": [
+      "PURCHASED",
+      "INSUFFICIENT_COINS",
+      "MAXED"
+    ],
+    "purchaseCapPerStat": 20,
+    "returnContexts": [
+      "PLAYING",
+      "PAUSED"
+    ],
+    "statCards": 5
+  },
+  "decision": "accepted",
+  "device": {
+    "apiLevel": 35,
+    "orientation": "portrait",
+    "profile": "pixel_3a",
+    "touchOnly": true
+  },
+  "files": {
+    "shop_affordability_emulator.png": {
+      "bytes": 279528,
+      "height": 2220,
+      "sha256": "fdaa601f8785e0d19ca6b295a4c04a505b7381877da9d59b4bf23b3f19c7ab38",
+      "width": 1080
+    },
+    "shop_contact_sheet.png": {
+      "bytes": 112731,
+      "height": 930,
+      "sha256": "0a48c43bb6c45a7a60390680c4a78d3b1880cf3fa86fb4e82cde86fd23305c27",
+      "width": 1120
+    },
+    "shop_purchase_feedback_emulator.png": {
+      "bytes": 301627,
+      "height": 2220,
+      "sha256": "d6baea84856a61b6f25b8cde517669f57b9fec13fc7c398cbb932f80b164c93a",
+      "width": 1080
+    }
+  },
+  "schemaVersion": 1,
+  "sourceCommit": "8f2a03886a13edc2b8fac0cb485c19e2725dcc25",
+  "workflowJob": 103735942735,
+  "workflowRun": 34761841420
+}
