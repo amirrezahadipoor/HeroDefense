@@ -312,7 +312,7 @@ Give every new run a short spoken opening, then sweep the game for bugs and roug
 
 ### 19.3 Economy-Aware Rebalance
 
-- [ ] Rebalance the 1–200 run against the real economy: coin income vs. item drops/sell values, stat purchases, Anvil upgrade costs, and skill purchases; the simulator's spending policy is audited against a sensible player, `docs/BALANCE.md` updated, and all gates (baseline, multi-seed, forced-card) pass.
+- [x] Rebalance the 1–200 run against the real economy: the simulator now reforges equipped Rare/Legendary items at the Anvil (cheapest step ≤ cheapest shop price) and keeps a coin ledger (`BalanceSimulator.lastLedger()`: kills ≈ 80k, sales ≈ 20k, stats 54k / skills 29k / Anvil 17k on the baseline); with that stronger player the second half was ~1–3% pressure, so waves 101–200 now grow `HP × 1.023^(w−100)`, `damage × 1.008^(w−100)` (HP w200 ≈ 7353, dmg ≈ 0.806). 9/9 and 15/15 seeds finish, avg 8.6%, worst wave 29.6%, longest clear 69 s; forced-card regression passes; `docs/BALANCE.md` gained Anvil + economy-audit sections.
 
 ## Standing Rules
 

@@ -9,7 +9,7 @@ For wave `w` clamped to 1–200 (Phase 18.4 extended the run; waves 1–100 keep
 - The required starting candidate was `20 × 1.045^w`; Phase 14 simulation tuned it to `1.035`, and the Phase 17 lifesteal-and-skills rebalance raised it to the shipped `20 × 1.037^w` (Wave 100 enemies carry 21% more HP than before).
 - Shipped HP checkpoints: Wave 1 `20.74`, Wave 25 `49.60`, Wave 50 `123.02`, Wave 75 `305.10`, and Wave 100 `756.67`.
 - Baseline damage: `0.27 × 1.003^(w−1)`, reaching `0.3632` at Wave 100 before archetype scaling (Phase 17 raised growth from `1.002`).
-- **Second half (waves 101–200, after the planting ceremony):** both curves continue from their Wave 100 values with their own growth, `HP × 1.021^(w−100)` and `damage × 1.006^(w−100)`. HP checkpoints: Wave 125 `1272.18`, Wave 150 `2138.91`, Wave 175 `3596.14`, Wave 200 `6046.16`; baseline damage reaches `0.6606` at Wave 200. The flatter growth reflects that endless stat/skill pricing (Phase 18.3) slows the Hero's own power curve after level 20/10; candidates `1.022–1.030` HP growth and `1.008–1.014` damage growth were rejected because they pushed single waves past the 35% ceiling after wave 170 (up to 123% of max HP at `1.028/1.014`), while `1.020/1.006` left the second half at 2–5% pressure with no meaningful spikes.
+- **Second half (waves 101–200, after the planting ceremony):** both curves continue from their Wave 100 values with their own growth, `HP × 1.023^(w−100)` and `damage × 1.008^(w−100)`. HP checkpoints: Wave 125 `1335.97`, Wave 150 `2358.78`, Wave 175 `4164.65`, Wave 200 `7353.08`; baseline damage reaches `0.8058` at Wave 200. Phase 18.4 shipped `1.021 / 1.006` against a simulator that ignored the Anvil; once the simulated player reforges equipped Rare/Legendary items (Phase 19.3) the second half fell to 1–3% pressure per wave, so the curve was tightened one notch. `1.024/1.008`, `1.024/1.010`, `1.025/1.010` and `1.0235/1.008` were rejected because their worst single wave exceeded the 35% ceiling (36–43%) or clears passed 80 s.
 - A regular hit is capped at 28% of the max HP of a reference Hero who invests one of every five earned points in Health.
 - Archetype HP multipliers, relative to the 20-HP Rootling: Rootling `1.00`, Stonekin `1.70`, Gloom Wolf `0.85`, Fungal Brute `2.30`.
 - Archetype damage multipliers, relative to the authored 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
@@ -40,6 +40,24 @@ For wave `w` clamped to 1–200 (Phase 18.4 extended the run; waves 1–100 keep
 | Legendary | +45% | 7 points |
 
 The relative targets express intended contemporary-run impact. Every authored item spends its tier's entire whole-stat budget across one or two of the five Hero stats.
+
+## Anvil (item reforging, Phase 18.3)
+
+Only Rare and Legendary catalog items can be reforged, up to `+5`. Each step adds `+1` to every stat bonus on the item and raises its sell price by half the step's cost. Step costs are `base × 1.6^level`, rounded to 5 coins: Rare `150, 240, 385, 615, 985` (total `2 375`), Legendary `350, 560, 895, 1 435, 2 295` (total `5 535`). A fully reforged Legendary therefore carries `+17` whole stat points (7 authored + 10 forged), which is why the Anvil is priced like ~2–3 late stat levels per step rather than as a cheap sink.
+
+## Economy audit (Phase 19.3)
+
+The simulator's spending policy models a thrifty player: talent points go to the lowest base stat, coins always buy the cheapest affordable stat or skill level, spare drops are sold, and the Anvil is used on an equipped item whenever its next step is no dearer than the cheapest shop purchase (`BalanceSimulator.forgeEquippedItems`). `BalanceSimulator.lastLedger()` exposes the resulting coin flow. Baseline seed over 200 waves:
+
+| Flow | Coins | Notes |
+|---|---:|---|
+| Kill income | `80 216` | regular kills scale `×(1 + 0.025·wave)`, bosses `50 + 20·n` |
+| Item sales | `19 587` | ≈20% of all income; auto-sell is equivalent for the economy |
+| Stat shop | `53 725` | 132 levels across five stats |
+| Skill shop | `28 560` | 39 skill levels |
+| Anvil | `16 845` | 27 steps; every equipped Rare/Legendary reaches +4/+5 by the end |
+
+Across the nine gate seeds the split is stable (stats 53–56%, skills 28–30%, Anvil 15–17% of spend). Item sales matter: without them the run would lose ~two stat levels per 10 waves, which is why sell prices stay at `12 / 30 / 75 / 180` and forged items sell for more.
 
 ## Critical hits
 
@@ -106,7 +124,11 @@ The deterministic regression gate requires all of the following:
 
 After the Phase 17 rebalance, baseline seed `0x4845524F444546` and eight further seeds all completed 100/100 waves; across those nine runs the average gross damage was `9.3%`, the worst single wave `28.4%`, and the longest clear `68.2 s`. Every forced-card scenario (all cards at all 19 bosses) also stays under the 35% / 120 s spikes (worst `29.6%`, `71.2 s`). Candidates `1.038–1.040` HP growth were rejected: they pushed single-wave damage past 35% under the forced Dodge/Lifesteal card scenarios. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
 
-### Phase 18.4 result (waves 1–200)
+### Phase 19.3 result (waves 1–200, Anvil-aware simulator)
+
+With the second-half curve `1.023 / 1.008` and the Anvil policy enabled, baseline seed `0x4845524F444546` plus eight (SimProbe) and fourteen (extended) further seeds all completed 200/200 waves; across the nine gate runs the average gross damage was `8.6%`, the worst single wave `29.6%` (seed 2, wave 32 — a first-half spike unchanged from Phase 17), and the longest clear `69.0 s`. The baseline's second half sits at 3–6% gross damage per wave with 22–49 s clears and a DPS-to-HP ratio falling from `0.030` at Wave 100 to `0.010` at Wave 200.
+
+### Phase 18.4 result (waves 1–200, historical)
 
 With the second-half curve `1.021 / 1.006`, baseline seed `0x4845524F444546` and eight further seeds all completed 200/200 waves; across those nine runs the average gross damage was `10.0%`, the worst single wave `28.8%`, and the longest clear `72.3 s`. The baseline's second half sits at 2–6% gross damage per wave with 24–43 s clears and a slowly falling DPS-to-HP ratio (`0.027` at Wave 100 → `0.011` at Wave 200), so the run keeps tightening without a cliff. The acceptance gate (`GATE_WAVE = FINAL_WAVE`) and the forced-card regression (Bosses 1–39) now cover the full run.
 
