@@ -8,7 +8,7 @@ public enum GameScreenState {
     PAUSED,
     LEVEL_UP,
     CARD_CHOICE,
-    /** Non-interactive Wave 100 planting ceremony; combat frozen, a tap only skips ahead. */
+    /** Non-interactive cinematics (new-run opening, Wave 100 planting); combat frozen, a tap only skips ahead. */
     CINEMATIC,
     INVENTORY,
     SHOP,
