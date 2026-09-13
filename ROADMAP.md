@@ -241,6 +241,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Upgrade the Shop presentation, including stat cards, price/affordability states, purchase feedback, and paused-game context.
 - [x] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard. (Accepted evidence: [`FLOW_SURFACES_PREMIUM_V2_REVIEW.md`](docs/art_reviews/FLOW_SURFACES_PREMIUM_V2_REVIEW.md))
 - [x] Upgrade projectiles, impacts, critical hits, enemy deaths, Boss entrances/deaths, item collection, coins, World Tree damage, and ambient arena VFX with restrained visual layering.
+
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
