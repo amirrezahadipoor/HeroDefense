@@ -40,8 +40,10 @@ public final class ParticleSystem {
 
     /** Boss entrance: one shockwave plus grounded dust, within the documented boss multiplier. */
     public void emitBossEntrance(float x, float y) {
-        add(ParticleType.BOSS_SHOCKWAVE, x, y, 0f, 0f, 0.42f, 150f);
-        emitBurst(ParticleType.BOSS_DUST, x, y, bossMotes(), 110f, 0.55f, 9f);
+        // Arrival lingers longer than any hit so the shockwave reads through the wave banner.
+        add(ParticleType.BOSS_SHOCKWAVE, x, y, 0f, 0f, 0.75f, 150f);
+        add(ParticleType.BOSS_SHOCKWAVE, x, y, 0f, 0f, 1.05f, 190f);
+        emitBurst(ParticleType.BOSS_DUST, x, y, bossMotes(), 110f, 0.85f, 9f);
     }
 
     /** Boss death: a larger shockwave layered over the standard collapse treatment. */

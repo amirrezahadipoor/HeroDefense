@@ -36,7 +36,7 @@ final class PremiumVfxRestraintTest {
 
         particles.clear();
         particles.emitBossEntrance(0f, 0f);
-        assertEquals(1, count(particles, ParticleType.BOSS_SHOCKWAVE));
+        assertEquals(2, count(particles, ParticleType.BOSS_SHOCKWAVE));
         assertTrue(count(particles, ParticleType.BOSS_DUST)
             <= Math.round(VfxBudget.NORMAL_HIT_MAX_MOTES * VfxBudget.BOSS_MULTIPLIER));
 

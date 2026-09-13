@@ -341,9 +341,9 @@ public final class AndroidTouchSmokeTest {
                 game.screenState() == GameScreenState.PLAYING
                     && game.gameState().aliveBosses.stream().anyMatch(boss -> boss.alive)
             );
-            SystemClock.sleep(140L); // First rendered frames after the arrival shockwave spawns
+            SystemClock.sleep(420L); // Arrival shockwaves are mid-expansion
             captureScreen("vfx-boss-entrance-premium-v2.png");
-            SystemClock.sleep(1_600L);
+            SystemClock.sleep(1_300L);
             for (int frame = 0; frame < 4; frame++) { // Burst so trails and impacts are caught in flight
                 captureScreen("vfx-combat-" + frame + "-premium-v2.png");
                 SystemClock.sleep(230L);
