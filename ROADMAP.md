@@ -308,7 +308,7 @@ Give every new run a short spoken opening, then sweep the game for bugs and roug
 - [x] BUG: the in-game inventory tap never passed `GameSettings`, so the auto-sell chips were inert on device; Anvil forges were also not saved. Fixed, forge now saves + plays the purchase cue, and `AndroidTouchSmokeTest` toggles the COMMON chip by touch.
 - [x] Continue on the save written right after New Game (wave 1 never started) replays the opening instead of dropping straight into combat (`HeroDefenseGame.untouchedFirstWave`, `OpeningReplayTest`); showcase saves in the Android smoke test moved to wave 2.
 - [x] CI evidence hygiene: the API-35 emulator's Quickstep ANR dialog was overlaying every capture; `scripts/android-touch-test.sh` now sets `hide_error_dialogs` and stops the launcher before the touch run.
-- [ ] Systematic pass over every screen and flow (menu, HUD, combat, ceremony, opening, level-up, cards, inventory/anvil/auto-sell, shop, pause, settings, defeat/victory) for visual glitches, state-machine gaps, save/continue edge cases, and stale copy; each fix recorded here with its regression test.
+- [x] Systematic pass over every screen and flow (menu, HUD, combat, ceremony, opening, level-up, cards, inventory/anvil/auto-sell, shop, pause, settings, defeat/victory): flow transitions re-audited (`GameFlowController`), `EdgeProbe` save scenarios all pass, on-device captures reviewed for every overlay, stale “Ten-level combat skills” shop copy replaced now that skills are endless; every fix above carries its regression test.
 
 ### 19.3 Economy-Aware Rebalance
 

@@ -120,7 +120,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         icons.draw(batch, "close", 588f, 1138f, 64f, closeState);
         drawText(batch, "WORLD TREE ARMORY", 40f, 1240f, 1.36f, GOLD);
         drawText(batch, tab == Tab.SKILLS
-                ? "Ten-level combat skills; costly, permanent, decisive"
+                ? "Combat skills; costly, permanent, no ceiling"
                 : "Permanent upgrades bought only with earned coins",
             40f, 1200f, 0.72f, SUBTLE);
         icons.draw(batch, "coin", 44f, 1152f, 34f);
