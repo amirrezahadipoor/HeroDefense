@@ -286,7 +286,7 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 ### 18.4 The Second World Tree
 
 - [ ] Render and review Hero Walk, Plant, and Water clips plus seed, watering can, and a sapling-to-tree growth sequence through the Blender pipeline.
-- [ ] Wave 100 cinematic: combat pauses, the Hero walks beside the World Tree, plants a seed, waters it, and a second tree grows in place; touch-skippable, save-safe, deterministic.
+- [ ] Wave 100 cinematic: combat pauses, the Hero walks beside the World Tree, plants a seed, waters it, a second tree grows in place, and the Hero walks back to the anchor and resumes auto-combat; the player never controls the Hero. Touch-skippable, save-safe, deterministic.
 - [ ] Waves 101–200 with the second tree standing as a permanent monument; Game Over now shows the monsters destroying every planted tree instead of ending abruptly.
 - [ ] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated.
 
