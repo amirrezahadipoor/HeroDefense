@@ -414,7 +414,6 @@ def build_rootling() -> BuiltModel:
             (0.0, 0.0, 0.05 * side),
         )
         attach(toe, f"foot.{('L' if side < 0 else 'R')}")
-    objects.append(add_contact_shadow(1.2, 0.56))
     return BuiltModel(
         armature,
         objects,
@@ -506,7 +505,6 @@ def build_stonekin() -> BuiltModel:
     for index, (x, z) in enumerate(((-0.27, 1.50), (-0.20, 1.42), (0.30, 0.88))):
         moss = add_leaf(f"stonekin_moss_{index}", (x, -0.37, z), (0.11, 0.03, 0.075), mats["moss"], (0.0, 0.0, 0.35 * (-1 if x < 0 else 1)))
         attach(moss, "chest" if z > 1.0 else "spine")
-    objects.append(add_contact_shadow(1.42, 0.63))
     return BuiltModel(
         armature,
         objects,
@@ -594,7 +592,6 @@ def build_gloom_wolf() -> BuiltModel:
         attach(segment, "pelvis")
     tail_tip = add_leaf("gloom_wolf_tail_tip", tail_points[-1], (0.20, 0.14, 0.25), mats["void"], (0.2, -0.35, 0.15))
     attach(tail_tip, "pelvis")
-    objects.append(add_contact_shadow(1.50, 0.68))
     return BuiltModel(
         armature,
         objects,
@@ -681,7 +678,6 @@ def build_fungal_brute() -> BuiltModel:
     for index, (x, z) in enumerate(((-0.20, 1.14), (0.0, 0.96), (0.22, 1.18))):
         wart = add_torus(f"fungal_brute_belly_spore_{index}", (x, -0.45, z), 0.065, 0.025, mats["spore"], (math.pi / 2, 0.0, 0.0))
         attach(wart, "spine")
-    objects.append(add_contact_shadow(1.48, 0.66))
     return BuiltModel(
         armature,
         objects,

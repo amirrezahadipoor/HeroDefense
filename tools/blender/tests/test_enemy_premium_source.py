@@ -40,7 +40,6 @@ class EnemyPremiumSourceTest(unittest.TestCase):
             self.assertIn('"visualQuality": "premium-v2"', segment)
             for value in provenance:
                 self.assertIn(value, segment)
-            self.assertIn("add_contact_shadow", segment)
 
     def test_every_enemy_profile_authors_all_four_clips(self) -> None:
         source = (BLENDER_ROOT / "hd_pipeline" / "rig.py").read_text(encoding="utf-8")

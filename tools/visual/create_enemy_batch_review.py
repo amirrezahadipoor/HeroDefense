@@ -64,8 +64,8 @@ def main() -> None:
 
 
 def audit_batch(baseline: Path, candidate: Path) -> dict:
-    baseline_manifest_path = baseline / "manifest.json"
-    candidate_manifest_path = candidate / "manifest.json"
+    baseline_manifest_path = baseline / "asset_manifest.json"
+    candidate_manifest_path = candidate / "asset_manifest.json"
     baseline_manifest = read_json(baseline_manifest_path)
     candidate_manifest = read_json(candidate_manifest_path)
     expected_keys = [record[0] for record in ENEMIES]
@@ -97,6 +97,9 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
             raise ValueError(f"Baseline manifest is missing {key}")
         entry = candidate_entries[key]
         validate_metadata(entry, key, revision, rig_profile, animation_profile, required_bones)
+        metadata_entry = read_json(candidate / "sprites" / f"{key}.json")
+        if metadata_entry != entry:
+            raise ValueError(f"{key} manifest and per-asset metadata differ")
         baseline_character = CharacterFrames(baseline, key)
         candidate_character = CharacterFrames(candidate, key)
         clip_records = {}
@@ -148,6 +151,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
 
         baseline_sheet = baseline / baseline_entries[key]["sheet"]
         candidate_sheet = candidate / entry["sheet"]
+        candidate_atlas = candidate / entry["atlas"]
+        candidate_metadata = candidate / "sprites" / f"{key}.json"
         baseline_hash = sha256(baseline_sheet)
         candidate_hash = sha256(candidate_sheet)
         if baseline_hash == candidate_hash:
@@ -162,6 +167,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
             "label": label,
             "baselineSheetSha256": baseline_hash,
             "candidateSheetSha256": candidate_hash,
+            "candidateAtlasSha256": sha256(candidate_atlas),
+            "candidateMetadataSha256": sha256(candidate_metadata),
             "modelRevision": revision,
             "rigProfile": rig_profile,
             "animationProfile": animation_profile,
