@@ -297,7 +297,7 @@ Give every new run a short spoken opening, then sweep the game for bugs and roug
 ### 19.1 Opening Cinematic
 
 - [x] New-run opening (English, before Wave 1): the camera zooms in on the Hero, a dark cloud rolls over the arena, and the Hero speaks in white text in three beats — "Can you protect the World Tree?!", "Can you?", "Are you sure?!" — then the camera eases back to the standard framing and Wave 1 begins. Touch-skippable, deterministic, never shown on Continue. (`gameplay/OpeningCinematic` timeline 7.8 s, camera zoom 0.58 with focus on the Hero, `render/OpeningCinematicRenderer` rolling cloud puffs + white speech; `startNewRun` enters `CINEMATIC` and spawns Wave 1 only when it ends.)
-- [ ] Opening ships with an on-device touch smoke flow and screen captures; the ROADMAP/CI stay green.
+- [x] Opening ships with an on-device touch smoke flow and screen captures (`opening-line-one/three-premium-v2.png`); CI run `34788282541` green.
 
 ### 19.2 Polish and Bug Sweep
 
