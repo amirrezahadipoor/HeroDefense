@@ -1,0 +1,92 @@
+{
+  "archiveSha256": "f711ca0482f6785dee004d8d8b30ec2a013f3955487649d19e2af76a763ec313",
+  "artifact": 10320901806,
+  "batch": "flow-surfaces-premium-v2",
+  "coverage": {
+    "endOfRunOutcomes": [
+      "victory",
+      "defeat"
+    ],
+    "frameFamilies": [
+      "button",
+      "panel"
+    ],
+    "levelUpPreview": [
+      "NOW",
+      "NEXT"
+    ],
+    "rewardContext": [
+      "bossIndex",
+      "powerBudget",
+      "permanence"
+    ],
+    "settingsStates": [
+      "ON",
+      "OFF"
+    ],
+    "sharedTypography": "OverlayText",
+    "surfaces": [
+      "PAUSE",
+      "SETTINGS",
+      "LEVEL_UP",
+      "CARD_CHOICE",
+      "GAME_OVER_VICTORY",
+      "GAME_OVER_DEFEAT"
+    ]
+  },
+  "decision": "accepted",
+  "device": {
+    "apiLevel": 35,
+    "orientation": "portrait",
+    "profile": "pixel_3a",
+    "touchOnly": true
+  },
+  "files": {
+    "defeat_emulator.png": {
+      "bytes": 249643,
+      "height": 2220,
+      "sha256": "96c24291f9f7007f608a46a0b2164871aa848121fb2ebdb1f4bec3184ba87111",
+      "width": 1080
+    },
+    "flow_surfaces_contact_sheet.png": {
+      "bytes": 307213,
+      "height": 747,
+      "sha256": "f625b5783e74f7b4c612270298d02da331d84d7623ac98de169c9785ab4f3b5c",
+      "width": 1936
+    },
+    "level_up_emulator.png": {
+      "bytes": 295326,
+      "height": 2220,
+      "sha256": "2ee029f13665f347d1840a05c82ea8ca9da6976f16fad4e4ef50eee264087e69",
+      "width": 1080
+    },
+    "pause_emulator.png": {
+      "bytes": 367398,
+      "height": 2220,
+      "sha256": "458588c1cf0d1d133e8384e94801c501fbef0b5bf1cabb7f1fb02a2910fb9d6b",
+      "width": 1080
+    },
+    "reward_cards_emulator.png": {
+      "bytes": 299603,
+      "height": 2220,
+      "sha256": "e9b5950081ca6db8e06c9dde7950b06faf19633050f16e4d3bcf7e4bf9bac110",
+      "width": 1080
+    },
+    "settings_emulator.png": {
+      "bytes": 191170,
+      "height": 2220,
+      "sha256": "639446345d7c1c1388b17a90261fc4dbe0376b93228bf1e05742378111766233",
+      "width": 1080
+    },
+    "victory_emulator.png": {
+      "bytes": 255632,
+      "height": 2220,
+      "sha256": "fce25ece80d49933196b95ed2205c76ffaef58e64b56e9b182d825e6496734de",
+      "width": 1080
+    }
+  },
+  "schemaVersion": 1,
+  "sourceCommit": "6316c383b27211ce6c10b9d10e82e4ec179203fd",
+  "workflowJob": 103747331693,
+  "workflowRun": 34766141882
+}

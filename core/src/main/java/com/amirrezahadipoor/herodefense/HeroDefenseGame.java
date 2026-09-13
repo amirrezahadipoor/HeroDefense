@@ -70,6 +70,7 @@ import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.LevelUpOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.MainMenuRenderer;
 import com.amirrezahadipoor.herodefense.render.ParticleRenderer;
+import com.amirrezahadipoor.herodefense.render.PauseOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
@@ -118,6 +119,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private MainMenuRenderer mainMenuRenderer;
     private ParticleRenderer particleRenderer;
     private ParticleSystem particleSystem;
+    private PauseOverlayRenderer pauseOverlayRenderer;
     private PauseTouchController pauseTouchController;
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
@@ -207,6 +209,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         levelUpOverlayRenderer = new LevelUpOverlayRenderer();
         mainMenuRenderer = new MainMenuRenderer();
         particleRenderer = new ParticleRenderer();
+        pauseOverlayRenderer = new PauseOverlayRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
@@ -353,6 +356,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (particleRenderer != null) {
             particleRenderer.close();
+        }
+        if (pauseOverlayRenderer != null) {
+            pauseOverlayRenderer.close();
         }
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
@@ -764,20 +770,25 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.SETTINGS) {
-            settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings, uiIconRenderer);
+            settingsOverlayRenderer.draw(
+                spriteBatch, camera.combined, settings, uiIconRenderer, uiFrameRenderer
+            );
         } else if (flow.state() == GameScreenState.LEVEL_UP) {
-            levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
+            levelUpOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
+            );
         } else if (flow.state() == GameScreenState.GAME_OVER) {
             gameOverOverlayRenderer.draw(
                 spriteBatch,
                 camera.combined,
                 gameState,
                 uiIconRenderer,
+                uiFrameRenderer,
                 gameOverPresentationSeconds
             );
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(
-                spriteBatch, camera.combined, gameState, uiIconRenderer
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.SHOP) {
             statShopOverlayRenderer.draw(
@@ -799,8 +810,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.PAUSED) {
-            inventoryOverlayRenderer.drawPauseMenu(
-                spriteBatch, camera.combined, uiIconRenderer, uiFrameRenderer
+            pauseOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
             );
         }
         touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);

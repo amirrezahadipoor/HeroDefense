@@ -1,79 +1,147 @@
 package com.amirrezahadipoor.herodefense.render;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.amirrezahadipoor.herodefense.gameplay.HeroStatCalculator;
 import com.amirrezahadipoor.herodefense.input.LevelUpTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.model.HeroStats;
 
 import java.util.Locale;
 
-/** Five large touch rows for spending every pending level-up talent point. */
+/** Premium level-up surface: five framed talent rows with explicit current-to-next previews. */
 public final class LevelUpOverlayRenderer implements AutoCloseable {
-    private final ShapeRenderer shapes = new ShapeRenderer();
-    private final BitmapFont font = new BitmapFont();
+    static final float HEADER_PANEL_X = 60f;
+    static final float HEADER_PANEL_Y = 1040f;
+    static final float HEADER_PANEL_WIDTH = 600f;
+    static final float HEADER_PANEL_HEIGHT = 180f;
 
-    public LevelUpOverlayRenderer() {
-        font.getData().setScale(1.25f);
-    }
+    private final ShapeRenderer shapes = new ShapeRenderer();
+    private final OverlayText text = new OverlayText();
+    private final HeroStatCalculator statCalculator = new HeroStatCalculator();
 
     public void draw(
-        SpriteBatch batch, Matrix4 projection, GameState state, UiIconRenderer icons
+        SpriteBatch batch,
+        Matrix4 projection,
+        GameState state,
+        UiIconRenderer icons,
+        UiFrameRenderer frames
     ) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.025f, 0.055f, 0.065f, 0.97f);
+        shapes.setColor(0.006f, 0.022f, 0.021f, 0.94f);
         shapes.rect(0f, 0f, 720f, 1280f);
-        for (int row = 0; row < HeroStat.values().length; row++) {
-            float y = LevelUpTouchLayout.BOTTOM + row * LevelUpTouchLayout.ROW_STRIDE;
-            shapes.setColor(0.10f, 0.20f, 0.19f, 1f);
-            shapes.rect(
-                LevelUpTouchLayout.LEFT,
-                y,
-                LevelUpTouchLayout.RIGHT - LevelUpTouchLayout.LEFT,
-                LevelUpTouchLayout.BUTTON_HEIGHT
-            );
-            shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-            shapes.rect(
-                LevelUpTouchLayout.LEFT,
-                y + LevelUpTouchLayout.BUTTON_HEIGHT - 5f,
-                LevelUpTouchLayout.RIGHT - LevelUpTouchLayout.LEFT,
-                5f
-            );
-        }
+        shapes.setColor(0.04f, 0.13f, 0.11f, 0.62f);
+        shapes.rect(0f, 1040f, 720f, 240f);
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
+        float rowWidth = LevelUpTouchLayout.RIGHT - LevelUpTouchLayout.LEFT;
+        boolean pointsAvailable = state.unspentTalentPoints > 0;
+
         batch.setProjectionMatrix(projection);
         batch.begin();
-        font.setColor(Color.valueOf("F2D58A"));
-        font.getData().setScale(1.75f);
-        font.draw(batch, "Level " + state.heroLevel, 275f, 1160f);
-        font.getData().setScale(1.15f);
-        font.setColor(Color.valueOf("F3E4BC"));
-        font.draw(batch, "Choose a stat · Points " + state.unspentTalentPoints, 210f, 1090f);
+        frames.draw(batch, UiFrameRenderer.Kind.PANEL, HEADER_PANEL_X, HEADER_PANEL_Y,
+            HEADER_PANEL_WIDTH, HEADER_PANEL_HEIGHT, true, false);
+        for (int row = 0; row < HeroStat.values().length; row++) {
+            float y = rowY(row);
+            frames.draw(batch, UiFrameRenderer.Kind.BUTTON, LevelUpTouchLayout.LEFT, y,
+                rowWidth, LevelUpTouchLayout.BUTTON_HEIGHT, pointsAvailable, false);
+        }
+
+        text.drawCentered(batch, "LEVEL " + state.heroLevel + " REACHED", 360f, 1188f, 1.62f,
+            OverlayText.GOLD);
+        text.drawCentered(batch, pointsLabel(state.unspentTalentPoints), 360f, 1132f, 0.96f,
+            OverlayText.IVORY);
+        text.drawCentered(batch, "Tap a talent to spend one point. Each choice is permanent.",
+            360f, 1084f, 0.70f, OverlayText.SUBTLE);
+
         for (int row = 0; row < HeroStat.values().length; row++) {
             HeroStat stat = HeroStat.values()[row];
-            float y = LevelUpTouchLayout.BOTTOM + row * LevelUpTouchLayout.ROW_STRIDE;
-            icons.draw(batch, stat.name().toLowerCase(Locale.ROOT), 105f, y + 25f, 80f);
-            font.getData().setScale(1.28f);
-            font.draw(batch, pretty(stat), 205f, y + 88f);
-            font.getData().setScale(1f);
-            font.draw(batch, description(stat), 205f, y + 42f);
-            font.draw(batch, "Current " + value(state, stat), 500f, y + 66f);
+            float y = rowY(row);
+            UiFrameRenderer.State rowState = frames.resolve(
+                pointsAvailable, false, LevelUpTouchLayout.LEFT, y,
+                rowWidth, LevelUpTouchLayout.BUTTON_HEIGHT
+            );
+            float offset = MainMenuRenderer.pressedOffset(rowState);
+            icons.draw(batch, stat.name().toLowerCase(Locale.ROOT), 112f, y + 25f + offset, 80f,
+                rowState);
+            text.draw(batch, pretty(stat).toUpperCase(Locale.ROOT), 214f, y + 104f + offset, 1.08f,
+                pointsAvailable ? OverlayText.IVORY : OverlayText.MUTED);
+            text.draw(batch, gainPerPoint(stat), 214f, y + 66f + offset, 0.68f,
+                OverlayText.SUBTLE);
+            text.draw(batch, "POINTS " + points(state, stat), 214f, y + 36f + offset, 0.60f,
+                OverlayText.GOLD);
+            text.drawRightAligned(batch, "NOW " + currentValue(statCalculator, state, stat),
+                606f, y + 92f + offset, 0.68f, OverlayText.SUBTLE);
+            text.drawRightAligned(batch, "NEXT " + nextValue(statCalculator, state, stat),
+                606f, y + 52f + offset, 0.86f,
+                pointsAvailable ? OverlayText.POSITIVE : OverlayText.MUTED);
         }
-        font.getData().setScale(1.25f);
         batch.end();
     }
 
-    private static int value(GameState state, HeroStat stat) {
+    static float rowY(int row) {
+        return LevelUpTouchLayout.BOTTOM + row * LevelUpTouchLayout.ROW_STRIDE;
+    }
+
+    static String pointsLabel(int unspentPoints) {
+        int points = Math.max(0, unspentPoints);
+        return points == 1 ? "1 TALENT POINT TO SPEND" : points + " TALENT POINTS TO SPEND";
+    }
+
+    static String gainPerPoint(HeroStat stat) {
+        return switch (stat) {
+            case STRENGTH -> "+" + fmt(HeroStats.DAMAGE_PER_STRENGTH) + " damage per attack";
+            case AGILITY -> "+" + fmt(HeroStats.ATTACK_SPEED_PER_AGILITY) + " attacks per second";
+            case LUCK -> "+" + Math.round((HeroStats.DROP_MULTIPLIER_PER_LUCK - 1f) * 100f)
+                + "% item-drop multiplier";
+            case DODGE -> "+" + fmt(HeroStats.DODGE_CHANCE_PER_POINT * 100f)
+                + "% dodge chance (cap " + Math.round(HeroStats.MAX_DODGE_CHANCE * 100f) + "%)";
+            case HEALTH -> "+" + Math.round(HeroStats.MAX_HEALTH_PER_POINT) + " maximum HP";
+        };
+    }
+
+    static String currentValue(HeroStatCalculator calculator, GameState state, HeroStat stat) {
+        return formatValue(stat, derived(calculator, state, stat, 0));
+    }
+
+    static String nextValue(HeroStatCalculator calculator, GameState state, HeroStat stat) {
+        return formatValue(stat, derived(calculator, state, stat, 1));
+    }
+
+    private static float derived(
+        HeroStatCalculator calculator, GameState state, HeroStat stat, int extraPoints
+    ) {
+        int total = calculator.points(state, stat) + extraPoints;
+        return switch (stat) {
+            case STRENGTH -> HeroStats.BASE_DAMAGE + total * HeroStats.DAMAGE_PER_STRENGTH;
+            case AGILITY -> HeroStats.BASE_ATTACKS_PER_SECOND
+                + total * HeroStats.ATTACK_SPEED_PER_AGILITY;
+            case LUCK -> (float) Math.pow(HeroStats.DROP_MULTIPLIER_PER_LUCK, total);
+            case DODGE -> Math.min(HeroStats.MAX_DODGE_CHANCE,
+                total * HeroStats.DODGE_CHANCE_PER_POINT);
+            case HEALTH -> HeroStats.BASE_MAX_HEALTH + total * HeroStats.MAX_HEALTH_PER_POINT;
+        };
+    }
+
+    private static String formatValue(HeroStat stat, float value) {
+        return switch (stat) {
+            case STRENGTH -> fmt(value) + " dmg";
+            case AGILITY -> fmt(value) + " aps";
+            case LUCK -> "x" + String.format(Locale.ROOT, "%.2f", value);
+            case DODGE -> fmt(value * 100f) + "%";
+            case HEALTH -> Math.round(value) + " HP";
+        };
+    }
+
+    private static int points(GameState state, HeroStat stat) {
         return switch (stat) {
             case STRENGTH -> state.hero.stats.strength;
             case AGILITY -> state.hero.stats.agility;
@@ -83,24 +151,20 @@ public final class LevelUpOverlayRenderer implements AutoCloseable {
         };
     }
 
-    private static String description(HeroStat stat) {
-        return switch (stat) {
-            case STRENGTH -> "+2 damage";
-            case AGILITY -> "+0.03 attacks/second";
-            case LUCK -> "+2% item-drop multiplier";
-            case DODGE -> "+0.5% dodge chance";
-            case HEALTH -> "+10 maximum HP";
-        };
+    private static String fmt(float value) {
+        if (Math.abs(value - Math.round(value)) < 0.0005f) return Integer.toString(Math.round(value));
+        String formatted = String.format(Locale.ROOT, "%.2f", value);
+        return formatted.endsWith("0") ? formatted.substring(0, formatted.length() - 1) : formatted;
     }
 
     private static String pretty(HeroStat stat) {
-        String text = stat.name().toLowerCase(Locale.ROOT);
-        return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+        String value = stat.name().toLowerCase(Locale.ROOT);
+        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
     }
 
     @Override
     public void close() {
-        font.dispose();
+        text.close();
         shapes.dispose();
     }
 }

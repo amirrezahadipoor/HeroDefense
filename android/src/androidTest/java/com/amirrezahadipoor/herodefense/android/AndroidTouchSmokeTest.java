@@ -83,6 +83,8 @@ public final class AndroidTouchSmokeTest {
                 1115f + correction[1]
             ); // Pause HUD target, calibrated from the preceding real touch.
             await("paused", () -> game.screenState() == GameScreenState.PAUSED);
+            SystemClock.sleep(600L);
+            captureScreen("pause-premium-v2.png");
 
             tapWorld(surface, 360f + correction[0], 1_000f + correction[1]); // Stat Shop
             await("shop opens over pause", () -> game.screenState() == GameScreenState.SHOP);
@@ -199,12 +201,125 @@ public final class AndroidTouchSmokeTest {
             float[] correction = touchCorrection(game, 360f, 570f);
             await("reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
             assertEquals(3, game.gameState().pendingRewardCards.size());
+            SystemClock.sleep(800L);
+            captureScreen("reward-cards-premium-v2.png");
 
             tapWorld(surface, 360f + correction[0], 890f + correction[1]); // First card
             await("card applied", () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().chosenRewardCards.size());
             assertEquals(6, game.gameState().waveNumber);
             assertFalse(game.gameState().awaitingBossReward);
+        }
+    }
+
+    @Test
+    public void touchTogglesSettingsFromMainMenu() {
+        clearRunSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("main menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 380f); // Settings
+            await("settings touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 380f);
+            await("settings opens", () -> game.screenState() == GameScreenState.SETTINGS);
+            tapWorld(surface, 360f + correction[0], 775f + correction[1]); // Sound toggle
+            SystemClock.sleep(700L);
+            captureScreen("settings-premium-v2.png");
+            tapWorld(surface, 360f + correction[0], 775f + correction[1]); // Restore sound
+            tapWorld(surface, 620f + correction[0], 1_170f + correction[1]); // Close
+            await("settings closes", () -> game.screenState() == GameScreenState.MENU);
+        }
+    }
+
+    @Test
+    public void touchSpendsTalentPointsFromPremiumLevelUp() {
+        prepareLevelUpSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("level-up save menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("level-up overlay", () -> game.screenState() == GameScreenState.LEVEL_UP);
+            assertEquals(2, game.gameState().unspentTalentPoints);
+            SystemClock.sleep(800L);
+            captureScreen("level-up-premium-v2.png");
+
+            tapWorld(surface, 360f + correction[0], 295f + correction[1]); // Strength row
+            await("first point spent", () -> game.gameState().unspentTalentPoints == 1);
+            assertEquals(GameScreenState.LEVEL_UP, game.screenState());
+            tapWorld(surface, 360f + correction[0], 895f + correction[1]); // Health row
+            await("second point resumes play", () -> game.screenState() == GameScreenState.PLAYING);
+            assertEquals(1, game.gameState().hero.stats.strength);
+            assertEquals(1, game.gameState().hero.stats.health);
+        }
+    }
+
+    @Test
+    public void touchRestartsFromPremiumVictorySummary() {
+        prepareVictorySave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("victory save menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue the final reward choice
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("final reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
+            tapWorld(surface, 360f + correction[0], 890f + correction[1]); // Choose first card
+            await("victory summary", () ->
+                game.screenState() == GameScreenState.GAME_OVER && game.gameState().runComplete
+            );
+            SystemClock.sleep(800L);
+            captureScreen("victory-premium-v2.png");
+
+            tapWorld(surface, 360f + correction[0], 290f + correction[1]); // Defend again
+            await("fresh run", () ->
+                game.screenState() == GameScreenState.PLAYING && game.gameState().waveNumber == 1
+            );
+            assertFalse(game.gameState().runComplete);
+        }
+    }
+
+    @Test
+    public void touchRestartsFromPremiumDefeatSummary() {
+        prepareDefeatSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("defeat save menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue the doomed one-HP run
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("doomed wave", () -> game.screenState() == GameScreenState.PLAYING);
+            await("hero falls to the first melee hit", 20_000L, () ->
+                game.screenState() == GameScreenState.GAME_OVER
+            );
+            assertFalse(game.gameState().runComplete);
+            assertFalse(game.gameState().hero.alive);
+            SystemClock.sleep(1_800L); // Let the World Tree destruction reveal finish
+            captureScreen("defeat-premium-v2.png");
+
+            tapWorld(surface, 360f + correction[0], 290f + correction[1]); // Restart at Wave 1
+            await("restarted run", () ->
+                game.screenState() == GameScreenState.PLAYING
+                    && game.gameState().hero.alive
+                    && game.gameState().waveNumber == 1
+            );
         }
     }
 
@@ -303,7 +418,11 @@ public final class AndroidTouchSmokeTest {
     }
 
     private static void await(String label, BooleanSupplier condition) {
-        long deadline = SystemClock.uptimeMillis() + 5_000L;
+        await(label, 5_000L, condition);
+    }
+
+    private static void await(String label, long timeoutMillis, BooleanSupplier condition) {
+        long deadline = SystemClock.uptimeMillis() + timeoutMillis;
         while (SystemClock.uptimeMillis() < deadline) {
             if (condition.getAsBoolean()) return;
             SystemClock.sleep(50L);
@@ -362,6 +481,48 @@ public final class AndroidTouchSmokeTest {
         state.shopUpgradeLevels.put(HeroStat.AGILITY.name(), 2);
         state.shopUpgradeLevels.put(HeroStat.LUCK.name(), 20);
         state.shopUpgradeLevels.put(HeroStat.HEALTH.name(), 1);
+        String json = new GameStateCodec().encode(state);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertTrue(context.getSharedPreferences(SAVE_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .putString("run.primary", json)
+            .commit());
+    }
+
+    private static void prepareLevelUpSave() {
+        GameState state = GameState.newRun(883L);
+        state.waveNumber = 3;
+        state.heroLevel = 3;
+        state.unspentTalentPoints = 2;
+        state.waveActive = true; // Mirrors a level-up earned on the wave's final kill
+        writeSave(state);
+    }
+
+    private static void prepareVictorySave() {
+        GameState state = GameState.newRun(884L);
+        state.waveNumber = 100;
+        state.heroLevel = 64;
+        state.totalKills = 4_120;
+        state.totalKillCoinsEarned = 38_500;
+        state.defeatedBosses = 19;
+        new BossRewardCardSystem().prepareChoices(state, 20);
+        writeSave(state);
+    }
+
+    private static void prepareDefeatSave() {
+        GameState state = GameState.newRun(885L);
+        state.waveNumber = 37;
+        state.heroLevel = 22;
+        state.totalKills = 1_204;
+        state.totalKillCoinsEarned = 9_310;
+        state.defeatedBosses = 7;
+        state.simulationSpeed = 3f;
+        state.hero.health = 1f;
+        writeSave(state);
+    }
+
+    private static void writeSave(GameState state) {
         String json = new GameStateCodec().encode(state);
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertTrue(context.getSharedPreferences(SAVE_NAME, Context.MODE_PRIVATE)
