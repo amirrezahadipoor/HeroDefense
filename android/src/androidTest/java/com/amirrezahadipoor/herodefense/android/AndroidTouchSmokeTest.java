@@ -21,6 +21,7 @@ import com.amirrezahadipoor.herodefense.GameScreenState;
 import com.amirrezahadipoor.herodefense.HeroDefenseGame;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.GameStateCodec;
 
@@ -151,6 +152,35 @@ public final class AndroidTouchSmokeTest {
             captureScreen("inventory-sell-feedback-premium-v2.png");
             tapWorld(surface, 620f + correction[0], 1_160f + correction[1]);
             await("inventory showcase closes", () -> game.screenState() == GameScreenState.PLAYING);
+        }
+    }
+
+    @Test
+    public void touchReviewsAffordabilityAndPurchasesFromPausedShop() {
+        prepareShopShowcaseSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("shop showcase menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f);
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("shop showcase run", () -> game.screenState() == GameScreenState.PLAYING);
+            tapWorld(surface, 450f + correction[0], 76f + correction[1]);
+            await("premium shop", () -> game.screenState() == GameScreenState.SHOP);
+            SystemClock.sleep(1_000L);
+            captureScreen("shop-affordability-premium-v2.png");
+
+            tapWorld(surface, 360f + correction[0], 990f + correction[1]);
+            await("purchase confirmation", () -> game.shopFeedbackMessage() != null);
+            assertEquals(25, game.gameState().coins);
+            SystemClock.sleep(100L);
+            captureScreen("shop-purchase-feedback-premium-v2.png");
+            tapWorld(surface, 620f + correction[0], 1_170f + correction[1]);
+            await("shop showcase closes", () -> game.screenState() == GameScreenState.PLAYING);
         }
     }
 
@@ -317,6 +347,21 @@ public final class AndroidTouchSmokeTest {
         }) {
             state.inventory.add(EquipmentCatalog.byId(id).createItem());
         }
+        String json = new GameStateCodec().encode(state);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertTrue(context.getSharedPreferences(SAVE_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .putString("run.primary", json)
+            .commit());
+    }
+
+    private static void prepareShopShowcaseSave() {
+        GameState state = GameState.newRun(882L);
+        state.coins = 80;
+        state.shopUpgradeLevels.put(HeroStat.AGILITY.name(), 2);
+        state.shopUpgradeLevels.put(HeroStat.LUCK.name(), 20);
+        state.shopUpgradeLevels.put(HeroStat.HEALTH.name(), 1);
         String json = new GameStateCodec().encode(state);
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertTrue(context.getSharedPreferences(SAVE_NAME, Context.MODE_PRIVATE)
