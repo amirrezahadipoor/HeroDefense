@@ -105,7 +105,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         batch.begin();
         drawInventoryFrames(batch, state, controller, frames);
         if (controller.feedbackMessage() != null) {
-            frames.draw(batch, UiFrameRenderer.Kind.PANEL, 130f, 202f, 460f, 42f, true, false);
+            frames.draw(batch, UiFrameRenderer.Kind.PANEL, 110f, 195f, 500f, 60f, true, false);
         }
         batch.end();
 
@@ -168,13 +168,13 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
                 - InventoryTouchLayout.SLOT_HEIGHT
                 - row * InventoryTouchLayout.SLOT_ROW_STRIDE;
             Item item = state.equippedItems.get(slot.name());
-            drawText(batch, pretty(slot.name()).toUpperCase(Locale.ROOT), x + 16f, y + 74f, 0.62f, GOLD);
+            drawText(batch, pretty(slot.name()).toUpperCase(Locale.ROOT), x + 30f, y + 70f, 0.64f, GOLD);
             if (item == null) {
                 drawText(batch, "Empty slot", x + 112f, y + 39f, 0.78f, MUTED);
             } else {
                 drawIcon(batch, item, x + 14f, y + 8f, 58f, visibleIcons);
                 drawText(batch, item.name, x + 80f, y + 41f, 0.78f, IVORY);
-                drawText(batch, prettyOrUnknown(item.tier), x + 222f, y + 70f, 0.54f, rarityColor(item.tier));
+                drawText(batch, prettyOrUnknown(item.tier), x + 220f, y + 66f, 0.58f, rarityColor(item.tier));
             }
         }
 
@@ -235,7 +235,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         if (feedback != null) {
             Color feedbackColor = new Color(GOLD);
             feedbackColor.a = controller.feedbackAlpha();
-            drawCentered(batch, feedback, 360f, 231f, 0.72f, feedbackColor);
+            drawCentered(batch, feedback, 360f, 234f, 0.82f, feedbackColor);
         }
         batch.end();
         disposeHiddenIcons(visibleIcons);
@@ -302,7 +302,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     }
 
     private void drawDetails(SpriteBatch batch, GameState state, Item selected) {
-        float x = InventoryTouchLayout.DETAILS_X + 16f;
+        float x = InventoryTouchLayout.DETAILS_X + 26f;
         float top = InventoryTouchLayout.DETAILS_Y + InventoryTouchLayout.DETAILS_HEIGHT - 25f;
         if (selected == null) {
             drawText(batch, "SELECT AN ITEM", x, top, 0.82f, SUBTLE);
@@ -326,7 +326,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         );
         drawText(
             batch,
-            details.equipped() ? "CURRENTLY EQUIPPED" : "IN BACKPACK",
+            details.equipped() ? "CURRENTLY EQUIPPED" : "IN BAG",
             x,
             top - 73f,
             0.58f,
@@ -334,7 +334,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         );
         drawText(
             batch,
-            "VS  " + (details.comparedItemName() == null ? "EMPTY SLOT" : details.comparedItemName()),
+            "COMPARE: " + (details.comparedItemName() == null ? "EMPTY SLOT" : details.comparedItemName()),
             x,
             top - 108f,
             0.60f,
