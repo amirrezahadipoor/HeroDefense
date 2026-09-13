@@ -391,7 +391,9 @@ final class PremiumAssetContractTest {
             case "hero", "enemy", "boss", "equipment" -> Map.of(
                 "idle", 6, "attack", 8, "hit", 4, "death", 10
             );
-            case "world_tree" -> Map.of("idle", 6);
+            case "world_tree" -> "world_tree_damaged".equals(key)
+                ? Map.of("idle", 6, "destroy", 10)
+                : Map.of("idle", 6);
             default -> Map.of("idle", 1);
         };
         assertEquals(expected.size(), clips.size, key + " clip count");

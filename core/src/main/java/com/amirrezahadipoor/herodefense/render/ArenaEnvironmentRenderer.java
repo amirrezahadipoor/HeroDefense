@@ -10,9 +10,8 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 
 /** Draws the reviewed Blender-rendered forest floor, props, and defended World Tree. */
 public final class ArenaEnvironmentRenderer implements AutoCloseable {
-    private static final float FRAME_RATE = 12f;
-    private static final float TREE_SIZE = 270f;
-    private static final float TREE_FEET_OFFSET = 25f;
+    private static final float TREE_SIZE = 330f;
+    private static final float TREE_FEET_OFFSET = 31f;
 
     private static final float[][] CRYSTAL_PLACEMENTS = {
         {18f, 150f, 0f},
@@ -27,6 +26,9 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
     private final TextureAtlas damagedTreeAtlas;
     private final Array<TextureAtlas.AtlasRegion> healthyTreeFrames;
     private final Array<TextureAtlas.AtlasRegion> damagedTreeFrames;
+    private final Array<TextureAtlas.AtlasRegion> destroyedTreeFrames;
+    private final WorldTreeAnimationController treeAnimation =
+        new WorldTreeAnimationController();
 
     public ArenaEnvironmentRenderer() {
         for (int index = 0; index < 3; index++) {
@@ -42,19 +44,29 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
         healthyTreeFrames = requireFrames(
             healthyTreeAtlas,
             "world_tree_healthy_idle",
-            6
+            WorldTreeAnimationController.IDLE_FRAME_COUNT
         );
         damagedTreeFrames = requireFrames(
             damagedTreeAtlas,
             "world_tree_damaged_idle",
-            6
+            WorldTreeAnimationController.IDLE_FRAME_COUNT
+        );
+        destroyedTreeFrames = requireFrames(
+            damagedTreeAtlas,
+            "world_tree_damaged_destroy",
+            WorldTreeAnimationController.DESTROY_FRAME_COUNT
         );
     }
 
-    public void draw(SpriteBatch batch, GameState state, float runTimeSeconds) {
+    public void draw(
+        SpriteBatch batch,
+        GameState state,
+        float runTimeSeconds,
+        float presentationDeltaSeconds
+    ) {
         drawGround(batch);
         drawCrystals(batch);
-        drawWorldTree(batch, state, runTimeSeconds);
+        drawWorldTree(batch, state, runTimeSeconds, presentationDeltaSeconds);
     }
 
     private void drawGround(SpriteBatch batch) {
@@ -75,17 +87,22 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
         }
     }
 
-    private void drawWorldTree(SpriteBatch batch, GameState state, float runTimeSeconds) {
-        boolean destroyed = state == null
-            || state.worldTreeHealth <= 0f
-            || state.hero == null
-            || !state.hero.alive;
-        Array<TextureAtlas.AtlasRegion> frames = destroyed
-            ? damagedTreeFrames
-            : healthyTreeFrames;
-        int frameIndex = Math.floorMod((int) (runTimeSeconds * FRAME_RATE), frames.size);
+    private void drawWorldTree(
+        SpriteBatch batch,
+        GameState state,
+        float runTimeSeconds,
+        float presentationDeltaSeconds
+    ) {
+        WorldTreeAnimationController.Selection selection = treeAnimation.select(
+            state, runTimeSeconds, presentationDeltaSeconds
+        );
+        Array<TextureAtlas.AtlasRegion> frames = switch (selection.state()) {
+            case HEALTHY -> healthyTreeFrames;
+            case DAMAGED -> damagedTreeFrames;
+            case DESTROYING, DESTROYED -> destroyedTreeFrames;
+        };
         batch.draw(
-            frames.get(frameIndex),
+            frames.get(selection.frameIndex()),
             WorldLayout.WORLD_TREE_X - TREE_SIZE * 0.5f,
             WorldLayout.WORLD_TREE_Y - TREE_FEET_OFFSET,
             TREE_SIZE,

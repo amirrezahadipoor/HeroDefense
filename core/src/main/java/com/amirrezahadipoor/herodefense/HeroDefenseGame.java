@@ -143,6 +143,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Viewport viewport;
     private float simulationSeconds;
+    private float gameOverPresentationSeconds;
 
     @Override
     public void create() {
@@ -227,7 +228,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
         }
-        drawCurrentState();
+        if (flow.state() == GameScreenState.GAME_OVER && !gameState.runComplete) {
+            gameOverPresentationSeconds = Math.min(
+                10f,
+                gameOverPresentationSeconds + deltaSeconds
+            );
+        } else {
+            gameOverPresentationSeconds = 0f;
+        }
+        drawCurrentState(deltaSeconds);
     }
 
     public boolean readyForTouch() {
@@ -399,7 +408,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.GAME_OVER) {
-                    if (GameOverTouchLayout.restartAt(worldX, worldY)) startNewRun();
+                    if (GameOverOverlayRenderer.isInteractive(
+                        gameOverPresentationSeconds,
+                        gameState.runComplete
+                    ) && GameOverTouchLayout.restartAt(worldX, worldY)) {
+                        startNewRun();
+                    }
                     return true;
                 }
                 if (flow.state() == GameScreenState.CARD_CHOICE) {
@@ -514,6 +528,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         gameState = GameState.newRun(System.currentTimeMillis());
         new StarterLoadoutSystem().provisionOnce(gameState);
         simulationSeconds = 0f;
+        gameOverPresentationSeconds = 0f;
         hitStopSystem.clear();
         particleSystem.clear();
         floatingCoinTextSystem.clear();
@@ -663,7 +678,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         simulationSeconds += simulationDelta;
     }
 
-    private void drawCurrentState() {
+    private void drawCurrentState(float presentationDeltaSeconds) {
         float tint = switch (flow.state()) {
             case MENU -> 0.07f;
             case SETTINGS -> 0.065f;
@@ -689,7 +704,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             camera.update();
             spriteBatch.setProjectionMatrix(camera.combined);
             spriteBatch.begin();
-            arenaEnvironmentRenderer.draw(spriteBatch, gameState, simulationSeconds);
+            arenaEnvironmentRenderer.draw(
+                spriteBatch,
+                gameState,
+                simulationSeconds,
+                presentationDeltaSeconds
+            );
             combatEntityRenderer.drawActors(spriteBatch, gameState, simulationSeconds);
             int heroFrame = heroAnimationController.frameIndex(gameState.hero);
             heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
@@ -719,7 +739,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         } else if (flow.state() == GameScreenState.LEVEL_UP) {
             levelUpOverlayRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
         } else if (flow.state() == GameScreenState.GAME_OVER) {
-            gameOverOverlayRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
+            gameOverOverlayRenderer.draw(
+                spriteBatch,
+                camera.combined,
+                gameState,
+                uiIconRenderer,
+                gameOverPresentationSeconds
+            );
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
         } else if (flow.state() == GameScreenState.SHOP) {

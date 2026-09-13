@@ -18,13 +18,8 @@ from .models import (
 from .rig import parent_to_bone
 
 
-def build_world_tree(damaged: bool = False) -> BuiltModel:
-    bark = MATERIALS.get("tree_bark", PALETTE["wood"])
-    dark_bark = MATERIALS.get("tree_dark_bark", "#422D28")
-    leaf = MATERIALS.get("tree_leaf", PALETTE["hero_green"])
-    light_leaf = MATERIALS.get("tree_light_leaf", PALETTE["hero_leaf"])
-    heart = MATERIALS.get("tree_heart", "#7DE2A7")
-
+def _create_world_tree_armature() -> bpy.types.Object:
+    """Create the segmented premium-v2 tree rig used by both health states."""
     armature_data = bpy.data.armatures.new("world_tree_armature_data")
     armature = bpy.data.objects.new("world_tree_armature", armature_data)
     bpy.context.collection.objects.link(armature)
@@ -33,11 +28,19 @@ def build_world_tree(damaged: bool = False) -> BuiltModel:
     bpy.ops.object.mode_set(mode="EDIT")
     bones = {}
     layout = {
-        "root": ((0, 0, 0), (0, 0, 0.25), None),
-        "trunk": ((0, 0, 0.25), (0, 0, 2.8), "root"),
-        "crown": ((0, 0, 2.4), (0, 0, 3.3), "trunk"),
-        "branch.L": ((0, 0, 2.25), (-1.5, 0.0, 3.2), "trunk"),
-        "branch.R": ((0, 0, 2.25), (1.5, 0.0, 3.2), "trunk"),
+        "root": ((0.0, 0.0, 0.02), (0.0, 0.0, 0.32), None),
+        "trunk.lower": ((0.0, 0.0, 0.32), (0.0, 0.0, 1.72), "root"),
+        "trunk.upper": ((0.0, 0.0, 1.72), (0.0, 0.0, 3.00), "trunk.lower"),
+        "crown": ((0.0, 0.0, 2.72), (0.0, 0.0, 4.18), "trunk.upper"),
+        "branch.L": ((-0.08, 0.0, 1.92), (-1.20, 0.02, 2.96), "trunk.upper"),
+        "branch.R": ((0.08, 0.0, 1.92), (1.20, 0.02, 2.96), "trunk.upper"),
+        "bough.L": ((-1.05, 0.02, 2.82), (-1.92, 0.04, 3.68), "branch.L"),
+        "bough.R": ((1.05, 0.02, 2.82), (1.92, 0.04, 3.68), "branch.R"),
+        "canopy.L": ((-0.70, 0.0, 3.12), (-1.12, 0.0, 4.08), "crown"),
+        "canopy.R": ((0.70, 0.0, 3.12), (1.12, 0.0, 4.08), "crown"),
+        "heart": ((0.0, -0.34, 1.18), (0.0, -0.34, 1.90), "trunk.lower"),
+        "debris.L": ((-1.45, -0.02, 3.66), (-1.45, -0.02, 3.94), "canopy.L"),
+        "debris.R": ((1.42, -0.02, 3.48), (1.42, -0.02, 3.76), "canopy.R"),
     }
     for name, (head, tail, parent) in layout.items():
         bone = armature.data.edit_bones.new(name)
@@ -47,61 +50,496 @@ def build_world_tree(damaged: bool = False) -> BuiltModel:
         bones[name] = bone
     bpy.ops.object.mode_set(mode="OBJECT")
     armature.select_set(False)
+    return armature
 
-    objects = []
-    trunk = add_cone("world_tree_trunk", (0, 0, 1.55), 0.72, 0.38, 2.9, dark_bark if damaged else bark, 9)
-    parent_to_bone(trunk, armature, "trunk")
-    objects.append(trunk)
-    for side, sign in (("L", -1), ("R", 1)):
-        branch = add_cylinder_between(
-            f"world_tree_branch_{side}", (0, 0, 2.25), (1.55 * sign, 0.10, 3.18), 0.22, bark, 7
-        )
-        parent_to_bone(branch, armature, f"branch.{side}")
-        objects.append(branch)
-    roots = ((-1.15, -0.2), (-0.58, -0.65), (0.62, -0.62), (1.18, -0.15), (0.0, 0.52))
-    for index, (x, y) in enumerate(roots):
-        root = add_cone(
-            f"world_tree_root_{index}", (x * 0.48, y * 0.48, 0.18), 0.25, 0.04, 1.55,
-            dark_bark if damaged and index % 2 else bark, 7, (0, math.radians(68), math.atan2(y, x)),
-        )
-        parent_to_bone(root, armature, "root")
-        objects.append(root)
-    foliage_count = 7 if damaged else 12
-    for index in range(foliage_count):
-        angle = index * math.tau / max(1, foliage_count)
-        radius = 0.55 + (index % 3) * 0.34
-        x, y = math.cos(angle) * radius, math.sin(angle) * radius * 0.55
-        z = 3.03 + (index % 4) * 0.22
-        foliage = add_ico(
-            f"world_tree_foliage_{index}", (x, y, z),
-            (0.66 + (index % 2) * 0.12, 0.54, 0.58),
-            light_leaf if index % 3 == 0 else leaf,
-            1,
-        )
-        parent_to_bone(foliage, armature, "crown")
-        objects.append(foliage)
-    heart_obj = add_ico("world_tree_heart", (0, -0.43, 1.65), (0.22, 0.12, 0.34), heart, 2)
-    parent_to_bone(heart_obj, armature, "trunk")
-    objects.append(heart_obj)
-    if damaged:
-        for index, x in enumerate((-0.18, 0.14)):
-            crack = add_cube(f"tree_crack_{index}", (x, -0.58, 1.28 + index * 0.5), (0.05, 0.025, 0.42), heart)
-            crack.rotation_euler.y = (-0.24 if index == 0 else 0.32)
-            parent_to_bone(crack, armature, "trunk")
-            objects.append(crack)
 
-    # A real armature action drives a subtle crown sway in both states.
+def _reset_world_tree_pose(armature: bpy.types.Object) -> None:
+    for bone in armature.pose.bones:
+        bone.rotation_mode = "XYZ"
+        bone.rotation_euler = (0.0, 0.0, 0.0)
+        bone.location = (0.0, 0.0, 0.0)
+        bone.scale = (1.0, 1.0, 1.0)
+
+
+def _tree_key(
+    armature: bpy.types.Object,
+    frame: int,
+    *,
+    rotations: dict[str, tuple[float, float, float]] | None = None,
+    locations: dict[str, tuple[float, float, float]] | None = None,
+    scales: dict[str, tuple[float, float, float]] | None = None,
+) -> None:
+    rotations = rotations or {}
+    locations = locations or {}
+    scales = scales or {}
+    for bone_name in set(rotations) | set(locations) | set(scales):
+        bone = armature.pose.bones[bone_name]
+        if bone_name in rotations:
+            bone.rotation_euler = rotations[bone_name]
+            bone.keyframe_insert("rotation_euler", frame=frame, group=bone_name)
+        if bone_name in locations:
+            bone.location = locations[bone_name]
+            bone.keyframe_insert("location", frame=frame, group=bone_name)
+        if bone_name in scales:
+            bone.scale = scales[bone_name]
+            bone.keyframe_insert("scale", frame=frame, group=bone_name)
+
+
+def author_world_tree_actions(
+    armature: bpy.types.Object,
+    damaged: bool,
+) -> dict[str, bpy.types.Action]:
+    """Author a restrained living loop and the wounded tree's one-shot collapse."""
     armature.animation_data_create()
-    action = bpy.data.actions.new(f"world_tree_{'damaged' if damaged else 'healthy'}_idle")
-    action.use_fake_user = True
-    armature.animation_data.action = action
-    for frame, angle in ((1, -0.025), (4, 0.025), (6, -0.025)):
-        pose_bone = armature.pose.bones["crown"]
-        pose_bone.rotation_mode = "XYZ"
-        pose_bone.rotation_euler.y = angle
-        pose_bone.keyframe_insert("rotation_euler", frame=frame, group="crown")
-    return BuiltModel(armature, objects, {"state": "damaged" if damaged else "healthy", "rigged": True})
+    actions = {}
+    state = "damaged" if damaged else "healthy"
 
+    _reset_world_tree_pose(armature)
+    idle = bpy.data.actions.new(f"world_tree_{state}_idle")
+    idle.use_fake_user = True
+    armature.animation_data.action = idle
+    resting = {
+        "crown": (0.0, -0.022 if damaged else -0.010, 0.010),
+        "branch.L": (0.0, 0.0, -0.018 if damaged else -0.010),
+        "branch.R": (0.0, 0.0, 0.055 if damaged else 0.012),
+        "bough.L": (0.0, 0.010, -0.024),
+        "bough.R": (0.0, -0.010, 0.060 if damaged else 0.022),
+        "canopy.L": (0.0, 0.0, -0.012),
+        "canopy.R": (0.0, 0.0, 0.024 if damaged else 0.012),
+    }
+    breathing = {
+        "crown": (0.0, 0.020 if damaged else 0.028, -0.012),
+        "branch.L": (0.0, -0.012, 0.012),
+        "branch.R": (0.0, 0.010, 0.025 if damaged else -0.010),
+        "bough.L": (0.0, -0.012, 0.012),
+        "bough.R": (0.0, 0.014, 0.038 if damaged else -0.012),
+        "canopy.L": (0.0, 0.008, 0.014),
+        "canopy.R": (0.0, -0.008, 0.010 if damaged else -0.014),
+    }
+    pulse_low = 0.92 if damaged else 0.97
+    pulse_high = 1.035 if damaged else 1.075
+    _tree_key(
+        armature, 1, rotations=resting,
+        scales={"heart": (pulse_low, pulse_low, pulse_low)},
+    )
+    _tree_key(
+        armature, 4, rotations=breathing,
+        scales={"heart": (pulse_high, pulse_high, pulse_high)},
+    )
+    _tree_key(
+        armature, 6, rotations=resting,
+        scales={"heart": (pulse_low, pulse_low, pulse_low)},
+    )
+    actions["idle"] = idle
+
+    if damaged:
+        _reset_world_tree_pose(armature)
+        destroy = bpy.data.actions.new("world_tree_damaged_destroy")
+        destroy.use_fake_user = True
+        armature.animation_data.action = destroy
+        # Local Y follows each tree bone's length, local Z gives the screen-readable
+        # lateral hinge, and root/debris Y translation moves downward. The motion is
+        # therefore a compact segmented fall rather than an unsafe axial twist.
+        _tree_key(
+            armature, 1,
+            rotations={
+                **resting,
+                "trunk.lower": (0.0, 0.0, 0.0),
+                "trunk.upper": (0.0, 0.0, 0.0),
+            },
+            locations={
+                "root": (0.0, 0.0, 0.0),
+                "debris.L": (0.0, 0.0, 0.0),
+                "debris.R": (0.0, 0.0, 0.0),
+            },
+            scales={
+                "heart": (0.92, 0.92, 0.92),
+                "crown": (1.0, 1.0, 1.0),
+                "canopy.L": (1.0, 1.0, 1.0),
+                "canopy.R": (1.0, 1.0, 1.0),
+            },
+        )
+        _tree_key(
+            armature, 2,
+            rotations={
+                **resting,
+                "trunk.lower": (0.0, 0.0, -0.020),
+                "trunk.upper": (0.0, 0.0, 0.030),
+                "crown": (0.0, 0.0, -0.025),
+                "branch.L": (0.0, 0.0, -0.055),
+                "branch.R": (0.0, 0.0, 0.070),
+            },
+            locations={"root": (0.018, 0.018, 0.0)},
+            scales={"heart": (1.02, 1.02, 1.02)},
+        )
+        _tree_key(
+            armature, 3,
+            rotations={
+                "trunk.lower": (0.0, 0.0, 0.035),
+                "trunk.upper": (0.0, 0.0, -0.055),
+                "crown": (0.0, 0.0, 0.045),
+                "branch.L": (0.0, 0.0, -0.095),
+                "branch.R": (0.0, 0.0, 0.115),
+                "bough.L": (0.0, 0.0, -0.070),
+                "bough.R": (0.0, 0.0, 0.095),
+            },
+            locations={"root": (-0.022, -0.012, 0.0)},
+            scales={"heart": (1.18, 1.18, 1.18)},
+        )
+        _tree_key(
+            armature, 4,
+            rotations={
+                "trunk.lower": (0.0, 0.0, -0.025),
+                "trunk.upper": (0.0, 0.0, 0.045),
+                "crown": (0.0, 0.0, -0.040),
+                "branch.L": (0.0, 0.0, -0.145),
+                "branch.R": (0.0, 0.0, 0.165),
+                "bough.L": (0.0, 0.0, -0.115),
+                "bough.R": (0.0, 0.0, 0.140),
+                "canopy.L": (0.0, 0.0, -0.055),
+                "canopy.R": (0.0, 0.0, 0.065),
+            },
+            locations={"root": (0.015, 0.008, 0.0)},
+            scales={"heart": (1.34, 1.34, 1.34)},
+        )
+        _tree_key(
+            armature, 5,
+            rotations={
+                "trunk.lower": (0.0, 0.0, 0.035),
+                "trunk.upper": (0.0, 0.0, 0.120),
+                "crown": (0.0, 0.0, 0.100),
+                "branch.L": (0.0, 0.0, -0.190),
+                "branch.R": (0.0, 0.0, 0.215),
+                "bough.L": (0.0, 0.0, -0.160),
+                "bough.R": (0.0, 0.0, 0.195),
+                "canopy.L": (0.0, 0.0, -0.090),
+                "canopy.R": (0.0, 0.0, 0.105),
+            },
+            locations={
+                "root": (-0.035, -0.045, 0.0),
+                "debris.L": (-0.05, -0.22, 0.0),
+                "debris.R": (0.06, -0.18, 0.0),
+            },
+            scales={
+                "heart": (0.86, 0.86, 0.86),
+                "canopy.L": (0.97, 0.97, 0.97),
+                "canopy.R": (0.97, 0.97, 0.97),
+            },
+        )
+        _tree_key(
+            armature, 6,
+            rotations={
+                "trunk.lower": (0.0, 0.0, 0.065),
+                "trunk.upper": (0.0, 0.0, 0.240),
+                "crown": (0.0, 0.0, 0.180),
+                "branch.L": (0.0, 0.0, -0.260),
+                "branch.R": (0.0, 0.0, 0.285),
+                "bough.L": (0.0, 0.0, -0.235),
+                "bough.R": (0.0, 0.0, 0.260),
+                "canopy.L": (0.0, 0.0, -0.140),
+                "canopy.R": (0.0, 0.0, 0.155),
+            },
+            locations={
+                "root": (-0.090, -0.105, 0.0),
+                "debris.L": (-0.13, -0.62, 0.0),
+                "debris.R": (0.15, -0.54, 0.0),
+            },
+            scales={
+                "heart": (0.64, 0.64, 0.64),
+                "canopy.L": (0.93, 0.93, 0.93),
+                "canopy.R": (0.93, 0.93, 0.93),
+            },
+        )
+        _tree_key(
+            armature, 7,
+            rotations={
+                "trunk.lower": (0.0, 0.0, 0.120),
+                "trunk.upper": (0.0, 0.0, 0.450),
+                "crown": (0.0, 0.0, 0.330),
+                "branch.L": (0.0, 0.0, -0.330),
+                "branch.R": (0.0, 0.0, 0.355),
+                "bough.L": (0.0, 0.0, -0.305),
+                "bough.R": (0.0, 0.0, 0.330),
+                "canopy.L": (0.0, 0.0, -0.195),
+                "canopy.R": (0.0, 0.0, 0.210),
+            },
+            locations={
+                "root": (0.050, -0.175, 0.0),
+                "debris.L": (-0.24, -1.10, 0.0),
+                "debris.R": (0.28, -0.98, 0.0),
+            },
+            scales={
+                "heart": (0.42, 0.42, 0.42),
+                "canopy.L": (0.88, 0.88, 0.88),
+                "canopy.R": (0.88, 0.88, 0.88),
+            },
+        )
+        final_rotations = {
+            "trunk.lower": (0.0, 0.0, 0.170),
+            "trunk.upper": (0.0, 0.0, 0.620),
+            "crown": (0.0, 0.0, 0.460),
+            "branch.L": (0.0, 0.0, -0.400),
+            "branch.R": (0.0, 0.0, 0.425),
+            "bough.L": (0.0, 0.0, -0.375),
+            "bough.R": (0.0, 0.0, 0.400),
+            "canopy.L": (0.0, 0.0, -0.250),
+            "canopy.R": (0.0, 0.0, 0.265),
+        }
+        final_locations = {
+            "root": (0.120, -0.255, 0.0),
+            "debris.L": (-0.34, -1.62, 0.0),
+            "debris.R": (0.39, -1.48, 0.0),
+        }
+        final_scales = {
+            "heart": (0.18, 0.18, 0.18),
+            "crown": (0.90, 0.90, 0.90),
+            "canopy.L": (0.84, 0.84, 0.84),
+            "canopy.R": (0.84, 0.84, 0.84),
+        }
+        _tree_key(
+            armature, 8, rotations=final_rotations,
+            locations=final_locations, scales=final_scales,
+        )
+        _tree_key(
+            armature, 9, rotations=final_rotations,
+            locations=final_locations, scales=final_scales,
+        )
+        _tree_key(
+            armature, 10, rotations=final_rotations,
+            locations=final_locations, scales=final_scales,
+        )
+        actions["destroy"] = destroy
+
+    armature.animation_data.action = actions["idle"]
+    return actions
+
+
+def build_world_tree(damaged: bool = False) -> BuiltModel:
+    """Build the premium-v2 Heartwood Sanctum in healthy or wounded form."""
+    bark_deep = MATERIALS.get("tree_bark_deep", "#34241F" if not damaged else "#241C1D")
+    bark_mid = MATERIALS.get("tree_bark_mid", "#654128" if not damaged else "#4B3029")
+    bark_light = MATERIALS.get("tree_bark_light", "#8B6035" if not damaged else "#694536")
+    bark_cut = MATERIALS.get("tree_bark_cut", "#B6864F" if not damaged else "#8A6144")
+    moss = MATERIALS.get("tree_moss", "#3E7147" if not damaged else "#44543B")
+    leaf_deep = MATERIALS.get("tree_leaf_deep", "#174B36" if not damaged else "#263C31")
+    leaf_mid = MATERIALS.get("tree_leaf_mid", "#2D7547" if not damaged else "#526044")
+    leaf_light = MATERIALS.get("tree_leaf_light", "#72B85C" if not damaged else "#7D7947")
+    leaf_accent = MATERIALS.get("tree_leaf_accent", "#B1C96B" if not damaged else "#A27A48")
+    heart = MATERIALS.get("tree_heart", "#55D7BC" if not damaged else "#4F968B")
+    heart_light = MATERIALS.get("tree_heart_light", "#C7FFF0" if not damaged else "#9BCFC1")
+    rune = MATERIALS.get("tree_rune", "#5BC7B4" if not damaged else "#D06C4C")
+
+    armature = _create_world_tree_armature()
+    objects = []
+
+    def own(obj: bpy.types.Object, bone: str) -> bpy.types.Object:
+        parent_to_bone(obj, armature, bone)
+        objects.append(obj)
+        return obj
+
+    # Three interlocked trunk masses preserve a broad, shrine-like central read.
+    own(add_cone("tree_trunk_base", (0.0, 0.03, 0.86), 0.84, 0.62, 1.62,
+                 bark_deep, 12), "trunk.lower")
+    own(add_cone("tree_trunk_heart", (0.0, 0.0, 1.72), 0.66, 0.52, 1.35,
+                 bark_mid, 12), "trunk.lower")
+    own(add_cone("tree_trunk_crown", (0.0, 0.02, 2.57), 0.54, 0.36, 1.30,
+                 bark_deep if damaged else bark_mid, 11), "trunk.upper")
+
+    # Radial buttress roots ground the protected landmark and keep its feet readable.
+    root_points = (
+        (-1.48, -0.28), (-1.08, -0.72), (-0.52, -0.92), (0.18, -0.96),
+        (0.82, -0.78), (1.42, -0.34), (1.28, 0.32), (0.55, 0.62), (-0.52, 0.60),
+    )
+    for index, (x, y) in enumerate(root_points):
+        root_obj = add_cone(
+            f"tree_buttress_root_{index}", (x * 0.48, y * 0.42, 0.20),
+            0.30 if index % 2 == 0 else 0.24, 0.055, 1.55,
+            bark_mid if index % 3 else bark_deep, 8,
+            (0.0, math.radians(72), math.atan2(y, x)),
+        )
+        own(root_obj, "root")
+        own(add_ico(
+            f"tree_root_knuckle_{index}", (x * 0.76, y * 0.66, 0.12),
+            (0.28, 0.20, 0.16), bark_light if index % 2 else bark_mid, 1,
+        ), "root")
+
+    # Layered front-facing bark plates explain age and construction at gameplay size.
+    for index in range(30):
+        band = index % 6
+        level = index // 6
+        x = (-0.50 + band * 0.20) * (1.0 - level * 0.07)
+        z = 0.45 + level * 0.47 + (band % 2) * 0.10
+        radius = 0.69 - level * 0.055
+        y = -radius - 0.035 + abs(x) * 0.09
+        plate = add_ico(
+            f"tree_bark_plate_{index}", (x, y, z),
+            (0.16 + (index % 3) * 0.025, 0.045, 0.25 + (index % 2) * 0.05),
+            bark_light if index % 4 == 0 else bark_mid, 1,
+        )
+        plate.rotation_euler.y = (-0.16 + (index % 5) * 0.08)
+        own(plate, "trunk.lower" if z < 1.75 else "trunk.upper")
+
+    # Two articulated branch systems form the Tree's protective upward gesture.
+    branch_specs = {
+        "L": ((-0.08, 0.02, 1.86), (-1.12, 0.02, 2.88), (-1.88, 0.05, 3.58)),
+        "R": ((0.08, 0.02, 1.86), (1.12, 0.02, 2.88),
+              (1.56 if damaged else 1.88, 0.05, 3.36 if damaged else 3.58)),
+    }
+    for side, (start, elbow, end) in branch_specs.items():
+        own(add_cylinder_between(
+            f"tree_branch_{side}_lower", start, elbow, 0.25,
+            bark_mid if side == "L" else bark_light, 9,
+        ), f"branch.{side}")
+        own(add_ico(
+            f"tree_branch_{side}_joint", elbow, (0.34, 0.28, 0.34), bark_deep, 1,
+        ), f"branch.{side}")
+        own(add_cylinder_between(
+            f"tree_bough_{side}_main", elbow, end, 0.18,
+            bark_mid if not damaged or side == "L" else bark_cut, 8,
+        ), f"bough.{side}")
+        sign = -1.0 if side == "L" else 1.0
+        forks = (
+            (end, (end[0] + 0.28 * sign, end[1] + 0.02, end[2] + 0.52)),
+            (end, (end[0] - 0.18 * sign, end[1] + 0.08, end[2] + 0.44)),
+            (elbow, (elbow[0] + 0.12 * sign, elbow[1] - 0.08, elbow[2] + 0.58)),
+        )
+        for fork_index, (fork_start, fork_end) in enumerate(forks):
+            if damaged and side == "R" and fork_index == 0:
+                fork_end = (fork_start[0] + 0.16 * sign, fork_start[1], fork_start[2] + 0.16)
+            own(add_cylinder_between(
+                f"tree_bough_{side}_fork_{fork_index}", fork_start, fork_end,
+                0.105 if fork_index < 2 else 0.12,
+                bark_cut if damaged and side == "R" else bark_light, 7,
+            ), f"bough.{side}")
+        if damaged and side == "R":
+            own(add_cone(
+                "tree_broken_bough_R", (end[0] + 0.08, end[1], end[2] + 0.08),
+                0.15, 0.035, 0.34, bark_cut, 7, (0.0, -0.68, 0.0),
+            ), "bough.R")
+
+    # A carved heart aperture is the single high-contrast focal detail.
+    own(add_ico("tree_heart_cradle", (0.0, -0.57, 1.48),
+                (0.48, 0.11, 0.62), bark_deep, 2), "heart")
+    own(add_torus(
+        "tree_heart_ring", (0.0, -0.72, 1.48), 0.36, 0.075,
+        bark_cut, (math.pi / 2, 0.0, 0.0), 14, 5,
+    ), "heart")
+    own(add_ico("tree_heart_core", (0.0, -0.79, 1.48),
+                (0.25, 0.10, 0.38), heart, 2), "heart")
+    own(add_ico("tree_heart_highlight", (-0.065, -0.89, 1.58),
+                (0.075, 0.025, 0.14), heart_light, 1), "heart")
+    for index, angle in enumerate((-0.76, -0.38, 0.38, 0.76)):
+        own(add_cube(
+            f"tree_heart_rune_{index}",
+            (math.sin(angle) * 0.40, -0.79, 1.48 + math.cos(angle) * 0.49),
+            (0.060, 0.030, 0.19), rune, 0.025,
+            (0.0, angle * 0.28, -angle),
+        ), "heart")
+
+    # A few broad vine runs connect the shrine core to the canopy without micro-noise.
+    vine_paths = (
+        ((-0.56, -0.54, 0.52), (-0.70, -0.48, 1.23)),
+        ((-0.70, -0.48, 1.23), (-0.55, -0.47, 1.92)),
+        ((0.53, -0.53, 0.68), (0.65, -0.47, 1.36)),
+        ((0.65, -0.47, 1.36), (0.51, -0.42, 2.10)),
+        ((-0.38, -0.40, 2.06), (-0.85, -0.30, 2.62)),
+        ((0.38, -0.40, 2.08), (0.86, -0.28, 2.62)),
+    )
+    for index, (start, end) in enumerate(vine_paths):
+        own(add_cylinder_between(
+            f"tree_vine_{index}", start, end, 0.042,
+            moss if index < 4 else leaf_deep, 6,
+        ), "trunk.lower" if index < 4 else "trunk.upper")
+
+    # Faceted canopy masses establish a tiered umbrella; perimeter leaves carry rhythm.
+    canopy_count = 16 if damaged else 24
+    for index in range(canopy_count):
+        angle = index * 2.399963229728653
+        ring = 0.55 + (index % 6) * 0.20
+        x = math.cos(angle) * ring * 1.28
+        y = math.sin(angle) * ring * 0.42 + 0.04
+        z = 3.42 + (index % 4) * 0.22 - abs(x) * 0.05
+        if damaged:
+            z -= 0.06 + (0.12 if x > 0.65 else 0.0)
+            if index % 5 == 0:
+                x -= 0.18
+        material = (leaf_light if index % 5 == 0 else
+                    leaf_mid if index % 3 else leaf_deep)
+        own(add_ico(
+            f"tree_canopy_cluster_{index}", (x, y, z),
+            (0.64 + (index % 3) * 0.08, 0.50 + (index % 2) * 0.06,
+             0.56 + (index % 4) * 0.045),
+            material, 2,
+        ), "canopy.L" if x < -0.28 else "canopy.R" if x > 0.28 else "crown")
+
+    leaf_count = 28 if damaged else 42
+    for index in range(leaf_count):
+        angle = index * math.tau / leaf_count
+        x = math.cos(angle) * (1.58 + (index % 3) * 0.13)
+        y = -0.17 + math.sin(angle) * 0.18
+        z = 3.62 + math.sin(angle) * 0.66 + (index % 2) * 0.10
+        if damaged and index % 4 == 0:
+            z -= 0.30
+        leaf_obj = add_leaf(
+            f"tree_crown_leaf_{index}", (x, y, z),
+            (0.18 + (index % 2) * 0.04, 0.055, 0.34 + (index % 3) * 0.035),
+            leaf_accent if index % 7 == 0 else leaf_light if index % 3 == 0 else leaf_mid,
+            (0.0, -0.25 + (index % 5) * 0.12, -angle),
+        )
+        bone = "canopy.L" if x < 0 else "canopy.R"
+        if index in {3, 17}:
+            bone = "debris.L"
+        elif index in {10, 24}:
+            bone = "debris.R"
+        own(leaf_obj, bone)
+
+    # Wounded-state scars are broad and directional; they do not cover the core.
+    if damaged:
+        scars = (
+            (-0.30, -0.705, 0.82, -0.32),
+            (-0.14, -0.716, 1.07, 0.26),
+            (0.28, -0.668, 1.92, -0.38),
+            (0.40, -0.612, 2.22, 0.31),
+        )
+        for index, (x, y, z, tilt) in enumerate(scars):
+            own(add_cube(
+                f"tree_wound_rune_{index}", (x, y, z),
+                (0.055, 0.028, 0.34), rune, 0.018,
+                (0.0, tilt, 0.0),
+            ), "trunk.lower" if z < 1.7 else "trunk.upper")
+        for index, (x, z) in enumerate(((-1.46, 3.48), (1.30, 3.20), (0.96, 3.86))):
+            bone = "debris.L" if x < 0 else "debris.R"
+            own(add_ico(
+                f"tree_falling_bark_{index}", (x, -0.05, z),
+                (0.13, 0.08, 0.20), bark_cut, 1,
+            ), bone)
+
+    metadata = {
+        "state": "damaged" if damaged else "healthy",
+        "rigged": True,
+        "visualQuality": "premium-v2",
+        "modelRevision": (
+            "heartwood-sanctum-wounded-v2" if damaged
+            else "heartwood-sanctum-healthy-v2"
+        ),
+        "rigProfile": "segmented-world-tree-v2",
+        "animationProfile": (
+            "wounded-collapse-v2" if damaged else "living-heart-pulse-v2"
+        ),
+        "silhouetteLandmarks": [
+            "radial buttress roots",
+            "carved heart aperture",
+            "paired guardian boughs",
+            "tiered leaf crown",
+        ],
+        "surfaceLanguage": (
+            "charred heartwood, broken bough, sparse wilted crown, restrained wound runes"
+            if damaged else
+            "layered heartwood plates, moss vines, emerald crown, restrained cyan heart"
+        ),
+        "destructionClip": "destroy" if damaged else None,
+    }
+    return BuiltModel(armature, objects, metadata)
 
 def build_ground_tile(variant: int = 0) -> BuiltModel:
     earth = MATERIALS.get("ground_earth", "#35443A")
