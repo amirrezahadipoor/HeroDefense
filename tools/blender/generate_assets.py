@@ -53,6 +53,15 @@ from hd_pipeline.environment import (  # noqa: E402
     build_world_tree,
     author_world_tree_actions,
 )
+from hd_pipeline.ceremony import (  # noqa: E402
+    CEREMONY_CLIPS,
+    SAPLING_CLIPS,
+    author_ceremony_actions,
+    author_sapling_actions,
+    build_ceremony_hero,
+    build_sapling_tree,
+    stack_named_actions,
+)
 from hd_pipeline.models import MATERIALS, add_equipment_variant, build_character, build_hero  # noqa: E402
 from hd_pipeline.rig import author_standard_actions, stack_actions_for_single_render  # noqa: E402
 from hd_pipeline.scene import (  # noqa: E402
@@ -87,7 +96,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "skill-icons", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "skill-icons", "ceremony", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -291,6 +300,108 @@ def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
     if not keep_frames:
         shutil.rmtree(frame_root)
     return entry
+
+
+def _render_rigged_clips(
+    key: str,
+    family: str,
+    frame_class: str,
+    scene: bpy.types.Scene,
+    model,
+    actions: dict,
+    clip_counts: dict[str, int],
+    output: Path,
+    keep_frames: bool,
+    worker_kind: str,
+) -> dict:
+    """Shared export path for Phase 18 ceremony sheets (Hero clips and sapling growth)."""
+    frame_root = output / "_frames" / key
+    if ISOLATED_RENDERING:
+        frame_paths = {clip: [] for clip in clip_counts}
+        for clip, count in clip_counts.items():
+            for index in range(count):
+                target = frame_root / f"{key}_{clip}_{index:02d}.png"
+                _run_frame_worker({
+                    "kind": worker_kind,
+                    "key": key,
+                    "frameClass": frame_class,
+                    "clip": clip,
+                    "frame": index + 1,
+                    "output": str(target),
+                })
+                frame_paths[clip].append(target)
+    else:
+        global_frames = stack_named_actions(model.armature, actions, clip_counts, f"HD_EXPORT_{key.upper()}")
+        frame_paths = _render_stacked_animation(
+            scene, frame_root, global_frames, lambda clip, index: f"{key}_{clip}_{index:02d}.png",
+        )
+    sprite_directory = output / "sprites"
+    sprite_directory.mkdir(parents=True, exist_ok=True)
+    sheet_path = sprite_directory / f"{key}.png"
+    pages, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE[frame_class])
+    atlas_path = sprite_directory / f"{key}.atlas"
+    _write_libgdx_atlas(atlas_path, pages, regions)
+    mesh_parts = [obj for obj in model.render_objects if obj.type == "MESH"]
+    material_names = {
+        slot.material.name for obj in mesh_parts for slot in obj.material_slots if slot.material is not None
+    }
+    entry = {
+        "key": key,
+        "family": family,
+        "frameClass": frame_class,
+        "frameSize": FRAME_SIZE[frame_class],
+        "sheet": _relative(pages[0]["path"], output),
+        "sheets": _sheet_manifest(pages, output),
+        "atlas": _relative(atlas_path, output),
+        "sheetWidth": pages[0]["width"],
+        "sheetHeight": pages[0]["height"],
+        "pivot": _pivot_for(frame_class),
+        "alphaMode": "STRAIGHT_RGBA",
+        "clips": regions,
+        "frameRate": FRAME_RATE,
+        "renderSupersample": RENDER_SUPERSAMPLE,
+        "renderSamples": OPAQUE_RENDER_SAMPLES,
+        "triangles": triangle_count(model.render_objects),
+        "meshParts": len(mesh_parts),
+        "materialCount": len(material_names),
+        "armature": model.armature.name,
+        "bones": sorted(bone.name for bone in model.armature.data.bones),
+        "rigBoneCount": len(model.armature.data.bones),
+        "boneAnimated": True,
+        **model.metadata,
+    }
+    _write_json(sprite_directory / f"{key}.json", entry)
+    if not keep_frames:
+        shutil.rmtree(frame_root)
+    return entry
+
+
+def render_ceremony(output: Path, keep_frames: bool) -> list[dict]:
+    """Phase 18: Hero walk/plant/water clips and the sapling grow/idle clips."""
+    entries = []
+    hero_root = output / "_frames" / "hero_ceremony"
+    _fresh_directory(hero_root)
+    reset_scene()
+    MATERIALS.clear()
+    scene = configure_scene("character", hero_root)
+    hero = build_ceremony_hero()
+    hero_actions = author_ceremony_actions(hero.armature, "hero_ceremony")
+    entries.append(_render_rigged_clips(
+        "hero_ceremony", "hero", "character", scene, hero, hero_actions, CEREMONY_CLIPS,
+        output, keep_frames, "ceremony_hero",
+    ))
+    sapling_root = output / "_frames" / "world_tree_sapling"
+    _fresh_directory(sapling_root)
+    reset_scene()
+    MATERIALS.clear()
+    scene = configure_scene("tree", sapling_root)
+    sapling = build_sapling_tree()
+    sapling_actions = author_sapling_actions(sapling.armature)
+    entries.append(_render_rigged_clips(
+        "world_tree_sapling", "world_tree", "tree", scene, sapling, sapling_actions, SAPLING_CLIPS,
+        output, keep_frames, "ceremony_sapling",
+    ))
+    return entries
 
 
 def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: set[str]) -> list[dict]:
@@ -685,6 +796,14 @@ def _execute_frame_worker(payload_path: Path) -> None:
         model = build_world_tree(bool(payload["damaged"]))
         actions = author_world_tree_actions(model.armature, bool(payload["damaged"]))
         model.armature.animation_data.action = actions[payload.get("clip", "idle")]
+    elif payload["kind"] == "ceremony_hero":
+        model = build_ceremony_hero()
+        actions = author_ceremony_actions(model.armature, payload["key"])
+        model.armature.animation_data.action = actions[payload["clip"]]
+    elif payload["kind"] == "ceremony_sapling":
+        model = build_sapling_tree()
+        actions = author_sapling_actions(model.armature)
+        model.armature.animation_data.action = actions[payload["clip"]]
     elif payload["kind"] == "static":
         asset_kind = payload["assetKind"]
         if asset_kind == "arenaBackdrop":
@@ -773,6 +892,8 @@ def main() -> None:
         generated.extend(render_skill_icons(output))
     if args.batch == "ui-supplement":
         generated.extend(render_ui_supplement(output))
+    if args.batch in {"ceremony", "all"}:
+        generated.extend(render_ceremony(output, args.keep_frames))
 
     by_key = {entry["key"]: entry for entry in existing}
     by_key.update({entry["key"]: entry for entry in generated})

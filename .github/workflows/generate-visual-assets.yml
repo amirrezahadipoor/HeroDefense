@@ -21,6 +21,7 @@ on:
           - ui
           - ui-supplement
           - skill-icons
+          - ceremony
           - all
 
 permissions:
