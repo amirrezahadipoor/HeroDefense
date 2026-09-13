@@ -137,8 +137,9 @@ def author_world_tree_actions(
         destroy = bpy.data.actions.new("world_tree_damaged_destroy")
         destroy.use_fake_user = True
         armature.animation_data.action = destroy
-        # 1: wounded hold; 2–4: shudder and core flare; 5–8: segmented collapse;
-        # 9–10: readable final hold. Debris bones carry only a few leaves/chips.
+        # Local Y follows each tree bone's length, local Z gives the screen-readable
+        # lateral hinge, and root/debris Y translation moves downward. The motion is
+        # therefore a compact segmented fall rather than an unsafe axial twist.
         _tree_key(
             armature, 1,
             rotations=resting,
@@ -148,128 +149,149 @@ def author_world_tree_actions(
             armature, 2,
             rotations={
                 **resting,
-                "trunk.lower": (0.0, -0.025, 0.012),
-                "trunk.upper": (0.0, 0.045, -0.018),
-                "branch.L": (0.0, -0.025, -0.060),
-                "branch.R": (0.0, 0.025, 0.090),
+                "trunk.lower": (0.0, 0.0, -0.020),
+                "trunk.upper": (0.0, 0.0, 0.030),
+                "crown": (0.0, 0.0, -0.025),
+                "branch.L": (0.0, 0.0, -0.055),
+                "branch.R": (0.0, 0.0, 0.070),
             },
-            locations={"root": (0.0, 0.0, 0.025)},
+            locations={"root": (0.018, 0.018, 0.0)},
             scales={"heart": (1.02, 1.02, 1.02)},
         )
         _tree_key(
             armature, 3,
             rotations={
-                "trunk.lower": (0.0, 0.035, -0.015),
-                "trunk.upper": (0.0, -0.070, 0.025),
-                "crown": (0.0, 0.060, -0.030),
-                "branch.L": (0.0, 0.055, -0.105),
-                "branch.R": (0.0, -0.050, 0.125),
-                "bough.L": (0.0, 0.050, -0.075),
-                "bough.R": (0.0, -0.045, 0.110),
+                "trunk.lower": (0.0, 0.0, 0.035),
+                "trunk.upper": (0.0, 0.0, -0.055),
+                "crown": (0.0, 0.0, 0.045),
+                "branch.L": (0.0, 0.0, -0.095),
+                "branch.R": (0.0, 0.0, 0.115),
+                "bough.L": (0.0, 0.0, -0.070),
+                "bough.R": (0.0, 0.0, 0.095),
             },
-            locations={"root": (0.0, 0.0, -0.018)},
+            locations={"root": (-0.022, -0.012, 0.0)},
             scales={"heart": (1.18, 1.18, 1.18)},
         )
         _tree_key(
             armature, 4,
             rotations={
-                "trunk.lower": (0.0, -0.030, 0.010),
-                "trunk.upper": (0.0, 0.080, -0.020),
-                "crown": (0.0, -0.090, 0.035),
-                "branch.L": (0.0, -0.070, -0.135),
-                "branch.R": (0.0, 0.070, 0.145),
-                "bough.L": (0.0, -0.070, -0.095),
-                "bough.R": (0.0, 0.060, 0.130),
+                "trunk.lower": (0.0, 0.0, -0.025),
+                "trunk.upper": (0.0, 0.0, 0.045),
+                "crown": (0.0, 0.0, -0.040),
+                "branch.L": (0.0, 0.0, -0.145),
+                "branch.R": (0.0, 0.0, 0.165),
+                "bough.L": (0.0, 0.0, -0.115),
+                "bough.R": (0.0, 0.0, 0.140),
+                "canopy.L": (0.0, 0.0, -0.055),
+                "canopy.R": (0.0, 0.0, 0.065),
             },
-            locations={"root": (0.0, 0.0, 0.012)},
+            locations={"root": (0.015, 0.008, 0.0)},
             scales={"heart": (1.34, 1.34, 1.34)},
         )
         _tree_key(
             armature, 5,
             rotations={
-                "trunk.lower": (0.0, -0.050, 0.0),
-                "trunk.upper": (0.0, -0.145, -0.025),
-                "crown": (0.0, -0.220, -0.055),
-                "branch.L": (0.0, -0.070, -0.200),
-                "branch.R": (0.0, 0.055, 0.230),
-                "bough.L": (0.0, -0.080, -0.170),
-                "bough.R": (0.0, 0.070, 0.220),
-                "canopy.L": (0.0, -0.050, -0.100),
-                "canopy.R": (0.0, 0.040, 0.120),
+                "trunk.lower": (0.0, 0.0, 0.035),
+                "trunk.upper": (0.0, 0.0, 0.120),
+                "crown": (0.0, 0.0, 0.100),
+                "branch.L": (0.0, 0.0, -0.190),
+                "branch.R": (0.0, 0.0, 0.215),
+                "bough.L": (0.0, 0.0, -0.160),
+                "bough.R": (0.0, 0.0, 0.195),
+                "canopy.L": (0.0, 0.0, -0.090),
+                "canopy.R": (0.0, 0.0, 0.105),
             },
             locations={
-                "root": (0.0, 0.0, -0.030),
-                "debris.L": (-0.08, -0.02, -0.22),
-                "debris.R": (0.10, 0.0, -0.18),
+                "root": (-0.035, -0.045, 0.0),
+                "debris.L": (-0.05, -0.22, 0.0),
+                "debris.R": (0.06, -0.18, 0.0),
             },
-            scales={"heart": (0.86, 0.86, 0.86)},
+            scales={
+                "heart": (0.86, 0.86, 0.86),
+                "canopy.L": (0.97, 0.97, 0.97),
+                "canopy.R": (0.97, 0.97, 0.97),
+            },
         )
-        collapse_6 = {
-            "trunk.lower": (0.0, -0.075, 0.0),
-            "trunk.upper": (0.0, -0.270, -0.035),
-            "crown": (0.0, -0.390, -0.080),
-            "branch.L": (0.0, -0.120, -0.300),
-            "branch.R": (0.0, 0.100, 0.330),
-            "bough.L": (0.0, -0.140, -0.270),
-            "bough.R": (0.0, 0.125, 0.310),
-            "canopy.L": (0.0, -0.100, -0.190),
-            "canopy.R": (0.0, 0.080, 0.210),
+        _tree_key(
+            armature, 6,
+            rotations={
+                "trunk.lower": (0.0, 0.0, 0.065),
+                "trunk.upper": (0.0, 0.0, 0.240),
+                "crown": (0.0, 0.0, 0.180),
+                "branch.L": (0.0, 0.0, -0.260),
+                "branch.R": (0.0, 0.0, 0.285),
+                "bough.L": (0.0, 0.0, -0.235),
+                "bough.R": (0.0, 0.0, 0.260),
+                "canopy.L": (0.0, 0.0, -0.140),
+                "canopy.R": (0.0, 0.0, 0.155),
+            },
+            locations={
+                "root": (-0.090, -0.105, 0.0),
+                "debris.L": (-0.13, -0.62, 0.0),
+                "debris.R": (0.15, -0.54, 0.0),
+            },
+            scales={
+                "heart": (0.64, 0.64, 0.64),
+                "canopy.L": (0.93, 0.93, 0.93),
+                "canopy.R": (0.93, 0.93, 0.93),
+            },
+        )
+        _tree_key(
+            armature, 7,
+            rotations={
+                "trunk.lower": (0.0, 0.0, 0.095),
+                "trunk.upper": (0.0, 0.0, 0.365),
+                "crown": (0.0, 0.0, 0.265),
+                "branch.L": (0.0, 0.0, -0.330),
+                "branch.R": (0.0, 0.0, 0.355),
+                "bough.L": (0.0, 0.0, -0.305),
+                "bough.R": (0.0, 0.0, 0.330),
+                "canopy.L": (0.0, 0.0, -0.195),
+                "canopy.R": (0.0, 0.0, 0.210),
+            },
+            locations={
+                "root": (-0.175, -0.175, 0.0),
+                "debris.L": (-0.24, -1.10, 0.0),
+                "debris.R": (0.28, -0.98, 0.0),
+            },
+            scales={
+                "heart": (0.42, 0.42, 0.42),
+                "canopy.L": (0.88, 0.88, 0.88),
+                "canopy.R": (0.88, 0.88, 0.88),
+            },
+        )
+        final_rotations = {
+            "trunk.lower": (0.0, 0.0, 0.125),
+            "trunk.upper": (0.0, 0.0, 0.485),
+            "crown": (0.0, 0.0, 0.330),
+            "branch.L": (0.0, 0.0, -0.400),
+            "branch.R": (0.0, 0.0, 0.425),
+            "bough.L": (0.0, 0.0, -0.375),
+            "bough.R": (0.0, 0.0, 0.400),
+            "canopy.L": (0.0, 0.0, -0.250),
+            "canopy.R": (0.0, 0.0, 0.265),
         }
-        _tree_key(
-            armature, 6, rotations=collapse_6,
-            locations={
-                "root": (0.0, 0.0, -0.080),
-                "debris.L": (-0.20, -0.02, -0.70),
-                "debris.R": (0.24, 0.02, -0.62),
-            },
-            scales={"heart": (0.64, 0.64, 0.64)},
-        )
-        collapse_7 = dict(collapse_6)
-        collapse_7.update({
-            "trunk.upper": (0.0, -0.410, -0.050),
-            "crown": (0.0, -0.610, -0.100),
-            "branch.L": (0.0, -0.170, -0.390),
-            "branch.R": (0.0, 0.145, 0.420),
-            "bough.L": (0.0, -0.190, -0.360),
-            "bough.R": (0.0, 0.170, 0.390),
-        })
-        _tree_key(
-            armature, 7, rotations=collapse_7,
-            locations={
-                "root": (0.0, 0.0, -0.125),
-                "debris.L": (-0.34, -0.02, -1.28),
-                "debris.R": (0.40, 0.02, -1.16),
-            },
-            scales={"heart": (0.42, 0.42, 0.42)},
-        )
-        final_pose = dict(collapse_7)
-        final_pose.update({
-            "trunk.lower": (0.0, -0.105, -0.015),
-            "trunk.upper": (0.0, -0.520, -0.075),
-            "crown": (0.0, -0.820, -0.130),
-            "branch.L": (0.0, -0.220, -0.470),
-            "branch.R": (0.0, 0.180, 0.500),
-            "bough.L": (0.0, -0.240, -0.450),
-            "bough.R": (0.0, 0.210, 0.470),
-            "canopy.L": (0.0, -0.180, -0.290),
-            "canopy.R": (0.0, 0.150, 0.310),
-        })
         final_locations = {
-            "root": (0.0, 0.0, -0.165),
-            "debris.L": (-0.48, -0.02, -1.88),
-            "debris.R": (0.54, 0.02, -1.72),
+            "root": (-0.285, -0.255, 0.0),
+            "debris.L": (-0.34, -1.62, 0.0),
+            "debris.R": (0.39, -1.48, 0.0),
         }
-        final_scales = {"heart": (0.18, 0.18, 0.18)}
+        final_scales = {
+            "heart": (0.18, 0.18, 0.18),
+            "crown": (0.90, 0.90, 0.90),
+            "canopy.L": (0.84, 0.84, 0.84),
+            "canopy.R": (0.84, 0.84, 0.84),
+        }
         _tree_key(
-            armature, 8, rotations=final_pose,
+            armature, 8, rotations=final_rotations,
             locations=final_locations, scales=final_scales,
         )
         _tree_key(
-            armature, 9, rotations=final_pose,
+            armature, 9, rotations=final_rotations,
             locations=final_locations, scales=final_scales,
         )
         _tree_key(
-            armature, 10, rotations=final_pose,
+            armature, 10, rotations=final_rotations,
             locations=final_locations, scales=final_scales,
         )
         actions["destroy"] = destroy
