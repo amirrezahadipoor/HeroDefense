@@ -1,0 +1,62 @@
+{
+  "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "de969845fcc7a752a5b988a745d4e48a1ef0323d6b6e3d0c43163a69e72b9976",
+    "category": "ui_assets",
+    "document": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
+    "scope": "phase-17-skill-icons",
+    "sourceManifestSha256": "10a0f4cda33377d184ba33657c447ffd60cfbbb2e1049f8a35c449ff0a81ae37",
+    "status": "accepted"
+  },
+  "clips": {
+    "idle": [
+      {
+        "height": 96,
+        "index": 0,
+        "page": 0,
+        "width": 96,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "icons",
+  "frameClass": "item",
+  "frameHeight": 96,
+  "frameSize": 96,
+  "frameWidth": 96,
+  "iconFamily": "heartwood-control-medallion",
+  "key": "ui_skill_multi_shot",
+  "materialCount": 6,
+  "meshParts": 12,
+  "modelRevision": "ui-control-icon-premium-v2",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
+  "sheet": "icons/ui_skill_multi_shot.png",
+  "sheetHeight": 96,
+  "sheetWidth": 96,
+  "sheets": [
+    {
+      "decodedBytes": 36864,
+      "file": "icons/ui_skill_multi_shot.png",
+      "height": 96,
+      "width": 96
+    }
+  ],
+  "silhouetteLayers": [
+    "shadow medallion",
+    "guard ring",
+    "semantic glyph",
+    "paired gold anchors"
+  ],
+  "touchOnlyUI": true,
+  "triangles": 582,
+  "uiIcon": "skill_multi_shot",
+  "visualQuality": "premium-v2"
+}

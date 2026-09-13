@@ -1,0 +1,24 @@
+{
+  "assets": {
+    "ui_skill_chain_lightning": {
+      "sheetSha256": "ec12c7bf9d51a0c22d70600d752e7f4efb0dbd35f5ed253fb4c62d4a51004b35"
+    },
+    "ui_skill_critical_mastery": {
+      "sheetSha256": "11ebdd8850b7d332ecf408ff47bfbf7d9103cfdb29be294fa3451ae0e75b0ff5"
+    },
+    "ui_skill_long_range": {
+      "sheetSha256": "74f5933f80b2a09b234aa8e17a93dbcb8db9dec539ef8496de49b7df81fcdaaa"
+    },
+    "ui_skill_multi_shot": {
+      "sheetSha256": "f153282cd8e53428f87d6e641aa25fd331ea597bef788f159cc95f64758c0cd4"
+    },
+    "ui_skill_stun_chance": {
+      "sheetSha256": "584afb31dc12eaa8b54fcbd02d69b88812106dced75b6f08c5dc61338f82c47c"
+    }
+  },
+  "batch": "skill-icons-premium-v2",
+  "candidateManifestSha256": "10a0f4cda33377d184ba33657c447ffd60cfbbb2e1049f8a35c449ff0a81ae37",
+  "reviewSheets": {
+    "skill_icons_contact.png": "018d23031d38f3f18f08129191b8420b8122fe072ae3d98fe2790c6ad917befb"
+  }
+}

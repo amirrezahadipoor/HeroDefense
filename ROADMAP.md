@@ -254,7 +254,7 @@ Deepen the coin economy with expensive long-horizon skills, make the Hero a pure
 - [x] Stunning Arrows: chance per hit to freeze movement, melee, and boss specials (bosses resist 50%).
 - [x] Critical Mastery: critical chance doubles and the multiplier climbs from 1.75× to 2.5× by level 10.
 - [x] Eagle Range: +22 px bow reach per level over the 420 px base.
-- [ ] Render, review, and promote five `ui_skill_*` medallion icons through the Blender `skill-icons` batch.
+- [x] Render, review, and promote five `ui_skill_*` medallion icons through the Blender `skill-icons` batch. (Accepted evidence: [`SKILL_ICONS_PREMIUM_V2_REVIEW.md`](docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md))
 
 ### 17.2 Arsenal, Loot Visibility, and Balance
 
