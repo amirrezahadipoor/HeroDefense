@@ -385,11 +385,11 @@ def _author_rootling_death(armature: bpy.types.Object, count: int) -> None:
         "head": (0.42, 0.0, -0.18), "upper_arm.L": (0.58, 0.0, -0.62), "upper_arm.R": (0.38, 0.0, 0.70),
     }, {"root": (-0.05, 0.0, -0.14)})
     final = {
-        "root": (0.0, 1.28, -0.32), "pelvis": (0.18, 0.0, -0.32), "chest": (0.90, 0.0, 0.28),
-        "head": (0.62, 0.0, -0.20), "upper_arm.L": (0.88, 0.0, -0.78), "upper_arm.R": (0.66, 0.0, 0.82),
+        "root": (0.0, 1.00, -0.25), "pelvis": (0.18, 0.0, -0.28), "chest": (0.82, 0.0, 0.24),
+        "head": (0.58, 0.0, -0.18), "upper_arm.L": (0.80, 0.0, -0.70), "upper_arm.R": (0.60, 0.0, 0.74),
     }
-    _key(armature, count - 1, final, {"root": (-0.30, 0.0, -0.43)})
-    _key(armature, count, final, {"root": (-0.30, 0.0, -0.43)})
+    _key(armature, count - 1, final, {"root": (-0.35, 0.0, -0.40)})
+    _key(armature, count, final, {"root": (-0.35, 0.0, -0.40)})
 
 
 def _author_stonekin_idle(armature: bpy.types.Object, count: int) -> None:
@@ -515,14 +515,14 @@ def _author_gloom_wolf_attack(armature: bpy.types.Object, count: int) -> None:
         "upper_arm.R": (0.70, 0.05, 0.18), "forearm.R": (-0.25, 0.0, -0.10),
         "thigh.L": (-0.55, 0.0, 0.12), "shin.L": (0.36, 0.0, -0.05),
         "thigh.R": (-0.50, 0.0, -0.12), "shin.R": (0.33, 0.0, 0.05),
-    }, {"root": (0.0, -0.18, 0.26)})
+    }, {"root": (0.0, -0.02, 0.14)})
     _key(armature, 6, {
         "pelvis": (0.12, 0.0, 0.02), "spine": (-0.14, 0.0, -0.02), "chest": (-0.20, 0.0, 0.02),
         "head": (0.20, 0.0, -0.04), "upper_arm.L": (0.40, -0.02, -0.10), "forearm.L": (-0.15, 0.0, 0.05),
         "upper_arm.R": (0.38, 0.02, 0.10), "forearm.R": (-0.13, 0.0, -0.05),
         "thigh.L": (-0.28, 0.0, 0.06), "shin.L": (0.18, 0.0, -0.03),
         "thigh.R": (-0.25, 0.0, -0.06), "shin.R": (0.17, 0.0, 0.03),
-    }, {"root": (0.0, -0.09, 0.12)})
+    }, {"root": (0.0, -0.01, 0.06)})
     _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)})
 
 
