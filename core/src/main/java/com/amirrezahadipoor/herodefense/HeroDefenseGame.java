@@ -272,6 +272,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     public void render() {
         audioManager.update(settings);
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
+        audioManager.tick(deltaSeconds);
         touchFeedbackSystem.update(deltaSeconds);
         inventoryTouchController.update(deltaSeconds);
         statShopSystem.update(deltaSeconds);
@@ -547,10 +548,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         shopTab = tab;
                     } else if (shopTab == StatShopTouchLayout.Tab.SKILLS) {
                         SkillId skill = StatShopTouchLayout.skillAt(worldX, worldY);
-                        if (skillShopSystem.purchase(gameState, skill)) saveNow();
+                        if (skillShopSystem.purchase(gameState, skill)) {
+                            audioManager.play(AudioCue.PURCHASE);
+                            saveNow();
+                        }
                     } else {
                         HeroStat stat = StatShopTouchLayout.statAt(worldX, worldY);
-                        if (statShopSystem.purchase(gameState, stat)) saveNow();
+                        if (statShopSystem.purchase(gameState, stat)) {
+                            audioManager.play(AudioCue.PURCHASE);
+                            saveNow();
+                        }
                     }
                     return true;
                 }
@@ -761,12 +768,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (attackEvents.criticalHits() > 0) {
             hitStopSystem.triggerCriticalHit();
             screenShakeSystem.triggerCriticalHit();
+            audioManager.play(AudioCue.CRITICAL);
         }
+        if (attackEvents.chainArcs() > 0) audioManager.play(AudioCue.CHAIN_LIGHTNING);
+        if (attackEvents.stuns() > 0) audioManager.play(AudioCue.STUN);
+        if (attackEvents.shots() > 1) audioManager.play(AudioCue.MULTI_SHOT);
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
             audioManager.play(AudioCue.HIT);
         }
         if (gameState.livingEnemyCount() < livingBeforeAttack) {
             audioManager.play(AudioCue.DEATH);
+            audioManager.play(AudioCue.KILL);
         }
         if (livingBossCount(gameState) < bossesBeforeAttack) {
             screenShakeSystem.triggerBossKill();

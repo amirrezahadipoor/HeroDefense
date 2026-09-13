@@ -270,7 +270,7 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 
 - [x] Floating damage numbers: normal, critical (larger, gold), chain arc (cyan), and stun ("STUN") pop-ups with deterministic positions and pooled rendering (`CombatEvent` stream from the attack system, `FloatingDamageTextSystem`, 40-label pool).
 - [x] Dedicated VFX: chain-lightning arc beams between struck foes, multi-shot fan trails, stun sparks orbiting frozen enemies, and a stronger critical impact burst with a short screen shake (`CHAIN_BEAM/CHAIN_FLASH/STUN_SPARK/CRITICAL_SPARK` particle families within the VFX budget; per-arrow impact bursts).
-- [ ] Lift the Phase 16 audio freeze: add CC0 critical, kill, chain-lightning, stun, purchase, and level-up sounds with per-file license records in `docs/AUDIO_LICENSES.md`.
+- [x] Lift the Phase 16 audio freeze: added CC0 critical, kill, chain-lightning, stun, multi-shot, and purchase sounds (Kenney Impact/RPG/Interface packs) with per-file SHA-256 records in `docs/audio/AUDIO_LICENSES.md`; per-cue rate limiting via `AudioThrottle`, hash-bound by `AudioContractTest`.
 
 ### 18.2 Hero Progression Surfaces
 
