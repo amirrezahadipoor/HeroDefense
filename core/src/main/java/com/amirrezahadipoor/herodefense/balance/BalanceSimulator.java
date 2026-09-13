@@ -83,8 +83,9 @@ public final class BalanceSimulator {
 
     /** Forces one legal card effect into a selected boss offer for comparative simulations. */
     public BalanceReport runWithForcedCard(long seed, RewardCardId card, int bossNumber) {
-        if (card == null || bossNumber < 1 || bossNumber > 20) {
-            throw new IllegalArgumentException("Forced card and boss number 1..20 are required");
+        int lastBoss = GameState.FINAL_WAVE / 5;
+        if (card == null || bossNumber < 1 || bossNumber > lastBoss) {
+            throw new IllegalArgumentException("Forced card and boss number 1.." + lastBoss + " are required");
         }
         return run(seed, card, bossNumber);
     }

@@ -288,7 +288,7 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 - [x] Render and review Hero Walk, Plant, and Water clips plus seed, watering can, and a sapling-to-tree growth sequence through the Blender pipeline. (`hero_ceremony` walk 8 / plant 10 / water 10 and `world_tree_sapling` grow 12 / idle 6; accepted in `docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md`, promoted by `tools/visual/promote_ceremony_batch.py`, hash-guarded by `PremiumCeremonyAssetContractTest`.)
 - [x] Wave 100 cinematic: combat pauses, the Hero walks beside the World Tree, plants a seed, waters it, a second tree grows in place, and the Hero walks back to the anchor and resumes auto-combat; the player never controls the Hero. Touch-skippable, save-safe, deterministic. (`GameScreenState.CINEMATIC`, `gameplay/PlantingCeremony` timeline, `ceremonyPending` persisted and replayed on continue, `WaveCompletion.PLANTING_CEREMONY`, water-drop particles.)
 - [x] Waves 101–200 with the second tree standing as a permanent monument; Game Over now shows the monsters destroying every planted tree instead of ending abruptly. (`FINAL_WAVE = 200`, `secondTreePlanted` idle sway via `SaplingTreeRenderer`; on Hero death survivors march on the nearest tree for `TREE_SIEGE_SECONDS` while its health drains, then both trees fall.)
-- [ ] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated.
+- [x] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated. (Waves 1–100 unchanged; waves 101–200 continue at `HP × 1.021^(w−100)`, `damage × 1.006^(w−100)`; 9/9 seeds finish, avg 10.0%, worst wave 28.8%, 312 forced-card scenarios pass.)
 
 ## Standing Rules
 

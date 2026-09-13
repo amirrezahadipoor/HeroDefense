@@ -11,13 +11,23 @@ public final class DifficultyCurve {
     public static final float BASE_ENEMY_DAMAGE = 0.27f;
     public static final float ENEMY_TYPE_REFERENCE_DAMAGE = 5f;
     public static final float ENEMY_DAMAGE_GROWTH = 1.003f;
+    /**
+     * Waves 101–200 (after the planting ceremony) continue from the wave-100 values with their
+     * own per-wave growth so the second half stays clearable with uncapped Hero progression.
+     */
+    public static final float SECOND_HALF_HEALTH_GROWTH = 1.021f;
+    public static final float SECOND_HALF_DAMAGE_GROWTH = 1.006f;
     public static final float BOSS_HEALTH_MULTIPLIER = 15f;
     public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;
 
     public float baselineRegularHealth(int waveNumber) {
         int wave = clampWave(waveNumber);
-        return BASE_ENEMY_HEALTH * (float) Math.pow(ENEMY_HEALTH_GROWTH, wave);
+        int firstHalf = Math.min(wave, GameState.PLANTING_WAVE);
+        int secondHalf = Math.max(0, wave - GameState.PLANTING_WAVE);
+        return BASE_ENEMY_HEALTH
+            * (float) Math.pow(ENEMY_HEALTH_GROWTH, firstHalf)
+            * (float) Math.pow(SECOND_HALF_HEALTH_GROWTH, secondHalf);
     }
 
     public float regularHealth(EnemyType type, int waveNumber) {
@@ -26,8 +36,11 @@ public final class DifficultyCurve {
 
     public float baselineRegularDamage(int waveNumber) {
         int wave = clampWave(waveNumber);
+        int firstHalf = Math.max(0, Math.min(wave, GameState.PLANTING_WAVE) - 1);
+        int secondHalf = Math.max(0, wave - GameState.PLANTING_WAVE);
         return BASE_ENEMY_DAMAGE
-            * (float) Math.pow(ENEMY_DAMAGE_GROWTH, Math.max(0, wave - 1));
+            * (float) Math.pow(ENEMY_DAMAGE_GROWTH, firstHalf)
+            * (float) Math.pow(SECOND_HALF_DAMAGE_GROWTH, secondHalf);
     }
 
     public float uncappedRegularDamage(EnemyType type, int waveNumber) {

@@ -16,7 +16,7 @@ final class BalanceSimulatorTest {
     private static final float MAXIMUM_AVERAGE_DAMAGE_FRACTION = 0.15f;
     private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.35f;
     private static final float MAXIMUM_CLEAR_TIME_SECONDS = 120f;
-    private static final int GATE_WAVE = GameState.PLANTING_WAVE;
+    private static final int GATE_WAVE = GameState.FINAL_WAVE;
 
     @Test
     void balancedRunPassesAcceptanceGateAndLogsEveryWave() {
@@ -25,7 +25,7 @@ final class BalanceSimulatorTest {
         assertTrue(report.reachedFinalWave(), "Balanced baseline must complete the continuous run");
         assertEquals(GameState.FINAL_WAVE, report.waves().size());
         assertEquals(1, report.waves().get(0).wave());
-        // Gate scope: the tuned 1..GATE_WAVE range. Phase 18.4's final rebalance task widens it.
+        // Gate scope: the full 1..GATE_WAVE run (Phase 18.4 rebalance).
         List<WaveSample> gated = report.waves().stream()
             .filter(sample -> sample.wave() <= GATE_WAVE)
             .toList();

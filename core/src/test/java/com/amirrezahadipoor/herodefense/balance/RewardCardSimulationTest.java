@@ -24,7 +24,8 @@ final class RewardCardSimulationTest {
             "card,boss,average_damage_fraction,average_clear_seconds,pressured_waves,"
                 + "maximum_damage_fraction,maximum_clear_seconds"
         );
-        for (int bossNumber = 1; bossNumber < 20; bossNumber++) {
+        // Bosses 1..39 have combat after them; boss 40 ends the run.
+        for (int bossNumber = 1; bossNumber < GameState.FINAL_WAVE / 5; bossNumber++) {
             for (RewardCardId card : RewardCardId.values()) {
                 verifyScenario(card, bossNumber);
             }
@@ -37,12 +38,11 @@ final class RewardCardSimulationTest {
             card,
             bossNumber
         );
-        assertTrue(report.reachedWave100(), scenario(card, bossNumber) + " did not finish");
-        // Gate scope: the tuned 1..PLANTING_WAVE range. Phase 18.4's final rebalance widens it.
+        assertTrue(report.reachedFinalWave(), scenario(card, bossNumber) + " did not finish");
         List<WaveSample> remaining = report.waves().stream()
-            .filter(sample -> sample.wave() > bossNumber * 5 && sample.wave() <= GameState.PLANTING_WAVE)
+            .filter(sample -> sample.wave() > bossNumber * 5)
             .toList();
-        assertEquals(GameState.PLANTING_WAVE - bossNumber * 5, remaining.size());
+        assertEquals(GameState.FINAL_WAVE - bossNumber * 5, remaining.size());
 
         float averageDamage = averageDamage(remaining);
         float averageClearTime = averageClearTime(remaining);
