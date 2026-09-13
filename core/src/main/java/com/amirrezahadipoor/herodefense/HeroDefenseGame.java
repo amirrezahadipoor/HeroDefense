@@ -358,7 +358,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         saveNow();
-        if (GameFonts.hasShared()) GameFonts.shared().close();
+        GameFonts.closeSharedFor(Gdx.app);
         if (audioManager != null) {
             audioManager.close();
         }

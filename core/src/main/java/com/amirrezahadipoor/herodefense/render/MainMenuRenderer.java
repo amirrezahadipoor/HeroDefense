@@ -51,9 +51,9 @@ public final class MainMenuRenderer implements AutoCloseable {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.030f, 0.075f, 0.066f, 0.48f);
+        shapes.setColor(0.060f, 0.130f, 0.112f, 0.40f);
         shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
-        shapes.setColor(0.020f, 0.055f, 0.050f, 0.42f);
+        shapes.setColor(0.040f, 0.095f, 0.085f, 0.34f);
         shapes.rect(0f, ScreenEdges.bottom(), 54f, ScreenEdges.height());
         shapes.rect(666f, ScreenEdges.bottom(), 54f, ScreenEdges.height());
         shapes.setColor(0.05f, 0.15f, 0.12f, 0.45f);

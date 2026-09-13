@@ -49,7 +49,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         Set<String> visibleIcons = new HashSet<>();
         Item selected = controller.selectedItem(state);
         beginShapes(projection);
-        shapes.setColor(0.040f, 0.090f, 0.080f, 0.97f);
+        shapes.setColor(0.070f, 0.150f, 0.130f, 0.96f);
         shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
         shapes.setColor(0.04f, 0.13f, 0.11f, 0.82f);
         shapes.rect(0f, 1160f, 720f, 120f);

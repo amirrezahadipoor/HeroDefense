@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.render;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -51,6 +52,8 @@ public final class GameFonts implements AutoCloseable {
 
     private static GameFonts shared;
 
+    /** The libGDX application whose GL context owns the glyph textures. */
+    private final Application owner = Gdx.app;
     private final FreeTypeFontGenerator bold;
     private final FreeTypeFontGenerator extraBold;
     private final BitmapFont[] fonts = new BitmapFont[Role.values().length];
@@ -67,8 +70,18 @@ public final class GameFonts implements AutoCloseable {
         ));
     }
 
-    /** One glyph atlas set per process; renderers share it and never own a font. */
+    /**
+     * One glyph atlas set per libGDX application; renderers share it and never own a font.
+     *
+     * <p>Glyph textures live in the GL context of the application that rasterised them. When a
+     * new {@link Application} starts in the same process (activity recreation, instrumentation
+     * launching several activities back to back) the old atlases are dead, so a fresh set is
+     * rasterised instead of drawing invisible text from the stale context.
+     */
     public static GameFonts shared() {
+        if (shared != null && shared.owner != Gdx.app) {
+            shared.close();
+        }
         if (shared == null) shared = new GameFonts();
         return shared;
     }
@@ -133,5 +146,10 @@ public final class GameFonts implements AutoCloseable {
         bold.dispose();
         extraBold.dispose();
         if (shared == this) shared = null;
+    }
+
+    /** Releases the shared set only if this application still owns it; a newer app keeps its own. */
+    public static void closeSharedFor(Application application) {
+        if (shared != null && shared.owner == application) shared.close();
     }
 }

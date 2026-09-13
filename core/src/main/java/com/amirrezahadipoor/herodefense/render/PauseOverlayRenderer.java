@@ -35,7 +35,7 @@ public final class PauseOverlayRenderer implements AutoCloseable {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.030f, 0.075f, 0.066f, 0.74f);
+        shapes.setColor(0.060f, 0.130f, 0.112f, 0.70f);
         shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
         shapes.setColor(0.07f, 0.19f, 0.16f, 0.55f);
         shapes.rect(0f, 1096f, 720f, ScreenEdges.top() - 1096f);

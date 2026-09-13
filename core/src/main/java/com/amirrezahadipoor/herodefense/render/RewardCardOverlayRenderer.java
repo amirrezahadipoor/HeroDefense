@@ -41,7 +41,7 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.035f, 0.085f, 0.075f, 0.86f);
+        shapes.setColor(0.065f, 0.140f, 0.120f, 0.84f);
         shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
         shapes.setColor(0.09f, 0.16f, 0.06f, 0.55f);
         shapes.rect(0f, 1010f, 720f, 270f);
