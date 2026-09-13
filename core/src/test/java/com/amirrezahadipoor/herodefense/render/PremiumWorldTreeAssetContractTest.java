@@ -58,7 +58,9 @@ final class PremiumWorldTreeAssetContractTest {
 
         Set<String> generatedTreeKeys = new HashSet<>();
         for (JsonValue asset = manifest.get("assets").child; asset != null; asset = asset.next) {
-            if ("world_tree".equals(asset.getString("family"))) {
+            // The Phase 18 sapling shares the family but is reviewed by its own ceremony contract.
+            if ("world_tree".equals(asset.getString("family"))
+                && !"world_tree_sapling".equals(asset.getString("key"))) {
                 generatedTreeKeys.add(asset.getString("key"));
             }
         }

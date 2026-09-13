@@ -112,7 +112,7 @@ final class PremiumFlowSurfacesPresentationTest {
     void endOfRunDistinguishesVictoryFromDefeatAndKeepsRevealTiming() {
         assertNotEquals(GameOverOverlayRenderer.title(true), GameOverOverlayRenderer.title(false));
         assertTrue(GameOverOverlayRenderer.subtitle(false, 37).contains("wave 37"));
-        assertTrue(GameOverOverlayRenderer.subtitle(true, 100).contains("100 waves"));
+        assertTrue(GameOverOverlayRenderer.subtitle(true, 200).contains("200 waves"));
         assertEquals(0f, GameOverOverlayRenderer.revealProgress(0.5f, false));
         assertTrue(GameOverOverlayRenderer.isInteractive(0f, true));
         float lastRow = GameOverOverlayRenderer.summaryRowY(GameOverOverlayRenderer.SUMMARY_ROWS - 1);

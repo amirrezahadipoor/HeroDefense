@@ -5,9 +5,11 @@ import java.util.Locale;
 /** Boss-index budget keeps late-run cards meaningful without abrupt power spikes. */
 public final class RewardPowerBudget {
     public static final float GROWTH_PER_BOSS = 0.05f;
+    /** Forty bosses across the 200-wave run (one every fifth wave). */
+    public static final int MAX_BOSS = 40;
 
     public float multiplier(int bossNumber) {
-        int clamped = Math.max(1, Math.min(20, bossNumber));
+        int clamped = Math.max(1, Math.min(MAX_BOSS, bossNumber));
         return 1f + (clamped - 1) * GROWTH_PER_BOSS;
     }
 

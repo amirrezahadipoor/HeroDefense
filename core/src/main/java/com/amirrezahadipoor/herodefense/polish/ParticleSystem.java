@@ -97,6 +97,21 @@ public final class ParticleSystem {
         }
     }
 
+    /** A short arc of droplets from the watering-can spout toward the soil (ceremony only). */
+    public void emitWaterDrops(float spoutX, float spoutY) {
+        for (int index = 0; index < 3; index++) {
+            add(
+                ParticleType.WATER_DROP,
+                spoutX + (index - 1) * 3f,
+                spoutY,
+                34f + index * 9f,
+                -20f - index * 6f,
+                0.34f + index * 0.04f,
+                2.6f + index * 0.4f
+            );
+        }
+    }
+
     public void update(float deltaSeconds) {
         if (deltaSeconds <= 0f) return;
         for (Particle particle : particles) {
@@ -125,6 +140,7 @@ public final class ParticleSystem {
         return switch (type) {
             case TREE_LEAF -> 0.4f;
             case BOSS_DUST -> 4.0f;
+            case WATER_DROP -> 0.2f;
             default -> 3.2f;
         };
     }
@@ -137,6 +153,7 @@ public final class ParticleSystem {
             case IMPACT_CORE, CRITICAL_RING, DEATH_RING, BOSS_SHOCKWAVE,
                 CHAIN_BEAM, CHAIN_FLASH, STUN_SPARK -> 0f;
             case CRITICAL_SPARK -> -20f;
+            case WATER_DROP -> -420f;
             default -> -48f;
         };
     }

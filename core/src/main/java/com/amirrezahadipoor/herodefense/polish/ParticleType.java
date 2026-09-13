@@ -19,7 +19,9 @@ public enum ParticleType {
     /** Bright flash at the end of a chain arc. */
     CHAIN_FLASH,
     /** Lilac star that orbits a stunned enemy's head. */
-    STUN_SPARK;
+    STUN_SPARK,
+    /** Falling water droplet from the ceremony watering can. */
+    WATER_DROP;
 
     public boolean isRing() {
         return this == CRITICAL_RING || this == DEATH_RING || this == BOSS_SHOCKWAVE;

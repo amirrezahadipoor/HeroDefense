@@ -138,7 +138,11 @@ public final class BalanceSimulator {
                 WaveCompletion completion = waves.updateAfterCombat(state);
                 if (completion == WaveCompletion.BOSS_REWARD) {
                     chooseReward(state, forcedCard, forcedBossNumber);
-                    waves.continueAfterBossReward(state);
+                    completion = waves.continueAfterBossReward(state);
+                }
+                if (completion == WaveCompletion.PLANTING_CEREMONY) {
+                    // The ceremony is presentation only; the simulator plants instantly.
+                    waves.completePlantingCeremony(state);
                 }
                 elapsed += STEP_SECONDS;
             }
@@ -160,6 +164,7 @@ public final class BalanceSimulator {
             if (timedOut) break;
         }
         return new BalanceReport(samples, state.hero.alive && state.runComplete);
+
     }
 
     private void allocateTalentPoints(GameState state) {
@@ -335,9 +340,15 @@ public final class BalanceSimulator {
     ) {
     }
 
-    public record BalanceReport(List<WaveSample> waves, boolean reachedWave100) {
+    /** {@code reachedFinalWave}: the Hero survived the whole 1..FINAL_WAVE run. */
+    public record BalanceReport(List<WaveSample> waves, boolean reachedFinalWave) {
         public BalanceReport {
             waves = List.copyOf(waves);
+        }
+
+        /** True once the run cleared the planting wave (the tuned first half). */
+        public boolean reachedWave100() {
+            return reachedFinalWave || waves.size() > GameState.PLANTING_WAVE;
         }
 
         public float averageDamageFraction() {

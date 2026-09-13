@@ -315,7 +315,15 @@ public final class AndroidTouchSmokeTest {
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
             float[] correction = touchCorrection(game, 360f, 570f);
             await("doomed wave", () -> game.screenState() == GameScreenState.PLAYING);
+            // Phase 18: the Hero's death starts a short tree siege before the sanctuary falls.
             await("hero falls to the first melee hit", 20_000L, () ->
+                !game.gameState().hero.alive
+            );
+            assertTrue(game.screenState() == GameScreenState.PLAYING
+                || game.screenState() == GameScreenState.GAME_OVER);
+            SystemClock.sleep(900L); // Survivors are marching on the World Tree
+            captureScreen("tree-siege-premium-v2.png");
+            await("tree siege ends in defeat", 20_000L, () ->
                 game.screenState() == GameScreenState.GAME_OVER
             );
             assertFalse(game.gameState().runComplete);

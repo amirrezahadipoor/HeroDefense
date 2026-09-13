@@ -94,7 +94,7 @@ public final class MainMenuRenderer implements AutoCloseable {
         drawShadowedCentered(batch, "THE WORLD TREE AWAITS", 360f, 1120f, 0.86f, GOLD);
         drawShadowedCentered(batch, "HERO DEFENSE", 360f, 1058f, 2.28f, GOLD);
         drawShadowedCentered(
-            batch, "Hold the last green sanctuary through 100 waves",
+            batch, "Hold the last green sanctuary through 200 waves",
             360f, 988f, 0.92f, IVORY
         );
 
@@ -110,7 +110,7 @@ public final class MainMenuRenderer implements AutoCloseable {
             batch, icons, "settings", "SETTINGS", "Comfort, music, and effects",
             310f, settingsState, true
         );
-        drawShadowedCentered(batch, "100 WAVES  |  ONE LAST TREE", 360f, 174f, 0.84f, SUBTLE);
+        drawShadowedCentered(batch, "200 WAVES  |  ONE LAST TREE", 360f, 174f, 0.84f, SUBTLE);
         batch.end();
     }
 

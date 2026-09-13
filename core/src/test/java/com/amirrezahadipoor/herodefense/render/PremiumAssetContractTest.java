@@ -401,14 +401,19 @@ final class PremiumAssetContractTest {
         List<Path> sheets,
         List<BufferedImage> images
     ) {
-        Map<String, Integer> expected = switch (family) {
-            case "hero", "enemy", "boss", "equipment" -> Map.of(
-                "idle", 6, "attack", 8, "hit", 4, "death", 10
-            );
-            case "world_tree" -> "world_tree_damaged".equals(key)
-                ? Map.of("idle", 6, "destroy", 10)
-                : Map.of("idle", 6);
-            default -> Map.of("idle", 1);
+        Map<String, Integer> expected = switch (key) {
+            // Phase 18 planting-ceremony renders carry their own clip sets.
+            case "hero_ceremony" -> Map.of("walk", 8, "plant", 10, "water", 10);
+            case "world_tree_sapling" -> Map.of("grow", 12, "idle", 6);
+            default -> switch (family) {
+                case "hero", "enemy", "boss", "equipment" -> Map.of(
+                    "idle", 6, "attack", 8, "hit", 4, "death", 10
+                );
+                case "world_tree" -> "world_tree_damaged".equals(key)
+                    ? Map.of("idle", 6, "destroy", 10)
+                    : Map.of("idle", 6);
+                default -> Map.of("idle", 1);
+            };
         };
         assertEquals(expected.size(), clips.size, key + " clip count");
         for (Map.Entry<String, Integer> clip : expected.entrySet()) {

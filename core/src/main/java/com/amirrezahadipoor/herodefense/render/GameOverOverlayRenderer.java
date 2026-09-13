@@ -129,7 +129,7 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
     }
 
     static String subtitle(boolean victory, int waveNumber) {
-        if (victory) return "All 100 waves held. The last green sanctuary endures.";
+        if (victory) return "All " + GameState.FINAL_WAVE + " waves held. Two trees stand where one once did.";
         return "The Hero fell on wave " + Math.max(1, waveNumber) + ". The sanctuary is lost.";
     }
 

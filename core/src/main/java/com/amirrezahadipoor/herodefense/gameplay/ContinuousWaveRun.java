@@ -2,7 +2,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
 
-/** Advances the existing GameState through one uninterrupted 100-wave run. */
+/** Advances the existing GameState through one uninterrupted 200-wave run. */
 public final class ContinuousWaveRun {
     public WaveCompletion completeCurrentWave(GameState state) {
         if (state == null || state.runComplete) {
@@ -14,7 +14,12 @@ public final class ContinuousWaveRun {
             state.runComplete = true;
             return WaveCompletion.RUN_COMPLETED;
         }
+        boolean ceremony = state.waveNumber == GameState.PLANTING_WAVE && !state.secondTreePlanted;
         state.waveNumber++;
+        if (ceremony) {
+            state.ceremonyPending = true;
+            return WaveCompletion.PLANTING_CEREMONY;
+        }
         return WaveCompletion.NEXT_WAVE;
     }
 

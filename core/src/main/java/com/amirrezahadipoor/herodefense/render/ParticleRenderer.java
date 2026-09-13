@@ -159,6 +159,7 @@ public final class ParticleRenderer implements AutoCloseable {
             case CHAIN_BEAM -> shapes.setColor(0.86f, 0.97f, 1.00f, alpha);
             case CHAIN_FLASH -> shapes.setColor(0.80f, 0.96f, 1.00f, alpha * 0.9f);
             case STUN_SPARK -> shapes.setColor(0.86f, 0.76f, 0.98f, Math.min(1f, alpha * 3f));
+            case WATER_DROP -> shapes.setColor(0.56f, 0.80f, 0.96f, Math.min(1f, alpha * 1.6f));
         }
     }
 

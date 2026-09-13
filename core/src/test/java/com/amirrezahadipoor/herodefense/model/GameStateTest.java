@@ -51,7 +51,7 @@ final class GameStateTest {
         state.coins = -100;
         state.simulationSpeed = 99f;
         state.validateAndRepair();
-        assertEquals(100, state.waveNumber);
+        assertEquals(GameState.FINAL_WAVE, state.waveNumber);
         assertEquals(1, state.heroLevel);
         assertEquals(0, state.coins);
         assertEquals(1f, state.simulationSpeed);

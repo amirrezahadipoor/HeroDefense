@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.balance.BalanceSimulator.BalanceReport;
 import com.amirrezahadipoor.herodefense.balance.BalanceSimulator.WaveSample;
+import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -37,10 +38,11 @@ final class RewardCardSimulationTest {
             bossNumber
         );
         assertTrue(report.reachedWave100(), scenario(card, bossNumber) + " did not finish");
+        // Gate scope: the tuned 1..PLANTING_WAVE range. Phase 18.4's final rebalance widens it.
         List<WaveSample> remaining = report.waves().stream()
-            .filter(sample -> sample.wave() > bossNumber * 5)
+            .filter(sample -> sample.wave() > bossNumber * 5 && sample.wave() <= GameState.PLANTING_WAVE)
             .toList();
-        assertEquals(100 - bossNumber * 5, remaining.size());
+        assertEquals(GameState.PLANTING_WAVE - bossNumber * 5, remaining.size());
 
         float averageDamage = averageDamage(remaining);
         float averageClearTime = averageClearTime(remaining);

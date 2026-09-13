@@ -1,0 +1,312 @@
+{
+  "alphaMode": "STRAIGHT_RGBA",
+  "armature": "hero_armature",
+  "atlas": "sprites/hero_ceremony.atlas",
+  "attachment_variant": "ceremony_props",
+  "boneAnimated": true,
+  "bones": [
+    "armor_socket",
+    "boot_socket.L",
+    "boot_socket.R",
+    "chest",
+    "foot.L",
+    "foot.R",
+    "forearm.L",
+    "forearm.R",
+    "hand.L",
+    "hand.R",
+    "head",
+    "helmet_socket",
+    "neck",
+    "pelvis",
+    "ring_socket.L",
+    "ring_socket.R",
+    "root",
+    "shin.L",
+    "shin.R",
+    "spine",
+    "thigh.L",
+    "thigh.R",
+    "upper_arm.L",
+    "upper_arm.R",
+    "weapon_socket"
+  ],
+  "categoryReview": {
+    "auditSha256": "c2d8ce1e8a3ef2d5da9f1b2089e5a63c664c4ab23d9698d9733e50a3dece3b82",
+    "category": "ceremony",
+    "document": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
+    "scope": "phase-18-planting-ceremony",
+    "sourceManifestSha256": "af1d7b2f50f70ecc91711e30c5f01f9c7d44e506d8aaee5621358723c5995ce8",
+    "status": "accepted"
+  },
+  "ceremonyIdentity": "planting-ceremony-v1",
+  "clips": {
+    "plant": [
+      {
+        "height": 192,
+        "index": 0,
+        "page": 0,
+        "width": 192,
+        "x": 0,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 1,
+        "page": 0,
+        "width": 192,
+        "x": 192,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 2,
+        "page": 0,
+        "width": 192,
+        "x": 384,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 3,
+        "page": 0,
+        "width": 192,
+        "x": 576,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 4,
+        "page": 0,
+        "width": 192,
+        "x": 768,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 5,
+        "page": 0,
+        "width": 192,
+        "x": 960,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 6,
+        "page": 0,
+        "width": 192,
+        "x": 1152,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 7,
+        "page": 0,
+        "width": 192,
+        "x": 1344,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 8,
+        "page": 0,
+        "width": 192,
+        "x": 1536,
+        "y": 192
+      },
+      {
+        "height": 192,
+        "index": 9,
+        "page": 0,
+        "width": 192,
+        "x": 1728,
+        "y": 192
+      }
+    ],
+    "walk": [
+      {
+        "height": 192,
+        "index": 0,
+        "page": 0,
+        "width": 192,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 1,
+        "page": 0,
+        "width": 192,
+        "x": 192,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 2,
+        "page": 0,
+        "width": 192,
+        "x": 384,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 3,
+        "page": 0,
+        "width": 192,
+        "x": 576,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 4,
+        "page": 0,
+        "width": 192,
+        "x": 768,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 5,
+        "page": 0,
+        "width": 192,
+        "x": 960,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 6,
+        "page": 0,
+        "width": 192,
+        "x": 1152,
+        "y": 0
+      },
+      {
+        "height": 192,
+        "index": 7,
+        "page": 0,
+        "width": 192,
+        "x": 1344,
+        "y": 0
+      }
+    ],
+    "water": [
+      {
+        "height": 192,
+        "index": 0,
+        "page": 0,
+        "width": 192,
+        "x": 0,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 1,
+        "page": 0,
+        "width": 192,
+        "x": 192,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 2,
+        "page": 0,
+        "width": 192,
+        "x": 384,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 3,
+        "page": 0,
+        "width": 192,
+        "x": 576,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 4,
+        "page": 0,
+        "width": 192,
+        "x": 768,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 5,
+        "page": 0,
+        "width": 192,
+        "x": 960,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 6,
+        "page": 0,
+        "width": 192,
+        "x": 1152,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 7,
+        "page": 0,
+        "width": 192,
+        "x": 1344,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 8,
+        "page": 0,
+        "width": 192,
+        "x": 1536,
+        "y": 384
+      },
+      {
+        "height": 192,
+        "index": 9,
+        "page": 0,
+        "width": 192,
+        "x": 1728,
+        "y": 384
+      }
+    ]
+  },
+  "family": "hero",
+  "frameClass": "character",
+  "frameRate": 12,
+  "frameSize": 192,
+  "key": "hero_ceremony",
+  "materialCount": 15,
+  "meshParts": 54,
+  "modelRevision": "hero-ceremony-v1",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.12
+  },
+  "props": [
+    "seed_pouch",
+    "seed",
+    "watering_can"
+  ],
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-humanoid-v2",
+  "sheet": "sprites/hero_ceremony.png",
+  "sheetHeight": 576,
+  "sheetWidth": 1920,
+  "sheets": [
+    {
+      "decodedBytes": 4423680,
+      "file": "sprites/hero_ceremony.png",
+      "height": 576,
+      "width": 1920
+    }
+  ],
+  "silhouette": "premium_elf_archer",
+  "triangles": 1812,
+  "visualQuality": "premium-v2"
+}

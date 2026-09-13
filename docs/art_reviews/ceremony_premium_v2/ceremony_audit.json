@@ -1,0 +1,147 @@
+{
+  "assets": {
+    "hero_ceremony": {
+      "candidateAtlasSha256": "c9ed45ba2f7f0a74b575cb4ee47de2ba5ff100d481e40a91e29acbd4c45ea752",
+      "candidateMetadataSha256": "192593bd72f697f1443459e9d54c4a7984e2ac44cae69b19325a7d534f394391",
+      "candidateSheetSha256": "42992bbf530e1cdef6d20c4edcf8095e95533754a4659fa71033feeab7af45b2",
+      "clips": {
+        "plant": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 17,
+            "left": 23,
+            "right": 35,
+            "top": 30
+          },
+          "uniqueVisibleFrames": 6
+        },
+        "walk": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 17,
+            "left": 27,
+            "right": 38,
+            "top": 31
+          },
+          "uniqueVisibleFrames": 5
+        },
+        "water": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 17,
+            "left": 18,
+            "right": 42,
+            "top": 13
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "materialCount": 15,
+      "meshParts": 54,
+      "triangles": 1812
+    },
+    "world_tree_sapling": {
+      "candidateAtlasSha256": "f91f1a7ff2d5137ce32e06af370d5892b0e89790f932865a2c0d85f5f7825056",
+      "candidateMetadataSha256": "f353caf7f7f3ceee4d1e799df9f36a999e0b2262066043a91845685233be6e19",
+      "candidateSheetSha256": "93ad82bdab1d637452a2a4ce422ce500ec90bb8b02446749b1ce82d761915658",
+      "clips": {
+        "grow": {
+          "frameCount": 12,
+          "minimumAlphaMargins": {
+            "bottom": 34,
+            "left": 47,
+            "right": 57,
+            "top": 36
+          },
+          "uniqueVisibleFrames": 12
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 35,
+            "left": 46,
+            "right": 58,
+            "top": 49
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "growToIdleAlphaDifference": 0.006938590234096362,
+      "growthVisibleAreas": [
+        289,
+        1484,
+        3033,
+        4642,
+        6140,
+        7626,
+        8973,
+        10640,
+        12972,
+        14692,
+        15355,
+        15397
+      ],
+      "growthVisibleHeights": [
+        25,
+        63,
+        95,
+        120,
+        139,
+        154,
+        163,
+        172,
+        183,
+        186,
+        177,
+        172
+      ],
+      "materialCount": 12,
+      "meshParts": 143,
+      "triangles": 4840
+    }
+  },
+  "batch": "ceremony-premium-v2",
+  "candidateManifestSha256": "af1d7b2f50f70ecc91711e30c5f01f9c7d44e506d8aaee5621358723c5995ce8",
+  "frameContract": {
+    "hero_ceremony": {
+      "plant": 10,
+      "walk": 8,
+      "water": 10
+    },
+    "world_tree_sapling": {
+      "grow": 12,
+      "idle": 6
+    }
+  },
+  "minimumUniqueVisibleFrames": {
+    "hero_ceremony": {
+      "plant": 6,
+      "walk": 5,
+      "water": 5
+    },
+    "world_tree_sapling": {
+      "grow": 12,
+      "idle": 4
+    }
+  },
+  "reviewSheets": {
+    "ceremony_arena_scale.png": {
+      "bytes": 503968,
+      "sha256": "c20eeaa25dbe4b8e5508ce891200f3015e93590dc0b01cc2ca873bf05c20bb69"
+    },
+    "hero_ceremony_full_motion.png": {
+      "bytes": 207149,
+      "sha256": "0d60e43a2856cb88f5ddbe15c4ff3b75c089348c0a2fd0bbcc1f82a41c84237a"
+    },
+    "world_tree_sapling_growth.png": {
+      "bytes": 197057,
+      "sha256": "169ed24e014e5a56b866cf1950afceddaf8478f0ef8a1db0938d665719e46bf4"
+    }
+  },
+  "schemaVersion": 1,
+  "summary": {
+    "assetCount": 2,
+    "decodedBytes": 10715136,
+    "frameCount": 46
+  }
+}

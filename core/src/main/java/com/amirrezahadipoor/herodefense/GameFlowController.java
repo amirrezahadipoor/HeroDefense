@@ -66,6 +66,7 @@ public final class GameFlowController {
             GameScreenState.PAUSED,
             GameScreenState.LEVEL_UP,
             GameScreenState.CARD_CHOICE,
+            GameScreenState.CINEMATIC,
             GameScreenState.INVENTORY,
             GameScreenState.SHOP,
             GameScreenState.GAME_OVER,
@@ -78,7 +79,10 @@ public final class GameFlowController {
             GameScreenState.SHOP
         ));
         transitions.put(GameScreenState.LEVEL_UP, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
-        transitions.put(GameScreenState.CARD_CHOICE, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
+        transitions.put(GameScreenState.CARD_CHOICE, EnumSet.of(
+            GameScreenState.PLAYING, GameScreenState.CINEMATIC, GameScreenState.GAME_OVER
+        ));
+        transitions.put(GameScreenState.CINEMATIC, EnumSet.of(GameScreenState.PLAYING));
         transitions.put(GameScreenState.INVENTORY, EnumSet.of(
             GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.PAUSED
         ));

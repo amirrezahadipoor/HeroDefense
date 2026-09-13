@@ -29,6 +29,7 @@ import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
+import com.amirrezahadipoor.herodefense.gameplay.PlantingCeremony;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
 import com.amirrezahadipoor.herodefense.input.GdxHapticFeedback;
@@ -70,7 +71,9 @@ import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.FloatingCoinTextRenderer;
 import com.amirrezahadipoor.herodefense.render.FloatingDamageTextRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.CeremonyHeroRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
+import com.amirrezahadipoor.herodefense.render.SaplingTreeRenderer;
 import com.amirrezahadipoor.herodefense.render.HudRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.LevelUpOverlayRenderer;
@@ -118,6 +121,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private GameOverOverlayRenderer gameOverOverlayRenderer;
     private HeroProgressionSystem heroProgressionSystem;
     private HeroSpriteRenderer heroSpriteRenderer;
+    private CeremonyHeroRenderer ceremonyHeroRenderer;
+    private SaplingTreeRenderer saplingTreeRenderer;
+    private final PlantingCeremony plantingCeremony = new PlantingCeremony();
+    private static final float WATER_DROP_INTERVAL_SECONDS = 0.07f;
+    private float waterDropAccumulator;
     private HapticFeedback hapticFeedback;
     private HitStopSystem hitStopSystem;
     private HudRenderer hudRenderer;
@@ -227,6 +235,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextRenderer = new FloatingDamageTextRenderer();
         gameOverOverlayRenderer = new GameOverOverlayRenderer();
         heroSpriteRenderer = new HeroSpriteRenderer();
+        ceremonyHeroRenderer = new CeremonyHeroRenderer();
+        saplingTreeRenderer = new SaplingTreeRenderer();
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
@@ -280,6 +290,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
+        } else if (flow.state() == GameScreenState.CINEMATIC) {
+            updateCinematic(deltaSeconds);
         }
         ambientSeconds += deltaSeconds;
         if (flow.state() == GameScreenState.GAME_OVER) {
@@ -403,6 +415,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (heroSpriteRenderer != null) {
             heroSpriteRenderer.close();
         }
+        if (ceremonyHeroRenderer != null) {
+            ceremonyHeroRenderer.close();
+        }
+        if (saplingTreeRenderer != null) {
+            saplingTreeRenderer.close();
+        }
         if (hudRenderer != null) {
             hudRenderer.close();
         }
@@ -517,16 +535,22 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         touchFeedbackSystem.triggerCardSelection(worldX, worldY);
                         hapticFeedback.cardSelection();
                         WaveCompletion result = waveLifecycleSystem.continueAfterBossReward(gameState);
-                        flow.transitionTo(
-                            result == WaveCompletion.RUN_COMPLETED
-                                ? GameScreenState.GAME_OVER
-                                : GameScreenState.PLAYING
-                        );
+                        if (result == WaveCompletion.RUN_COMPLETED) {
+                            flow.transitionTo(GameScreenState.GAME_OVER);
+                        } else if (result == WaveCompletion.PLANTING_CEREMONY) {
+                            beginPlantingCeremony();
+                        } else {
+                            flow.transitionTo(GameScreenState.PLAYING);
+                        }
                         saveNow();
                     } else {
                         touchFeedbackSystem.triggerTap(worldX, worldY);
                         hapticFeedback.tap();
                     }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.CINEMATIC) {
+                    plantingCeremony.skip();
                     return true;
                 }
                 if (flow.state() == GameScreenState.LEVEL_UP) {
@@ -651,6 +675,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         flow.transitionTo(GameScreenState.PLAYING);
         if (gameState.awaitingBossReward) {
             flow.transitionTo(GameScreenState.CARD_CHOICE);
+        } else if (gameState.ceremonyPending) {
+            // A save closed mid-ceremony replays it from the start; it is deterministic.
+            beginPlantingCeremony();
         } else if (gameState.unspentTalentPoints > 0) {
             flow.transitionTo(GameScreenState.LEVEL_UP);
         } else if (!gameState.waveActive) {
@@ -736,6 +763,43 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         return count;
     }
 
+    private void beginPlantingCeremony() {
+        flow.transitionTo(GameScreenState.CINEMATIC);
+        hitStopSystem.clear();
+        plantingCeremony.begin();
+        gameState.anchorHeroAtArenaCenter();
+    }
+
+    /** Presentation-only ceremony tick; the wave-101 hand-off happens once it completes. */
+    private void updateCinematic(float deltaSeconds) {
+        screenShakeSystem.update(deltaSeconds);
+        particleSystem.update(deltaSeconds);
+        floatingCoinTextSystem.update(deltaSeconds);
+        floatingDamageTextSystem.update(deltaSeconds);
+        boolean finished = plantingCeremony.update(deltaSeconds);
+        if (plantingCeremony.pouring()) {
+            waterDropAccumulator += deltaSeconds;
+            while (waterDropAccumulator >= WATER_DROP_INTERVAL_SECONDS) {
+                waterDropAccumulator -= WATER_DROP_INTERVAL_SECONDS;
+                particleSystem.emitWaterDrops(
+                    plantingCeremony.heroX() + 52f, plantingCeremony.heroY() + 58f
+                );
+            }
+        } else {
+            waterDropAccumulator = 0f;
+        }
+        if (finished) {
+            int bossesBefore = livingBossCount(gameState);
+            waveLifecycleSystem.completePlantingCeremony(gameState);
+            flow.transitionTo(GameScreenState.PLAYING);
+            if (livingBossCount(gameState) > bossesBefore) {
+                audioManager.play(AudioCue.BOSS_ENTRANCE);
+                presentBossEntrance(gameState);
+            }
+            saveNow();
+        }
+    }
+
     private static boolean canContinue(GameState state) {
         return state != null && state.hero != null && state.hero.alive && !state.runComplete;
     }
@@ -789,10 +853,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (gameState.hero.health < heroHealthBeforeAttack - 0.001f) {
             screenShakeSystem.triggerHeroHit();
             particleSystem.emitHit(gameState.hero.x, gameState.hero.y + 45f, false);
-            audioManager.play(gameOver ? AudioCue.DEATH : AudioCue.HIT);
+            audioManager.play(gameState.hero.alive ? AudioCue.HIT : AudioCue.DEATH);
         }
         emitDefeatParticles(gameState);
-        if (!gameOver) {
+        if (!gameOver && gameState.hero.alive) {
             autoPotionSystem.update(gameState);
         }
         int itemDrops = itemDropSystem.processDefeatedEnemies(gameState);
@@ -819,6 +883,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (gameOver) {
             particleSystem.emitTreeDestruction(WorldLayout.WORLD_TREE_X, WorldLayout.WORLD_TREE_Y);
+            if (gameState.secondTreePlanted) {
+                particleSystem.emitTreeDestruction(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y);
+            }
             screenShakeSystem.triggerTreeFall();
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
@@ -834,6 +901,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             }
             if (waveCompletion == WaveCompletion.BOSS_REWARD) {
                 flow.transitionTo(GameScreenState.CARD_CHOICE);
+            } else if (waveCompletion == WaveCompletion.PLANTING_CEREMONY) {
+                beginPlantingCeremony();
             } else if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
                 flow.transitionTo(GameScreenState.GAME_OVER);
             }
@@ -852,6 +921,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             case PAUSED -> 0.11f;
             case LEVEL_UP -> 0.22f;
             case CARD_CHOICE -> 0.24f;
+            case CINEMATIC -> 0.21f;
             case INVENTORY -> 0.18f;
             case SHOP -> 0.18f;
             case GAME_OVER -> 0.08f;
@@ -879,10 +949,22 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             spriteBatch.end();
             particleRenderer.drawAmbient(camera.combined, ambientSeconds);
             spriteBatch.begin();
+            boolean cinematic = flow.state() == GameScreenState.CINEMATIC;
+            if (cinematic) {
+                if (plantingCeremony.saplingVisible()) {
+                    saplingTreeRenderer.drawGrowing(spriteBatch, plantingCeremony);
+                }
+            } else if (gameState.secondTreePlanted) {
+                saplingTreeRenderer.drawIdle(spriteBatch, ambientSeconds);
+            }
             combatEntityRenderer.drawActors(spriteBatch, gameState, simulationSeconds);
-            int heroFrame = heroAnimationController.frameIndex(gameState.hero);
-            heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
-            equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
+            if (cinematic) {
+                ceremonyHeroRenderer.draw(spriteBatch, plantingCeremony);
+            } else {
+                int heroFrame = heroAnimationController.frameIndex(gameState.hero);
+                heroSpriteRenderer.draw(spriteBatch, gameState.hero, heroFrame);
+                equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
+            }
             combatEntityRenderer.drawEffects(spriteBatch, gameState, simulationSeconds);
             spriteBatch.end();
             particleRenderer.draw(camera.combined, particleSystem, simulationSeconds);
@@ -895,7 +977,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             camera.position.set(baseCameraX, baseCameraY, camera.position.z);
             camera.update();
         }
-        if (flow.state() == GameScreenState.PLAYING) {
+        if (flow.state() == GameScreenState.PLAYING || flow.state() == GameScreenState.CINEMATIC) {
             hudRenderer.draw(
                 spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer,
                 presentationDeltaSeconds

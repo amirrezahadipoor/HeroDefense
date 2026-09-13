@@ -10,7 +10,11 @@ import java.util.Map;
 /** Complete serializable state for one continuous Hero Defense run. */
 public final class GameState {
     public static final int CURRENT_SCHEMA_VERSION = 1;
-    public static final int FINAL_WAVE = 100;
+    public static final int FINAL_WAVE = 200;
+    /** Clearing this wave (and its boss reward) triggers the planting ceremony. */
+    public static final int PLANTING_WAVE = 100;
+    /** Seconds the monsters spend tearing down the trees after the Hero falls. */
+    public static final float TREE_SIEGE_SECONDS = 3.2f;
     public static final float ARENA_CENTER_X = WorldLayout.HERO_CENTER_X;
     public static final float ARENA_CENTER_Y = WorldLayout.HERO_CENTER_Y;
 
@@ -34,6 +38,12 @@ public final class GameState {
     public boolean awaitingBossReward;
     public int pendingRewardBossNumber;
     public boolean runComplete;
+    /** Set when Wave 100 is cleared; cleared once the ceremony has played (or been skipped). */
+    public boolean ceremonyPending;
+    /** True once the second Heartwood stands; it is a monument, never a second loss condition. */
+    public boolean secondTreePlanted;
+    /** Counts down after the Hero dies while monsters destroy the trees; 0 = trees are gone. */
+    public float treeSiegeRemainingSeconds;
     public long nextEntityId = 2L;
 
     public Hero hero = new Hero(1L, ARENA_CENTER_X, ARENA_CENTER_Y);
@@ -128,9 +138,17 @@ public final class GameState {
         hero.validateAndRepair();
         worldTreeMaxHealth = Math.max(1f, worldTreeMaxHealth);
         worldTreeHealth = Math.max(0f, Math.min(worldTreeMaxHealth, worldTreeHealth));
-        if (!hero.alive) {
+        treeSiegeRemainingSeconds = Float.isFinite(treeSiegeRemainingSeconds)
+            ? Math.max(0f, Math.min(TREE_SIEGE_SECONDS, treeSiegeRemainingSeconds)) : 0f;
+        if (!hero.alive && treeSiegeRemainingSeconds <= 0f) {
             destroyWorldTree();
         }
+        if (hero.alive) treeSiegeRemainingSeconds = 0f;
+        if (waveNumber <= PLANTING_WAVE) {
+            ceremonyPending = false;
+            secondTreePlanted = false;
+        }
+        if (ceremonyPending) waveActive = false;
         if (aliveEnemies == null) aliveEnemies = new ArrayList<>();
         if (aliveBosses == null) aliveBosses = new ArrayList<>();
         if (livingEnemyCount() > 0) waveActive = true;

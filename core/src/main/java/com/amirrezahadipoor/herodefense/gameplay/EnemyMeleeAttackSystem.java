@@ -13,14 +13,17 @@ public final class EnemyMeleeAttackSystem {
         this.heroDamageSystem = heroDamageSystem;
     }
 
-    /** Returns true once the Hero has died and the World Tree has been destroyed. */
+    /**
+     * Returns true once the Hero has died and the World Tree has been destroyed. The Hero's
+     * death does not end the run instantly: the survivors turn on the tree for
+     * {@link GameState#TREE_SIEGE_SECONDS} (its health drains visibly) and only then does it fall.
+     */
     public boolean update(GameState state, float deltaSeconds) {
         if (state == null || state.hero == null || deltaSeconds < 0f) {
             return false;
         }
         if (!state.hero.alive) {
-            state.destroyWorldTree();
-            return true;
+            return advanceTreeSiege(state, deltaSeconds);
         }
         for (Enemy enemy : state.aliveEnemies) {
             attackIfInRange(state, enemy, deltaSeconds);
@@ -29,6 +32,26 @@ public final class EnemyMeleeAttackSystem {
             attackIfInRange(state, boss, deltaSeconds);
         }
         if (!state.hero.alive) {
+            state.treeSiegeRemainingSeconds = GameState.TREE_SIEGE_SECONDS;
+            return false;
+        }
+        return false;
+    }
+
+    /** True when the siege timer has run out and the tree has just been destroyed. */
+    public static boolean advanceTreeSiege(GameState state, float deltaSeconds) {
+        if (state.worldTreeHealth <= 0f) return true;
+        if (state.treeSiegeRemainingSeconds <= 0f) {
+            // Loaded a save where the Hero was already dead: no siege left to play.
+            state.destroyWorldTree();
+            return true;
+        }
+        state.treeSiegeRemainingSeconds = Math.max(
+            0f, state.treeSiegeRemainingSeconds - Math.max(0f, deltaSeconds)
+        );
+        float ratio = state.treeSiegeRemainingSeconds / GameState.TREE_SIEGE_SECONDS;
+        state.worldTreeHealth = Math.min(state.worldTreeHealth, state.worldTreeMaxHealth * ratio);
+        if (state.treeSiegeRemainingSeconds <= 0f) {
             state.destroyWorldTree();
             return true;
         }
