@@ -881,6 +881,13 @@ UI_ICON_KEYS = (
     "ui_dodge",
 )
 
+# Reward cards reuse the matching control medallions above. Only the two semantic
+# effects without a control equivalent need additional authored medallions.
+REWARD_CARD_ICON_KEYS = (
+    "ui_general_power",
+    "ui_lifesteal",
+)
+
 
 def build_ui_frame(key: str) -> BuiltModel:
     """Build a camera-facing nine-patch frame with a construction-specific UI state."""
@@ -981,7 +988,7 @@ def build_ui_frame(key: str) -> BuiltModel:
 
 def build_ui_icon(key: str) -> BuiltModel:
     """Build one premium low-poly mobile control symbol from the locked palette."""
-    if key not in UI_ICON_KEYS:
+    if key not in (*UI_ICON_KEYS, *REWARD_CARD_ICON_KEYS):
         raise ValueError(f"Unknown UI icon: {key}")
     gold = MATERIALS.get("ui_gold", PALETTE["hero_gold"], True)
     green = MATERIALS.get("ui_green", PALETTE["hero_green"])
@@ -1122,6 +1129,36 @@ def build_ui_icon(key: str) -> BuiltModel:
         cube("clover_stem", (0.20, 0, 0.55), (0.12, 0.14, 0.62), green, -0.35)
     elif key == "ui_dodge":
         shield(cyan)
+    elif key == "ui_general_power":
+        # A four-ray sunstone reads as global power rather than another weapon.
+        objects.append(add_ico(
+            "power_heartstone", (0, -0.08, 1.0), (0.38, 0.22, 0.38), leaf, 2,
+        ))
+        for index in range(4):
+            angle = index * math.pi / 2
+            cube(
+                f"power_ray_{index}",
+                (math.cos(angle) * 0.52, 0, 1.0 + math.sin(angle) * 0.52),
+                (0.38, 0.16, 0.15), gold, -angle, 0.025,
+            )
+    elif key == "ui_lifesteal":
+        # A blood drop cradled by living leaves keeps lifesteal distinct from HP.
+        objects.append(add_ico(
+            "lifesteal_drop_crown", (0, -0.06, 1.18),
+            (0.38, 0.22, 0.40), crimson, 2,
+        ))
+        objects.append(add_cone(
+            "lifesteal_drop_point", (0, -0.06, 0.82),
+            0.38, 0.0, 0.72, crimson, 8, (math.pi, 0, 0),
+        ))
+        for side, sign in (("L", -1), ("R", 1)):
+            leaf_obj = add_leaf(
+                f"lifesteal_root_leaf_{side}",
+                (0.39 * sign, -0.14, 0.76),
+                (0.20, 0.08, 0.38), leaf,
+                (0, 0, -0.68 * sign),
+            )
+            objects.append(leaf_obj)
 
     # Apply one shared image-plane correction so every glyph and medallion retains
     # transparent safety despite the locked item-camera framing shift.
@@ -1166,24 +1203,36 @@ def build_potion_icon(tier: int) -> BuiltModel:
         add_cone("potion_heart_point", (0, -0.405, 0.56), 0.105, 0.0, 0.20,
                  heart, 6, (math.pi, 0, 0)),
     ]
-    if tier >= 5:
-        for index, sign in enumerate((-1, 1)):
+    # Escalate the silhouette one restrained construction step per tier. Color is
+    # supportive, never the only tier cue at runtime size or in grayscale.
+    if tier >= 2:
+        leaf_signs = (1,) if tier == 2 else (-1, 1)
+        for index, sign in enumerate(leaf_signs):
             objects.append(add_leaf(
                 f"potion_collar_leaf_{index}", (0.23 * sign, -0.16, 1.22),
-                (0.13, 0.045, 0.22), leaf, (0, 0, 0.62 * sign),
+                (0.11 + 0.01 * tier, 0.045, 0.18 + 0.01 * tier),
+                leaf, (0, 0, 0.62 * sign),
+            ))
+    if tier >= 4:
+        objects.append(add_torus(
+            "potion_tier_foot_ring", (0, -0.06, 0.22), 0.34, 0.030,
+            gold, (math.pi / 2, 0, 0),
+        ))
+    if tier >= 5:
+        for side, sign in (("L", -1), ("R", 1)):
+            objects.append(add_ico(
+                f"potion_shoulder_seed_{side}",
+                (0.34 * sign, -0.28, 0.94),
+                (0.075, 0.035, 0.075), gold, 1,
             ))
     if tier == 6:
         # Restrained legendary framing creates a distinct silhouette without masking
-        # the liquid mass: two cradle rails, a foot ring, and a seed-like stopper cap.
+        # the liquid mass: two cradle rails and a seed-like stopper cap.
         for side, sign in (("L", -1), ("R", 1)):
             objects.append(add_cylinder_between(
                 f"potion_cradle_{side}", (0.37 * sign, -0.34, 0.35),
                 (0.23 * sign, -0.34, 1.03), 0.035, gold, 6,
             ))
-        objects.append(add_torus(
-            "potion_foot_ring", (0, -0.06, 0.22), 0.34, 0.035,
-            gold, (math.pi / 2, 0, 0),
-        ))
         objects.append(add_leaf(
             "potion_stopper_seed", (0, -0.04, 1.50),
             (0.13, 0.07, 0.18), leaf,
@@ -1191,5 +1240,15 @@ def build_potion_icon(tier: int) -> BuiltModel:
     return BuiltModel(None, objects, {
         "tier": tier,
         "heal_icon": True,
-        "visualQuality": "premium-v2" if tier == 6 else "baseline-compatible",
+        "potionFamily": "heartwood-elixir",
+        "modelRevision": "health-potion-premium-v2",
+        "tierConstruction": (
+            "clean faceted vial",
+            "single collar leaf",
+            "paired collar leaves",
+            "paired leaves and foot ring",
+            "seeded shoulders and foot ring",
+            "legendary cradle rails and living stopper",
+        )[tier - 1],
+        "visualQuality": "premium-v2",
     })

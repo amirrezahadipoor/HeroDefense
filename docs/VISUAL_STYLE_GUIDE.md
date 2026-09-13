@@ -48,6 +48,8 @@ Premium-v2 is a substantial quality upgrade, not a change to noisy realism. Ever
 - Inventory and Shop cards use consistent rarity edge treatment, aligned numeric columns, concise comparison language, and no decorative layer behind critical stats.
 - Reusable control chrome uses the reviewed `button`, `panel`, and `slot` nine-patch families. Every family has four construction-specific states: normal uses a warm priority edge, pressed visibly insets the face, selected completes the gold corners with paired leaf tabs, and disabled removes saturation/priority rather than relying on opacity alone.
 - Semantic control icons use one coherent Heartwood medallion language and remain recognizable in grayscale. Disabled icons receive restrained runtime tinting; state meaning must never depend on glyph recoloring alone.
+- Reward cards reuse their matching Heartwood stat/currency medallions; global power uses a four-ray living sunstone and lifesteal uses a blood drop cradled by leaves, so all eight effects remain distinct at runtime size.
+- All six potion tiers use the Heartwood elixir family: one faceted glass/liquid read plus restrained construction escalation from a clean vial through collar leaves, foot ring, shoulder seeds, and finally Legendary cradle rails/living stopper. Tier may never rely on hue alone.
 - The live HUD may frame information but may not hide combat lanes, rewards, Hero attacks, or the World Tree silhouette.
 
 ### 0.6 Premium VFX restraint

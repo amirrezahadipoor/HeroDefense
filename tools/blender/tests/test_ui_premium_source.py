@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[3]
 ENVIRONMENT = ROOT / "tools/blender/hd_pipeline/environment.py"
 GENERATOR = ROOT / "tools/blender/generate_assets.py"
 RUNTIME = ROOT / "core/src/main/java/com/amirrezahadipoor/herodefense/render/UiFrameRenderer.java"
+REWARD_RENDERER = ROOT / "core/src/main/java/com/amirrezahadipoor/herodefense/render/RewardCardOverlayRenderer.java"
+REWARD_ID = ROOT / "core/src/main/java/com/amirrezahadipoor/herodefense/rewards/RewardCardId.java"
 GAME = ROOT / "core/src/main/java/com/amirrezahadipoor/herodefense/HeroDefenseGame.java"
 STYLE = ROOT / "docs/VISUAL_STYLE_GUIDE.md"
 
@@ -18,6 +20,8 @@ class UiPremiumSourceTest(unittest.TestCase):
         cls.environment = ENVIRONMENT.read_text(encoding="utf-8")
         cls.generator = GENERATOR.read_text(encoding="utf-8")
         cls.runtime = RUNTIME.read_text(encoding="utf-8")
+        cls.reward_renderer = REWARD_RENDERER.read_text(encoding="utf-8")
+        cls.reward_id = REWARD_ID.read_text(encoding="utf-8")
         cls.game = GAME.read_text(encoding="utf-8")
         cls.style = STYLE.read_text(encoding="utf-8")
         cls.tree = ast.parse(cls.environment)
@@ -39,6 +43,26 @@ class UiPremiumSourceTest(unittest.TestCase):
         self.assertIn("for key in UI_FRAME_KEYS", self.generator)
         self.assertIn("for key in UI_ICON_KEYS", self.generator)
         self.assertIn('"assetKind": "uiFrame"', self.generator)
+
+    def test_supplement_covers_every_potion_and_reward_card_semantic(self) -> None:
+        for key in ("ui_general_power", "ui_lifesteal"):
+            self.assertIn(f'"{key}"', self.environment)
+        self.assertIn("REWARD_CARD_ICON_KEYS", self.generator)
+        self.assertIn('args.batch == "ui-supplement"', self.generator)
+        self.assertIn("for tier in range(1, 7)", self.generator)
+        potion = self._function_source("build_potion_icon")
+        for contract in (
+            '"heartwood-elixir"', '"health-potion-premium-v2"',
+            '"tierConstruction"', '"visualQuality": "premium-v2"',
+            "potion_collar_leaf_", "potion_tier_foot_ring",
+            "potion_shoulder_seed_", "potion_cradle_",
+        ):
+            self.assertIn(contract, potion)
+        for icon in (
+            'return switch (this)', '"general_power"', '"lifesteal"',
+        ):
+            self.assertIn(icon, self.reward_id)
+        self.assertIn("icons.draw(batch, card.iconKey()", self.reward_renderer)
 
     def test_icons_share_a_premium_medallion_without_replacing_semantic_glyphs(self) -> None:
         source = self._function_source("build_ui_icon")

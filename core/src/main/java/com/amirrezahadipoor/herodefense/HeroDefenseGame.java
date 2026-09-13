@@ -759,7 +759,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 gameOverPresentationSeconds
             );
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
-            rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+            rewardCardOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer
+            );
         } else if (flow.state() == GameScreenState.SHOP) {
             statShopOverlayRenderer.draw(
                 spriteBatch, camera.combined, gameState, statShopSystem, uiIconRenderer

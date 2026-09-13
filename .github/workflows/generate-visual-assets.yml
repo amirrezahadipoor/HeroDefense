@@ -19,6 +19,7 @@ on:
           - arena
           - environment
           - ui
+          - ui-supplement
           - all
 
 permissions:

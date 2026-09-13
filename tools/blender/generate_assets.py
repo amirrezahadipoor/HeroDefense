@@ -45,6 +45,7 @@ from hd_pipeline.environment import (  # noqa: E402
     build_ground_tile,
     UI_FRAME_KEYS,
     UI_ICON_KEYS,
+    REWARD_CARD_ICON_KEYS,
     build_potion_icon,
     build_ui_frame,
     build_ui_icon,
@@ -85,7 +86,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -586,6 +587,20 @@ def render_ui(output: Path, only: set[str]) -> list[dict]:
     return entries
 
 
+def render_ui_supplement(output: Path) -> list[dict]:
+    """Render potion tiers and the two reward semantics absent from control icons."""
+    entries = render_environment(
+        output, {f"health_potion_{tier}" for tier in range(1, 7)}
+    )
+    for key in REWARD_CARD_ICON_KEYS:
+        entries.append(render_static_model(
+            key, "icons", "item",
+            lambda value=key: build_ui_icon(value), output,
+            {"assetKind": "ui", "iconKey": key},
+        ))
+    return entries
+
+
 def _run_frame_worker(payload: dict) -> None:
     output_path = Path(payload["output"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -741,6 +756,8 @@ def main() -> None:
         generated.extend(render_environment(output, only))
     if args.batch in {"ui", "all"}:
         generated.extend(render_ui(output, only))
+    if args.batch == "ui-supplement":
+        generated.extend(render_ui_supplement(output))
 
     by_key = {entry["key"]: entry for entry in existing}
     by_key.update({entry["key"]: entry for entry in generated})
@@ -849,3 +866,4 @@ if __name__ == "__main__":
     except Exception:
         traceback.print_exc()
         raise SystemExit(1)
+emExit(1)
