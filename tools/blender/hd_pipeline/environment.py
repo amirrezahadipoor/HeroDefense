@@ -581,7 +581,12 @@ def build_arena_backdrop() -> BuiltModel:
     panel("arena_mid_mist_band", 0.0, 1.75, 7.10, 2.55, 0.10, middle)
     panel("arena_ground_band", 0.0, -1.25, 7.10, 3.55, 0.12, ground)
     panel("arena_near_ground_band", 0.0, -4.25, 7.10, 2.55, 0.14, deep)
-    panel("arena_clear_combat_lane", 0.0, -0.95, 3.95, 6.25, 0.17, path)
+    clearing = add_ico(
+        "arena_clear_combat_lane", point(0.0, -0.95, 0.17),
+        (2.12, 3.45, 0.06), path, 2,
+    )
+    clearing.rotation_euler = facing
+    objects.append(clearing)
 
     # Two restrained concentric sanctuary marks support the center without becoming UI.
     for index, (radius, thickness) in enumerate(((2.18, 0.055), (2.72, 0.040))):
@@ -657,9 +662,9 @@ def build_ground_tile(variant: int = 0) -> BuiltModel:
     moss = MATERIALS.get("ground_moss", "#426C48")
     root = MATERIALS.get("ground_root", "#60432F")
     objects = [
-        add_cone("ground_patch_base", (0.0, 0.0, -0.10), 2.52, 2.42, 0.18,
+        add_cone("ground_patch_base", (0.0, 0.0, -0.10), 2.25, 2.17, 0.18,
                  soil_deep, 12),
-        add_cone("ground_patch_inner", (0.0, -0.02, 0.005), 2.12, 1.96, 0.075,
+        add_cone("ground_patch_inner", (0.0, -0.02, 0.005), 1.96, 1.82, 0.075,
                  soil if variant != 1 else soil_light, 11),
     ]
     for index in range(6):
