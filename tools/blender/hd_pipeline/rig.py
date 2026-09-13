@@ -128,6 +128,30 @@ def author_standard_actions(
             "hit": _author_fungal_brute_hit,
             "death": _author_fungal_brute_death,
         },
+        "ancient-golem-ground-slam-v2": {
+            "idle": _author_ancient_golem_idle,
+            "attack": _author_ancient_golem_ground_slam,
+            "hit": _author_ancient_golem_hit,
+            "death": _author_ancient_golem_death,
+        },
+        "thorn-matriarch-thorn-cage-v2": {
+            "idle": _author_thorn_matriarch_idle,
+            "attack": _author_thorn_matriarch_thorn_cage,
+            "hit": _author_thorn_matriarch_hit,
+            "death": _author_thorn_matriarch_death,
+        },
+        "ember-wyrm-flame-sweep-v2": {
+            "idle": _author_ember_wyrm_idle,
+            "attack": _author_ember_wyrm_flame_sweep,
+            "hit": _author_ember_wyrm_hit,
+            "death": _author_ember_wyrm_death,
+        },
+        "void-knight-void-charge-v2": {
+            "idle": _author_void_knight_idle,
+            "attack": _author_void_knight_void_charge,
+            "hit": _author_void_knight_hit,
+            "death": _author_void_knight_death,
+        },
     }
     if profile not in profile_authors:
         raise ValueError(f"Unknown animation profile: {profile}")
@@ -645,3 +669,261 @@ def _author_fungal_brute_death(armature: bpy.types.Object, count: int) -> None:
     }
     _key(armature, count - 1, final, {"root": (0.0, 0.0, -0.47)})
     _key(armature, count, final, {"root": (0.0, 0.0, -0.47)})
+
+
+# ---------------------------------------------------------------------------
+# Premium-v2 boss motion profiles
+# ---------------------------------------------------------------------------
+# Bosses preserve the locked 25-bone runtime contract, but each profile is built
+# around its named signature instead of inheriting the generic melee swing.
+
+
+def _boss_neutral(*extra_bones: str) -> dict[str, tuple[float, float, float]]:
+    bones = (
+        "pelvis", "spine", "chest", "neck", "head",
+        "upper_arm.L", "forearm.L", "hand.L",
+        "upper_arm.R", "forearm.R", "hand.R",
+    ) + extra_bones
+    return {bone: (0.0, 0.0, 0.0) for bone in bones}
+
+
+def _author_boss_breathe(
+    armature: bpy.types.Object,
+    count: int,
+    *,
+    mass: float,
+    wing: float = 0.0,
+    weapon: bool = False,
+) -> None:
+    low = {
+        "pelvis": (0.0, 0.0, -0.025 * mass),
+        "chest": (-0.018 * mass, 0.0, -0.025),
+        "head": (0.014, 0.0, 0.035),
+        "upper_arm.L": (0.045, -0.035, -0.07 - wing),
+        "upper_arm.R": (0.045, 0.035, 0.07 + wing),
+        "forearm.L": (-0.03, 0.0, -0.025),
+        "forearm.R": (-0.03, 0.0, 0.025),
+    }
+    high = {
+        "pelvis": (0.0, 0.0, 0.025 * mass),
+        "chest": (0.024 * mass, 0.0, 0.025),
+        "head": (-0.016, 0.0, -0.035),
+        "upper_arm.L": (-0.025 - wing, -0.055, -0.11 - wing),
+        "upper_arm.R": (-0.025 - wing, 0.055, 0.11 + wing),
+        "forearm.L": (-0.065, 0.0, -0.055),
+        "forearm.R": (-0.065, 0.0, 0.055),
+    }
+    if weapon:
+        low["weapon_socket"] = (0.02, 0.0, -0.035)
+        high["weapon_socket"] = (-0.025, 0.0, 0.045)
+    _key(armature, 1, low, {"root": (0.0, 0.0, 0.0)}, {"chest": (0.99, 0.99, 0.98)})
+    _key(armature, 1 + count // 2, high, {"root": (0.0, 0.0, 0.022 * mass)}, {"chest": (1.035, 1.035, 1.045)})
+    _key(armature, count, low, {"root": (0.0, 0.0, 0.0)}, {"chest": (0.99, 0.99, 0.98)})
+
+
+def _author_boss_hit(
+    armature: bpy.types.Object,
+    count: int,
+    *,
+    recoil: float,
+    wing: float = 0.0,
+    weapon: bool = False,
+) -> None:
+    extra = ("weapon_socket",) if weapon else ()
+    neutral = _boss_neutral(*extra)
+    impact = {
+        "pelvis": (-0.10, 0.0, 0.07),
+        "chest": (-recoil, 0.0, 0.17),
+        "head": (recoil * 0.78, 0.0, -0.13),
+        "upper_arm.L": (0.38 + wing, 0.0, -0.30 - wing),
+        "upper_arm.R": (0.36 + wing, 0.0, 0.30 + wing),
+    }
+    settle = {
+        "pelvis": (0.035, 0.0, -0.025),
+        "chest": (recoil * 0.30, 0.0, -0.05),
+        "head": (-recoil * 0.22, 0.0, 0.04),
+        "upper_arm.L": (-0.09, 0.0, 0.07),
+        "upper_arm.R": (-0.08, 0.0, -0.07),
+    }
+    if weapon:
+        impact["weapon_socket"] = (0.24, -0.12, 0.08)
+        settle["weapon_socket"] = (-0.06, 0.04, -0.02)
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    _key(armature, 2, impact, {"root": (0.075, 0.0, -0.03)}, {"chest": (0.94, 1.04, 0.96)})
+    _key(armature, 3, settle, {"root": (-0.02, 0.0, 0.0)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
+
+
+def _author_boss_fall(
+    armature: bpy.types.Object,
+    count: int,
+    *,
+    turn: float,
+    spread: float,
+    weapon: bool = False,
+    wilt: bool = False,
+) -> None:
+    extra = ("weapon_socket",) if weapon else ()
+    neutral = _boss_neutral(*extra)
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    mid = {
+        "pelvis": (0.22, 0.0, -0.08), "chest": (0.30, 0.0, -turn),
+        "head": (-0.20, 0.0, turn * 0.6),
+        "upper_arm.L": (0.42, 0.0, -spread), "upper_arm.R": (0.38, 0.0, spread),
+    }
+    final = {
+        "root": (0.0, 1.14, turn * 0.25), "pelvis": (0.72, 0.0, -0.16),
+        "chest": (0.94, 0.0, -turn), "neck": (0.68, 0.0, -turn * 0.5),
+        "head": (0.66, 0.0, turn * 0.7),
+        "upper_arm.L": (1.04, 0.0, -spread), "upper_arm.R": (0.92, 0.0, spread),
+        "forearm.L": (0.50, 0.0, -spread * 0.35), "forearm.R": (0.45, 0.0, spread * 0.35),
+    }
+    if weapon:
+        mid["weapon_socket"] = (0.42, -0.20, 0.12)
+        final["weapon_socket"] = (0.92, -0.34, 0.24)
+    _key(armature, 4, mid, {"root": (0.0, 0.0, -0.13)}, {"chest": (1.0, 1.0, 0.86 if wilt else 1.0)})
+    _key(armature, 7, {**mid, "root": (0.0, 0.42, turn * 0.18), "chest": (0.68, 0.0, -turn * 0.8)}, {"root": (0.0, 0.03, -0.37)}, {"chest": (1.04, 1.04, 0.62 if wilt else 0.95)})
+    _key(armature, count - 1, final, {"root": (0.0, 0.05, -0.57)}, {"chest": (1.06, 1.06, 0.42 if wilt else 0.92)})
+    _key(armature, count, final, {"root": (0.0, 0.05, -0.57)}, {"chest": (1.06, 1.06, 0.42 if wilt else 0.92)})
+
+
+def _author_ancient_golem_idle(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_breathe(armature, count, mass=0.65)
+
+
+def _author_ancient_golem_ground_slam(armature: bpy.types.Object, count: int) -> None:
+    neutral = _boss_neutral()
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    # Bilateral overhead lift keeps the heartstone exposed between both fists.
+    _key(armature, 3, {
+        "pelvis": (-0.10, 0.0, 0.0), "spine": (-0.20, 0.0, 0.0), "chest": (-0.34, 0.0, 0.0), "head": (0.16, 0.0, 0.0),
+        "upper_arm.L": (-1.12, -0.10, -0.72), "upper_arm.R": (-1.12, 0.10, 0.72),
+        "forearm.L": (-0.82, 0.0, -0.18), "forearm.R": (-0.82, 0.0, 0.18),
+    }, {"root": (0.0, 0.02, 0.09)})
+    # Signature impact drives the entire stone mass and both fists into the floor.
+    _key(armature, 5, {
+        "pelvis": (0.50, 0.0, 0.0), "spine": (0.44, 0.0, 0.0), "chest": (0.58, 0.0, 0.0), "head": (-0.32, 0.0, 0.0),
+        "upper_arm.L": (0.92, -0.14, -0.28), "upper_arm.R": (0.92, 0.14, 0.28),
+        "forearm.L": (0.72, 0.0, 0.16), "forearm.R": (0.72, 0.0, -0.16),
+    }, {"root": (0.0, -0.07, -0.20)}, {"chest": (1.04, 1.04, 0.93)})
+    _key(armature, 6, {
+        "pelvis": (0.38, 0.0, 0.0), "spine": (0.31, 0.0, 0.0), "chest": (0.40, 0.0, 0.0), "head": (-0.18, 0.0, 0.0),
+        "upper_arm.L": (0.66, -0.08, -0.19), "upper_arm.R": (0.66, 0.08, 0.19),
+        "forearm.L": (0.48, 0.0, 0.10), "forearm.R": (0.48, 0.0, -0.10),
+    }, {"root": (0.0, -0.035, -0.15)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
+
+
+def _author_ancient_golem_hit(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_hit(armature, count, recoil=0.26)
+
+
+def _author_ancient_golem_death(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_fall(armature, count, turn=0.20, spread=0.48)
+
+
+def _author_thorn_matriarch_idle(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_breathe(armature, count, mass=1.0, wing=0.06)
+
+
+def _author_thorn_matriarch_thorn_cage(armature: bpy.types.Object, count: int) -> None:
+    neutral = _boss_neutral()
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    # Fold the thorn fans inward before the root-cage erupts.
+    _key(armature, 3, {
+        "pelvis": (0.16, 0.0, 0.0), "spine": (0.18, 0.0, 0.0), "chest": (0.22, 0.0, 0.0), "head": (-0.20, 0.0, 0.0),
+        "upper_arm.L": (0.30, -0.28, 0.58), "upper_arm.R": (0.30, 0.28, -0.58),
+        "forearm.L": (-0.56, 0.0, 0.34), "forearm.R": (-0.56, 0.0, -0.34),
+    }, {"root": (0.0, 0.0, -0.08)}, {"chest": (0.95, 0.95, 0.94)})
+    # Signature cage opens both vine arms and thorn fans into a near-circle.
+    _key(armature, 5, {
+        "pelvis": (-0.20, 0.0, 0.0), "spine": (-0.18, 0.0, 0.0), "chest": (-0.25, 0.0, 0.0), "head": (0.16, 0.0, 0.0),
+        "upper_arm.L": (-0.82, -0.24, -1.00), "upper_arm.R": (-0.82, 0.24, 1.00),
+        "forearm.L": (-0.40, 0.0, -0.52), "forearm.R": (-0.40, 0.0, 0.52),
+        "hand.L": (0.0, 0.0, -0.36), "hand.R": (0.0, 0.0, 0.36),
+    }, {"root": (0.0, -0.04, 0.10)}, {"chest": (1.09, 1.09, 1.12)})
+    _key(armature, 6, {
+        "pelvis": (-0.10, 0.0, 0.0), "chest": (-0.14, 0.0, 0.0), "head": (0.08, 0.0, 0.0),
+        "upper_arm.L": (-0.56, -0.15, -0.72), "upper_arm.R": (-0.56, 0.15, 0.72),
+        "forearm.L": (-0.28, 0.0, -0.34), "forearm.R": (-0.28, 0.0, 0.34),
+    }, {"root": (0.0, -0.02, 0.055)}, {"chest": (1.04, 1.04, 1.06)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
+
+
+def _author_thorn_matriarch_hit(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_hit(armature, count, recoil=0.42, wing=0.08)
+
+
+def _author_thorn_matriarch_death(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_fall(armature, count, turn=0.38, spread=0.88, wilt=True)
+
+
+def _author_ember_wyrm_idle(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_breathe(armature, count, mass=1.15, wing=0.12)
+
+
+def _author_ember_wyrm_flame_sweep(armature: bpy.types.Object, count: int) -> None:
+    neutral = _boss_neutral()
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    # Coil the neck and draw both wings tight to pressurise the breath.
+    _key(armature, 3, {
+        "pelvis": (0.12, 0.0, -0.18), "spine": (0.10, 0.0, -0.30), "chest": (0.06, 0.0, -0.46), "neck": (-0.10, 0.0, -0.48), "head": (-0.12, 0.0, -0.58),
+        "upper_arm.L": (0.18, -0.18, 0.42), "upper_arm.R": (0.18, 0.18, -0.42),
+        "forearm.L": (0.20, 0.0, 0.24), "forearm.R": (0.20, 0.0, -0.24),
+    }, {"root": (-0.04, 0.02, -0.055)}, {"chest": (0.96, 0.96, 1.08)})
+    # Signature flame sweep crosses the silhouette as both wings snap open.
+    _key(armature, 5, {
+        "pelvis": (-0.10, 0.0, 0.28), "spine": (-0.12, 0.0, 0.42), "chest": (-0.10, 0.0, 0.62), "neck": (0.08, 0.0, 0.66), "head": (0.10, 0.0, 0.82),
+        "upper_arm.L": (-0.42, -0.18, -0.72), "upper_arm.R": (-0.42, 0.18, 0.72),
+        "forearm.L": (-0.30, 0.0, -0.34), "forearm.R": (-0.30, 0.0, 0.34),
+    }, {"root": (0.08, -0.05, 0.025)}, {"chest": (1.06, 1.06, 0.98)})
+    _key(armature, 6, {
+        "pelvis": (-0.05, 0.0, 0.16), "chest": (-0.06, 0.0, 0.36), "neck": (0.05, 0.0, 0.38), "head": (0.06, 0.0, 0.46),
+        "upper_arm.L": (-0.24, -0.10, -0.42), "upper_arm.R": (-0.24, 0.10, 0.42),
+    }, {"root": (0.04, -0.02, 0.012)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
+
+
+def _author_ember_wyrm_hit(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_hit(armature, count, recoil=0.40, wing=0.16)
+
+
+def _author_ember_wyrm_death(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_fall(armature, count, turn=0.30, spread=1.08)
+
+
+def _author_void_knight_idle(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_breathe(armature, count, mass=0.85, weapon=True)
+
+
+def _author_void_knight_void_charge(armature: bpy.types.Object, count: int) -> None:
+    neutral = _boss_neutral("weapon_socket", "thigh.L", "thigh.R")
+    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    # Pull the greatblade behind the horned silhouette and compress before launch.
+    _key(armature, 3, {
+        "pelvis": (0.22, 0.0, -0.20), "spine": (0.12, 0.0, -0.30), "chest": (0.10, 0.0, -0.42), "head": (-0.12, 0.0, 0.20),
+        "upper_arm.R": (-0.74, 0.34, 0.58), "forearm.R": (-0.82, 0.0, 0.20), "weapon_socket": (-0.58, -0.38, 0.12),
+        "upper_arm.L": (0.28, -0.20, -0.42), "forearm.L": (-0.34, 0.0, -0.12),
+        "thigh.L": (-0.12, 0.0, 0.0), "thigh.R": (0.18, 0.0, 0.0),
+    }, {"root": (-0.08, 0.05, -0.10)}, {"chest": (0.96, 0.96, 0.95)})
+    # Signature charge uses root travel and a spear-like blade presentation.
+    _key(armature, 5, {
+        "pelvis": (-0.34, 0.0, 0.36), "spine": (-0.20, 0.0, 0.44), "chest": (-0.18, 0.0, 0.58), "head": (0.12, 0.0, -0.24),
+        "upper_arm.R": (0.64, -0.26, -0.74), "forearm.R": (0.34, 0.0, -0.24), "weapon_socket": (0.72, 0.32, -0.16),
+        "upper_arm.L": (-0.44, 0.18, 0.46), "forearm.L": (0.30, 0.0, 0.12),
+        "thigh.L": (0.30, 0.0, 0.0), "thigh.R": (-0.32, 0.0, 0.0),
+    }, {"root": (0.24, -0.15, 0.03)}, {"chest": (1.06, 1.03, 1.0)})
+    _key(armature, 6, {
+        "pelvis": (-0.20, 0.0, 0.22), "chest": (-0.10, 0.0, 0.34), "head": (0.07, 0.0, -0.14),
+        "upper_arm.R": (0.40, -0.15, -0.46), "forearm.R": (0.22, 0.0, -0.14), "weapon_socket": (0.42, 0.18, -0.10),
+        "upper_arm.L": (-0.26, 0.10, 0.28), "forearm.L": (0.18, 0.0, 0.08),
+    }, {"root": (0.14, -0.08, 0.015)})
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
+
+
+def _author_void_knight_hit(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_hit(armature, count, recoil=0.35, weapon=True)
+
+
+def _author_void_knight_death(armature: bpy.types.Object, count: int) -> None:
+    _author_boss_fall(armature, count, turn=0.30, spread=0.68, weapon=True)
