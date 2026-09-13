@@ -3,19 +3,40 @@ package com.amirrezahadipoor.herodefense.render;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
 
-/** Touch-first English main menu with new game, continue, and settings. */
+/** Premium touch-first menu using the reviewed arena, Heartwood frames, and clear type hierarchy. */
 public final class MainMenuRenderer implements AutoCloseable {
+    static final float TITLE_PANEL_X = 44f;
+    static final float TITLE_PANEL_Y = 912f;
+    static final float TITLE_PANEL_WIDTH = 632f;
+    static final float TITLE_PANEL_HEIGHT = 252f;
+    static final float COIN_PANEL_X = 500f;
+    static final float COIN_PANEL_Y = 1192f;
+    static final float COIN_PANEL_WIDTH = 176f;
+    static final float COIN_PANEL_HEIGHT = 64f;
+
+    private static final Color GOLD = Color.valueOf("F2D58A");
+    private static final Color IVORY = Color.valueOf("F3E4BC");
+    private static final Color MUTED = Color.valueOf("85877E");
+    private static final Color SUBTLE = Color.valueOf("B8C4AF");
+
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final BitmapFont font = new BitmapFont();
+    private final GlyphLayout layout = new GlyphLayout();
+    private Texture backdrop;
 
     public MainMenuRenderer() {
-        font.getData().setScale(1.45f);
+        font.getRegion().getTexture().setFilter(
+            Texture.TextureFilter.Linear,
+            Texture.TextureFilter.Linear
+        );
     }
 
     public void draw(
@@ -26,77 +47,144 @@ public final class MainMenuRenderer implements AutoCloseable {
         UiIconRenderer icons,
         UiFrameRenderer frames
     ) {
+        batch.setProjectionMatrix(projection);
+        batch.begin();
+        batch.setColor(0.62f, 0.72f, 0.68f, 1f);
+        batch.draw(backdrop(), 0f, 0f, 720f, 1280f);
+        batch.setColor(Color.WHITE);
+        batch.end();
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.025f, 0.065f, 0.065f, 0.98f);
+        shapes.setColor(0.008f, 0.030f, 0.027f, 0.60f);
         shapes.rect(0f, 0f, 720f, 1280f);
-        shapes.setColor(0.06f, 0.14f, 0.13f, 0.96f);
-        shapes.rect(492f, 1160f, 198f, 80f);
-        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-        shapes.rect(492f, 1234f, 198f, 6f);
+        shapes.setColor(0.006f, 0.022f, 0.021f, 0.48f);
+        shapes.rect(0f, 0f, 54f, 1280f);
+        shapes.rect(666f, 0f, 54f, 1280f);
+        shapes.setColor(0.025f, 0.090f, 0.072f, 0.45f);
+        shapes.rect(0f, 0f, 720f, 220f);
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        batch.setProjectionMatrix(projection);
-        batch.begin();
-        frames.draw(batch, UiFrameRenderer.Kind.PANEL, 492f, 1160f, 198f, 80f, true, false);
-        frames.draw(
-            batch, UiFrameRenderer.Kind.BUTTON,
-            MainMenuTouchLayout.BUTTON_X, 690f,
-            MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT,
-            true, false
-        );
-        frames.draw(
-            batch, UiFrameRenderer.Kind.BUTTON,
-            MainMenuTouchLayout.BUTTON_X, 500f,
-            MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT,
-            continueAvailable, false
-        );
-        frames.draw(
-            batch, UiFrameRenderer.Kind.BUTTON,
-            MainMenuTouchLayout.BUTTON_X, 310f,
-            MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT,
-            true, false
-        );
-        font.setColor(Color.valueOf("F2D58A"));
-        icons.draw(batch, "coin", 504f, 1173f, 52f);
-        font.getData().setScale(1.15f);
-        font.draw(batch, coinTotalLabel(coins), 563f, 1211f);
-        font.getData().setScale(2.1f);
-        font.draw(batch, "Hero Defense", 195f, 1080f);
-        font.getData().setScale(1.15f);
-        font.draw(batch, "Defend the World Tree through 100 waves", 120f, 990f);
-        font.getData().setScale(1.45f);
-        font.setColor(Color.valueOf("F3E4BC"));
-        icons.draw(batch, "new_game", 150f, 720f, 84f, frames.resolve(
+        UiFrameRenderer.State newGameState = frames.resolve(
             true, false, MainMenuTouchLayout.BUTTON_X, 690f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
-        ));
-        icons.draw(batch, "continue", 150f, 530f, 84f, frames.resolve(
+        );
+        UiFrameRenderer.State continueState = frames.resolve(
             continueAvailable, false, MainMenuTouchLayout.BUTTON_X, 500f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
-        ));
-        icons.draw(batch, "settings", 150f, 340f, 84f, frames.resolve(
+        );
+        UiFrameRenderer.State settingsState = frames.resolve(
             true, false, MainMenuTouchLayout.BUTTON_X, 310f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
-        ));
-        font.draw(batch, "New Game", 268f, 778f);
-        font.setColor(continueAvailable ? Color.valueOf("F3E4BC") : Color.valueOf("77776F"));
-        font.draw(batch, "Continue", 275f, 588f);
-        font.setColor(Color.valueOf("F3E4BC"));
-        font.draw(batch, "Settings", 276f, 398f);
+        );
+
+        batch.begin();
+        frames.draw(
+            batch, UiFrameRenderer.Kind.PANEL,
+            TITLE_PANEL_X, TITLE_PANEL_Y, TITLE_PANEL_WIDTH, TITLE_PANEL_HEIGHT,
+            true, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.PANEL,
+            COIN_PANEL_X, COIN_PANEL_Y, COIN_PANEL_WIDTH, COIN_PANEL_HEIGHT,
+            true, false
+        );
+        drawButton(batch, frames, 690f, true);
+        drawButton(batch, frames, 500f, continueAvailable);
+        drawButton(batch, frames, 310f, true);
+
+        icons.draw(batch, "coin", 508f, 1201f, 46f);
+        drawShadowedCentered(batch, coinTotalLabel(coins), 611f, 1232f, 1.05f, GOLD);
+        drawShadowedCentered(batch, "THE WORLD TREE AWAITS", 360f, 1120f, 0.86f, GOLD);
+        drawShadowedCentered(batch, "HERO DEFENSE", 360f, 1058f, 2.28f, GOLD);
+        drawShadowedCentered(
+            batch, "Hold the last green sanctuary through 100 waves",
+            360f, 988f, 0.92f, IVORY
+        );
+
+        drawMenuAction(
+            batch, icons, "new_game", "NEW GAME", "Begin a fresh defense",
+            690f, newGameState, true
+        );
+        drawMenuAction(
+            batch, icons, "continue", "CONTINUE", "Return to the active wave",
+            500f, continueState, continueAvailable
+        );
+        drawMenuAction(
+            batch, icons, "settings", "SETTINGS", "Comfort, music, and effects",
+            310f, settingsState, true
+        );
+        drawShadowedCentered(batch, "100 WAVES  |  ONE LAST TREE", 360f, 174f, 0.84f, SUBTLE);
         batch.end();
+    }
+
+    private void drawButton(SpriteBatch batch, UiFrameRenderer frames, float y, boolean enabled) {
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            MainMenuTouchLayout.BUTTON_X, y,
+            MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT,
+            enabled, false
+        );
+    }
+
+    private void drawMenuAction(
+        SpriteBatch batch,
+        UiIconRenderer icons,
+        String icon,
+        String title,
+        String subtitle,
+        float y,
+        UiFrameRenderer.State state,
+        boolean enabled
+    ) {
+        float offset = pressedOffset(state);
+        Color primary = enabled ? IVORY : MUTED;
+        Color secondary = enabled ? SUBTLE : MUTED;
+        icons.draw(batch, icon, 146f, y + 27f + offset, 82f, state);
+        drawShadowed(batch, title, 258f, y + 92f + offset, 1.34f, primary);
+        drawShadowed(batch, subtitle, 258f, y + 49f + offset, 0.78f, secondary);
+    }
+
+    private void drawShadowedCentered(
+        SpriteBatch batch, String text, float centerX, float baselineY, float scale, Color color
+    ) {
+        font.getData().setScale(scale);
+        layout.setText(font, text);
+        drawShadowed(batch, text, centerX - layout.width * 0.5f, baselineY, scale, color);
+    }
+
+    private void drawShadowed(
+        SpriteBatch batch, String text, float x, float y, float scale, Color color
+    ) {
+        font.getData().setScale(scale);
+        font.setColor(0.005f, 0.012f, 0.010f, 0.92f);
+        font.draw(batch, text, x + 2f, y - 3f);
+        font.setColor(color);
+        font.draw(batch, text, x, y);
+    }
+
+    private Texture backdrop() {
+        if (backdrop == null) {
+            backdrop = new Texture(Gdx.files.internal("generated/environment/arena_backdrop.png"));
+            backdrop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+        return backdrop;
+    }
+
+    static float pressedOffset(UiFrameRenderer.State state) {
+        return state == UiFrameRenderer.State.PRESSED ? -4f : 0f;
     }
 
     static String coinTotalLabel(int coins) {
         return "$ " + Math.max(0, coins);
     }
 
-
     @Override
     public void close() {
+        if (backdrop != null) backdrop.dispose();
         font.dispose();
         shapes.dispose();
     }

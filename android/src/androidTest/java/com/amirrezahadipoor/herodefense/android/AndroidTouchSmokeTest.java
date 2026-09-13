@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.SystemClock;
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -25,6 +26,9 @@ import com.amirrezahadipoor.herodefense.save.GameStateCodec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BooleanSupplier;
 
@@ -43,6 +47,8 @@ public final class AndroidTouchSmokeTest {
             await("libGDX touch input", game::readyForTouch);
             await("main menu", () -> game.screenState() == GameScreenState.MENU);
             View surface = gameSurfaceFrom(scenario);
+            SystemClock.sleep(1_500L);
+            captureScreen("main-menu-premium-v2.png");
 
             long touchCount = game.handledTouchUpCount();
             tapWorld(surface, 360f, 760f); // New Game
@@ -52,6 +58,8 @@ public final class AndroidTouchSmokeTest {
             assertEquals(1, game.gameState().waveNumber);
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
+            SystemClock.sleep(1_500L);
+            captureScreen("live-hud-premium-v2.png");
 
             tapWorld(surface, 450f + correction[0], 76f + correction[1]); // Direct Shop
             await("direct shop opens", () -> game.screenState() == GameScreenState.SHOP);
@@ -235,6 +243,26 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(50L);
         }
         throw new AssertionError("Timed out waiting for " + label);
+    }
+
+    private static void captureScreen(String name) {
+        Bitmap screenshot = InstrumentationRegistry.getInstrumentation()
+            .getUiAutomation()
+            .takeScreenshot();
+        assertNotNull(screenshot);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        File directory = new File(context.getExternalMediaDirs()[0], "additional_test_output");
+        assertTrue(directory.isDirectory() || directory.mkdirs());
+        File destination = new File(directory, name);
+        try (FileOutputStream output = new FileOutputStream(destination)) {
+            assertTrue(screenshot.compress(Bitmap.CompressFormat.PNG, 100, output));
+        } catch (IOException exception) {
+            throw new AssertionError("Could not capture " + destination, exception);
+        } finally {
+            screenshot.recycle();
+        }
+        assertTrue(destination.isFile());
+        assertTrue(destination.length() > 0L);
     }
 
     private static void clearRunSave() {

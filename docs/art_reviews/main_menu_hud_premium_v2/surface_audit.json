@@ -1,0 +1,47 @@
+{
+  "archiveSha256": "5ed238f6a68e495f930d24c6afe8f6bdd907fffc2f481e299277f0a3028c31d1",
+  "artifact": 10316422349,
+  "batch": "main-menu-live-hud-premium-v2",
+  "decision": "accepted",
+  "device": {
+    "apiLevel": 35,
+    "orientation": "portrait",
+    "profile": "pixel_3a",
+    "touchOnly": true
+  },
+  "files": {
+    "live_hud_emulator.png": {
+      "bytes": 780002,
+      "height": 2220,
+      "sha256": "27bb9a8b23164b6614a76434a094704103597ee12ea150c6c66f36e3ae9fcd91",
+      "width": 1080
+    },
+    "main_menu_emulator.png": {
+      "bytes": 341544,
+      "height": 2220,
+      "sha256": "1d65405d68ea9d1397c362d7b8e4668af132fcdae1ee76d905f5caaae769c4f4",
+      "width": 1080
+    },
+    "main_menu_hud_contact_sheet.png": {
+      "bytes": 259211,
+      "height": 930,
+      "sha256": "5d4e6d0e32a3cc29f9ffda70b64515f9df828b4900fa458ba4f157500619b9df",
+      "width": 1120
+    }
+  },
+  "metrics": {
+    "hudPrimaryTouchHeight": 100,
+    "hudPrimaryTouchWidth": 120,
+    "hudUtilityTouchHeight": 104,
+    "hudUtilityTouchWidth": 150,
+    "mainMenuButtonHeight": 140,
+    "mainMenuButtonWidth": 480,
+    "premiumTopHudArea": 116152,
+    "previousTopHudArea": 147920,
+    "topHudOcclusionReductionPercent": 21.48
+  },
+  "schemaVersion": 1,
+  "sourceCommit": "fcd08dfbb51d438493566666c97267d9e5a63d55",
+  "workflowJob": 103711298622,
+  "workflowRun": 34752508440
+}

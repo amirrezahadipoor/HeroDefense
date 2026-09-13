@@ -236,7 +236,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 ### 16.5 Premium Items, UI, and Effects
 
 - [x] Upgrade and review all equipment, potion, drop, currency, navigation, stat, speed, pause, inventory, shop, and reward-card icons.
-- [ ] Upgrade the Main Menu and live HUD visual hierarchy, panels, typography treatment, buttons, and touch feedback without reducing gameplay visibility.
+- [x] Upgrade the Main Menu and live HUD visual hierarchy, panels, typography treatment, buttons, and touch feedback without reducing gameplay visibility.
 - [ ] Upgrade the Inventory and Equipment presentation, including item cards, comparison states, selection, equip/unequip, sell feedback, and rarity treatment.
 - [ ] Upgrade the Shop presentation, including stat cards, price/affordability states, purchase feedback, and paused-game context.
 - [ ] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard.
