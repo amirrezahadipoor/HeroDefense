@@ -305,6 +305,7 @@ Give every new run a short spoken opening, then sweep the game for bugs and roug
 - [x] Save repair: any run past wave 100 that is not mid-ceremony now has `secondTreePlanted = true`, so pre-18.4 saves at waves 101+ render the second tree and its siege target (`EdgeProbe` scenario → `GameStateTest`).
 - [x] Save repair clamps Anvil `upgradeLevel` to 0..5 and drops null inventory/equipped entries (`GameStateTest`).
 - [x] A level gained by the Hero's last shot during the tree siege no longer opens Level-Up over the defeat (guarded on `hero.alive`).
+- [x] BUG: the in-game inventory tap never passed `GameSettings`, so the auto-sell chips were inert on device; Anvil forges were also not saved. Fixed, forge now saves + plays the purchase cue, and `AndroidTouchSmokeTest` toggles the COMMON chip by touch.
 - [ ] Systematic pass over every screen and flow (menu, HUD, combat, ceremony, opening, level-up, cards, inventory/anvil/auto-sell, shop, pause, settings, defeat/victory) for visual glitches, state-machine gaps, save/continue edge cases, and stale copy; each fix recorded here with its regression test.
 
 ### 19.3 Economy-Aware Rebalance

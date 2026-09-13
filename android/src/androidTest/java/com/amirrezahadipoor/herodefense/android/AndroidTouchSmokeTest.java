@@ -22,6 +22,7 @@ import com.amirrezahadipoor.herodefense.HeroDefenseGame;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.GameStateCodec;
@@ -160,6 +161,11 @@ public final class AndroidTouchSmokeTest {
             assertTrue(game.gameState().coins > coinsBefore);
             SystemClock.sleep(100L);
             captureScreen("inventory-sell-feedback-premium-v2.png");
+            boolean autoSellBefore = game.autoSellEnabled(ItemTier.COMMON);
+            tapWorld(surface, 255f + correction[0], 1_086f + correction[1]); // COMMON auto-sell chip
+            await("auto-sell chip toggles", () -> game.autoSellEnabled(ItemTier.COMMON) != autoSellBefore);
+            tapWorld(surface, 255f + correction[0], 1_086f + correction[1]); // restore
+            await("auto-sell chip restores", () -> game.autoSellEnabled(ItemTier.COMMON) == autoSellBefore);
             tapWorld(surface, 620f + correction[0], 1_160f + correction[1]);
             await("inventory showcase closes", () -> game.screenState() == GameScreenState.PLAYING);
         }

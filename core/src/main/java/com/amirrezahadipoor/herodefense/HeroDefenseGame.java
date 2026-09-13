@@ -331,6 +331,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         return gameState;
     }
 
+    /** Read-only test visibility; auto-sell chips still toggle only through touch. */
+    public boolean autoSellEnabled(com.amirrezahadipoor.herodefense.model.ItemTier tier) {
+        return settings != null && settings.autoSells(tier);
+    }
+
     /** Read-only test visibility; inventory actions themselves still require touch. */
     public boolean inventoryOpen() {
         return inventoryTouchController != null && inventoryTouchController.isOpen();
@@ -636,15 +641,21 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.INVENTORY
                     && inventoryTouchController.isOpen()) {
                     InventoryTouchController.Action action = inventoryTouchController.tap(
-                        gameState, worldX, worldY
+                        gameState, settings, worldX, worldY
                     );
                     if (action == InventoryTouchController.Action.CLOSED) {
                         flow.returnFromOverlay();
                         saveNow();
                     } else if (action == InventoryTouchController.Action.EQUIPPED
                         || action == InventoryTouchController.Action.UNEQUIPPED
-                        || action == InventoryTouchController.Action.SOLD) {
+                        || action == InventoryTouchController.Action.SOLD
+                        || action == InventoryTouchController.Action.FORGED) {
+                        if (action == InventoryTouchController.Action.FORGED) {
+                            audioManager.play(AudioCue.PURCHASE);
+                        }
                         saveNow();
+                    } else if (action == InventoryTouchController.Action.AUTO_SELL_TOGGLED) {
+                        settingsRepository.save(settings);
                     }
                     return true;
                 }
