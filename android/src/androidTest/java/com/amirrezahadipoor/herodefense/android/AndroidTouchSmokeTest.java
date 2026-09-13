@@ -311,7 +311,9 @@ public final class AndroidTouchSmokeTest {
             );
             assertFalse(game.gameState().runComplete);
             assertFalse(game.gameState().hero.alive);
-            SystemClock.sleep(1_800L); // Let the World Tree destruction reveal finish
+            SystemClock.sleep(350L); // Leaves and the collapse ring are still airborne
+            captureScreen("vfx-tree-collapse-premium-v2.png");
+            SystemClock.sleep(1_450L); // Let the World Tree destruction reveal finish
             captureScreen("defeat-premium-v2.png");
 
             tapWorld(surface, 360f + correction[0], 290f + correction[1]); // Restart at Wave 1
@@ -321,6 +323,41 @@ public final class AndroidTouchSmokeTest {
                     && game.gameState().waveNumber == 1
             );
         }
+    }
+
+    @Test
+    public void touchContinuesIntoBossEntranceAndCombatVfx() {
+        prepareBossEntranceSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("boss save menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue into the boss wave
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            await("boss wave", () ->
+                game.screenState() == GameScreenState.PLAYING
+                    && game.gameState().aliveBosses.stream().anyMatch(boss -> boss.alive)
+            );
+            SystemClock.sleep(420L); // Arrival shockwaves are mid-expansion
+            captureScreen("vfx-boss-entrance-premium-v2.png");
+            SystemClock.sleep(1_300L);
+            for (int frame = 0; frame < 4; frame++) { // Burst so trails and impacts are caught in flight
+                captureScreen("vfx-combat-" + frame + "-premium-v2.png");
+                SystemClock.sleep(230L);
+            }
+            assertTrue(game.gameState().hero.alive);
+        }
+    }
+
+    private static void prepareBossEntranceSave() {
+        GameState state = GameState.newRun(886L);
+        state.waveNumber = 5;
+        state.heroLevel = 4;
+        state.waveActive = false; // Continue starts the wave, so the entrance plays organically
+        writeSave(state);
     }
 
     private static HeroDefenseGame gameFrom(ActivityScenario<AndroidLauncher> scenario) {

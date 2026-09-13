@@ -1,0 +1,84 @@
+{
+  "batch": "vfx-premium-v2",
+  "decision": "accepted",
+  "sourceCommit": "b9b4caef29324869298687c1cf33326fcd6e239d",
+  "workflowRun": 34767961263,
+  "job": 103752232553,
+  "artifact": 10321425053,
+  "artifactSha256": "53eed4ecdc10611317ca24ac86f3c1b3878f78b272d6b76c16c4b824225d843f",
+  "device": {
+    "name": "emulator-5554",
+    "api": 15,
+    "touchOnly": true,
+    "screen": "1080x2220"
+  },
+  "coverage": {
+    "effects": [
+      "projectileTrail",
+      "impactCoreAndMotes",
+      "criticalRing",
+      "enemyDeathRing",
+      "bossEntranceShockwave",
+      "bossDeathShockwave",
+      "itemCollectionSparkle",
+      "coinBurst",
+      "worldTreeCollapseLeaves",
+      "ambientSpores"
+    ],
+    "capturedOnDevice": [
+      "projectileTrail",
+      "impactCoreAndMotes",
+      "enemyDeathRing",
+      "bossEntranceShockwave",
+      "coinBurst",
+      "worldTreeCollapseLeaves",
+      "ambientSpores"
+    ],
+    "boundByUnitTestOnly": [
+      "criticalRing",
+      "bossDeathShockwave",
+      "itemCollectionSparkle"
+    ],
+    "budget": {
+      "normalHitMaxCores": 1,
+      "normalHitMaxMotes": 6,
+      "normalHitMaxLifetimeSeconds": 0.25,
+      "criticalMultiplier": 1.5,
+      "bossMultiplier": 2.0,
+      "ambientMaxAlpha": 0.22,
+      "particleCap": 256
+    }
+  },
+  "files": {
+    "boss_entrance_emulator.png": {
+      "bytes": 757842,
+      "sha256": "e4ec9d38a852e15f2b8b30f957bdd4e96d45b454bea9437fdfd31b55c9fc7f23",
+      "width": 1080,
+      "height": 2220
+    },
+    "impact_death_emulator.png": {
+      "bytes": 761486,
+      "sha256": "eac37586f60f38c6a51733236a71f147bb4b94eaa760d8549b51e6b76c0651e9",
+      "width": 1080,
+      "height": 2220
+    },
+    "projectile_trail_emulator.png": {
+      "bytes": 760355,
+      "sha256": "cd2eacbebff26a9a9776306ae3d2e4cb8ac0d64a2669674d4cd76bee1904a0f6",
+      "width": 1080,
+      "height": 2220
+    },
+    "tree_collapse_emulator.png": {
+      "bytes": 799923,
+      "sha256": "facdf9cb0aafcaed328c6a42faa5e8e514332783da6773e97b878c6bb5e7f69f",
+      "width": 1080,
+      "height": 2220
+    },
+    "vfx_contact_sheet.png": {
+      "bytes": 537507,
+      "sha256": "1d4e8fba143fbe20cbc53d433f201688cb4f88e8da4186aca252f37014c0e9e2",
+      "width": 2200,
+      "height": 550
+    }
+  }
+}
