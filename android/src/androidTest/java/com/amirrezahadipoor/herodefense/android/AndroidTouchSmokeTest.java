@@ -200,7 +200,9 @@ public final class AndroidTouchSmokeTest {
             await("libGDX touch input", game::readyForTouch);
             await("level-up menu", () -> game.screenState() == GameScreenState.MENU);
             View surface = gameSurfaceFrom(scenario);
+            long touchCount = game.handledTouchUpCount();
             tapWorld(surface, 360f, 570f);
+            await("level-up continue touch", () -> game.handledTouchUpCount() > touchCount);
             float[] correction = touchCorrection(game, 360f, 570f);
             await("premium level-up", () -> game.screenState() == GameScreenState.LEVEL_UP);
             SystemClock.sleep(1_000L);
