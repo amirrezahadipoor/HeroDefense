@@ -1170,13 +1170,17 @@ def build_ui_icon(key: str) -> BuiltModel:
             objects.append(leaf_obj)
 
     elif key == "ui_skill_chain_lightning":
-        # A zig-zag bolt of three angled bars arcing between two small gold nodes.
-        segments = ((-0.34, 1.34, 0.62), (0.10, 1.02, -0.62), (-0.16, 0.66, 0.62))
-        for index, (x, z, tilt) in enumerate(segments):
-            cube(f"bolt_segment_{index}", (x, 0, z), (0.16, 0.20, 0.52), cyan, tilt)
-        objects.append(add_cone("bolt_tip", (0.02, 0, 0.36), 0.20, 0.0, 0.34, cyan, 6, (math.pi, 0, 0)))
-        for side, sign in (("L", -1), ("R", 1)):
-            objects.append(add_ico(f"bolt_node_{side}", (0.52 * sign, -0.05, 1.00 + 0.18 * sign),
+        # One connected zig-zag bolt (four joined bars) arcing between two gold nodes.
+        points = ((-0.34, 1.46), (0.16, 0.98), (-0.12, 0.98), (0.30, 0.42))
+        for index in range(len(points) - 1):
+            (x0, z0), (x1, z1) = points[index], points[index + 1]
+            objects.append(add_cylinder_between(
+                f"bolt_segment_{index}", (x0, 0, z0), (x1, 0, z1), 0.11, cyan, 6))
+        for index, (x, z) in enumerate(points):
+            objects.append(add_ico(f"bolt_joint_{index}", (x, 0, z), (0.11, 0.11, 0.11), cyan, 1))
+        objects.append(add_cone("bolt_tip", (0.36, 0, 0.32), 0.17, 0.0, 0.30, cyan, 6, (math.pi, 0, 0)))
+        for side, sign in (("L", -1), (" R", 1)):
+            objects.append(add_ico(f"bolt_node_{side.strip()}", (0.56 * sign, -0.05, 1.02 + 0.22 * sign),
                                    (0.12, 0.08, 0.12), gold, 1))
     elif key == "ui_skill_multi_shot":
         # Three fanned arrows from one nock point: the volley reads at 64px.
