@@ -18,6 +18,7 @@ CAMERA_SCALE = {
     "item": 2.2,
     "tree": 6.0,
     "environment": 5.1,
+    "arena": 11.5,
 }
 CAMERA_SHIFT_Y = {
     "character": 0.0,
@@ -25,6 +26,7 @@ CAMERA_SHIFT_Y = {
     "item": -0.12,
     "tree": 0.12,
     "environment": 0.0,
+    "arena": 0.0,
 }
 FRAME_SIZE = {
     "character": 192,
@@ -32,6 +34,13 @@ FRAME_SIZE = {
     "item": 96,
     "tree": 256,
     "environment": 192,
+    # The portrait backdrop retains frameSize for manifest compatibility while its
+    # explicit frameWidth/frameHeight contract is defined below.
+    "arena": 360,
+}
+FRAME_DIMENSIONS = {
+    **{key: (size, size) for key, size in FRAME_SIZE.items()},
+    "arena": (360, 640),
 }
 
 CLIPS: dict[str, int] = {

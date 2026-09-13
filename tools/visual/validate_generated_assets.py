@@ -55,20 +55,21 @@ def main() -> None:
             referenced.add(path)
             pages.append((width, height))
 
-        frame_size = asset["frameSize"]
+        frame_width = asset.get("frameWidth", asset["frameSize"])
+        frame_height = asset.get("frameHeight", asset["frameSize"])
         for clip, frames in asset["clips"].items():
             for expected_index, frame in enumerate(frames):
                 if frame["index"] != expected_index:
                     raise ValueError(f"{key}/{clip}: unstable frame order")
-                if frame["width"] != frame_size or frame["height"] != frame_size:
+                if frame["width"] != frame_width or frame["height"] != frame_height:
                     raise ValueError(f"{key}/{clip}: changed frame contract")
                 page = frame["page"]
                 if page < 0 or page >= len(pages):
                     raise ValueError(f"{key}/{clip}: invalid page index")
                 width, height = pages[page]
                 if (frame["x"] < 0 or frame["y"] < 0
-                    or frame["x"] + frame_size > width
-                    or frame["y"] + frame_size > height):
+                    or frame["x"] + frame_width > width
+                    or frame["y"] + frame_height > height):
                     raise ValueError(f"{key}/{clip}: frame outside page")
 
         if "icon" in asset:

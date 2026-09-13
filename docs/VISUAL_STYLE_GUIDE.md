@@ -87,8 +87,9 @@ Budgets count **triangles after modifiers** at render time.
 | Regular enemy | 2,200 | 4,000 |
 | Boss | 5,500 | 10,000 |
 | World Tree | 7,500 | 14,000 |
-| Ground tile | 200 | 600 |
+| Ground tile | 350 | 600 |
 | Arena prop | 700 | 2,200 |
+| Arena backdrop | 1,500 | 3,000 |
 | Inventory icon-only mesh | 300 | 1,200 |
 
 Use flat shading. Bevels are permitted only where they improve the silhouette, normally one segment. Hidden faces should be removed from final procedural meshes when practical.
@@ -145,7 +146,8 @@ All character, equipment, item, prop, and tree renders use the named `HD_CAMERA`
 | Orthographic scale, item icon | `2.2` |
 | Orthographic scale, World Tree | `6.0` |
 | Orthographic scale, ground/prop | `5.1` |
-| Framing shift | Character/environment `0`, Tree `+0.12`, Boss `+0.06`, item icon `-0.12`; projection angle remains identical |
+| Orthographic scale, Arena backdrop | `11.5` at the locked 9:16 portrait aspect |
+| Framing shift | Character/environment/Arena `0`, Tree `+0.12`, Boss `+0.06`, item icon `-0.12`; projection angle remains identical |
 | Character forward direction | `(0, -1, 0)` toward camera |
 | Frame center | pelvis at X center; ground plane at 12% frame height |
 
@@ -195,8 +197,9 @@ Character armatures use these stable bone names:
 | World Tree | 256×256 PNG | 6 px extrusion |
 | Equipment / potion icon | 96×96 PNG | 4 px extrusion |
 | Ground tile / prop | 192×192 PNG | 4 px extrusion |
+| Arena backdrop | 360×640 PNG | full-bleed opaque edge |
 
-- PNG: RGBA8, straight alpha, transparent background.
+- PNG: RGBA8, straight alpha. Characters, props, and tiles use transparent backgrounds; the Arena backdrop is intentionally opaque and full-bleed.
 - Filenames: `<entity>_<variant>_<clip>_<frame:02>.png`, lowercase snake case.
 - Atlas pages: maximum 2048×2048, nearest-neighbor min/mag filtering, no rotation, duplicate padding enabled.
 - Pivot metadata: normalized feet/pelvis anchor stored in the manifest; do not infer pivots from opaque pixels at runtime.
@@ -209,6 +212,7 @@ Character armatures use these stable bone names:
 - Boss: 190–260 px.
 - World Tree: 290–360 px and visually behind the Hero.
 - Ground props must not compete with enemies in saturation or contrast.
+- Arena composition uses broad low-contrast Blender-rendered bands for portrait depth, a clear combat lane through the center 55%, progressively smaller/cooler upper props, and darker near-edge silhouettes. It must never resemble a second HUD layer.
 - UI stays vector/ShapeRenderer/Scene2D where that is clearer; not every UI panel goes through Blender.
 - Rare equipment receives a restrained blue exterior-edge pulse at runtime; Legendary receives a brighter amber-gold pulse. Common and Uncommon bypass the GLES 2-compatible glow shader.
 - The glow samples only the immediate eight neighboring texels and is enabled only around the affected equipment draw call.

@@ -56,7 +56,8 @@ final class PremiumAssetContractTest {
         "boss", new float[] {0.5f, 0.12f},
         "tree", new float[] {0.5f, 0.06f},
         "item", new float[] {0.5f, 0.5f},
-        "environment", new float[] {0.5f, 0.5f}
+        "environment", new float[] {0.5f, 0.5f},
+        "arena", new float[] {0.5f, 0.5f}
     );
 
     @Test
@@ -267,6 +268,8 @@ final class PremiumAssetContractTest {
             String key = asset.getString("key");
             String family = asset.getString("family");
             int frameSize = asset.getInt("frameSize");
+            int frameWidth = asset.getInt("frameWidth", frameSize);
+            int frameHeight = asset.getInt("frameHeight", frameSize);
             assertPivot(key, asset);
             assertEquals("STRAIGHT_RGBA", asset.getString("alphaMode"), key);
 
@@ -305,7 +308,9 @@ final class PremiumAssetContractTest {
                 referencedPngs.add(icon);
             }
 
-            assertFrames(key, family, frameSize, asset.get("clips"), assetSheets, assetImages);
+            assertFrames(
+                key, family, frameWidth, frameHeight, asset.get("clips"), assetSheets, assetImages
+            );
             if (asset.has("atlas")) assertAtlasReferencesEveryPage(asset, assetSheets);
         }
 
@@ -382,7 +387,8 @@ final class PremiumAssetContractTest {
     private static void assertFrames(
         String key,
         String family,
-        int frameSize,
+        int frameWidth,
+        int frameHeight,
         JsonValue clips,
         List<Path> sheets,
         List<BufferedImage> images
@@ -409,13 +415,15 @@ final class PremiumAssetContractTest {
                 int width = frame.getInt("width");
                 int height = frame.getInt("height");
                 assertEquals(expectedIndex++, frame.getInt("index"), key + " frame order");
-                assertEquals(frameSize, width, key + " frame width");
-                assertEquals(frameSize, height, key + " frame height");
+                assertEquals(frameWidth, width, key + " frame width");
+                assertEquals(frameHeight, height, key + " frame height");
                 assertTrue(page >= 0 && page < sheets.size(), key + " page index");
                 BufferedImage image = images.get(page);
                 assertTrue(x >= 0 && y >= 0 && x + width <= image.getWidth()
                     && y + height <= image.getHeight(), key + " frame outside page");
-                assertTransparentOuterEdge(key, image, x, y, width, height);
+                if (!"arena_backdrop".equals(key)) {
+                    assertTransparentOuterEdge(key, image, x, y, width, height);
+                }
                 assertVisiblePixels(key, image, x, y, width, height);
             }
         }

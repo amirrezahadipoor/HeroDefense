@@ -13,13 +13,15 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
     private static final float TREE_SIZE = 330f;
     private static final float TREE_FEET_OFFSET = 31f;
 
+    // X, Y, draw size, variant. Smaller upper props reinforce portrait depth.
     private static final float[][] CRYSTAL_PLACEMENTS = {
-        {18f, 150f, 0f},
-        {574f, 210f, 1f},
-        {24f, 805f, 2f},
-        {570f, 850f, 0f}
+        {-8f, 120f, 172f, 0f},
+        {556f, 205f, 164f, 1f},
+        {4f, 820f, 148f, 2f},
+        {568f, 884f, 136f, 0f}
     };
 
+    private final Texture backdrop;
     private final Texture[] ground = new Texture[3];
     private final Texture[] crystals = new Texture[3];
     private final TextureAtlas healthyTreeAtlas;
@@ -31,6 +33,7 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
         new WorldTreeAnimationController();
 
     public ArenaEnvironmentRenderer() {
+        backdrop = texture("generated/environment/arena_backdrop.png");
         for (int index = 0; index < 3; index++) {
             ground[index] = texture("generated/environment/ground_tile_" + index + ".png");
             crystals[index] = texture("generated/environment/crystal_prop_" + index + ".png");
@@ -64,26 +67,37 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
         float runTimeSeconds,
         float presentationDeltaSeconds
     ) {
+        batch.draw(
+            backdrop, 0f, 0f, WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT
+        );
         drawGround(batch);
         drawCrystals(batch);
         drawWorldTree(batch, state, runTimeSeconds, presentationDeltaSeconds);
     }
 
     private void drawGround(SpriteBatch batch) {
-        for (int row = 0; row < 6; row++) {
+        float originalColor = batch.getPackedColor();
+        for (int row = 0; row < 8; row++) {
+            float depth = row / 7f;
+            float width = 252f - depth * 42f;
+            float height = 184f - depth * 32f;
+            float shade = 0.96f - depth * 0.23f;
+            batch.setColor(shade * 0.92f, shade, shade * 0.95f, 0.96f);
             for (int column = 0; column < 4; column++) {
                 int variant = (row * 2 + column) % ground.length;
-                float x = -32f + column * 196f + (row % 2) * 34f;
-                float y = 35f + row * 172f;
-                batch.draw(ground[variant], x, y, 224f, 164f);
+                float x = -46f + column * 193f + (row % 2) * 31f;
+                float y = 10f + row * 143f;
+                batch.draw(ground[variant], x, y, width, height);
             }
         }
+        batch.setPackedColor(originalColor);
     }
 
     private void drawCrystals(SpriteBatch batch) {
         for (float[] placement : CRYSTAL_PLACEMENTS) {
-            int variant = Math.round(placement[2]);
-            batch.draw(crystals[variant], placement[0], placement[1], 128f, 128f);
+            float size = placement[2];
+            int variant = Math.round(placement[3]);
+            batch.draw(crystals[variant], placement[0], placement[1], size, size);
         }
     }
 
@@ -133,6 +147,7 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
 
     @Override
     public void close() {
+        backdrop.dispose();
         for (Texture texture : ground) texture.dispose();
         for (Texture texture : crystals) texture.dispose();
         healthyTreeAtlas.dispose();

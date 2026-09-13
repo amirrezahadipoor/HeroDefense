@@ -29,6 +29,7 @@ from hd_pipeline.config import (  # noqa: E402
     BOSSES,
     CLIPS,
     FRAME_RATE,
+    FRAME_DIMENSIONS,
     FRAME_SIZE,
     OPAQUE_RENDER_SAMPLES,
     OVERLAY_RENDER_SAMPLES,
@@ -39,6 +40,7 @@ from hd_pipeline.config import (  # noqa: E402
     RenderAsset,
 )
 from hd_pipeline.environment import (  # noqa: E402
+    build_arena_backdrop,
     build_crystal_prop,
     build_ground_tile,
     UI_ICON_KEYS,
@@ -81,7 +83,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "environment", "ui", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -390,8 +392,26 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
     return entries
 
 
+def _runtime_frame_dimensions(scene: bpy.types.Scene) -> tuple[int, int]:
+    return (
+        scene.render.resolution_x // RENDER_SUPERSAMPLE,
+        scene.render.resolution_y // RENDER_SUPERSAMPLE,
+    )
+
+
 def _runtime_frame_size(scene: bpy.types.Scene) -> int:
-    return scene.render.resolution_x // RENDER_SUPERSAMPLE
+    width, height = _runtime_frame_dimensions(scene)
+    if width != height:
+        raise ValueError(f"Animation frame must be square, got {width}x{height}")
+    return width
+
+
+def _material_count(objects: list[bpy.types.Object]) -> int:
+    return len({
+        slot.material.name
+        for obj in objects if obj.type == "MESH"
+        for slot in obj.material_slots if slot.material is not None
+    })
 
 
 def _outline_radius(frame_size: int) -> int:
@@ -435,6 +455,7 @@ def render_static_model(
     builder,
     output: Path,
     worker_payload: dict | None = None,
+    outline: bool = True,
 ) -> dict:
     frame_root = output / "_frames" / key
     _fresh_directory(frame_root)
@@ -451,53 +472,67 @@ def render_static_model(
             "kind": "static",
             "frameClass": frame_class,
             "output": str(path),
+            "outline": outline,
         })
     else:
         scene.frame_set(1)
         scene.render.filepath = str(path)
         bpy.ops.render.render(write_still=True)
-        frame_size = _runtime_frame_size(scene)
-        downsample_alpha_safe(path, frame_size)
-        if not scene.render.use_freestyle:
-            apply_alpha_outline(path, _outline_radius(frame_size))
+        frame_width, frame_height = _runtime_frame_dimensions(scene)
+        target_size = frame_width if frame_width == frame_height else (frame_width, frame_height)
+        downsample_alpha_safe(path, target_size)
+        if outline and not scene.render.use_freestyle:
+            apply_alpha_outline(path, _outline_radius(min(frame_width, frame_height)))
     target_directory = output / family
     target_directory.mkdir(parents=True, exist_ok=True)
     target = target_directory / f"{key}.png"
     shutil.copy2(path, target)
     shutil.rmtree(frame_root)
+    frame_width, frame_height = FRAME_DIMENSIONS[frame_class]
     entry = {
         "key": key,
         "family": family,
         "frameClass": frame_class,
         "frameSize": FRAME_SIZE[frame_class],
+        "frameWidth": frame_width,
+        "frameHeight": frame_height,
         "sheet": _relative(target, output),
         "sheets": [{
             "file": _relative(target, output),
-            "width": FRAME_SIZE[frame_class],
-            "height": FRAME_SIZE[frame_class],
-            "decodedBytes": FRAME_SIZE[frame_class] * FRAME_SIZE[frame_class] * 4,
+            "width": frame_width,
+            "height": frame_height,
+            "decodedBytes": frame_width * frame_height * 4,
         }],
-        "sheetWidth": FRAME_SIZE[frame_class],
-        "sheetHeight": FRAME_SIZE[frame_class],
+        "sheetWidth": frame_width,
+        "sheetHeight": frame_height,
         "pivot": _pivot_for(frame_class),
         "alphaMode": "STRAIGHT_RGBA",
         "clips": {"idle": [{
             "page": 0,
             "x": 0,
             "y": 0,
-            "width": FRAME_SIZE[frame_class],
-            "height": FRAME_SIZE[frame_class],
+            "width": frame_width,
+            "height": frame_height,
             "index": 0,
         }]},
         "triangles": triangle_count(model.render_objects),
+        "meshParts": sum(obj.type == "MESH" for obj in model.render_objects),
+        "materialCount": _material_count(model.render_objects),
+        "renderSupersample": RENDER_SUPERSAMPLE,
+        "renderSamples": OPAQUE_RENDER_SAMPLES,
         **model.metadata,
     }
     _write_json(target_directory / f"{key}.json", entry)
     return entry
 
 
-def render_environment(output: Path, only: set[str]) -> list[dict]:
+def render_arena_environment(output: Path, only: set[str]) -> list[dict]:
     entries = []
+    if not only or "arena_backdrop" in only:
+        entries.append(render_static_model(
+            "arena_backdrop", "environment", "arena", build_arena_backdrop, output,
+            {"assetKind": "arenaBackdrop"}, outline=False,
+        ))
     for variant in range(3):
         key = f"ground_tile_{variant}"
         if not only or key in only:
@@ -514,6 +549,11 @@ def render_environment(output: Path, only: set[str]) -> list[dict]:
                 lambda value=variant: build_crystal_prop(value), output,
                 {"assetKind": "crystal", "variant": variant},
             ))
+    return entries
+
+
+def render_environment(output: Path, only: set[str]) -> list[dict]:
+    entries = render_arena_environment(output, only)
     for tier in range(1, 7):
         key = f"health_potion_{tier}"
         if not only or key in only:
@@ -610,7 +650,9 @@ def _execute_frame_worker(payload_path: Path) -> None:
         model.armature.animation_data.action = actions[payload.get("clip", "idle")]
     elif payload["kind"] == "static":
         asset_kind = payload["assetKind"]
-        if asset_kind == "ground":
+        if asset_kind == "arenaBackdrop":
+            build_arena_backdrop()
+        elif asset_kind == "ground":
             build_ground_tile(int(payload["variant"]))
         elif asset_kind == "crystal":
             build_crystal_prop(int(payload["variant"]))
@@ -626,10 +668,11 @@ def _execute_frame_worker(payload_path: Path) -> None:
     scene.frame_set(frame)
     scene.render.filepath = str(output)
     bpy.ops.render.render(write_still=True)
-    frame_size = _runtime_frame_size(scene)
-    downsample_alpha_safe(output, frame_size)
-    if not scene.render.use_freestyle:
-        apply_alpha_outline(output, _outline_radius(frame_size))
+    frame_width, frame_height = _runtime_frame_dimensions(scene)
+    target_size = frame_width if frame_width == frame_height else (frame_width, frame_height)
+    downsample_alpha_safe(output, target_size)
+    if payload.get("outline", True) and not scene.render.use_freestyle:
+        apply_alpha_outline(output, _outline_radius(min(frame_width, frame_height)))
 
 
 def main() -> None:
@@ -681,6 +724,8 @@ def main() -> None:
         generated.extend(render_tree_state(damaged, output, args.keep_frames) for damaged in (False, True))
     if args.batch in {"equipment", "all"}:
         generated.extend(render_equipment(args.catalog.resolve(), output, args.keep_frames, only))
+    if args.batch == "arena":
+        generated.extend(render_arena_environment(output, only))
     if args.batch in {"environment", "all"}:
         generated.extend(render_environment(output, only))
     if args.batch in {"ui", "all"}:
@@ -756,6 +801,7 @@ def _pivot_for(frame_class: str) -> dict[str, object]:
         "tree": (0.5, 0.06),
         "item": (0.5, 0.5),
         "environment": (0.5, 0.5),
+        "arena": (0.5, 0.5),
     }
     x, y = values[frame_class]
     return {"x": x, "y": y, "units": "normalized-bottom-left"}

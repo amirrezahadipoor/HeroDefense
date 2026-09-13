@@ -14,6 +14,7 @@ from .config import (
     CAMERA_SCALE,
     CAMERA_SHIFT_Y,
     CAMERA_TARGET,
+    FRAME_DIMENSIONS,
     OPAQUE_RENDER_SAMPLES,
     OUTLINE_RGBA,
     RENDER_SUPERSAMPLE,
@@ -107,8 +108,9 @@ def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.image_settings.color_depth = "8"
-    working_size = _frame_size(frame_class) * RENDER_SUPERSAMPLE
-    scene.render.resolution_x = scene.render.resolution_y = working_size
+    frame_width, frame_height = _frame_dimensions(frame_class)
+    scene.render.resolution_x = frame_width * RENDER_SUPERSAMPLE
+    scene.render.resolution_y = frame_height * RENDER_SUPERSAMPLE
     scene.render.resolution_percentage = 100
     scene.render.fps = 12
     scene.render.filepath = str(output_directory)
@@ -146,9 +148,8 @@ def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene
     return scene
 
 
-def _frame_size(frame_class: str) -> int:
-    from .config import FRAME_SIZE
-    return FRAME_SIZE[frame_class]
+def _frame_dimensions(frame_class: str) -> tuple[int, int]:
+    return FRAME_DIMENSIONS[frame_class]
 
 
 def _add_camera(frame_class: str) -> bpy.types.Object:
@@ -261,24 +262,35 @@ def apply_alpha_outline(path: Path, radius: int = 3) -> None:
     bpy.data.images.remove(image)
 
 
-def downsample_alpha_safe(path: Path, target_size: int) -> None:
+def downsample_alpha_safe(path: Path, target_size: int | tuple[int, int]) -> None:
     """Downsample an integer-scale RGBA render in linear premultiplied-alpha space."""
+    if isinstance(target_size, int):
+        target_width = target_height = target_size
+    else:
+        target_width, target_height = target_size
     source_image = bpy.data.images.load(str(path), check_existing=False)
     source_width, source_height = source_image.size
-    if source_width != source_height or source_width % target_size != 0:
+    if (target_width <= 0 or target_height <= 0
+        or source_width % target_width != 0
+        or source_height % target_height != 0):
         bpy.data.images.remove(source_image)
-        raise ValueError(f"Cannot downsample {source_width}x{source_height} to {target_size}")
-    factor = source_width // target_size
-    if factor < 1:
+        raise ValueError(
+            f"Cannot downsample {source_width}x{source_height} "
+            f"to {target_width}x{target_height}"
+        )
+    factor_x = source_width // target_width
+    factor_y = source_height // target_height
+    if factor_x < 1 or factor_x != factor_y:
         bpy.data.images.remove(source_image)
-        raise ValueError("Downsample target cannot exceed the rendered frame")
+        raise ValueError("Downsample requires one positive integer scale on both axes")
+    factor = factor_x
     source = array("f", [0.0]) * (source_width * source_height * 4)
     source_image.pixels.foreach_get(source)
-    destination = array("f", [0.0]) * (target_size * target_size * 4)
+    destination = array("f", [0.0]) * (target_width * target_height * 4)
     sample_count = factor * factor
 
-    for target_y in range(target_size):
-        for target_x in range(target_size):
+    for target_y in range(target_height):
+        for target_x in range(target_width):
             alpha_sum = 0.0
             red_sum = green_sum = blue_sum = 0.0
             for offset_y in range(factor):
@@ -291,7 +303,7 @@ def downsample_alpha_safe(path: Path, target_size: int) -> None:
                     red_sum += source[source_index] * alpha
                     green_sum += source[source_index + 1] * alpha
                     blue_sum += source[source_index + 2] * alpha
-            output_index = (target_y * target_size + target_x) * 4
+            output_index = (target_y * target_width + target_x) * 4
             output_alpha = alpha_sum / sample_count
             if alpha_sum > 0.000001:
                 destination[output_index] = red_sum / alpha_sum
@@ -301,8 +313,8 @@ def downsample_alpha_safe(path: Path, target_size: int) -> None:
 
     result = bpy.data.images.new(
         f"{path.stem}_premium_downsample",
-        width=target_size,
-        height=target_size,
+        width=target_width,
+        height=target_height,
         alpha=True,
         float_buffer=False,
     )

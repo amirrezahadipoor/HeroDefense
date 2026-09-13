@@ -3,8 +3,9 @@ from __future__ import annotations
 import math
 
 import bpy
+from mathutils import Vector
 
-from .config import PALETTE
+from .config import CAMERA_LOCATION, CAMERA_TARGET, PALETTE
 from .models import (
     BuiltModel,
     MATERIALS,
@@ -541,60 +542,308 @@ def build_world_tree(damaged: bool = False) -> BuiltModel:
     }
     return BuiltModel(armature, objects, metadata)
 
-def build_ground_tile(variant: int = 0) -> BuiltModel:
-    earth = MATERIALS.get("ground_earth", "#35443A")
-    stone = MATERIALS.get("ground_stone", "#53605D")
+def build_arena_backdrop() -> BuiltModel:
+    """Build a low-contrast portrait forest stage in the fixed camera's image plane."""
+    view = (Vector(CAMERA_TARGET) - Vector(CAMERA_LOCATION)).normalized()
+    rotation = view.to_track_quat("-Z", "Y")
+    right = rotation @ Vector((1.0, 0.0, 0.0))
+    up = rotation @ Vector((0.0, 1.0, 0.0))
+    center = Vector(CAMERA_TARGET) + view * 7.0
+    facing = rotation.to_euler()
+
+    void = MATERIALS.get("arena_void", "#10221F")
+    deep = MATERIALS.get("arena_deep_forest", "#16312B")
+    middle = MATERIALS.get("arena_middle_forest", "#1D3A31")
+    ground = MATERIALS.get("arena_ground_haze", "#29483A")
+    path = MATERIALS.get("arena_path_haze", "#345443")
+    bark = MATERIALS.get("arena_distant_bark", "#26312A")
+    canopy = MATERIALS.get("arena_distant_canopy", "#17382D")
+    canopy_light = MATERIALS.get("arena_distant_leaf", "#24503C")
+    rune = MATERIALS.get("arena_distant_rune", "#3F6E59")
     objects = []
-    tile = add_cone("ground_tile", (0, 0, -0.08), 2.3, 2.3, 0.16, earth, 12)
-    objects.append(tile)
-    for index in range(5):
-        angle = index * 2.399 + variant
-        rock = add_ico(
-            f"ground_rock_{index}",
-            (math.cos(angle) * (0.55 + 0.22 * index), math.sin(angle) * 0.58, 0.03),
-            (0.16 + 0.02 * (index % 2), 0.12, 0.08), stone,
+
+    def point(x: float, y: float, toward_camera: float = 0.0) -> tuple[float, float, float]:
+        value = center + right * x + up * y - view * toward_camera
+        return tuple(value)
+
+    def panel(name: str, x: float, y: float, width: float, height: float,
+              depth: float, material) -> bpy.types.Object:
+        obj = add_cube(
+            name, point(x, y, depth), (width, height, 0.055), material,
+            0.0, facing,
         )
-        objects.append(rock)
-    return BuiltModel(None, objects, {"variant": variant, "tileable": False})
+        objects.append(obj)
+        return obj
+
+    # Broad matte planes create five depth/value bands without a photographic gradient.
+    panel("arena_backplate", 0.0, 0.0, 7.30, 12.25, 0.00, void)
+    panel("arena_far_canopy_band", 0.0, 4.35, 7.10, 3.05, 0.08, deep)
+    panel("arena_mid_mist_band", 0.0, 1.75, 7.10, 2.55, 0.10, middle)
+    panel("arena_ground_band", 0.0, -1.25, 7.10, 3.55, 0.12, ground)
+    panel("arena_near_ground_band", 0.0, -4.25, 7.10, 2.55, 0.14, deep)
+    panel("arena_clear_combat_lane", 0.0, -0.95, 3.95, 6.25, 0.17, path)
+
+    # Two restrained concentric sanctuary marks support the center without becoming UI.
+    for index, (radius, thickness) in enumerate(((2.18, 0.055), (2.72, 0.040))):
+        ring = add_torus(
+            f"arena_sanctuary_ring_{index}", point(0.0, -1.05, 0.20 + index * 0.01),
+            radius, thickness, rune, facing, 32, 4,
+        )
+        objects.append(ring)
+    for index, angle in enumerate((0.35, 1.22, 2.05, 2.85, 3.72, 4.58, 5.40)):
+        x = math.cos(angle) * 2.42
+        y = -1.05 + math.sin(angle) * 2.42
+        marker = add_ico(
+            f"arena_ring_marker_{index}", point(x, y, 0.23),
+            (0.10, 0.045, 0.18), rune, 1,
+        )
+        marker.rotation_euler = facing
+        objects.append(marker)
+
+    # Dark distant trees frame the portrait edges while preserving a clear combat lane.
+    tree_specs = (
+        (-3.00, 2.15, 2.80, 0.24), (-2.62, 4.10, 2.30, 0.20),
+        (-2.92, -2.20, 2.45, 0.25), (3.02, 2.55, 2.95, 0.25),
+        (2.66, 4.25, 2.35, 0.21), (2.94, -2.05, 2.55, 0.25),
+    )
+    for index, (x, y, height, width) in enumerate(tree_specs):
+        panel(f"arena_distant_trunk_{index}", x, y, width, height, 0.28, bark)
+        for crown_index in range(3):
+            cx = x + (crown_index - 1) * 0.34
+            cy = y + height * 0.52 + (crown_index % 2) * 0.28
+            crown = add_ico(
+                f"arena_distant_crown_{index}_{crown_index}",
+                point(cx, cy, 0.30),
+                (0.70, 0.34, 0.55),
+                canopy_light if crown_index == 1 and index % 2 else canopy,
+                1,
+            )
+            crown.rotation_euler = facing
+            objects.append(crown)
+
+    # Large edge leaves provide near-depth silhouettes but never intrude on the center third.
+    for side, sign in (("L", -1.0), ("R", 1.0)):
+        for index in range(12):
+            x = sign * (3.02 + (index % 3) * 0.12)
+            y = -4.85 + index * 0.88
+            leaf_obj = add_leaf(
+                f"arena_edge_leaf_{side}_{index}", point(x, y, 0.38),
+                (0.32 + (index % 2) * 0.06, 0.07, 0.62),
+                canopy_light if index % 4 == 0 else canopy,
+            )
+            leaf_obj.rotation_euler = facing
+            leaf_obj.rotation_euler.rotate_axis("Z", sign * (0.30 + (index % 3) * 0.16))
+            objects.append(leaf_obj)
+
+    return BuiltModel(None, objects, {
+        "backdrop": "layered-heartwood-arena",
+        "modelRevision": "forest-sanctuary-backdrop-v2",
+        "compositionProfile": "portrait-clear-lane-v2",
+        "depthBands": 5,
+        "clearLaneFraction": 0.55,
+        "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
+        "visualQuality": "premium-v2",
+    })
+
+
+def build_ground_tile(variant: int = 0) -> BuiltModel:
+    """Build one overlapping premium ground patch with broad, noncompetitive detail."""
+    if variant not in range(3):
+        raise ValueError(f"Unknown ground tile variant: {variant}")
+    soil_deep = MATERIALS.get("ground_soil_deep", "#1A2D27")
+    soil = MATERIALS.get("ground_soil", "#2B4437")
+    soil_light = MATERIALS.get("ground_soil_light", "#3B5745")
+    stone = MATERIALS.get("ground_stone", "#53605D")
+    moss = MATERIALS.get("ground_moss", "#426C48")
+    root = MATERIALS.get("ground_root", "#60432F")
+    objects = [
+        add_cone("ground_patch_base", (0.0, 0.0, -0.10), 2.52, 2.42, 0.18,
+                 soil_deep, 12),
+        add_cone("ground_patch_inner", (0.0, -0.02, 0.005), 2.12, 1.96, 0.075,
+                 soil if variant != 1 else soil_light, 11),
+    ]
+    for index in range(6):
+        angle = index * 2.399 + variant * 0.73
+        radius = 0.48 + (index % 3) * 0.46
+        patch = add_ico(
+            f"ground_facet_{index}",
+            (math.cos(angle) * radius, math.sin(angle) * radius * 0.62, 0.065),
+            (0.42 + (index % 2) * 0.10, 0.30, 0.055),
+            soil_light if index % 3 == variant else soil,
+            1,
+        )
+        patch.rotation_euler.z = angle
+        objects.append(patch)
+
+    stone_count = 6 if variant == 1 else 5
+    for index in range(stone_count):
+        angle = index * math.tau / stone_count + variant * 0.42
+        radius = 0.72 + (index % 2) * 0.44
+        objects.append(add_ico(
+            f"ground_waystone_{index}",
+            (math.cos(angle) * radius, math.sin(angle) * radius * 0.54, 0.105),
+            (0.24 + (index % 2) * 0.06, 0.18, 0.085), stone, 1,
+        ))
+
+    for index in range(6):
+        angle = index * 1.61 + variant * 0.83
+        radius = 1.25 + (index % 2) * 0.42
+        leaf_obj = add_leaf(
+            f"ground_moss_leaf_{index}",
+            (math.cos(angle) * radius, math.sin(angle) * radius * 0.52, 0.12),
+            (0.16, 0.055, 0.28 + (index % 3) * 0.04),
+            moss,
+            (0.0, 0.0, -angle),
+        )
+        objects.append(leaf_obj)
+
+    root_angles = (0.20, 1.65, 3.10, 4.55)
+    for index, angle in enumerate(root_angles):
+        start_radius = 0.30 + 0.10 * (index % 2)
+        end_radius = 1.12 + 0.18 * ((index + variant) % 2)
+        objects.append(add_cylinder_between(
+            f"ground_root_run_{index}",
+            (math.cos(angle) * start_radius, math.sin(angle) * start_radius * 0.58, 0.11),
+            (math.cos(angle) * end_radius, math.sin(angle) * end_radius * 0.58, 0.115),
+            0.045, root, 6,
+        ))
+
+    identities = ("root-path", "waystone-crossing", "moss-clearing")
+    return BuiltModel(None, objects, {
+        "variant": variant,
+        "tileable": False,
+        "overlapProfile": "staggered-soft-edge-v2",
+        "groundIdentity": identities[variant],
+        "modelRevision": "arena-ground-premium-v2",
+        "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
+        "visualQuality": "premium-v2",
+    })
 
 
 def build_crystal_prop(variant: int = 0) -> BuiltModel:
-    base = MATERIALS.get("prop_stone", "#536168")
-    dark_base = MATERIALS.get("prop_dark_stone", "#29383A")
+    """Build one identity-specific premium crystal landmark for an arena edge."""
+    if variant not in range(3):
+        raise ValueError(f"Unknown crystal prop variant: {variant}")
+    base_deep = MATERIALS.get("prop_base_deep", "#263436")
+    base = MATERIALS.get("prop_base", "#526066")
+    edge = MATERIALS.get("prop_base_edge", "#798585")
     moss = MATERIALS.get("prop_moss", "#426C48")
-    colors = ("#58C7D2", "#9B6FD0", "#D8953D")
-    highlights = ("#BFF8F0", "#E0C7FF", "#FFE0A0")
-    crystal = MATERIALS.get(f"prop_crystal_{variant}", colors[variant % 3])
-    highlight = MATERIALS.get(f"prop_crystal_highlight_{variant}", highlights[variant % 3])
-    objects = [
-        add_ico("crystal_base", (0, 0, 0.20), (0.66, 0.50, 0.27), dark_base, 2),
-        add_torus("crystal_base_ring", (0, 0, 0.27), 0.46, 0.07, base),
-    ]
-    shard_data = (
-        (-0.34, 0.03, 0.60, 0.13, 0.86, -13),
-        (-0.15, -0.02, 0.78, 0.18, 1.26, -7),
-        (0.08, 0.03, 0.92, 0.22, 1.56, 3),
-        (0.31, 0.07, 0.69, 0.15, 1.03, 12),
-        (0.45, 0.12, 0.51, 0.10, 0.70, 18),
+    root = MATERIALS.get("prop_root", "#65452F")
+    palettes = (
+        ("#185B68", "#36A4B3", "#83E5E7", "#D3FFFF"),
+        ("#3E315E", "#7456A6", "#B292E2", "#ECDFFF"),
+        ("#6A421D", "#B86B22", "#E5A33B", "#FFE1A0"),
     )
+    deep_hex, mid_hex, light_hex, core_hex = palettes[variant]
+    crystal_deep = MATERIALS.get(f"prop_crystal_deep_{variant}", deep_hex)
+    crystal_mid = MATERIALS.get(f"prop_crystal_mid_{variant}", mid_hex)
+    crystal_light = MATERIALS.get(f"prop_crystal_light_{variant}", light_hex)
+    crystal_core = MATERIALS.get(f"prop_crystal_core_{variant}", core_hex)
+    objects = [
+        add_ico("crystal_bedrock", (0.0, 0.08, 0.24), (1.02, 0.72, 0.36), base_deep, 2),
+        add_ico("crystal_upper_stone", (0.0, -0.06, 0.42), (0.82, 0.56, 0.27), base, 2),
+        add_torus("crystal_guard_ring", (0.0, 0.02, 0.43), 0.72, 0.075,
+                  edge, (0.0, 0.0, 0.0), 18, 5),
+    ]
+
+    if variant == 0:
+        shard_data = (
+            (-0.70, 0.02, 1.03, 0.20, 1.35, -18),
+            (-0.46, 0.00, 1.26, 0.24, 1.82, -12),
+            (-0.18, 0.03, 1.48, 0.28, 2.22, -6),
+            (0.12, 0.02, 1.63, 0.30, 2.48, 3),
+            (0.42, 0.05, 1.38, 0.25, 1.98, 10),
+            (0.68, 0.08, 1.10, 0.20, 1.46, 18),
+            (0.02, -0.12, 1.05, 0.18, 1.18, 0),
+        )
+        identity = "azure-waystone-fan"
+    elif variant == 1:
+        shard_data = (
+            (-0.82, 0.04, 1.08, 0.22, 1.42, -28),
+            (-0.62, 0.00, 1.42, 0.25, 1.96, -22),
+            (-0.30, 0.03, 1.66, 0.28, 2.30, -13),
+            (0.18, 0.04, 1.58, 0.27, 2.18, 14),
+            (0.51, 0.02, 1.39, 0.24, 1.85, 22),
+            (0.76, 0.07, 1.05, 0.20, 1.35, 29),
+            (0.00, -0.18, 0.90, 0.30, 0.92, 0),
+        )
+        identity = "violet-moon-geode"
+    else:
+        shard_data = (
+            (-0.52, 0.04, 1.08, 0.25, 1.42, -14),
+            (-0.25, 0.01, 1.38, 0.31, 1.98, -8),
+            (0.06, 0.02, 1.56, 0.34, 2.28, 1),
+            (0.38, 0.05, 1.34, 0.29, 1.90, 10),
+            (0.62, 0.08, 1.02, 0.23, 1.34, 17),
+            (0.00, -0.17, 0.90, 0.26, 1.00, 0),
+        )
+        identity = "amber-root-lantern"
+
     for index, (x, y, z, radius, depth, tilt) in enumerate(shard_data):
+        material = crystal_light if index % 4 == 0 else crystal_mid if index % 2 else crystal_deep
         objects.append(add_cone(
             f"crystal_shard_{index}", (x, y, z), radius, 0.0, depth,
-            crystal, 7, (math.radians(2 * index), math.radians(tilt), 0),
+            material, 7, (0.0, math.radians(tilt), 0.0),
         ))
         objects.append(add_cone(
-            f"crystal_highlight_{index}", (x - radius * 0.24, y - radius * 0.78, z + depth * 0.08),
-            radius * 0.23, 0.0, depth * 0.64, highlight, 5,
-            (math.radians(2 * index), math.radians(tilt), 0),
+            f"crystal_highlight_{index}",
+            (x - radius * 0.30, y - radius * 0.92, z + depth * 0.06),
+            radius * 0.24, 0.0, depth * 0.58,
+            crystal_core, 5, (0.0, math.radians(tilt), 0.0),
         ))
-    for index, (x, z, angle) in enumerate(((-0.46, 0.34, -0.55), (0.41, 0.34, 0.52))):
-        objects.append(add_leaf(
-            f"crystal_moss_leaf_{index}", (x, -0.23, z),
-            (0.18, 0.045, 0.25), moss, (0, 0, angle),
+
+    # Identity accents change construction rather than relying on hue alone.
+    if variant == 0:
+        for index, sign in enumerate((-1.0, 1.0)):
+            objects.append(add_cylinder_between(
+                f"waystone_rail_{index}", (0.84 * sign, 0.12, 0.35),
+                (0.65 * sign, 0.08, 1.02), 0.075, edge, 7,
+            ))
+    elif variant == 1:
+        objects.append(add_torus(
+            "moon_geode_halo", (0.0, 0.12, 1.27), 0.76, 0.065,
+            edge, (math.pi / 2, 0.0, 0.0), 18, 5,
         ))
+        objects.append(add_ico(
+            "moon_geode_core", (0.0, -0.32, 1.02),
+            (0.34, 0.12, 0.42), crystal_core, 2,
+        ))
+    else:
+        for index, angle in enumerate((-0.80, -0.38, 0.38, 0.80)):
+            objects.append(add_cylinder_between(
+                f"lantern_root_prong_{index}",
+                (math.sin(angle) * 0.88, 0.10, 0.30),
+                (math.sin(angle) * 0.54, -0.02, 1.12 + math.cos(angle) * 0.34),
+                0.085, root, 7,
+            ))
+
+    for index in range(8):
+        angle = index * math.tau / 8 + variant * 0.24
+        objects.append(add_ico(
+            f"crystal_rune_stud_{index}",
+            (math.cos(angle) * 0.76, math.sin(angle) * 0.46 - 0.14, 0.47),
+            (0.085, 0.045, 0.085), crystal_light, 1,
+        ))
+    for index in range(9):
+        angle = index * 2.17 + variant * 0.61
+        leaf_obj = add_leaf(
+            f"crystal_moss_leaf_{index}",
+            (math.cos(angle) * (0.82 + (index % 2) * 0.18),
+             math.sin(angle) * 0.44, 0.42 + (index % 3) * 0.05),
+            (0.17, 0.055, 0.29), moss,
+            (0.0, 0.0, -angle),
+        )
+        objects.append(leaf_obj)
+
     return BuiltModel(None, objects, {
         "variant": variant,
-        "prop": "faceted_crystal_cluster",
+        "prop": identity,
+        "modelRevision": "arena-crystal-premium-v2",
+        "silhouetteLandmarks": [
+            "faceted bedrock", "guard ring", "identity shard rhythm", "moss grounding",
+        ],
+        "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
+        "runtimeGlow": False,
         "visualQuality": "premium-v2",
     })
 
