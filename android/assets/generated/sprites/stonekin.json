@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "stonekin-juggernaut-v2",
   "armature": "stonekin_armature",
   "atlas": "sprites/stonekin.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "stonekin",
+  "categoryReview": {
+    "category": "regular-enemies",
+    "document": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +276,20 @@
   "frameRate": 12,
   "frameSize": 192,
   "key": "stonekin",
+  "materialCount": 7,
+  "materialStory": "charcoal basalt and cool slate with moss accents and one restrained cyan rune core",
+  "meshParts": 48,
+  "modelRevision": "stonekin-rune-bulwark-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-heavy-humanoid-v2",
   "sheet": "sprites/stonekin.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,
@@ -286,6 +301,7 @@
       "width": 1920
     }
   ],
-  "silhouette": "block_golem",
-  "triangles": 596
+  "silhouette": "broad asymmetrical crag shoulders, broken crown, massive fists, and slab feet",
+  "triangles": 1800,
+  "visualQuality": "premium-v2"
 }

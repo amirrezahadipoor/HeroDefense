@@ -1,0 +1,334 @@
+{
+  "assets": [
+    {
+      "animationProfile": "rootling-skirmisher-v2",
+      "baselineSheetSha256": "a36dff26f71e299cdddb3130d918c12b7c56f684dff8b5f422e08fec604a4754",
+      "candidateAtlasSha256": "ff8b5a80d622b2d445676703dfbe8fb62f78bb0f2d6cb7802765cc4ad236739d",
+      "candidateMetadataSha256": "91714a2a32d84ab9054c2ab9f0574ee2f174d5a287b00203c05daed04ebc991e",
+      "candidateSheetSha256": "c7eec3efce6a6fc9f4a64d854da6f2bf46b038c427b94992c573c52a413d331a",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 9,
+            "left": 20,
+            "right": 34,
+            "top": 13
+          },
+          "uniqueVisibleFrames": 7
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 9,
+            "left": 44,
+            "right": 8,
+            "top": 13
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 12,
+            "left": 42,
+            "right": 26,
+            "top": 8
+          },
+          "uniqueVisibleFrames": 3
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 13,
+            "left": 45,
+            "right": 44,
+            "top": 13
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "rootling",
+      "label": "Rootling",
+      "materialCount": 7,
+      "meshParts": 37,
+      "minimumAlphaMargins": {
+        "bottom": 9,
+        "left": 20,
+        "right": 8,
+        "top": 8
+      },
+      "modelRevision": "rootling-thorn-scout-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-humanoid-v2",
+      "triangles": 1052
+    },
+    {
+      "animationProfile": "stonekin-juggernaut-v2",
+      "baselineSheetSha256": "3db4f39ba5cf970e460da22c28d94157ab55bccd37535c1e209e8696566aaff0",
+      "candidateAtlasSha256": "e247c8a9292d60c13249190aec0751b24a8dbb84da6b2817d2358a8c39d5ca46",
+      "candidateMetadataSha256": "af2968843bf53ecde9bcf34fa64f62843e0b5e7bb86d171336294190f44b62c5",
+      "candidateSheetSha256": "114699439ad918a15d444e7e9e4e29666548bd7f3d31013cd94246499bcb644e",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 11,
+            "left": 33,
+            "right": 30,
+            "top": 26
+          },
+          "uniqueVisibleFrames": 7
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 12,
+            "left": 40,
+            "right": 22,
+            "top": 27
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 12,
+            "left": 40,
+            "right": 35,
+            "top": 33
+          },
+          "uniqueVisibleFrames": 3
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 12,
+            "left": 41,
+            "right": 46,
+            "top": 36
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "stonekin",
+      "label": "Stonekin",
+      "materialCount": 7,
+      "meshParts": 48,
+      "minimumAlphaMargins": {
+        "bottom": 11,
+        "left": 33,
+        "right": 22,
+        "top": 26
+      },
+      "modelRevision": "stonekin-rune-bulwark-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-heavy-humanoid-v2",
+      "triangles": 1800
+    },
+    {
+      "animationProfile": "gloom-wolf-pouncer-v2",
+      "baselineSheetSha256": "954ac5f2f6cae9344d5dfd40ffacb4ddc877de75b72f87d7c8754d9170b12cb7",
+      "candidateAtlasSha256": "575bffd5d09048a7269ae0ae93079b3fa54a9cc28b986efab427799149112d4f",
+      "candidateMetadataSha256": "c1782d83ae473a92c634b00d8d350509216a5d2d0d07a61827506f58dafa76df",
+      "candidateSheetSha256": "5c145d79ea6ae7aca45e62e6b097310a228ebd2512292045fbcad641ce5b90dc",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 9,
+            "left": 20,
+            "right": 11,
+            "top": 28
+          },
+          "uniqueVisibleFrames": 7
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 15,
+            "left": 24,
+            "right": 12,
+            "top": 29
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 13,
+            "left": 44,
+            "right": 18,
+            "top": 26
+          },
+          "uniqueVisibleFrames": 3
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 15,
+            "left": 51,
+            "right": 24,
+            "top": 29
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "gloom_wolf",
+      "label": "Gloom Wolf",
+      "materialCount": 7,
+      "meshParts": 42,
+      "minimumAlphaMargins": {
+        "bottom": 9,
+        "left": 20,
+        "right": 11,
+        "top": 26
+      },
+      "modelRevision": "gloom-wolf-shadow-stalker-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-quadruped-mapped-v2",
+      "triangles": 1030
+    },
+    {
+      "animationProfile": "fungal-brute-brawler-v2",
+      "baselineSheetSha256": "93665dce479f85ae243faff4378cf0015e1a1d7f7384d4ae03d3918ec5c38216",
+      "candidateAtlasSha256": "ba8623b0943bcbc20740769ddb728ca6ae3e75bbb5d0b41076dc4c152ff2b28e",
+      "candidateMetadataSha256": "ce74dd42e23a68b1a056a1b9ab0dffd602423a60e6465d715fae99093cc81921",
+      "candidateSheetSha256": "100d5c9ffa2341e8c7351f25b63fa02fa6d1fc78fb28cc77226c6e39595036ce",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 9,
+            "left": 18,
+            "right": 21,
+            "top": 4
+          },
+          "uniqueVisibleFrames": 7
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 12,
+            "left": 41,
+            "right": 10,
+            "top": 4
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 11,
+            "left": 40,
+            "right": 23,
+            "top": 17
+          },
+          "uniqueVisibleFrames": 3
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 11,
+            "left": 39,
+            "right": 40,
+            "top": 23
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "fungal_brute",
+      "label": "Fungal Brute",
+      "materialCount": 8,
+      "meshParts": 54,
+      "minimumAlphaMargins": {
+        "bottom": 9,
+        "left": 18,
+        "right": 10,
+        "top": 4
+      },
+      "modelRevision": "fungal-brute-spore-bruiser-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-heavy-humanoid-v2",
+      "triangles": 1984
+    }
+  ],
+  "baselineManifestSha256": "64a62a025806c816792418d47f13ba22d9a96bc0a450c6ff590273deb573a9f4",
+  "batch": "regular-enemies-premium-v2",
+  "candidateManifestSha256": "028a29ab7a7a71fed9fc91d8fb0cef21b50b0b3ca7439053e60cf54ee6836b65",
+  "expectedKeys": [
+    "rootling",
+    "stonekin",
+    "gloom_wolf",
+    "fungal_brute"
+  ],
+  "frameContract": {
+    "attack": 8,
+    "death": 10,
+    "hit": 4,
+    "idle": 6
+  },
+  "minimumUniqueVisibleFrames": {
+    "attack": 7,
+    "death": 9,
+    "hit": 3,
+    "idle": 5
+  },
+  "reviewSheetCount": 9,
+  "reviewSheets": {
+    "fungal_brute_full_motion.png": {
+      "bytes": 352964,
+      "sha256": "d65cff661f1f7b884ad2844d6a54ab1f43c6c08e043441d42f525ca77acf17dc"
+    },
+    "fungal_brute_readability.png": {
+      "bytes": 154145,
+      "sha256": "fbdb54cfb60799b182d5591f6f29470c1a983463c69c1add2f20e93a6932d9da"
+    },
+    "gloom_wolf_full_motion.png": {
+      "bytes": 297133,
+      "sha256": "43d445c07ee83a2ff71b150e1ee306e86b9fed88518ebefe7a35198df6ff036c"
+    },
+    "gloom_wolf_readability.png": {
+      "bytes": 135104,
+      "sha256": "9570cfc546ccaab1fc05ed0c17bebe9ec85c7e4244ab79b5c9ccfc97b8cd6cfd"
+    },
+    "regular_enemies_lineup.png": {
+      "bytes": 179440,
+      "sha256": "6fe56e5b75af78d2ccd51033b5d58f875956dca8980e47fc5f9aeb44b4171039"
+    },
+    "rootling_full_motion.png": {
+      "bytes": 299182,
+      "sha256": "a310484c056b2ef98c36e3f2502dc4f1ff5e52fcb4707fee197eb94221ebe8d3"
+    },
+    "rootling_readability.png": {
+      "bytes": 142641,
+      "sha256": "02a997fd0c35d8ef68365edff899b7e61dee30f574b1726687c8d6fc3cde73dc"
+    },
+    "stonekin_full_motion.png": {
+      "bytes": 315247,
+      "sha256": "c53dc2b4b7fef95b7a432eb0de109be3c673218843243130face7310f2e6e1ba"
+    },
+    "stonekin_readability.png": {
+      "bytes": 140129,
+      "sha256": "cd4e75e5d3e378dce1feb9e7c0f9bbb6a3d43ab3391b4bfe215644a343c94548"
+    }
+  },
+  "schemaVersion": 1,
+  "summary": {
+    "assetCount": 4,
+    "decodedBudgetBytes": 33554432,
+    "decodedBytes": 23592960,
+    "frameCount": 112,
+    "maximumTriangles": 1984,
+    "minimumAlphaMargins": {
+      "bottom": 9,
+      "left": 18,
+      "right": 8,
+      "top": 4
+    },
+    "minimumMaterialCount": 7,
+    "minimumMeshParts": 37,
+    "minimumTriangles": 1030,
+    "singlePageAtlasCount": 4
+  }
+}

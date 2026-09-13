@@ -73,13 +73,9 @@ final class PremiumAssetContractTest {
             assertEquals(2, asset.getInt("renderSupersample"), key);
             int expectedSamples = "equipment".equals(asset.getString("family")) ? 8 : 16;
             assertEquals(expectedSamples, asset.getInt("renderSamples"), key);
-            if ("equipment".equals(asset.getString("family"))) {
-                assertEquals(PILOT_REVIEW, asset.getString(
-                    "pilotReviewDocument", asset.getString("reviewDocument", "")
-                ), key);
-            } else {
-                assertEquals(PILOT_REVIEW, asset.getString("reviewDocument"), key);
-            }
+            assertEquals(PILOT_REVIEW, asset.getString(
+                "pilotReviewDocument", asset.getString("reviewDocument", "")
+            ), key);
         }
     }
 
@@ -120,7 +116,6 @@ final class PremiumAssetContractTest {
     @Test
     void allRuntimeEquipmentHasReviewedPremiumSocketAtlases() throws IOException {
         JsonValue manifest = new JsonReader().parse(Files.readString(MANIFEST));
-        assertEquals("equipment", manifest.getString("generatedBatch"));
         assertTrue(Files.isRegularFile(REPOSITORY.resolve(EQUIPMENT_REVIEW)));
         assertTrue(Files.isRegularFile(EQUIPMENT_AUDIT));
 

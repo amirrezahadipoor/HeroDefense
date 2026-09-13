@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "gloom-wolf-pouncer-v2",
   "armature": "gloom_wolf_armature",
   "atlas": "sprites/gloom_wolf.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "gloom_wolf",
+  "categoryReview": {
+    "category": "regular-enemies",
+    "document": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +276,20 @@
   "frameRate": 12,
   "frameSize": 192,
   "key": "gloom_wolf",
+  "materialCount": 7,
+  "materialStory": "near-black violet masses, one readable mid-violet plane, moon-cyan eyes, and tiny ivory fangs",
+  "meshParts": 42,
+  "modelRevision": "gloom-wolf-shadow-stalker-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-quadruped-mapped-v2",
   "sheet": "sprites/gloom_wolf.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,
@@ -286,6 +301,7 @@
       "width": 1920
     }
   ],
-  "silhouette": "low_quadruped",
-  "triangles": 588
+  "silhouette": "low four-legged wedge, tall alert ears, deep neck ruff, and a long swept tail",
+  "triangles": 1030,
+  "visualQuality": "premium-v2"
 }

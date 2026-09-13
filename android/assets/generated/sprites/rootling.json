@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "rootling-skirmisher-v2",
   "armature": "rootling_armature",
   "atlas": "sprites/rootling.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "rootling",
+  "categoryReview": {
+    "category": "regular-enemies",
+    "document": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,6 +276,11 @@
   "frameRate": 12,
   "frameSize": 192,
   "key": "rootling",
+  "materialCount": 7,
+  "materialStory": "warm bark, charcoal heartwood, restrained leaf greens, and one amber sap focus",
+  "meshParts": 37,
+  "modelRevision": "rootling-thorn-scout-v2",
+  "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
@@ -277,7 +288,9 @@
   },
   "renderSamples": 16,
   "renderSupersample": 2,
-  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+  "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-humanoid-v2",
   "sheet": "sprites/rootling.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,
@@ -289,7 +302,7 @@
       "width": 1920
     }
   ],
-  "silhouette": "crowned_branch_imp",
-  "triangles": 1036,
+  "silhouette": "wiry thorn crown with asymmetric leaf mantle and rooted feet",
+  "triangles": 1052,
   "visualQuality": "premium-v2"
 }

@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "fungal-brute-brawler-v2",
   "armature": "fungal_brute_armature",
   "atlas": "sprites/fungal_brute.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "fungal_brute",
+  "categoryReview": {
+    "category": "regular-enemies",
+    "document": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +276,20 @@
   "frameRate": 12,
   "frameSize": 192,
   "key": "fungal_brute",
+  "materialCount": 8,
+  "materialStory": "earthy olive stem, wine-red cap, dark root masses, warm gills, and sparse golden spores",
+  "meshParts": 54,
+  "modelRevision": "fungal-brute-spore-bruiser-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-heavy-humanoid-v2",
   "sheet": "sprites/fungal_brute.png",
   "sheetHeight": 768,
   "sheetWidth": 1920,
@@ -286,6 +301,7 @@
       "width": 1920
     }
   ],
-  "silhouette": "mushroom_brute",
-  "triangles": 584
+  "silhouette": "oversized layered cap, barrel stalk body, knotted arms, root feet, and asymmetric shoulder buds",
+  "triangles": 1984,
+  "visualQuality": "premium-v2"
 }

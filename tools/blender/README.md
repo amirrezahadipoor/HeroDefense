@@ -64,6 +64,21 @@ python3 tools/visual/promote_equipment_batch.py \
   /tmp/hero-defense-equipment-candidate android/assets/generated
 ```
 
+For all four regular enemies, dispatch or locally render the exact `enemies` batch into a
+disposable directory. The batch review audits every pixel of all 112 runtime frames, the
+25-bone rig, distinct motion profiles, material/mesh budgets, alpha margins, and the exact
+candidate payload. Inspect the eight per-enemy sheets plus the shared lineup before writing
+the acceptance document and promoting:
+
+```sh
+python3 tools/visual/create_enemy_batch_review.py \
+  android/assets/generated \
+  /tmp/hero-defense-enemy-candidate \
+  docs/art_reviews/regular_enemies_premium_v2
+python3 tools/visual/promote_enemy_batch.py \
+  /tmp/hero-defense-enemy-candidate android/assets/generated
+```
+
 Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.
