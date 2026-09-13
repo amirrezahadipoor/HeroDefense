@@ -47,7 +47,7 @@ public final class AndroidTouchSmokeTest {
             await("libGDX touch input", game::readyForTouch);
             await("main menu", () -> game.screenState() == GameScreenState.MENU);
             View surface = gameSurfaceFrom(scenario);
-            SystemClock.sleep(250L);
+            SystemClock.sleep(1_500L);
             captureScreen("main-menu-premium-v2.png");
 
             long touchCount = game.handledTouchUpCount();
@@ -58,7 +58,7 @@ public final class AndroidTouchSmokeTest {
             assertEquals(1, game.gameState().waveNumber);
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
-            SystemClock.sleep(250L);
+            SystemClock.sleep(1_500L);
             captureScreen("live-hud-premium-v2.png");
 
             tapWorld(surface, 450f + correction[0], 76f + correction[1]); // Direct Shop
