@@ -239,7 +239,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Upgrade the Main Menu and live HUD visual hierarchy, panels, typography treatment, buttons, and touch feedback without reducing gameplay visibility.
 - [x] Upgrade the Inventory and Equipment presentation, including item cards, comparison states, selection, equip/unequip, sell feedback, and rarity treatment.
 - [x] Upgrade the Shop presentation, including stat cards, price/affordability states, purchase feedback, and paused-game context.
-- [ ] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard.
+- [x] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard. (Accepted evidence: [`FLOW_SURFACES_PREMIUM_V2_REVIEW.md`](docs/art_reviews/FLOW_SURFACES_PREMIUM_V2_REVIEW.md))
 - [ ] Upgrade projectiles, impacts, critical hits, enemy deaths, Boss entrances/deaths, item collection, coins, World Tree damage, and ambient arena VFX with restrained visual layering.
 - [ ] Re-review the launcher/store icon against the final premium-v2 in-game style and replace it only if the integrated style no longer matches.
 
