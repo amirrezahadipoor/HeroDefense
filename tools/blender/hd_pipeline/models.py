@@ -1072,14 +1072,21 @@ def build_ember_wyrm() -> BuiltModel:
     for side, sign in (("L", -1), ("R", 1)):
         eye = add_ico_sphere(f"wyrm furnace eye {side}", (0.16 * sign, -0.39, 2.15), (0.055, 0.04, 0.055), flame_core, subdivisions=2)
         parts.append(_tag(eye, "head"))
-        _boss_spike(parts, f"wyrm crown horn {side}", (0.23 * sign, 0.0, 2.31), 0.075, 0.52, horn, "helmet_socket", (0.0, -0.38 * sign, 0.20 * sign))
+        _boss_spike(parts, f"wyrm crown horn {side}", (0.23 * sign, 0.0, 2.31), 0.075, 0.52, horn, "head", (0.0, -0.38 * sign, 0.20 * sign))
         cheek = add_leaf(f"wyrm cheek plate {side}", (0.24 * sign, -0.30, 2.01), (0.17, 0.05, 0.22), plate, rotation=(0.0, 0.0, 0.32 * sign))
         parts.append(_tag(cheek, "head"))
     for tooth_index, x in enumerate((-0.14, -0.05, 0.05, 0.14)):
         _boss_spike(parts, f"wyrm jaw tooth {tooth_index}", (x, -0.65, 1.95), 0.025, 0.14, horn, "head", (math.radians(180), 0.0, 0.0))
-    flame_tongue = add_pointed_cone("wyrm breath pilot", (0.0, -0.73, 1.98), 0.11, 0.42, flame, vertices=10, rotation=(math.radians(78), 0.0, 0.0))
-    flame_seed = add_ico_sphere("wyrm breath core", (0.0, -0.58, 1.99), (0.075, 0.10, 0.075), flame_core, subdivisions=2)
-    parts.extend((_tag(flame_tongue, "head"), _tag(flame_seed, "head")))
+    # A reserved head-child socket scales this layered breath from hidden pilot to
+    # full signature sweep without changing the fixed mesh/atlas contract.
+    flame_tongue = add_pointed_cone("wyrm breath plume", (0.0, -0.88, 1.98), 0.17, 0.82, flame, vertices=10, rotation=(math.radians(78), 0.0, 0.0))
+    flame_inner = add_pointed_cone("wyrm breath inner plume", (0.0, -0.78, 1.98), 0.095, 0.56, flame_core, vertices=9, rotation=(math.radians(78), 0.0, 0.0))
+    flame_seed = add_ico_sphere("wyrm breath core", (0.0, -0.58, 1.99), (0.10, 0.13, 0.10), flame_core, subdivisions=2)
+    parts.extend((
+        _tag(flame_tongue, "helmet_socket"),
+        _tag(flame_inner, "helmet_socket"),
+        _tag(flame_seed, "helmet_socket"),
+    ))
 
     # Segmented tail sweeps sideways to distinguish the Wyrm even in a still frame.
     tail_points = ((0.10, 0.16, 0.73), (0.45, 0.20, 0.61), (0.76, 0.16, 0.47), (1.02, 0.08, 0.34), (1.22, 0.0, 0.30))

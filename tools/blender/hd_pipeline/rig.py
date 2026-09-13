@@ -772,11 +772,13 @@ def _author_boss_fall(
         "upper_arm.L": (0.42, 0.0, -spread), "upper_arm.R": (0.38, 0.0, spread),
     }
     final = {
-        "root": (0.0, 1.14, turn * 0.25), "pelvis": (0.72, 0.0, -0.16),
-        "chest": (0.94, 0.0, -turn), "neck": (0.68, 0.0, -turn * 0.5),
-        "head": (0.66, 0.0, turn * 0.7),
-        "upper_arm.L": (1.04, 0.0, -spread), "upper_arm.R": (0.92, 0.0, spread),
-        "forearm.L": (0.50, 0.0, -spread * 0.35), "forearm.R": (0.45, 0.0, spread * 0.35),
+        "root": (0.0, 0.92, turn * 0.20), "pelvis": (0.62, 0.0, -0.14),
+        "chest": (0.82, 0.0, -turn * 0.82), "neck": (0.56, 0.0, -turn * 0.42),
+        "head": (0.54, 0.0, turn * 0.58),
+        "upper_arm.L": (0.62, 0.0, -spread * 0.65),
+        "upper_arm.R": (0.56, 0.0, spread * 0.65),
+        "forearm.L": (0.32, 0.0, -spread * 0.22),
+        "forearm.R": (0.29, 0.0, spread * 0.22),
     }
     if weapon:
         mid["weapon_socket"] = (0.42, -0.20, 0.12)
@@ -794,23 +796,26 @@ def _author_ancient_golem_idle(armature: bpy.types.Object, count: int) -> None:
 def _author_ancient_golem_ground_slam(armature: bpy.types.Object, count: int) -> None:
     neutral = _boss_neutral()
     _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
-    # Bilateral overhead lift keeps the heartstone exposed between both fists.
+    # Bilateral overhead lift keeps the heartstone exposed between separated fists.
     _key(armature, 3, {
-        "pelvis": (-0.10, 0.0, 0.0), "spine": (-0.20, 0.0, 0.0), "chest": (-0.34, 0.0, 0.0), "head": (0.16, 0.0, 0.0),
-        "upper_arm.L": (-1.12, -0.10, -0.72), "upper_arm.R": (-1.12, 0.10, 0.72),
-        "forearm.L": (-0.82, 0.0, -0.18), "forearm.R": (-0.82, 0.0, 0.18),
-    }, {"root": (0.0, 0.02, 0.09)})
-    # Signature impact drives the entire stone mass and both fists into the floor.
+        "pelvis": (-0.06, 0.0, 0.0), "spine": (-0.12, 0.0, 0.0),
+        "chest": (-0.20, 0.0, 0.0), "head": (0.11, 0.0, 0.0),
+        "upper_arm.L": (-0.82, -0.08, -0.50), "upper_arm.R": (-0.82, 0.08, 0.50),
+        "forearm.L": (-0.58, 0.0, -0.12), "forearm.R": (-0.58, 0.0, 0.12),
+    }, {"root": (0.0, 0.015, 0.065)})
+    # Signature impact remains crouched and frontal: both fists strike beside the feet.
     _key(armature, 5, {
-        "pelvis": (0.50, 0.0, 0.0), "spine": (0.44, 0.0, 0.0), "chest": (0.58, 0.0, 0.0), "head": (-0.32, 0.0, 0.0),
-        "upper_arm.L": (0.92, -0.14, -0.28), "upper_arm.R": (0.92, 0.14, 0.28),
-        "forearm.L": (0.72, 0.0, 0.16), "forearm.R": (0.72, 0.0, -0.16),
-    }, {"root": (0.0, -0.07, -0.20)}, {"chest": (1.04, 1.04, 0.93)})
+        "pelvis": (0.22, 0.0, 0.0), "spine": (0.20, 0.0, 0.0),
+        "chest": (0.28, 0.0, 0.0), "head": (-0.16, 0.0, 0.0),
+        "upper_arm.L": (0.45, -0.09, -0.22), "upper_arm.R": (0.45, 0.09, 0.22),
+        "forearm.L": (0.40, 0.0, 0.10), "forearm.R": (0.40, 0.0, -0.10),
+    }, {"root": (0.0, -0.035, -0.105)}, {"chest": (1.035, 1.035, 0.95)})
     _key(armature, 6, {
-        "pelvis": (0.38, 0.0, 0.0), "spine": (0.31, 0.0, 0.0), "chest": (0.40, 0.0, 0.0), "head": (-0.18, 0.0, 0.0),
-        "upper_arm.L": (0.66, -0.08, -0.19), "upper_arm.R": (0.66, 0.08, 0.19),
-        "forearm.L": (0.48, 0.0, 0.10), "forearm.R": (0.48, 0.0, -0.10),
-    }, {"root": (0.0, -0.035, -0.15)})
+        "pelvis": (0.15, 0.0, 0.0), "spine": (0.13, 0.0, 0.0),
+        "chest": (0.18, 0.0, 0.0), "head": (-0.10, 0.0, 0.0),
+        "upper_arm.L": (0.30, -0.05, -0.14), "upper_arm.R": (0.30, 0.05, 0.14),
+        "forearm.L": (0.25, 0.0, 0.06), "forearm.R": (0.25, 0.0, -0.06),
+    }, {"root": (0.0, -0.018, -0.065)})
     _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
 
 
@@ -860,36 +865,62 @@ def _author_thorn_matriarch_death(armature: bpy.types.Object, count: int) -> Non
 
 def _author_ember_wyrm_idle(armature: bpy.types.Object, count: int) -> None:
     _author_boss_breathe(armature, count, mass=1.15, wing=0.12)
+    hidden = {"helmet_socket": (0.01, 0.01, 0.01)}
+    for frame in (1, 1 + count // 2, count):
+        _key(armature, frame, scales=hidden)
 
 
 def _author_ember_wyrm_flame_sweep(armature: bpy.types.Object, count: int) -> None:
-    neutral = _boss_neutral()
-    _key(armature, 1, neutral, {"root": (0.0, 0.0, 0.0)})
+    neutral = _boss_neutral("helmet_socket")
+    _key(
+        armature,
+        1,
+        neutral,
+        {"root": (0.0, 0.0, 0.0)},
+        {"helmet_socket": (0.01, 0.01, 0.01)},
+    )
     # Coil the neck and draw both wings tight to pressurise the breath.
     _key(armature, 3, {
         "pelvis": (0.12, 0.0, -0.18), "spine": (0.10, 0.0, -0.30), "chest": (0.06, 0.0, -0.46), "neck": (-0.10, 0.0, -0.48), "head": (-0.12, 0.0, -0.58),
         "upper_arm.L": (0.18, -0.18, 0.42), "upper_arm.R": (0.18, 0.18, -0.42),
         "forearm.L": (0.20, 0.0, 0.24), "forearm.R": (0.20, 0.0, -0.24),
-    }, {"root": (-0.04, 0.02, -0.055)}, {"chest": (0.96, 0.96, 1.08)})
+    }, {"root": (-0.04, 0.02, -0.055)}, {
+        "chest": (0.96, 0.96, 1.08),
+        "helmet_socket": (0.03, 0.03, 0.03),
+    })
     # Signature flame sweep crosses the silhouette as both wings snap open.
     _key(armature, 5, {
         "pelvis": (-0.10, 0.0, 0.28), "spine": (-0.12, 0.0, 0.42), "chest": (-0.10, 0.0, 0.62), "neck": (0.08, 0.0, 0.66), "head": (0.10, 0.0, 0.82),
         "upper_arm.L": (-0.42, -0.18, -0.72), "upper_arm.R": (-0.42, 0.18, 0.72),
         "forearm.L": (-0.30, 0.0, -0.34), "forearm.R": (-0.30, 0.0, 0.34),
-    }, {"root": (0.08, -0.05, 0.025)}, {"chest": (1.06, 1.06, 0.98)})
+    }, {"root": (0.08, -0.05, 0.025)}, {
+        "chest": (1.06, 1.06, 0.98),
+        "helmet_socket": (1.35, 1.35, 1.35),
+    })
     _key(armature, 6, {
         "pelvis": (-0.05, 0.0, 0.16), "chest": (-0.06, 0.0, 0.36), "neck": (0.05, 0.0, 0.38), "head": (0.06, 0.0, 0.46),
         "upper_arm.L": (-0.24, -0.10, -0.42), "upper_arm.R": (-0.24, 0.10, 0.42),
-    }, {"root": (0.04, -0.02, 0.012)})
-    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {"chest": (1.0, 1.0, 1.0)})
+    }, {"root": (0.04, -0.02, 0.012)}, {
+        "helmet_socket": (0.82, 0.82, 0.82),
+    })
+    _key(armature, count, neutral, {"root": (0.0, 0.0, 0.0)}, {
+        "chest": (1.0, 1.0, 1.0),
+        "helmet_socket": (0.01, 0.01, 0.01),
+    })
 
 
 def _author_ember_wyrm_hit(armature: bpy.types.Object, count: int) -> None:
     _author_boss_hit(armature, count, recoil=0.40, wing=0.16)
+    hidden = {"helmet_socket": (0.01, 0.01, 0.01)}
+    for frame in (1, 2, 3, count):
+        _key(armature, frame, scales=hidden)
 
 
 def _author_ember_wyrm_death(armature: bpy.types.Object, count: int) -> None:
     _author_boss_fall(armature, count, turn=0.30, spread=1.08)
+    hidden = {"helmet_socket": (0.01, 0.01, 0.01)}
+    for frame in (1, 4, 7, count - 1, count):
+        _key(armature, frame, scales=hidden)
 
 
 def _author_void_knight_idle(armature: bpy.types.Object, count: int) -> None:
