@@ -110,6 +110,21 @@ python3 tools/visual/promote_world_tree_batch.py \
   /tmp/hero-defense-world-tree-candidate android/assets/generated
 ```
 
+For the complete arena environment, render the exact `arena` batch. It contains one
+360×640 portrait backdrop, all three 192×192 overlapping ground patches, and all three
+identity-specific crystal landmarks—nothing from unrelated consumable or UI categories.
+The audit must verify full-bleed backdrop coverage, transparent prop/tile margins, geometry
+budgets, restrained value hierarchy, and a 720×1280 integrated composition before promotion:
+
+```sh
+python3 tools/visual/create_arena_batch_review.py \
+  android/assets/generated \
+  /tmp/hero-defense-arena-candidate \
+  docs/art_reviews/arena_premium_v2
+python3 tools/visual/promote_arena_batch.py \
+  /tmp/hero-defense-arena-candidate android/assets/generated
+```
+
 Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.

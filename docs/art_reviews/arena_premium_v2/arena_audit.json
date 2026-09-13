@@ -1,0 +1,220 @@
+{
+  "assets": [
+    {
+      "centerLaneMeanValue": 32.464,
+      "decodedBytes": 921600,
+      "dimensions": {
+        "height": 640,
+        "width": 360
+      },
+      "edgeMeanValue": 19.935,
+      "fullBleedMinimumEdgeAlpha": 255,
+      "key": "arena_backdrop",
+      "materialCount": 9,
+      "meanValue": 23.836,
+      "meshParts": 63,
+      "metadataSha256": "91e162a1a46359bc38ba35a48b2d46f485774a12cf88d84b252f7ed90eebf1a5",
+      "modelRevision": "forest-sanctuary-backdrop-v2",
+      "opaquePixelFraction": 1.0,
+      "sheetSha256": "9cd32149c5ec5c16de0d5744d94dcdb4c9f73a10ac1030a063df78cf1e12cc86",
+      "triangles": 1704
+    },
+    {
+      "alphaMargins": {
+        "bottom": 13,
+        "left": 9,
+        "right": 9,
+        "top": 101
+      },
+      "baselineSheetSha256": "d7917b071baa2d2137a01526d4882fe03d11cd89d6789a87f888297c7d736864",
+      "decodedBytes": 147456,
+      "dimensions": {
+        "height": 192,
+        "width": 192
+      },
+      "key": "ground_tile_0",
+      "materialCount": 6,
+      "meshParts": 23,
+      "metadataSha256": "20c45a0296f22b5538c36e69310ab85ffd2d5b0ed1ad250c4fbbf774aecbcee4",
+      "modelRevision": "arena-ground-premium-v2",
+      "sheetSha256": "727f587265e3d6251c1039da46c78af0e5851609fcc98662a560f90656e334c0",
+      "triangles": 504
+    },
+    {
+      "alphaMargins": {
+        "bottom": 13,
+        "left": 9,
+        "right": 9,
+        "top": 99
+      },
+      "baselineSheetSha256": "3b1b693324973328864a7781ffbb5c32a791548d9cdcf21d73fbca25fb9d05d5",
+      "decodedBytes": 147456,
+      "dimensions": {
+        "height": 192,
+        "width": 192
+      },
+      "key": "ground_tile_1",
+      "materialCount": 6,
+      "meshParts": 24,
+      "metadataSha256": "396ebec0848258261907d6c04e1ef4a4759a9aea3470db842c114197b5c7706e",
+      "modelRevision": "arena-ground-premium-v2",
+      "sheetSha256": "40a40973baea503feb3b08412345d5e75eb5d2f5d29b98c61ea720be2b69fbe7",
+      "triangles": 524
+    },
+    {
+      "alphaMargins": {
+        "bottom": 13,
+        "left": 9,
+        "right": 9,
+        "top": 101
+      },
+      "baselineSheetSha256": "c0452dd8b64f9d976ced6d81a28b74177cacb5c1af10a43163c6eda321eb0b94",
+      "decodedBytes": 147456,
+      "dimensions": {
+        "height": 192,
+        "width": 192
+      },
+      "key": "ground_tile_2",
+      "materialCount": 6,
+      "meshParts": 23,
+      "metadataSha256": "9405f2c2110416d94443075d3d6a5c822de542f671df4e78370134e4be2a14a3",
+      "modelRevision": "arena-ground-premium-v2",
+      "sheetSha256": "de668bbcd8940cdaa66f7bbb6c2ac5dc648721113985ce2fd8cb0fc778b07b4b",
+      "triangles": 504
+    },
+    {
+      "alphaMargins": {
+        "bottom": 46,
+        "left": 61,
+        "right": 57,
+        "top": 36
+      },
+      "baselineSheetSha256": "2adb2acd5f78bb723829e76bd36038959707e4c1ada8cab995b8a58125bf3052",
+      "decodedBytes": 147456,
+      "dimensions": {
+        "height": 192,
+        "width": 192
+      },
+      "key": "crystal_prop_0",
+      "materialCount": 8,
+      "meshParts": 36,
+      "metadataSha256": "090c0035e9347e76c2030aaca0fc4647cbf441a022c8118256681b431dea79cd",
+      "modelRevision": "arena-crystal-premium-v2",
+      "sheetSha256": "4b37a9885f2bb0a16ab8f82006b9aa8f93a787f27ef257e8686401f8a8db0bb2",
+      "triangles": 868
+    },
+    {
+      "alphaMargins": {
+        "bottom": 46,
+        "left": 57,
+        "right": 57,
+        "top": 33
+      },
+      "baselineSheetSha256": "b30c1309387d2bfae3852e5da2ab91ff3dc18c9f7bf42f13cb6a63f9d478e6b8",
+      "decodedBytes": 147456,
+      "dimensions": {
+        "height": 192,
+        "width": 192
+      },
+      "key": "crystal_prop_1",
+      "materialCount": 8,
+      "meshParts": 36,
+      "metadataSha256": "92723457f810deddcd65a14d02d89e24c7b6aafd649aa596e886797cbd48aaf3",
+      "modelRevision": "arena-crystal-premium-v2",
+      "sheetSha256": "d70c35e11dd34b06de70e08c456ff275656bf5b6a3b924095eb5c7ee0ec57e20",
+      "triangles": 1080
+    },
+    {
+      "alphaMargins": {
+        "bottom": 46,
+        "left": 57,
+        "right": 57,
+        "top": 41
+      },
+      "baselineSheetSha256": "1311759c9399291e348246cebdee47018c5ca80784379efdceb5fa2e288efa4e",
+      "decodedBytes": 147456,
+      "dimensions": {
+        "height": 192,
+        "width": 192
+      },
+      "key": "crystal_prop_2",
+      "materialCount": 9,
+      "meshParts": 36,
+      "metadataSha256": "19a46e7398fff8be68ca9223149673c0655e42320cc356ec9afdc63fb8b6ee74",
+      "modelRevision": "arena-crystal-premium-v2",
+      "sheetSha256": "0c2411184ff4d3a8cbf8866ee65087c0ece866608cc8e7623322d8ac187a029c",
+      "triangles": 896
+    }
+  ],
+  "baselineManifestSha256": "db9ae60241f20fd468ae363a93c9b584b804134ab19a76c2ae69e554cfda88ee",
+  "batch": "arena-premium-v2",
+  "candidateManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+  "candidatePayload": {
+    "asset_manifest.json": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+    "environment/arena_backdrop.json": "91e162a1a46359bc38ba35a48b2d46f485774a12cf88d84b252f7ed90eebf1a5",
+    "environment/arena_backdrop.png": "9cd32149c5ec5c16de0d5744d94dcdb4c9f73a10ac1030a063df78cf1e12cc86",
+    "environment/crystal_prop_0.json": "090c0035e9347e76c2030aaca0fc4647cbf441a022c8118256681b431dea79cd",
+    "environment/crystal_prop_0.png": "4b37a9885f2bb0a16ab8f82006b9aa8f93a787f27ef257e8686401f8a8db0bb2",
+    "environment/crystal_prop_1.json": "92723457f810deddcd65a14d02d89e24c7b6aafd649aa596e886797cbd48aaf3",
+    "environment/crystal_prop_1.png": "d70c35e11dd34b06de70e08c456ff275656bf5b6a3b924095eb5c7ee0ec57e20",
+    "environment/crystal_prop_2.json": "19a46e7398fff8be68ca9223149673c0655e42320cc356ec9afdc63fb8b6ee74",
+    "environment/crystal_prop_2.png": "0c2411184ff4d3a8cbf8866ee65087c0ece866608cc8e7623322d8ac187a029c",
+    "environment/ground_tile_0.json": "20c45a0296f22b5538c36e69310ab85ffd2d5b0ed1ad250c4fbbf774aecbcee4",
+    "environment/ground_tile_0.png": "727f587265e3d6251c1039da46c78af0e5851609fcc98662a560f90656e334c0",
+    "environment/ground_tile_1.json": "396ebec0848258261907d6c04e1ef4a4759a9aea3470db842c114197b5c7706e",
+    "environment/ground_tile_1.png": "40a40973baea503feb3b08412345d5e75eb5d2f5d29b98c61ea720be2b69fbe7",
+    "environment/ground_tile_2.json": "9405f2c2110416d94443075d3d6a5c822de542f671df4e78370134e4be2a14a3",
+    "environment/ground_tile_2.png": "de668bbcd8940cdaa66f7bbb6c2ac5dc648721113985ce2fd8cb0fc778b07b4b"
+  },
+  "expectedKeys": [
+    "arena_backdrop",
+    "ground_tile_0",
+    "ground_tile_1",
+    "ground_tile_2",
+    "crystal_prop_0",
+    "crystal_prop_1",
+    "crystal_prop_2"
+  ],
+  "reviewSheetCount": 6,
+  "reviewSheets": {
+    "arena_backdrop_value.png": {
+      "bytes": 281042,
+      "sha256": "cd9560c89deab249e9d6231a65753d53c7f3f97f5f4384f2431c68449efe654a"
+    },
+    "arena_crystal_lineup.png": {
+      "bytes": 75000,
+      "sha256": "aceb84231fdbc131edee31bba6305ec8b8bda17275b0307b2c0986e5a7ba255f"
+    },
+    "arena_depth_hierarchy.png": {
+      "bytes": 433379,
+      "sha256": "f0d6a168c6be2fbddf2a411945ca8b2c6a541041b59bdd225d5263db93d782f8"
+    },
+    "arena_ground_lineup.png": {
+      "bytes": 131747,
+      "sha256": "b55f3364066ed319dca877a13f181d0b2b8d1765579fbe9edb799829fe56103e"
+    },
+    "arena_integrated_composition.png": {
+      "bytes": 544022,
+      "sha256": "c162bd5a92b4c92fb562e5256fcefbd86afc1535a00c7b4196244cff29cec83e"
+    },
+    "arena_runtime_readability.png": {
+      "bytes": 100286,
+      "sha256": "e1726211553b656170e73a6f06f3727b397c5c20d0146593700022c330a3163b"
+    }
+  },
+  "schemaVersion": 1,
+  "summary": {
+    "assetCount": 7,
+    "crystalPropCount": 3,
+    "decodedBudgetBytes": 2097152,
+    "decodedBytes": 1806336,
+    "groundTileCount": 3,
+    "maximumTriangles": 1704,
+    "minimumMaterialCount": 6,
+    "minimumMeshParts": 23,
+    "minimumTransparentAssetMargin": 9,
+    "minimumTriangles": 504,
+    "portraitBackdropCount": 1,
+    "staticFrameCount": 7
+  }
+}

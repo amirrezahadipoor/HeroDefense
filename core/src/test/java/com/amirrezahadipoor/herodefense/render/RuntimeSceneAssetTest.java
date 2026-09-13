@@ -32,6 +32,9 @@ final class RuntimeSceneAssetTest {
 
     @Test
     void arenaEnvironmentAndWorldTreeFramesArePackaged() throws IOException {
+        assertTrue(Files.isRegularFile(
+            GENERATED.resolve("environment/arena_backdrop.png")
+        ));
         for (int variant = 0; variant < 3; variant++) {
             assertTrue(Files.isRegularFile(
                 GENERATED.resolve("environment/ground_tile_" + variant + ".png")

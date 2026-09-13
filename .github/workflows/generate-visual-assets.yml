@@ -16,6 +16,7 @@ on:
           - characters
           - world-tree
           - equipment
+          - arena
           - environment
           - all
 

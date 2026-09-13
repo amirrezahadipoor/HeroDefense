@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "backdrop": "layered-heartwood-arena",
   "categoryReview": {
     "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
     "category": "arena_environment",
@@ -7,56 +8,50 @@
     "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
     "status": "accepted"
   },
+  "clearLaneFraction": 0.55,
   "clips": {
     "idle": [
       {
-        "height": 192,
+        "height": 640,
         "index": 0,
         "page": 0,
-        "width": 192,
+        "width": 360,
         "x": 0,
         "y": 0
       }
     ]
   },
+  "compositionProfile": "portrait-clear-lane-v2",
+  "depthBands": 5,
   "family": "environment",
-  "frameClass": "environment",
-  "frameHeight": 192,
-  "frameSize": 192,
-  "frameWidth": 192,
-  "key": "crystal_prop_2",
+  "frameClass": "arena",
+  "frameHeight": 640,
+  "frameSize": 360,
+  "frameWidth": 360,
+  "key": "arena_backdrop",
   "materialCount": 9,
-  "meshParts": 36,
-  "modelRevision": "arena-crystal-premium-v2",
+  "meshParts": 63,
+  "modelRevision": "forest-sanctuary-backdrop-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.5
   },
-  "prop": "amber-root-lantern",
   "renderSamples": 16,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-  "runtimeGlow": false,
-  "sheet": "environment/crystal_prop_2.png",
-  "sheetHeight": 192,
-  "sheetWidth": 192,
+  "sheet": "environment/arena_backdrop.png",
+  "sheetHeight": 640,
+  "sheetWidth": 360,
   "sheets": [
     {
-      "decodedBytes": 147456,
-      "file": "environment/crystal_prop_2.png",
-      "height": 192,
-      "width": 192
+      "decodedBytes": 921600,
+      "file": "environment/arena_backdrop.png",
+      "height": 640,
+      "width": 360
     }
   ],
-  "silhouetteLandmarks": [
-    "faceted bedrock",
-    "guard ring",
-    "identity shard rhythm",
-    "moss grounding"
-  ],
-  "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
-  "triangles": 896,
-  "variant": 2,
+  "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
+  "triangles": 1704,
   "visualQuality": "premium-v2"
 }

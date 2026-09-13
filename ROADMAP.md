@@ -231,7 +231,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Upgrade and review all four regular enemy models, rigs, animations, materials, silhouettes, and atlases; the accepted 112-frame audit and nine review sheets are recorded in `docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md`.
 - [x] Upgrade and review all four Boss models, rigs, signature animations, materials, silhouettes, and atlases; the accepted 112-frame audit and nine review sheets are recorded in `docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md`.
 - [x] Upgrade and review the healthy/damaged World Tree art and destruction presentation; the accepted 22-frame audit and six review sheets are recorded in `docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md`.
-- [ ] Upgrade and review all arena ground tiles, crystal props, background composition, and depth treatment.
+- [x] Upgrade and review all arena ground tiles, crystal props, background composition, and depth treatment. (Accepted evidence: [`ARENA_PREMIUM_V2_REVIEW.md`](docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md))
 
 ### 16.5 Premium Items, UI, and Effects
 
