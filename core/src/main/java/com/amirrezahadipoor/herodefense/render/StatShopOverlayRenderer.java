@@ -104,9 +104,9 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             shapes.rect(StatShopTouchLayout.ROW_X + 6f, y + 16f, 6f,
                 StatShopTouchLayout.ROW_HEIGHT - 32f);
             shapes.setColor(0.070f, 0.105f, 0.092f, 0.95f);
-            shapes.rect(170f, y + 22f, 205f, 10f);
+            shapes.rect(170f, y + 14f, 205f, 8f);
             shapes.setColor(row.maxed() ? GOLD : row.accent());
-            shapes.rect(170f, y + 22f, 205f * row.level() / row.maxLevel(), 10f);
+            shapes.rect(170f, y + 14f, 205f * row.level() / row.maxLevel(), 8f);
         }
         shapes.end();
         endShapes();
@@ -150,7 +150,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
                 row.affordable() || row.maxed() ? IVORY : MUTED);
             drawText(batch, row.benefit(), 170f, y + 66f + offset, 0.66f, SUBTLE);
             drawText(batch, "LEVEL " + row.level() + " / " + row.maxLevel(),
-                170f, y + 42f + offset, 0.58f, GOLD);
+                170f, y + 44f + offset, 0.58f, GOLD);
             Color affordabilityColor = row.maxed() ? GOLD : row.affordable() ? POSITIVE : NEGATIVE;
             drawCentered(batch,
                 affordabilityLabel(row.maxed(), row.affordable(), row.price(), state.coins),
