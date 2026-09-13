@@ -290,6 +290,23 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 - [x] Waves 101–200 with the second tree standing as a permanent monument; Game Over now shows the monsters destroying every planted tree instead of ending abruptly. (`FINAL_WAVE = 200`, `secondTreePlanted` idle sway via `SaplingTreeRenderer`; on Hero death survivors march on the nearest tree for `TREE_SIEGE_SECONDS` while its health drains, then both trees fall.)
 - [x] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated. (Waves 1–100 unchanged; waves 101–200 continue at `HP × 1.021^(w−100)`, `damage × 1.006^(w−100)`; 9/9 seeds finish, avg 10.0%, worst wave 28.8%, 312 forced-card scenarios pass.)
 
+## Phase 19 — Opening, Polish, and Economy Balance
+
+Give every new run a short spoken opening, then sweep the game for bugs and rough edges, and finally rebalance the whole run around what the player actually buys: items, stat purchases, Anvil upgrades, and skills.
+
+### 19.1 Opening Cinematic
+
+- [ ] New-run opening (English, before Wave 1): the camera zooms in on the Hero, a dark cloud rolls over the arena, and the Hero speaks in white text in three beats — "Can you protect the World Tree?!", "Can you?", "Are you sure?!" — then the camera eases back to the standard framing and Wave 1 begins. Touch-skippable, deterministic, never shown on Continue.
+- [ ] Opening ships with an on-device touch smoke flow and screen captures; the ROADMAP/CI stay green.
+
+### 19.2 Polish and Bug Sweep
+
+- [ ] Systematic pass over every screen and flow (menu, HUD, combat, ceremony, opening, level-up, cards, inventory/anvil/auto-sell, shop, pause, settings, defeat/victory) for visual glitches, state-machine gaps, save/continue edge cases, and stale copy; each fix recorded here with its regression test.
+
+### 19.3 Economy-Aware Rebalance
+
+- [ ] Rebalance the 1–200 run against the real economy: coin income vs. item drops/sell values, stat purchases, Anvil upgrade costs, and skill purchases; the simulator's spending policy is audited against a sensible player, `docs/BALANCE.md` updated, and all gates (baseline, multi-seed, forced-card) pass.
+
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
