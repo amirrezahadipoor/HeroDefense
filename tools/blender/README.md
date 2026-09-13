@@ -79,6 +79,21 @@ python3 tools/visual/promote_enemy_batch.py \
   /tmp/hero-defense-enemy-candidate android/assets/generated
 ```
 
+For all four Bosses, use the exact `bosses` batch. The exhaustive review locks each runtime
+identity to its signature attack—ground slam, thorn cage, flame sweep, or void charge—and
+audits all 112 native 256 px frames, single-page atlases, 25-bone rigs, purposeful geometry,
+material grouping, motion diversity, and safe alpha margins. Inspect the shared lineup and
+all eight per-Boss sheets before recording acceptance and running the hash-gated promotion:
+
+```sh
+python3 tools/visual/create_boss_batch_review.py \
+  android/assets/generated \
+  /tmp/hero-defense-boss-candidate \
+  docs/art_reviews/bosses_premium_v2
+python3 tools/visual/promote_boss_batch.py \
+  /tmp/hero-defense-boss-candidate android/assets/generated
+```
+
 Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.

@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "ember-wyrm-flame-sweep-v2",
   "armature": "ember_wyrm_armature",
   "atlas": "sprites/ember_wyrm.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "ember_wyrm",
+  "categoryReview": {
+    "category": "bosses",
+    "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +276,19 @@
   "frameRate": 12,
   "frameSize": 256,
   "key": "ember_wyrm",
+  "materialCount": 10,
+  "meshParts": 74,
+  "modelRevision": "furnace-wyrm-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-winged-wyrm-mapped-v2",
   "sheet": "sprites/ember_wyrm.png",
   "sheetHeight": 1024,
   "sheetWidth": 2048,
@@ -286,7 +300,14 @@
       "width": 2048
     }
   ],
-  "silhouette": "winged_wyrm",
-  "triangles": 308,
-  "unique_attack": "flame_sweep"
+  "silhouetteLandmarks": [
+    "faceted bat wings",
+    "horned long muzzle",
+    "gold furnace belly",
+    "barbed sweeping tail"
+  ],
+  "surfaceLanguage": "obsidian scales, crimson membranes, gold belly plates, restrained emissive flame",
+  "triangles": 2324,
+  "unique_attack": "flame_sweep",
+  "visualQuality": "premium-v2"
 }

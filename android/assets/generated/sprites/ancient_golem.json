@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "ancient-golem-ground-slam-v2",
   "armature": "ancient_golem_armature",
   "atlas": "sprites/ancient_golem.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "ancient_golem",
+  "categoryReview": {
+    "category": "bosses",
+    "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,6 +276,10 @@
   "frameRate": 12,
   "frameSize": 256,
   "key": "ancient_golem",
+  "materialCount": 9,
+  "meshParts": 64,
+  "modelRevision": "heartstone-colossus-v2",
+  "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
@@ -277,7 +287,9 @@
   },
   "renderSamples": 16,
   "renderSupersample": 2,
-  "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+  "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-heavy-humanoid-v2",
   "sheet": "sprites/ancient_golem.png",
   "sheetHeight": 1024,
   "sheetWidth": 2048,
@@ -289,8 +301,14 @@
       "width": 2048
     }
   ],
-  "silhouette": "heartstone_monolith",
-  "triangles": 1524,
+  "silhouetteLandmarks": [
+    "trilithon crest",
+    "exposed heartstone",
+    "paired slam fists",
+    "split pillar feet"
+  ],
+  "surfaceLanguage": "faceted basalt strata, restrained moss, cyan rune seams",
+  "triangles": 3442,
   "unique_attack": "ground_slam",
   "visualQuality": "premium-v2"
 }
