@@ -905,7 +905,7 @@ def build_ui_frame(key: str) -> BuiltModel:
     rotation = view.to_track_quat("-Z", "Y")
     right = rotation @ Vector((1.0, 0.0, 0.0))
     up = rotation @ Vector((0.0, 1.0, 0.0))
-    center = Vector(CAMERA_TARGET)
+    center = Vector(CAMERA_TARGET) - up * 0.18
     facing = rotation.to_euler()
     objects = []
 
@@ -1122,6 +1122,13 @@ def build_ui_icon(key: str) -> BuiltModel:
         cube("clover_stem", (0.20, 0, 0.55), (0.12, 0.14, 0.62), green, -0.35)
     elif key == "ui_dodge":
         shield(cyan)
+
+    # Apply one shared image-plane correction so every glyph and medallion retains
+    # transparent safety despite the locked item-camera framing shift.
+    view = (Vector(CAMERA_TARGET) - Vector(CAMERA_LOCATION)).normalized()
+    camera_up = view.to_track_quat("-Z", "Y") @ Vector((0.0, 1.0, 0.0))
+    for obj in objects:
+        obj.location -= camera_up * 0.15
 
     return BuiltModel(None, objects, {
         "uiIcon": key.removeprefix("ui_"),
