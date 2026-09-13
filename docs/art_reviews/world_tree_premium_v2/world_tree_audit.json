@@ -1,0 +1,310 @@
+{
+  "assets": [
+    {
+      "alphaBoxes": {
+        "idle/0": {
+          "bottom": 225,
+          "left": 26,
+          "right": 215,
+          "top": 7
+        },
+        "idle/1": {
+          "bottom": 225,
+          "left": 25,
+          "right": 215,
+          "top": 7
+        },
+        "idle/2": {
+          "bottom": 225,
+          "left": 24,
+          "right": 216,
+          "top": 7
+        },
+        "idle/3": {
+          "bottom": 225,
+          "left": 24,
+          "right": 216,
+          "top": 7
+        },
+        "idle/4": {
+          "bottom": 225,
+          "left": 25,
+          "right": 216,
+          "top": 7
+        },
+        "idle/5": {
+          "bottom": 225,
+          "left": 26,
+          "right": 215,
+          "top": 7
+        }
+      },
+      "animationProfile": "living-heart-pulse-v2",
+      "baselineSheetSha256": "149915c4cb38a6b3181c4656d149f2b6a0c7ffd8489c30fb6a4fe974a5daee73",
+      "candidateAtlasSha256": "373335f2deb957dbc21562768d88184270494fd5af3431950d46ce21ecdf1453",
+      "candidateMetadataSha256": "25611f3454d2b09b5de946143fd9dfad155159caf5103741be422d91187dfc27",
+      "candidateSheetSha256": "8a155ea469f303458814fe31864a7378f2843e00f95bb32f38664f241d922759",
+      "clips": {
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 31,
+            "left": 24,
+            "right": 40,
+            "top": 7
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "fullSetUniqueVisibleFrames": 5,
+      "key": "world_tree_healthy",
+      "label": "Healthy Heartwood Sanctum",
+      "materialCount": 12,
+      "meshParts": 143,
+      "minimumAlphaMargins": {
+        "bottom": 31,
+        "left": 24,
+        "right": 40,
+        "top": 7
+      },
+      "modelRevision": "heartwood-sanctum-healthy-v2",
+      "rigBoneCount": 13,
+      "rigProfile": "segmented-world-tree-v2",
+      "triangles": 4840
+    },
+    {
+      "alphaBoxes": {
+        "destroy/0": {
+          "bottom": 225,
+          "left": 37,
+          "right": 206,
+          "top": 10
+        },
+        "destroy/1": {
+          "bottom": 224,
+          "left": 38,
+          "right": 209,
+          "top": 9
+        },
+        "destroy/2": {
+          "bottom": 225,
+          "left": 36,
+          "right": 203,
+          "top": 8
+        },
+        "destroy/3": {
+          "bottom": 225,
+          "left": 42,
+          "right": 205,
+          "top": 7
+        },
+        "destroy/4": {
+          "bottom": 226,
+          "left": 32,
+          "right": 186,
+          "top": 11
+        },
+        "destroy/5": {
+          "bottom": 228,
+          "left": 29,
+          "right": 184,
+          "top": 16
+        },
+        "destroy/6": {
+          "bottom": 232,
+          "left": 33,
+          "right": 189,
+          "top": 25
+        },
+        "destroy/7": {
+          "bottom": 236,
+          "left": 33,
+          "right": 191,
+          "top": 32
+        },
+        "destroy/8": {
+          "bottom": 236,
+          "left": 33,
+          "right": 191,
+          "top": 32
+        },
+        "destroy/9": {
+          "bottom": 236,
+          "left": 33,
+          "right": 191,
+          "top": 32
+        },
+        "idle/0": {
+          "bottom": 225,
+          "left": 37,
+          "right": 206,
+          "top": 10
+        },
+        "idle/1": {
+          "bottom": 225,
+          "left": 36,
+          "right": 207,
+          "top": 10
+        },
+        "idle/2": {
+          "bottom": 225,
+          "left": 35,
+          "right": 208,
+          "top": 10
+        },
+        "idle/3": {
+          "bottom": 225,
+          "left": 34,
+          "right": 209,
+          "top": 10
+        },
+        "idle/4": {
+          "bottom": 225,
+          "left": 35,
+          "right": 207,
+          "top": 10
+        },
+        "idle/5": {
+          "bottom": 225,
+          "left": 37,
+          "right": 206,
+          "top": 10
+        }
+      },
+      "animationProfile": "wounded-collapse-v2",
+      "baselineSheetSha256": "4fe90e70a6145d561de9cc21269c40d31360c6b3036dcbf040c456d509447332",
+      "candidateAtlasSha256": "26c643f475ba96915054c9f7058903dc5849ceca7ec77281fe1d1f3e7a1b13b0",
+      "candidateMetadataSha256": "1f1933b59fb3f0e4d3a4cb4a806ad635f7e3456773b459b4d06fa213e89f4aaa",
+      "candidateSheetSha256": "44afcdc632bf54449f06ba2961ee5ad0a8fddf8715487b6f2f50ac19d540029d",
+      "clips": {
+        "destroy": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 20,
+            "left": 29,
+            "right": 47,
+            "top": 7
+          },
+          "uniqueVisibleFrames": 8
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 31,
+            "left": 34,
+            "right": 47,
+            "top": 10
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "fullSetUniqueVisibleFrames": 12,
+      "key": "world_tree_damaged",
+      "label": "Wounded Heartwood Sanctum",
+      "materialCount": 12,
+      "meshParts": 129,
+      "minimumAlphaMargins": {
+        "bottom": 20,
+        "left": 29,
+        "right": 47,
+        "top": 7
+      },
+      "modelRevision": "heartwood-sanctum-wounded-v2",
+      "rigBoneCount": 13,
+      "rigProfile": "segmented-world-tree-v2",
+      "triangles": 4180
+    }
+  ],
+  "baselineManifestSha256": "6297f6cb9f56da9b931669c0a6565f3f4f3e4a5422e39f3a824add6d9f135b9c",
+  "batch": "world-tree-premium-v2",
+  "candidateManifestSha256": "2f3a3c17d66ac137769b5809f048cb1e92b7af3d3c672db80c64f61e1ac94a24",
+  "destructionContinuity": {
+    "crownTopDropPixels": 22,
+    "finalHoldAlphaDifferenceRatio": 0.0,
+    "finalOpaqueHeight": 204,
+    "startAlphaDifferenceRatio": 0.0,
+    "startOpaqueHeight": 215
+  },
+  "expectedKeys": [
+    "world_tree_healthy",
+    "world_tree_damaged"
+  ],
+  "frameContract": {
+    "world_tree_damaged": {
+      "destroy": 10,
+      "idle": 6
+    },
+    "world_tree_healthy": {
+      "idle": 6
+    }
+  },
+  "minimumUniqueVisibleFrames": {
+    "world_tree_damaged": {
+      "destroy": 8,
+      "idle": 5
+    },
+    "world_tree_healthy": {
+      "idle": 5
+    }
+  },
+  "reviewSheetCount": 6,
+  "reviewSheets": {
+    "world_tree_arena_scale.png": {
+      "bytes": 141678,
+      "sha256": "621c83e5cd157517f5b055a7695a2bc1bfc20636aa0c47b0e038b5d41acd252a"
+    },
+    "world_tree_damaged_full_motion.png": {
+      "bytes": 257782,
+      "sha256": "42a7e9f52b527d3c8cbda692ffee6a0ed03069a64b4a19fdf83a8237293eacc1"
+    },
+    "world_tree_destruction_timeline.png": {
+      "bytes": 99134,
+      "sha256": "8b4bbba111865cc8a1d2eab52ede7bc4244b4c4ccb60b1375847062d27898270"
+    },
+    "world_tree_healthy_full_motion.png": {
+      "bytes": 109184,
+      "sha256": "9476c40100d84e4a79a6d3cacd8025acd6b0b3b52a9156091993aa9e3cd17d05"
+    },
+    "world_tree_readability.png": {
+      "bytes": 259053,
+      "sha256": "8bf91655490874b2ff7fa4f6108b63ffc0b273d423e1d3515ae43856a06aea04"
+    },
+    "world_tree_state_lineup.png": {
+      "bytes": 159384,
+      "sha256": "ee4036ea7482bd74e85adbbc283ca9ee35f62ef75475b342d2db128d0a21d78c"
+    }
+  },
+  "rigBoneNames": [
+    "bough.L",
+    "bough.R",
+    "branch.L",
+    "branch.R",
+    "canopy.L",
+    "canopy.R",
+    "crown",
+    "debris.L",
+    "debris.R",
+    "heart",
+    "root",
+    "trunk.lower",
+    "trunk.upper"
+  ],
+  "schemaVersion": 1,
+  "summary": {
+    "assetCount": 2,
+    "decodedBudgetBytes": 8388608,
+    "decodedBytes": 5767168,
+    "frameCount": 22,
+    "maximumTriangles": 4840,
+    "minimumAlphaMargins": {
+      "bottom": 20,
+      "left": 24,
+      "right": 40,
+      "top": 7
+    },
+    "minimumMaterialCount": 12,
+    "minimumMeshParts": 129,
+    "minimumTriangles": 4180,
+    "singlePageAtlasCount": 2
+  }
+}

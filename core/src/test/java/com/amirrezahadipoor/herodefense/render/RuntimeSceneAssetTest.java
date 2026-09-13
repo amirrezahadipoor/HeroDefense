@@ -31,7 +31,7 @@ final class RuntimeSceneAssetTest {
     }
 
     @Test
-    void arenaEnvironmentAndWorldTreeFramesArePackaged() {
+    void arenaEnvironmentAndWorldTreeFramesArePackaged() throws IOException {
         for (int variant = 0; variant < 3; variant++) {
             assertTrue(Files.isRegularFile(
                 GENERATED.resolve("environment/ground_tile_" + variant + ".png")
@@ -40,8 +40,14 @@ final class RuntimeSceneAssetTest {
                 GENERATED.resolve("environment/crystal_prop_" + variant + ".png")
             ));
         }
-        assertTrue(Files.isRegularFile(GENERATED.resolve("sprites/world_tree_healthy.atlas")));
-        assertTrue(Files.isRegularFile(GENERATED.resolve("sprites/world_tree_damaged.atlas")));
+        Path healthyAtlas = GENERATED.resolve("sprites/world_tree_healthy.atlas");
+        Path damagedAtlas = GENERATED.resolve("sprites/world_tree_damaged.atlas");
+        assertTrue(Files.isRegularFile(healthyAtlas));
+        assertTrue(Files.isRegularFile(damagedAtlas));
+        assertEquals(6, regionCount(Files.readString(healthyAtlas), "world_tree_healthy_idle"));
+        String damaged = Files.readString(damagedAtlas);
+        assertEquals(6, regionCount(damaged, "world_tree_damaged_idle"));
+        assertEquals(10, regionCount(damaged, "world_tree_damaged_destroy"));
     }
 
     private static void assertCompleteCombatAtlas(String key) throws IOException {

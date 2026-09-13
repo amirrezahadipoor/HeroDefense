@@ -550,11 +550,11 @@ def alpha_difference_ratio(first: Image.Image, second: Image.Image) -> float:
     first_alpha = first.getchannel("A")
     second_alpha = second.getchannel("A")
     difference = ImageChops.difference(first_alpha, second_alpha)
-    changed = sum(1 for value in difference.getdata() if value > 8)
+    changed = sum(1 for value in difference.tobytes() if value > 8)
     occupied = max(
         1,
-        sum(1 for value in first_alpha.getdata() if value > 8),
-        sum(1 for value in second_alpha.getdata() if value > 8),
+        sum(1 for value in first_alpha.tobytes() if value > 8),
+        sum(1 for value in second_alpha.tobytes() if value > 8),
     )
     return changed / occupied
 

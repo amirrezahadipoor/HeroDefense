@@ -94,6 +94,22 @@ python3 tools/visual/promote_boss_batch.py \
   /tmp/hero-defense-boss-candidate android/assets/generated
 ```
 
+For the defended World Tree, render the exact `world-tree` batch into a disposable directory.
+The audit decodes all six healthy Idle frames, six wounded Idle frames, and all ten one-shot
+Destroy frames; locks the shared 13-bone segmented rig and state identity; measures collapse
+continuity, final hold, alpha safety, geometry, materials, and decoded memory; and generates
+six sheets including 720×1280 reference-scale Hero composition. Open every sheet before
+writing the hash-bound acceptance document and running promotion:
+
+```sh
+python3 tools/visual/create_world_tree_batch_review.py \
+  android/assets/generated \
+  /tmp/hero-defense-world-tree-candidate \
+  docs/art_reviews/world_tree_premium_v2
+python3 tools/visual/promote_world_tree_batch.py \
+  /tmp/hero-defense-world-tree-candidate android/assets/generated
+```
+
 Premium-v2 renders at 2× the unchanged runtime dimensions, uses 16 EEVEE samples for opaque assets and 8 for transparent equipment overlays, downsamples in linear premultiplied-alpha space, and applies the deterministic outline afterward.
 
 Every animated batch is packed by the deterministic premium-v2 planner. Runtime pages are capped at 2048×2048; oversized or 2× working batches spill into additional libGDX atlas pages without changing clip keys, frame order, dimensions, or pivots.

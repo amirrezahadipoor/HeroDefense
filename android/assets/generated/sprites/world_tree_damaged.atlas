@@ -1,5 +1,5 @@
 world_tree_damaged.png
-size: 1536,256
+size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -45,3 +45,73 @@ world_tree_damaged_idle
   orig: 256, 256
   offset: 0, 0
   index: 5
+world_tree_damaged_destroy
+  rotate: false
+  xy: 1536, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 0
+world_tree_damaged_destroy
+  rotate: false
+  xy: 1792, 0
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 1
+world_tree_damaged_destroy
+  rotate: false
+  xy: 0, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 2
+world_tree_damaged_destroy
+  rotate: false
+  xy: 256, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 3
+world_tree_damaged_destroy
+  rotate: false
+  xy: 512, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 4
+world_tree_damaged_destroy
+  rotate: false
+  xy: 768, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 5
+world_tree_damaged_destroy
+  rotate: false
+  xy: 1024, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 6
+world_tree_damaged_destroy
+  rotate: false
+  xy: 1280, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 7
+world_tree_damaged_destroy
+  rotate: false
+  xy: 1536, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 8
+world_tree_damaged_destroy
+  rotate: false
+  xy: 1792, 256
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 9

@@ -230,7 +230,7 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Upgrade and review all 40 equipment attachment animation atlases while preserving socket alignment with every Hero frame; the accepted 1,120-frame audit and review sheets are recorded in `docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md`.
 - [x] Upgrade and review all four regular enemy models, rigs, animations, materials, silhouettes, and atlases; the accepted 112-frame audit and nine review sheets are recorded in `docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md`.
 - [x] Upgrade and review all four Boss models, rigs, signature animations, materials, silhouettes, and atlases; the accepted 112-frame audit and nine review sheets are recorded in `docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md`.
-- [ ] Upgrade and review the healthy/damaged World Tree art and destruction presentation.
+- [x] Upgrade and review the healthy/damaged World Tree art and destruction presentation; the accepted 22-frame audit and six review sheets are recorded in `docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md`.
 - [ ] Upgrade and review all arena ground tiles, crystal props, background composition, and depth treatment.
 
 ### 16.5 Premium Items, UI, and Effects

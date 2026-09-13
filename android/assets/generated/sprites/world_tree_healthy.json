@@ -1,15 +1,29 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "living-heart-pulse-v2",
   "armature": "world_tree_armature",
   "atlas": "sprites/world_tree_healthy.atlas",
   "boneAnimated": true,
   "bones": [
+    "bough.L",
+    "bough.R",
     "branch.L",
     "branch.R",
+    "canopy.L",
+    "canopy.R",
     "crown",
+    "debris.L",
+    "debris.R",
+    "heart",
     "root",
-    "trunk"
+    "trunk.lower",
+    "trunk.upper"
   ],
+  "categoryReview": {
+    "category": "world_tree",
+    "document": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "idle": [
       {
@@ -62,15 +76,25 @@
       }
     ]
   },
+  "destructionClip": null,
   "family": "world_tree",
   "frameClass": "tree",
+  "frameRate": 12,
   "frameSize": 256,
   "key": "world_tree_healthy",
+  "materialCount": 12,
+  "meshParts": 143,
+  "modelRevision": "heartwood-sanctum-healthy-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.06
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 13,
+  "rigProfile": "segmented-world-tree-v2",
   "rigged": true,
   "sheet": "sprites/world_tree_healthy.png",
   "sheetHeight": 256,
@@ -83,6 +107,14 @@
       "width": 1536
     }
   ],
+  "silhouetteLandmarks": [
+    "radial buttress roots",
+    "carved heart aperture",
+    "paired guardian boughs",
+    "tiered leaf crown"
+  ],
   "state": "healthy",
-  "triangles": 520
+  "surfaceLanguage": "layered heartwood plates, moss vines, emerald crown, restrained cyan heart",
+  "triangles": 4840,
+  "visualQuality": "premium-v2"
 }
