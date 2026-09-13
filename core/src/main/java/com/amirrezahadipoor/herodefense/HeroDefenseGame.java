@@ -688,7 +688,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.clear();
         floatingCoinTextSystem.clear();
         floatingDamageTextSystem.clear();
-        // Wave 1 spawns only after the opening; a Continue from this save skips straight in.
+        // Wave 1 spawns only after the opening; a Continue from this save replays it.
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
         openingCinematic.begin();
@@ -705,6 +705,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             beginPlantingCeremony();
         } else if (gameState.unspentTalentPoints > 0) {
             flow.transitionTo(GameScreenState.LEVEL_UP);
+        } else if (!gameState.waveActive && untouchedFirstWave(gameState)) {
+            // Killed during the opening: replay it so every new run still starts with the prologue.
+            flow.transitionTo(GameScreenState.CINEMATIC);
+            openingCinematic.begin();
         } else if (!gameState.waveActive) {
             int bossesBefore = livingBossCount(gameState);
             waveLifecycleSystem.startCurrentWave(gameState);
@@ -713,6 +717,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 presentBossEntrance(gameState);
             }
         }
+    }
+
+    /** True while a run has not yet begun wave 1 (the save written right after New Game). */
+    static boolean untouchedFirstWave(GameState state) {
+        return state.waveNumber == 1 && !state.waveActive && state.totalKills == 0
+            && state.aliveEnemies.isEmpty() && state.aliveBosses.isEmpty();
     }
 
     private void emitDefeatParticles(GameState state) {

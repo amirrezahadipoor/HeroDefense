@@ -608,6 +608,7 @@ public final class AndroidTouchSmokeTest {
 
     private static void prepareInventoryShowcaseSave() {
         GameState state = GameState.newRun(881L);
+        state.waveNumber = 2; // past the opening, so Continue starts the wave directly
         for (String id : new String[] {
             "crown_of_first_leaves",
             "crystalbark_plate",
@@ -628,6 +629,7 @@ public final class AndroidTouchSmokeTest {
 
     private static void prepareShopShowcaseSave() {
         GameState state = GameState.newRun(882L);
+        state.waveNumber = 2; // past the opening, so Continue starts the wave directly
         state.coins = 80;
         state.shopUpgradeLevels.put(HeroStat.AGILITY.name(), 2);
         state.shopUpgradeLevels.put(HeroStat.LUCK.name(), 20);
