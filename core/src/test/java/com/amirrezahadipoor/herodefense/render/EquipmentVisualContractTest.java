@@ -13,10 +13,10 @@ final class EquipmentVisualContractTest {
     void everyRuntimeItemMapsToItsReviewedAtlasAndFourHeroClips() {
         for (EquipmentDefinition definition : EquipmentCatalog.all()) {
             Item item = definition.createItem();
-            assertEquals(EquipmentVisualContract.atlasPath(item.id), item.visualKey);
+            assertEquals(EquipmentVisualContract.atlasPath(definition.artId()), item.visualKey);
             for (HeroAnimationState state : HeroAnimationState.values()) {
                 assertEquals(
-                    item.id + "_" + state.name().toLowerCase(java.util.Locale.ROOT),
+                    definition.artId() + "_" + state.name().toLowerCase(java.util.Locale.ROOT),
                     EquipmentVisualContract.regionName(item, state)
                 );
             }

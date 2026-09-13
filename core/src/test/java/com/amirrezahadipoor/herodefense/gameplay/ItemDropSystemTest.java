@@ -54,9 +54,10 @@ final class ItemDropSystemTest {
         assertEquals(1, state.drops.size());
 
         DropPickupSystem pickup = new DropPickupSystem();
-        assertEquals(0, pickup.update(state, 0.5f));
+        // Drops linger visibly on the ground (2.6s) before homing to the inventory.
+        assertEquals(0, pickup.update(state, 2.4f));
         assertEquals(DropCollectionStage.GROUND, state.drops.get(0).collectionStage);
-        assertEquals(0, pickup.update(state, 0.2f));
+        assertEquals(0, pickup.update(state, 0.25f));
         assertEquals(DropCollectionStage.HOMING, state.drops.get(0).collectionStage);
         assertEquals(0, state.inventory.size());
         assertEquals(0, pickup.update(state, 0.3f));

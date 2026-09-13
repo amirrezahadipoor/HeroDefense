@@ -40,7 +40,7 @@ public final class EnemyMeleeAttackSystem {
             return;
         }
         float range = Math.max(0f, enemy.attackRange);
-        if (enemy.distanceSquaredTo(state.hero.x, state.hero.y) > range * range) {
+        if (enemy.stunned() || enemy.distanceSquaredTo(state.hero.x, state.hero.y) > range * range) {
             enemy.attackCooldownSeconds = Math.max(0f, enemy.attackCooldownSeconds - deltaSeconds);
             return;
         }

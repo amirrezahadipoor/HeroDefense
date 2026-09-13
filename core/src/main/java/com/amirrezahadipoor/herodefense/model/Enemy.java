@@ -16,6 +16,8 @@ public class Enemy extends ArenaEntity {
     public boolean killRewardsGranted;
     public boolean defeatParticlesEmitted;
     public boolean alive = true;
+    /** Seconds this enemy is frozen by a stunning arrow; it neither moves nor swings. */
+    public float stunRemainingSeconds;
 
     public Enemy() {
         super();
@@ -32,6 +34,10 @@ public class Enemy extends ArenaEntity {
         } catch (IllegalArgumentException | NullPointerException ignored) {
             return EnemyType.ROOTLING;
         }
+    }
+
+    public boolean stunned() {
+        return alive && stunRemainingSeconds > 0f;
     }
 
     public void receiveDamage(float amount) {

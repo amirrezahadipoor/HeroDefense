@@ -41,7 +41,7 @@ final class EquipmentCatalogTest {
             assertFalse(item.name().isBlank());
             assertFalse(item.statBonuses().isEmpty());
             assertTrue(item.statBonuses().values().stream().allMatch(value -> value > 0));
-            assertEquals("generated/icons/equipment_" + item.id() + ".png", item.iconPath());
+            assertEquals("generated/icons/equipment_" + item.artId() + ".png", item.iconPath());
             assertEquals(item.iconPath(), item.createItem().iconKey);
             assertTrue(item.createItem().sellPrice > 0);
         }

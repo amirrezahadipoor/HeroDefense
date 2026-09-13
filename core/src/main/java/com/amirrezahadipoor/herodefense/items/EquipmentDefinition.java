@@ -17,6 +17,7 @@ public final class EquipmentDefinition {
     private final ItemTier tier;
     private final String iconPath;
     private final Map<HeroStat, Integer> statBonuses;
+    private final String artId;
 
     public EquipmentDefinition(
         String id,
@@ -26,6 +27,19 @@ public final class EquipmentDefinition {
         String iconPath,
         Map<HeroStat, Integer> statBonuses
     ) {
+        this(id, name, slot, tier, iconPath, statBonuses, id);
+    }
+
+    public EquipmentDefinition(
+        String id,
+        String name,
+        EquipmentSlot slot,
+        ItemTier tier,
+        String iconPath,
+        Map<HeroStat, Integer> statBonuses,
+        String artId
+    ) {
+        this.artId = artId;
         this.id = id;
         this.name = name;
         this.slot = slot;
@@ -58,10 +72,15 @@ public final class EquipmentDefinition {
         return statBonuses;
     }
 
+    /** Id of the reviewed equipment art (atlas + icon) this item is drawn with. */
+    public String artId() {
+        return artId;
+    }
+
     public Item createItem() {
         Item item = new Item(id, name, slot.name(), tier.name());
         item.iconKey = iconPath;
-        item.visualKey = "generated/equipment/" + id + ".atlas";
+        item.visualKey = "generated/equipment/" + artId + ".atlas";
         item.sellPrice = switch (tier) {
             case COMMON -> 12;
             case UNCOMMON -> 30;

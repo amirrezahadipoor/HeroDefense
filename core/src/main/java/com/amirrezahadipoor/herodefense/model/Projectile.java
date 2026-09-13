@@ -9,6 +9,8 @@ public final class Projectile extends ArenaEntity {
     public float damage;
     public float remainingLifetimeSeconds;
     public boolean critical;
+    /** Extra arrows from Multi Shot deal a reduced share and never chain again. */
+    public boolean secondary;
 
     public Projectile() {
         super();

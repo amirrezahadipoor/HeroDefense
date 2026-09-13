@@ -19,6 +19,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.amirrezahadipoor.herodefense.GameScreenState;
 import com.amirrezahadipoor.herodefense.HeroDefenseGame;
+import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
@@ -181,6 +182,14 @@ public final class AndroidTouchSmokeTest {
             assertEquals(25, game.gameState().coins);
             SystemClock.sleep(100L);
             captureScreen("shop-purchase-feedback-premium-v2.png");
+
+            tapWorld(surface, 515f + correction[0], 1_080f + correction[1]); // Skills tab
+            await("skills tab", () -> game.shopTab() == StatShopTouchLayout.Tab.SKILLS);
+            SystemClock.sleep(400L);
+            captureScreen("shop-skills-tab-premium-v2.png");
+            tapWorld(surface, 205f + correction[0], 1_080f + correction[1]); // back to Stats
+            await("stats tab", () -> game.shopTab() == StatShopTouchLayout.Tab.STATS);
+
             tapWorld(surface, 620f + correction[0], 1_170f + correction[1]);
             await("shop showcase closes", () -> game.screenState() == GameScreenState.PLAYING);
         }
@@ -531,7 +540,7 @@ public final class AndroidTouchSmokeTest {
         for (String id : new String[] {
             "crown_of_first_leaves",
             "crystalbark_plate",
-            "verdant_glaive",
+            "verdant_recurve",
             "boots_of_three_winds",
             "sapphire_luck_ring"
         }) {

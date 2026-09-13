@@ -15,6 +15,15 @@ public final class EquipmentVisualContract {
     }
 
     public static String regionName(Item item, HeroAnimationState state) {
-        return item.id + "_" + state.name().toLowerCase(Locale.ROOT);
+        return artId(item) + "_" + state.name().toLowerCase(Locale.ROOT);
+    }
+
+    /** Atlas region prefix: derived from the item's visual atlas so borrowed art resolves. */
+    static String artId(Item item) {
+        String key = item.visualKey;
+        if (key != null && key.startsWith("generated/equipment/") && key.endsWith(".atlas")) {
+            return key.substring("generated/equipment/".length(), key.length() - ".atlas".length());
+        }
+        return item.id;
     }
 }

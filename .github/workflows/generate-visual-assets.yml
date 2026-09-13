@@ -20,6 +20,7 @@ on:
           - environment
           - ui
           - ui-supplement
+          - skill-icons
           - all
 
 permissions:

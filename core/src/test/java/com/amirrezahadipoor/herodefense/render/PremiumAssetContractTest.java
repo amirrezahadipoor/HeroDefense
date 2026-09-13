@@ -181,14 +181,17 @@ final class PremiumAssetContractTest {
 
         Set<String> requiredBones = jsonStringSet(manifest.get("requiredBones"));
         for (EquipmentDefinition definition : EquipmentCatalog.all()) {
-            String id = definition.id();
+            // Bows added after the premium-v2 batch borrow a reviewed same-slot bow's art.
+            String id = definition.artId();
             String key = "equipment_" + id;
             expectedKeys.add(key);
             JsonValue asset = byKey.get(key);
             assertTrue(asset != null, "missing equipment asset " + key);
             assertEquals(id, asset.getString("itemId"), key);
             assertEquals(definition.slot().name(), asset.getString("slot"), key);
-            assertEquals(definition.tier().name(), asset.getString("tier"), key);
+            if (id.equals(definition.id())) {
+                assertEquals(definition.tier().name(), asset.getString("tier"), key);
+            }
             assertEquals(expectedVisualSlot(definition), asset.getString("visualSlot"), key);
             assertEquals("premium-v2", asset.getString("visualQuality"), key);
             assertEquals("equipment-premium-v2", asset.getString("modelRevision"), key);
@@ -241,10 +244,14 @@ final class PremiumAssetContractTest {
             assertEquals(sha256(resolveInsideGenerated(asset.getString("atlas"))),
                 recorded.getString("atlasSha256"), key);
         }
-        assertEquals(40, expectedKeys.size());
+        // 40 catalog items draw from 36 reviewed art sets: the four melee weapons were retired
+        // in Phase 17 (the Hero is a pure archer) and their successor bows borrow bow art.
+        assertEquals(36, expectedKeys.size());
+        assertEquals(40, EquipmentCatalog.all().size());
         assertEquals(expectedKeys, actualKeys);
-        assertEquals(expectedKeys.stream().map(key -> key.substring("equipment_".length()))
-            .collect(java.util.stream.Collectors.toSet()), auditedById.keySet());
+        assertTrue(auditedById.keySet().containsAll(expectedKeys.stream()
+            .map(key -> key.substring("equipment_".length()))
+            .collect(java.util.stream.Collectors.toSet())));
     }
 
     @Test

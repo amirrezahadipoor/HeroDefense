@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
+import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout.Tab;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
+import com.amirrezahadipoor.herodefense.skills.SkillEffects;
+import com.amirrezahadipoor.herodefense.skills.SkillId;
+import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 
 import java.util.Locale;
 
-/** Premium coin-only stat shop with explicit affordability and paused-game context. */
+/** Premium coin-only shop: a Stats tab of +1 upgrades and a Skills tab of ten-level powers. */
 public final class StatShopOverlayRenderer implements AutoCloseable {
     private static final Color GOLD = Color.valueOf("EAC66D");
     private static final Color IVORY = Color.valueOf("F3E4BC");
@@ -21,6 +25,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
     private static final Color POSITIVE = Color.valueOf("69C884");
     private static final Color NEGATIVE = Color.valueOf("DF6A65");
     private static final Color MUTED = Color.valueOf("777D76");
+    private static final Color ARCANE = Color.valueOf("8FD4F2");
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -28,15 +33,26 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
     public StatShopOverlayRenderer() {
     }
 
+    /** One row's resolved presentation, shared by both tabs so the layout never diverges. */
+    private record Row(
+        String iconKey, String title, String benefit, int level, int maxLevel,
+        int price, boolean maxed, boolean affordable, Color accent
+    ) {
+    }
+
     public void draw(
         SpriteBatch batch,
         Matrix4 projection,
         GameState state,
         StatShopSystem shop,
+        SkillShopSystem skills,
+        Tab tab,
         UiIconRenderer icons,
         UiFrameRenderer frames,
         boolean returnsToPause
     ) {
+        Row[] rows = tab == Tab.SKILLS ? skillRows(state, skills) : statRows(state, shop);
+
         beginShapes(projection);
         shapes.setColor(0.070f, 0.150f, 0.130f, 0.96f);
         shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
@@ -53,47 +69,44 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             StatShopTouchLayout.CLOSE_SIZE, StatShopTouchLayout.CLOSE_SIZE,
             true, false
         );
-        frames.draw(batch, UiFrameRenderer.Kind.PANEL, 40f, 1080f, 225f, 90f, true, false);
-        frames.draw(batch, UiFrameRenderer.Kind.PANEL, 285f, 1080f, 260f, 90f, true, false);
-        for (int index = 0; index < HeroStat.values().length; index++) {
-            HeroStat stat = HeroStat.values()[index];
-            float y = rowY(index);
-            int purchased = shop.purchasedLevels(state, stat);
-            boolean maxed = purchased >= StatShopSystem.MAX_PURCHASES_PER_STAT;
-            int price = maxed ? 0 : shop.price(state, stat);
-            boolean affordable = !maxed && state.coins >= price;
+        frames.draw(batch, UiFrameRenderer.Kind.PANEL, 40f, 1140f, 225f, 12f, true, false);
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            StatShopTouchLayout.TAB_STATS_X, StatShopTouchLayout.TAB_Y,
+            StatShopTouchLayout.TAB_WIDTH, StatShopTouchLayout.TAB_HEIGHT,
+            true, tab == Tab.STATS
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            StatShopTouchLayout.TAB_SKILLS_X, StatShopTouchLayout.TAB_Y,
+            StatShopTouchLayout.TAB_WIDTH, StatShopTouchLayout.TAB_HEIGHT,
+            true, tab == Tab.SKILLS
+        );
+        for (int index = 0; index < rows.length; index++) {
             frames.draw(
                 batch, UiFrameRenderer.Kind.BUTTON,
-                StatShopTouchLayout.ROW_X, y,
+                StatShopTouchLayout.ROW_X, StatShopTouchLayout.rowBottom(index),
                 StatShopTouchLayout.ROW_WIDTH, StatShopTouchLayout.ROW_HEIGHT,
-                affordable, false
+                rows[index].affordable(), false
             );
         }
-        if (shop.feedbackMessage() != null) {
-            frames.draw(batch, UiFrameRenderer.Kind.PANEL, 100f, 215f, 520f, 64f, true, false);
+        String feedback = tab == Tab.SKILLS ? skills.feedbackMessage() : shop.feedbackMessage();
+        if (feedback != null) {
+            frames.draw(batch, UiFrameRenderer.Kind.PANEL, 100f, 150f, 520f, 64f, true, false);
         }
         batch.end();
 
         beginShapes(projection);
-        for (int index = 0; index < HeroStat.values().length; index++) {
-            HeroStat stat = HeroStat.values()[index];
-            float y = rowY(index);
-            int purchased = shop.purchasedLevels(state, stat);
-            boolean maxed = purchased >= StatShopSystem.MAX_PURCHASES_PER_STAT;
-            int price = maxed ? 0 : shop.price(state, stat);
-            boolean affordable = !maxed && state.coins >= price;
-            shapes.setColor(maxed ? GOLD : affordable ? POSITIVE : NEGATIVE);
+        for (int index = 0; index < rows.length; index++) {
+            Row row = rows[index];
+            float y = StatShopTouchLayout.rowBottom(index);
+            shapes.setColor(row.maxed() ? GOLD : row.affordable() ? POSITIVE : NEGATIVE);
             shapes.rect(StatShopTouchLayout.ROW_X + 6f, y + 16f, 6f,
                 StatShopTouchLayout.ROW_HEIGHT - 32f);
             shapes.setColor(0.070f, 0.105f, 0.092f, 0.95f);
-            shapes.rect(170f, y + 25f, 205f, 10f);
-            shapes.setColor(maxed ? GOLD : POSITIVE);
-            shapes.rect(
-                170f,
-                y + 25f,
-                205f * purchased / StatShopSystem.MAX_PURCHASES_PER_STAT,
-                10f
-            );
+            shapes.rect(170f, y + 22f, 205f, 10f);
+            shapes.setColor(row.maxed() ? GOLD : row.accent());
+            shapes.rect(170f, y + 22f, 205f * row.level() / row.maxLevel(), 10f);
         }
         shapes.end();
         endShapes();
@@ -105,78 +118,105 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             StatShopTouchLayout.CLOSE_SIZE, StatShopTouchLayout.CLOSE_SIZE
         );
         icons.draw(batch, "close", 588f, 1138f, 64f, closeState);
-        drawText(batch, "WORLD TREE ARMORY", 40f, 1232f, 1.36f, GOLD);
-        drawText(batch, "Permanent upgrades bought only with earned coins", 40f, 1190f, 0.72f, SUBTLE);
-        icons.draw(batch, "coin", 52f, 1097f, 58f);
-        drawText(batch, "BALANCE", 119f, 1147f, 0.62f, GOLD);
-        drawText(batch, "$ " + Math.max(0, state.coins), 119f, 1111f, 1.00f, IVORY);
-        drawText(batch, "COMBAT PAUSED", 306f, 1147f, 0.68f, POSITIVE);
+        drawText(batch, "WORLD TREE ARMORY", 40f, 1240f, 1.36f, GOLD);
+        drawText(batch, tab == Tab.SKILLS
+                ? "Ten-level combat skills; costly, permanent, decisive"
+                : "Permanent upgrades bought only with earned coins",
+            40f, 1200f, 0.72f, SUBTLE);
+        icons.draw(batch, "coin", 44f, 1152f, 34f);
+        drawText(batch, "$ " + Math.max(0, state.coins), 86f, 1178f, 1.00f, IVORY);
+        drawText(batch, "COMBAT PAUSED", 300f, 1180f, 0.68f, POSITIVE);
         drawText(
             batch,
             returnsToPause ? "Close returns to Pause" : "Close returns to battle",
-            306f,
-            1110f,
-            0.68f,
-            SUBTLE
+            300f, 1152f, 0.62f, SUBTLE
         );
+        drawCentered(batch, "STATS", StatShopTouchLayout.TAB_STATS_X + StatShopTouchLayout.TAB_WIDTH * 0.5f,
+            StatShopTouchLayout.TAB_Y + 44f, 0.96f, tab == Tab.STATS ? GOLD : SUBTLE);
+        drawCentered(batch, "SKILLS", StatShopTouchLayout.TAB_SKILLS_X + StatShopTouchLayout.TAB_WIDTH * 0.5f,
+            StatShopTouchLayout.TAB_Y + 44f, 0.96f, tab == Tab.SKILLS ? GOLD : SUBTLE);
 
-        for (int index = 0; index < HeroStat.values().length; index++) {
-            HeroStat stat = HeroStat.values()[index];
-            float y = rowY(index);
-            int purchased = shop.purchasedLevels(state, stat);
-            boolean maxed = purchased >= StatShopSystem.MAX_PURCHASES_PER_STAT;
-            int price = maxed ? 0 : shop.price(state, stat);
-            boolean affordable = !maxed && state.coins >= price;
+        for (int index = 0; index < rows.length; index++) {
+            Row row = rows[index];
+            float y = StatShopTouchLayout.rowBottom(index);
             UiFrameRenderer.State cardState = frames.resolve(
-                affordable, false,
+                row.affordable(), false,
                 StatShopTouchLayout.ROW_X, y,
                 StatShopTouchLayout.ROW_WIDTH, StatShopTouchLayout.ROW_HEIGHT
             );
             float offset = MainMenuRenderer.pressedOffset(cardState);
-            icons.draw(batch, stat.name().toLowerCase(Locale.ROOT), 72f, y + 28f + offset, 78f, cardState);
-            drawText(batch, pretty(stat).toUpperCase(Locale.ROOT), 170f, y + 105f + offset, 0.98f,
-                affordable || maxed ? IVORY : MUTED);
-            drawText(batch, statBenefit(stat), 170f, y + 69f + offset, 0.66f, SUBTLE);
-            drawText(
-                batch,
-                "LEVEL " + purchased + " / " + StatShopSystem.MAX_PURCHASES_PER_STAT,
-                170f,
-                y + 45f + offset,
-                0.58f,
-                GOLD
-            );
-            Color affordabilityColor = maxed ? GOLD : affordable ? POSITIVE : NEGATIVE;
-            drawCentered(
-                batch,
-                affordabilityLabel(maxed, affordable, price, state.coins),
-                532f,
-                y + 94f + offset,
-                0.62f,
-                affordabilityColor
-            );
-            drawCentered(
-                batch,
-                maxed ? "MAX" : "$ " + price,
-                532f,
-                y + 57f + offset,
-                0.92f,
-                maxed ? GOLD : affordable ? IVORY : MUTED
-            );
+            icons.draw(batch, row.iconKey(), 72f, y + 26f + offset, 78f, cardState);
+            drawText(batch, row.title(), 170f, y + 102f + offset, 0.98f,
+                row.affordable() || row.maxed() ? IVORY : MUTED);
+            drawText(batch, row.benefit(), 170f, y + 66f + offset, 0.66f, SUBTLE);
+            drawText(batch, "LEVEL " + row.level() + " / " + row.maxLevel(),
+                170f, y + 42f + offset, 0.58f, GOLD);
+            Color affordabilityColor = row.maxed() ? GOLD : row.affordable() ? POSITIVE : NEGATIVE;
+            drawCentered(batch,
+                affordabilityLabel(row.maxed(), row.affordable(), row.price(), state.coins),
+                532f, y + 91f + offset, 0.62f, affordabilityColor);
+            drawCentered(batch, row.maxed() ? "MAX" : "$ " + row.price(),
+                532f, y + 54f + offset, 0.92f,
+                row.maxed() ? GOLD : row.affordable() ? IVORY : MUTED);
         }
 
-        String feedback = shop.feedbackMessage();
         if (feedback != null) {
-            Color base = switch (shop.feedbackResult()) {
-                case PURCHASED -> POSITIVE;
-                case INSUFFICIENT_COINS -> NEGATIVE;
-                case MAXED -> GOLD;
-                default -> SUBTLE;
-            };
+            Color base = tab == Tab.SKILLS
+                ? switch (skills.feedbackResult()) {
+                    case PURCHASED -> POSITIVE;
+                    case INSUFFICIENT_COINS -> NEGATIVE;
+                    case MAXED -> GOLD;
+                    default -> SUBTLE;
+                }
+                : switch (shop.feedbackResult()) {
+                    case PURCHASED -> POSITIVE;
+                    case INSUFFICIENT_COINS -> NEGATIVE;
+                    case MAXED -> GOLD;
+                    default -> SUBTLE;
+                };
             Color feedbackColor = new Color(base);
-            feedbackColor.a = shop.feedbackAlpha();
-            drawCentered(batch, feedback, 360f, 254f, 0.78f, feedbackColor);
+            feedbackColor.a = tab == Tab.SKILLS ? skills.feedbackAlpha() : shop.feedbackAlpha();
+            drawCentered(batch, feedback, 360f, 189f, 0.78f, feedbackColor);
         }
         batch.end();
+    }
+
+    private static Row[] statRows(GameState state, StatShopSystem shop) {
+        HeroStat[] stats = HeroStat.values();
+        Row[] rows = new Row[stats.length];
+        for (int index = 0; index < stats.length; index++) {
+            HeroStat stat = stats[index];
+            int purchased = shop.purchasedLevels(state, stat);
+            boolean maxed = purchased >= StatShopSystem.MAX_PURCHASES_PER_STAT;
+            int price = maxed ? 0 : shop.price(state, stat);
+            rows[index] = new Row(
+                stat.name().toLowerCase(Locale.ROOT),
+                pretty(stat).toUpperCase(Locale.ROOT),
+                statBenefit(stat),
+                purchased, StatShopSystem.MAX_PURCHASES_PER_STAT,
+                price, maxed, !maxed && state.coins >= price, POSITIVE
+            );
+        }
+        return rows;
+    }
+
+    private static Row[] skillRows(GameState state, SkillShopSystem skills) {
+        SkillId[] ids = SkillId.values();
+        Row[] rows = new Row[ids.length];
+        for (int index = 0; index < ids.length; index++) {
+            SkillId skill = ids[index];
+            int level = skills.level(state, skill);
+            boolean maxed = level >= SkillId.MAX_LEVEL;
+            int price = maxed ? 0 : skills.price(state, skill);
+            rows[index] = new Row(
+                skill.iconKey(),
+                skill.displayName().toUpperCase(Locale.ROOT),
+                skillBenefit(skill, level),
+                level, SkillId.MAX_LEVEL,
+                price, maxed, !maxed && state.coins >= price, ARCANE
+            );
+        }
+        return rows;
     }
 
     static String affordabilityLabel(boolean maxed, boolean affordable, int price, int coins) {
@@ -195,9 +235,23 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         };
     }
 
-    private static float rowY(int index) {
-        return StatShopTouchLayout.ROW_TOP - StatShopTouchLayout.ROW_HEIGHT
-            - index * StatShopTouchLayout.ROW_STRIDE;
+    /** Describes the concrete next-level effect so a player knows exactly what a purchase buys. */
+    static String skillBenefit(SkillId skill, int level) {
+        int next = Math.min(SkillId.MAX_LEVEL, level + 1);
+        return switch (skill) {
+            case CHAIN_LIGHTNING -> String.format(Locale.ROOT, "%d%% arc to %d foe%s for %d%% dmg",
+                Math.round(SkillEffects.chainChance(next) * 100f), SkillEffects.chainTargets(next),
+                SkillEffects.chainTargets(next) == 1 ? "" : "s",
+                Math.round(SkillEffects.CHAIN_DAMAGE_SHARE * 100f));
+            case MULTI_SHOT -> String.format(Locale.ROOT, "+%.1f arrows per volley at %d%% dmg",
+                SkillEffects.extraArrows(next), Math.round(SkillEffects.MULTI_SHOT_DAMAGE_SHARE * 100f));
+            case STUN_CHANCE -> String.format(Locale.ROOT, "%d%% chance to stun for %.2fs",
+                Math.round(SkillEffects.stunChance(next) * 100f), SkillEffects.stunDuration(next));
+            case CRITICAL_MASTERY -> String.format(Locale.ROOT, "%.1f%% crit chance, x%.2f crit dmg",
+                SkillEffects.criticalChance(next) * 100f, SkillEffects.criticalMultiplier(next));
+            case LONG_RANGE -> String.format(Locale.ROOT, "+%d bow range (%d total)",
+                Math.round(SkillEffects.bonusRange(next)), Math.round(420f + SkillEffects.bonusRange(next)));
+        };
     }
 
     private void drawCentered(

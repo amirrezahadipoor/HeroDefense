@@ -100,6 +100,63 @@ final class HeroAutoAttackSystemTest {
         throw new AssertionError("Could not find deterministic critical-hit seed");
     }
 
+    @Test
+    void multiShotAtMaxLevelFiresExtraReducedArrowsAtOtherFoes() {
+        GameState state = GameState.newRun(21L);
+        state.skillLevels.put(com.amirrezahadipoor.herodefense.skills.SkillId.MULTI_SHOT.saveKey(), 10);
+        Enemy a = enemy(state, 90f, 0f);
+        Enemy b = enemy(state, 150f, 40f);
+        state.aliveEnemies.add(a);
+        state.aliveEnemies.add(b);
+
+        system.update(state, 0f);
+
+        assertEquals(4, state.projectiles.size());
+        assertEquals(10f, state.projectiles.get(0).damage);
+        assertEquals(7f, state.projectiles.get(1).damage);
+        assertTrue(state.projectiles.stream().anyMatch(p -> p.targetId == b.id));
+    }
+
+    @Test
+    void longRangeSkillExtendsBowReach() {
+        GameState state = GameState.newRun(22L);
+        state.skillLevels.put(com.amirrezahadipoor.herodefense.skills.SkillId.LONG_RANGE.saveKey(), 10);
+        Enemy far = enemy(state, HeroAutoAttackSystem.ATTACK_RANGE + 200f, 0f);
+        state.aliveEnemies.add(far);
+        system.update(state, 0f);
+        assertEquals(far.id, state.hero.currentTargetId);
+    }
+
+    @Test
+    void chainLightningAndStunEventuallyTriggerAndStunFreezesMovement() {
+        GameState state = GameState.newRun(23L);
+        state.skillLevels.put(com.amirrezahadipoor.herodefense.skills.SkillId.CHAIN_LIGHTNING.saveKey(), 10);
+        state.skillLevels.put(com.amirrezahadipoor.herodefense.skills.SkillId.STUN_CHANCE.saveKey(), 10);
+        Enemy struck = enemy(state, 90f, 0f);
+        Enemy neighbour = enemy(state, 90f, 120f);
+        struck.health = struck.maxHealth = 1_000_000f;
+        neighbour.health = neighbour.maxHealth = 1_000_000f;
+        state.aliveEnemies.add(struck);
+        state.aliveEnemies.add(neighbour);
+
+        int arcs = 0;
+        int stuns = 0;
+        for (int i = 0; i < 400; i++) {
+            HeroAttackUpdateResult result = system.update(state, 0.25f);
+            arcs += result.chainArcs();
+            stuns += result.stuns();
+        }
+        assertTrue(arcs > 0, "chain lightning never arced");
+        assertTrue(stuns > 0, "stun never rolled");
+        assertTrue(neighbour.health < neighbour.maxHealth);
+
+        struck.stunRemainingSeconds = 1f;
+        float x = struck.x;
+        new EnemyMovementSystem().update(state, 0.5f);
+        assertEquals(x, struck.x);
+        assertEquals(0.5f, struck.stunRemainingSeconds, 1e-5f);
+    }
+
     private static Enemy enemy(GameState state, float offsetX, float offsetY) {
         Enemy enemy = new Enemy(
             state.allocateEntityId(),

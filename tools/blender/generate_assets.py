@@ -46,6 +46,7 @@ from hd_pipeline.environment import (  # noqa: E402
     UI_FRAME_KEYS,
     UI_ICON_KEYS,
     REWARD_CARD_ICON_KEYS,
+    SKILL_ICON_KEYS,
     build_potion_icon,
     build_ui_frame,
     build_ui_icon,
@@ -86,7 +87,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "skill-icons", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -601,6 +602,18 @@ def render_ui_supplement(output: Path) -> list[dict]:
     return entries
 
 
+def render_skill_icons(output: Path) -> list[dict]:
+    """Render the five Phase 17 shop skill medallions."""
+    entries = []
+    for key in SKILL_ICON_KEYS:
+        entries.append(render_static_model(
+            key, "icons", "item",
+            lambda value=key: build_ui_icon(value), output,
+            {"assetKind": "ui", "iconKey": key},
+        ))
+    return entries
+
+
 def _run_frame_worker(payload: dict) -> None:
     output_path = Path(payload["output"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -756,6 +769,8 @@ def main() -> None:
         generated.extend(render_environment(output, only))
     if args.batch in {"ui", "all"}:
         generated.extend(render_ui(output, only))
+    if args.batch == "skill-icons":
+        generated.extend(render_skill_icons(output))
     if args.batch == "ui-supplement":
         generated.extend(render_ui_supplement(output))
 

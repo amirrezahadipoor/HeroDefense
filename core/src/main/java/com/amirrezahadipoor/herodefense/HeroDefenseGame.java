@@ -85,6 +85,8 @@ import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 import com.amirrezahadipoor.herodefense.settings.GameSettings;
 import com.amirrezahadipoor.herodefense.settings.LocalSettingsRepository;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
+import com.amirrezahadipoor.herodefense.skills.SkillId;
+import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 
 import java.util.Optional;
 
@@ -133,6 +135,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
     private StatShopSystem statShopSystem;
+    private SkillShopSystem skillShopSystem;
+    private StatShopTouchLayout.Tab shopTab = StatShopTouchLayout.Tab.STATS;
     private TouchFeedbackRenderer touchFeedbackRenderer;
     private TouchFeedbackSystem touchFeedbackSystem;
     private UiFrameRenderer uiFrameRenderer;
@@ -188,6 +192,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         settingsTouchController = new SettingsTouchController();
         simulationSpeedTouchController = new SimulationSpeedTouchController();
         statShopSystem = new StatShopSystem();
+        skillShopSystem = new SkillShopSystem();
         touchFeedbackSystem = new TouchFeedbackSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         settingsRepository = new LocalSettingsRepository(
@@ -263,6 +268,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         touchFeedbackSystem.update(deltaSeconds);
         inventoryTouchController.update(deltaSeconds);
         statShopSystem.update(deltaSeconds);
+        skillShopSystem.update(deltaSeconds);
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
@@ -317,7 +323,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     /** Read-only test visibility; Shop feedback still originates only from touch. */
     public String shopFeedbackMessage() {
+        if (shopTab == StatShopTouchLayout.Tab.SKILLS && skillShopSystem != null) {
+            return skillShopSystem.feedbackMessage();
+        }
         return statShopSystem == null ? null : statShopSystem.feedbackMessage();
+    }
+
+    /** Read-only test visibility of the active shop tab; changed only by touch. */
+    public StatShopTouchLayout.Tab shopTab() {
+        return shopTab;
     }
 
     /** Read-only test visibility used to confirm device touches reached libGDX coordinates. */
@@ -514,9 +528,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.SHOP) {
+                    StatShopTouchLayout.Tab tab = StatShopTouchLayout.tabAt(worldX, worldY);
                     if (StatShopTouchLayout.closeAt(worldX, worldY)) {
                         flow.returnFromOverlay();
                         saveNow();
+                    } else if (tab != null) {
+                        shopTab = tab;
+                    } else if (shopTab == StatShopTouchLayout.Tab.SKILLS) {
+                        SkillId skill = StatShopTouchLayout.skillAt(worldX, worldY);
+                        if (skillShopSystem.purchase(gameState, skill)) saveNow();
                     } else {
                         HeroStat stat = StatShopTouchLayout.statAt(worldX, worldY);
                         if (statShopSystem.purchase(gameState, stat)) saveNow();
@@ -871,6 +891,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 camera.combined,
                 gameState,
                 statShopSystem,
+                skillShopSystem,
+                shopTab,
                 uiIconRenderer,
                 uiFrameRenderer,
                 flow.returnState() == GameScreenState.PAUSED

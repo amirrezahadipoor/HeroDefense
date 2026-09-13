@@ -22,6 +22,10 @@ public final class EnemyMovementSystem {
         if (enemy == null || !enemy.alive || !enemy.active) {
             return;
         }
+        if (enemy.stunRemainingSeconds > 0f) {
+            enemy.stunRemainingSeconds = Math.max(0f, enemy.stunRemainingSeconds - deltaSeconds);
+            return;
+        }
         float dx = heroX - enemy.x;
         float dy = heroY - enemy.y;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);

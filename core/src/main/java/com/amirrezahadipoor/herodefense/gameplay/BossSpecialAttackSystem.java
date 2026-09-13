@@ -23,6 +23,7 @@ public final class BossSpecialAttackSystem {
             boss.specialCooldownSeconds -= deltaSeconds;
             float triggerRange = triggerRange(boss.bossDefinition());
             if (boss.specialCooldownSeconds <= 0f
+                && !boss.stunned()
                 && boss.distanceSquaredTo(state.hero.x, state.hero.y) <= triggerRange * triggerRange) {
                 execute(state, boss);
                 boss.specialCooldownSeconds += cooldown(boss.bossDefinition());

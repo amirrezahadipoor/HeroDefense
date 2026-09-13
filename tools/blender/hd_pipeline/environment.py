@@ -888,6 +888,15 @@ REWARD_CARD_ICON_KEYS = (
     "ui_lifesteal",
 )
 
+# Phase 17 shop skills; same heartwood medallion family so the Skills tab matches Stats.
+SKILL_ICON_KEYS = (
+    "ui_skill_chain_lightning",
+    "ui_skill_multi_shot",
+    "ui_skill_stun_chance",
+    "ui_skill_critical_mastery",
+    "ui_skill_long_range",
+)
+
 
 def build_ui_frame(key: str) -> BuiltModel:
     """Build a camera-facing nine-patch frame with a construction-specific UI state."""
@@ -988,7 +997,7 @@ def build_ui_frame(key: str) -> BuiltModel:
 
 def build_ui_icon(key: str) -> BuiltModel:
     """Build one premium low-poly mobile control symbol from the locked palette."""
-    if key not in (*UI_ICON_KEYS, *REWARD_CARD_ICON_KEYS):
+    if key not in (*UI_ICON_KEYS, *REWARD_CARD_ICON_KEYS, *SKILL_ICON_KEYS):
         raise ValueError(f"Unknown UI icon: {key}")
     gold = MATERIALS.get("ui_gold", PALETTE["hero_gold"], True)
     green = MATERIALS.get("ui_green", PALETTE["hero_green"])
@@ -1159,6 +1168,45 @@ def build_ui_icon(key: str) -> BuiltModel:
                 (0, 0, -0.68 * sign),
             )
             objects.append(leaf_obj)
+
+    elif key == "ui_skill_chain_lightning":
+        # A zig-zag bolt of three angled bars arcing between two small gold nodes.
+        segments = ((-0.34, 1.34, 0.62), (0.10, 1.02, -0.62), (-0.16, 0.66, 0.62))
+        for index, (x, z, tilt) in enumerate(segments):
+            cube(f"bolt_segment_{index}", (x, 0, z), (0.16, 0.20, 0.52), cyan, tilt)
+        objects.append(add_cone("bolt_tip", (0.02, 0, 0.36), 0.20, 0.0, 0.34, cyan, 6, (math.pi, 0, 0)))
+        for side, sign in (("L", -1), ("R", 1)):
+            objects.append(add_ico(f"bolt_node_{side}", (0.52 * sign, -0.05, 1.00 + 0.18 * sign),
+                                   (0.12, 0.08, 0.12), gold, 1))
+    elif key == "ui_skill_multi_shot":
+        # Three fanned arrows from one nock point: the volley reads at 64px.
+        for index, tilt in enumerate((-0.42, 0.0, 0.42)):
+            cube(f"volley_shaft_{index}", (0.0, 0, 0.98), (0.10, 0.18, 1.02), parchment, tilt)
+            tip = add_cone(f"volley_tip_{index}",
+                           (math.sin(tilt) * 0.62, 0, 0.98 + math.cos(tilt) * 0.62),
+                           0.16, 0.0, 0.34, gold, 6, (0, tilt, 0))
+            objects.append(tip)
+        objects.append(add_ico("volley_nock", (0, -0.04, 0.42), (0.16, 0.10, 0.16), wood, 1))
+    elif key == "ui_skill_stun_chance":
+        # A dazed spiral of stars: four gold points ringing a cyan burst.
+        objects.append(add_ico("stun_core", (0, 0, 1.0), (0.30, 0.16, 0.30), cyan, 1))
+        for index in range(4):
+            angle = index * math.tau / 4 + math.pi / 4
+            objects.append(add_cone(f"stun_star_{index}",
+                                    (math.cos(angle) * 0.50, 0, 1.0 + math.sin(angle) * 0.50),
+                                    0.16, 0.0, 0.42, gold, 4, (0, -angle + math.pi / 2, 0)))
+    elif key == "ui_skill_critical_mastery":
+        # Crossed blade over a target ring: the crit strike reads as a marked hit.
+        objects.append(add_torus("crit_ring", (0, 0.02, 1.0), 0.52, 0.06, crimson,
+                                 (math.pi / 2, 0.0, 0.0), 20, 5))
+        sword(parchment)
+        objects.append(add_ico("crit_spark", (0.30, -0.10, 1.34), (0.14, 0.08, 0.14), gold, 1))
+    elif key == "ui_skill_long_range":
+        # A drawn bow beside a far-flying arrow: reach rather than speed.
+        objects.append(add_torus("range_bow", (-0.36, 0.0, 1.0), 0.58, 0.05, wood,
+                                 (math.pi / 2, 0.0, 0.0), 20, 5))
+        cube("range_string", (-0.36, -0.02, 1.0), (0.04, 0.10, 1.10), parchment)
+        arrow("range_arrow", 0.16, 1.0, leaf, 1.0, 1.05)
 
     # Apply one shared image-plane correction so every glyph and medallion retains
     # transparent safety despite the locked item-camera framing shift.
