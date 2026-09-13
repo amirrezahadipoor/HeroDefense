@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "thorn-matriarch-thorn-cage-v2",
   "armature": "thorn_matriarch_armature",
   "atlas": "sprites/thorn_matriarch.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "thorn_matriarch",
+  "categoryReview": {
+    "category": "bosses",
+    "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +276,19 @@
   "frameRate": 12,
   "frameSize": 256,
   "key": "thorn_matriarch",
+  "materialCount": 10,
+  "meshParts": 71,
+  "modelRevision": "briar-sovereign-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-rooted-caster-v2",
   "sheet": "sprites/thorn_matriarch.png",
   "sheetHeight": 1024,
   "sheetWidth": 2048,
@@ -286,7 +300,14 @@
       "width": 2048
     }
   ],
-  "silhouette": "flower_root_queen",
-  "triangles": 724,
-  "unique_attack": "thorn_cage"
+  "silhouetteLandmarks": [
+    "ten-petal crown",
+    "rooted royal gown",
+    "paired cage-thorn fans",
+    "briar halo"
+  ],
+  "surfaceLanguage": "layered heartwood, emerald leaves, blood-petal crown, ivory thorns",
+  "triangles": 2008,
+  "unique_attack": "thorn_cage",
+  "visualQuality": "premium-v2"
 }

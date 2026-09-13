@@ -1,0 +1,338 @@
+{
+  "assets": [
+    {
+      "animationProfile": "ancient-golem-ground-slam-v2",
+      "baselineSheetSha256": "1c3a3c874296e7d568121184964c1cd8675646fcc4eb740de30aba43fd9be913",
+      "candidateAtlasSha256": "e58d69e81e8dcb6fc3c1c3d51d8e9d16ef7d50b6c2633e94d4f3a79dfc0b407c",
+      "candidateMetadataSha256": "9de8e1d8b812395cd693b263d92f50055b6111f83c6adc927cb57eb09d1c34eb",
+      "candidateSheetSha256": "fff64091e1222185539c9b31bd612241e49f33e2592431e1cc0ca3b7bd2867ba",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 25,
+            "left": 46,
+            "right": 37,
+            "top": 47
+          },
+          "uniqueVisibleFrames": 8
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 30,
+            "left": 37,
+            "right": 10,
+            "top": 48
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 28,
+            "left": 48,
+            "right": 31,
+            "top": 45
+          },
+          "uniqueVisibleFrames": 4
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 29,
+            "left": 52,
+            "right": 54,
+            "top": 53
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "ancient_golem",
+      "label": "Ancient Golem",
+      "materialCount": 9,
+      "meshParts": 64,
+      "minimumAlphaMargins": {
+        "bottom": 25,
+        "left": 37,
+        "right": 10,
+        "top": 45
+      },
+      "modelRevision": "heartstone-colossus-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-heavy-humanoid-v2",
+      "signatureAttack": "ground_slam",
+      "triangles": 3442
+    },
+    {
+      "animationProfile": "thorn-matriarch-thorn-cage-v2",
+      "baselineSheetSha256": "e4bf776accd61a80af1712f0fac699f8fcede3c87fcfff67b5243eb0c55211b3",
+      "candidateAtlasSha256": "6c7ea9e0bd847cdc11f8abe58256259040e7284e0a5d17827bebdcb5160796c3",
+      "candidateMetadataSha256": "e93058d591e40dffe1f4edfc8b31336291583c3e389b60340b8231e720d37213",
+      "candidateSheetSha256": "43cf4dcca13f6e28c5b805ade939885901e91e80520ef549bbaab5b21301a966",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 21,
+            "left": 57,
+            "right": 51,
+            "top": 46
+          },
+          "uniqueVisibleFrames": 8
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 21,
+            "left": 53,
+            "right": 43,
+            "top": 53
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 22,
+            "left": 64,
+            "right": 52,
+            "top": 45
+          },
+          "uniqueVisibleFrames": 4
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 22,
+            "left": 69,
+            "right": 67,
+            "top": 53
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "thorn_matriarch",
+      "label": "Thorn Matriarch",
+      "materialCount": 10,
+      "meshParts": 71,
+      "minimumAlphaMargins": {
+        "bottom": 21,
+        "left": 53,
+        "right": 43,
+        "top": 45
+      },
+      "modelRevision": "briar-sovereign-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-rooted-caster-v2",
+      "signatureAttack": "thorn_cage",
+      "triangles": 2008
+    },
+    {
+      "animationProfile": "ember-wyrm-flame-sweep-v2",
+      "baselineSheetSha256": "01e520e00457c56b892d779701f873e895836802eb8044d681164ab0379717a6",
+      "candidateAtlasSha256": "9485fe4949ca90b6b5a81aefcd520c6127768c0808d6329a4816f5f01fb766ea",
+      "candidateMetadataSha256": "619da340095e0ac4d5da18c291c761f458a5b51f25f304f86aa87a2da340d46c",
+      "candidateSheetSha256": "e832173a5f7a7ff2c608537f926ebb093b9d800569b35c4b68e578848944cde0",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 29,
+            "left": 23,
+            "right": 44,
+            "top": 52
+          },
+          "uniqueVisibleFrames": 8
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 35,
+            "left": 36,
+            "right": 21,
+            "top": 37
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 32,
+            "left": 53,
+            "right": 41,
+            "top": 38
+          },
+          "uniqueVisibleFrames": 4
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 33,
+            "left": 56,
+            "right": 38,
+            "top": 51
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "ember_wyrm",
+      "label": "Ember Wyrm",
+      "materialCount": 10,
+      "meshParts": 74,
+      "minimumAlphaMargins": {
+        "bottom": 29,
+        "left": 23,
+        "right": 21,
+        "top": 37
+      },
+      "modelRevision": "furnace-wyrm-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-winged-wyrm-mapped-v2",
+      "signatureAttack": "flame_sweep",
+      "triangles": 2324
+    },
+    {
+      "animationProfile": "void-knight-void-charge-v2",
+      "baselineSheetSha256": "1d044f25114bcc97e0af60b314345cfd9b9fc651dcde6a4c86da098e26cf01d0",
+      "candidateAtlasSha256": "accaf00c3db2c600cc005afb56f298948982316bbb773b9e047640b7e73ef9a9",
+      "candidateMetadataSha256": "ce975d0d32c558afa83892f0876ffd03052e37890a7b4b297aa8b50da3e1ccbb",
+      "candidateSheetSha256": "2089420152fadd853328445a2a2aa271fcad9e316cf9e73be66fe595ba33bf2a",
+      "clips": {
+        "attack": {
+          "frameCount": 8,
+          "minimumAlphaMargins": {
+            "bottom": 26,
+            "left": 55,
+            "right": 37,
+            "top": 38
+          },
+          "uniqueVisibleFrames": 8
+        },
+        "death": {
+          "frameCount": 10,
+          "minimumAlphaMargins": {
+            "bottom": 32,
+            "left": 56,
+            "right": 29,
+            "top": 60
+          },
+          "uniqueVisibleFrames": 9
+        },
+        "hit": {
+          "frameCount": 4,
+          "minimumAlphaMargins": {
+            "bottom": 31,
+            "left": 64,
+            "right": 51,
+            "top": 45
+          },
+          "uniqueVisibleFrames": 4
+        },
+        "idle": {
+          "frameCount": 6,
+          "minimumAlphaMargins": {
+            "bottom": 32,
+            "left": 67,
+            "right": 60,
+            "top": 58
+          },
+          "uniqueVisibleFrames": 5
+        }
+      },
+      "key": "void_knight",
+      "label": "Void Knight",
+      "materialCount": 10,
+      "meshParts": 61,
+      "minimumAlphaMargins": {
+        "bottom": 26,
+        "left": 55,
+        "right": 29,
+        "top": 38
+      },
+      "modelRevision": "abyss-champion-v2",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-armored-humanoid-v2",
+      "signatureAttack": "void_charge",
+      "triangles": 2082
+    }
+  ],
+  "baselineManifestSha256": "1b56f98fa8678db4c153ea26c664b4737e88018d661d1a6916ab98af19dadb7d",
+  "batch": "bosses-premium-v2",
+  "candidateManifestSha256": "755512c4ddbb52dff1b3e77c9b71cc0ee06e02888e91aeaf2a86fd2592f5e05f",
+  "expectedKeys": [
+    "ancient_golem",
+    "thorn_matriarch",
+    "ember_wyrm",
+    "void_knight"
+  ],
+  "frameContract": {
+    "attack": 8,
+    "death": 10,
+    "hit": 4,
+    "idle": 6
+  },
+  "minimumUniqueVisibleFrames": {
+    "attack": 7,
+    "death": 9,
+    "hit": 3,
+    "idle": 5
+  },
+  "reviewSheetCount": 9,
+  "reviewSheets": {
+    "ancient_golem_full_motion.png": {
+      "bytes": 465589,
+      "sha256": "cebdc8200949054b1c5dd989aac220e55cf3811d58821937cb030b80e1754fb3"
+    },
+    "ancient_golem_readability.png": {
+      "bytes": 157916,
+      "sha256": "997bee3c5ae0f08a3e5f64ad9ff525ae05171ac0e62d12d4383c2fa4facd3b5a"
+    },
+    "bosses_lineup.png": {
+      "bytes": 163179,
+      "sha256": "467f3eb162e9c4d57681ce388fae7b2b34a089b0ba50ff032d662e9e83d1264d"
+    },
+    "ember_wyrm_full_motion.png": {
+      "bytes": 484760,
+      "sha256": "3996b25afb1ab3f1a1e962ea4aa33bd4a8ec63a990db21a999f35b6e3669c7f0"
+    },
+    "ember_wyrm_readability.png": {
+      "bytes": 170237,
+      "sha256": "d014aa625aebbf58a9cdc79777e2aead1ab427bfb17beba88a1bd02990beb0f4"
+    },
+    "thorn_matriarch_full_motion.png": {
+      "bytes": 445150,
+      "sha256": "9ded2aaef810f411ab1356cea5de76bcd21636e6931128565cd7b79b342e3815"
+    },
+    "thorn_matriarch_readability.png": {
+      "bytes": 159959,
+      "sha256": "bab0ba1b429ce8c5eb53f9a800049938f5ade8327c99b208060987dcb2e82065"
+    },
+    "void_knight_full_motion.png": {
+      "bytes": 482656,
+      "sha256": "ae28abfda027e5519922458cf84e7fb8d08eec6c4e7afb63f5f84a8a746f9f87"
+    },
+    "void_knight_readability.png": {
+      "bytes": 161402,
+      "sha256": "f40a5fbc9aacb6e27541cd0d83d8e4a37b8457f5b69bb81ec94a1f0f4ecdb48a"
+    }
+  },
+  "schemaVersion": 1,
+  "summary": {
+    "assetCount": 4,
+    "decodedBudgetBytes": 50331648,
+    "decodedBytes": 33554432,
+    "frameCount": 112,
+    "maximumTriangles": 3442,
+    "minimumAlphaMargins": {
+      "bottom": 21,
+      "left": 23,
+      "right": 10,
+      "top": 37
+    },
+    "minimumMaterialCount": 9,
+    "minimumMeshParts": 61,
+    "minimumTriangles": 2008,
+    "singlePageAtlasCount": 4
+  }
+}

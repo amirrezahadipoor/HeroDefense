@@ -12,6 +12,7 @@ on:
           - pilot
           - premium-pilot
           - enemies
+          - bosses
           - characters
           - world-tree
           - equipment

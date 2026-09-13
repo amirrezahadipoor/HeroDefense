@@ -56,8 +56,15 @@ def add_uv(name: str, location, scale, material) -> bpy.types.Object:
     return _finish(bpy.context.object, name, material, scale)
 
 
-def add_cube(name: str, location, scale, material, bevel: float = 0.0) -> bpy.types.Object:
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=location)
+def add_cube(
+    name: str,
+    location,
+    scale,
+    material,
+    bevel: float = 0.0,
+    rotation=(0.0, 0.0, 0.0),
+) -> bpy.types.Object:
+    bpy.ops.mesh.primitive_cube_add(size=1.0, location=location, rotation=rotation)
     obj = _finish(bpy.context.object, name, material, scale)
     if bevel > 0:
         modifier = obj.modifiers.new("silhouette_bevel", "BEVEL")
@@ -97,12 +104,21 @@ def add_cylinder_between(name: str, start, end, radius: float, material, vertice
     return obj
 
 
-def add_torus(name: str, location, major_radius: float, minor_radius: float, material, rotation=(0.0, 0.0, 0.0)) -> bpy.types.Object:
+def add_torus(
+    name: str,
+    location,
+    major_radius: float,
+    minor_radius: float,
+    material,
+    rotation=(0.0, 0.0, 0.0),
+    major_segments: int = 12,
+    minor_segments: int = 4,
+) -> bpy.types.Object:
     bpy.ops.mesh.primitive_torus_add(
         major_radius=major_radius,
         minor_radius=minor_radius,
-        major_segments=12,
-        minor_segments=4,
+        major_segments=major_segments,
+        minor_segments=minor_segments,
         location=location,
         rotation=rotation,
     )
@@ -120,6 +136,78 @@ def add_leaf(
     leaf = add_ico(name, location, scale, material, 1)
     leaf.rotation_euler = rotation
     return leaf
+
+
+# Premium boss authoring helpers intentionally sit on top of the same deterministic
+# low-poly primitives as the rest of the pipeline. They make material intent and
+# rigid bone ownership explicit while preserving the existing public helpers.
+def make_material(
+    name: str,
+    color_hex: str,
+    *,
+    roughness: float = 0.72,
+    metallic: float = 0.0,
+    emission: float = 0.0,
+) -> bpy.types.Material:
+    del roughness, emission  # The locked toon ramp encodes these cues through color/value.
+    return MATERIALS.get(name, color_hex, metallic > 0.0)
+
+
+def add_ico_sphere(
+    name: str,
+    location,
+    scale,
+    material,
+    *,
+    subdivisions: int = 1,
+    rotation=(0.0, 0.0, 0.0),
+) -> bpy.types.Object:
+    obj = add_ico(name, location, scale, material, subdivisions)
+    obj.rotation_euler = rotation
+    return obj
+
+
+def add_pointed_cone(
+    name: str,
+    location,
+    radius: float,
+    depth: float,
+    material,
+    *,
+    vertices: int = 8,
+    rotation=(0.0, 0.0, 0.0),
+) -> bpy.types.Object:
+    return add_cone(name, location, radius, 0.0, depth, material, vertices, rotation)
+
+
+def add_cylinder(
+    name: str,
+    location,
+    radius: float,
+    depth: float,
+    material,
+    *,
+    vertices: int = 8,
+    rotation=(0.0, 0.0, 0.0),
+) -> bpy.types.Object:
+    bpy.ops.mesh.primitive_cylinder_add(
+        vertices=vertices,
+        radius=radius,
+        depth=depth,
+        location=location,
+        rotation=rotation,
+    )
+    return _finish(bpy.context.object, name, material)
+
+
+def _tag(obj: bpy.types.Object, bone_name: str) -> bpy.types.Object:
+    obj["hd_bone"] = bone_name
+    return obj
+
+
+def attach_meshes(armature: bpy.types.Object, objects: list[bpy.types.Object]) -> None:
+    for obj in objects:
+        parent_to_bone(obj, armature, str(obj["hd_bone"]))
 
 
 def _bone_part(obj: bpy.types.Object, armature: bpy.types.Object, bone_name: str, objects: list[bpy.types.Object]) -> None:
@@ -691,153 +779,438 @@ def build_fungal_brute() -> BuiltModel:
         },
     )
 
+def _boss_rock(
+    parts: list[bpy.types.Object],
+    name: str,
+    location: tuple[float, float, float],
+    scale: tuple[float, float, float],
+    material: bpy.types.Material,
+    bone: str,
+    *,
+    rotation: tuple[float, float, float] = (0.0, 0.0, 0.0),
+    subdivision: int = 2,
+) -> bpy.types.Object:
+    rock = add_ico_sphere(name, location, scale, material, subdivisions=subdivision, rotation=rotation)
+    parts.append(_tag(rock, bone))
+    return rock
+
+
+def _boss_spike(
+    parts: list[bpy.types.Object],
+    name: str,
+    location: tuple[float, float, float],
+    radius: float,
+    depth: float,
+    material: bpy.types.Material,
+    bone: str,
+    rotation: tuple[float, float, float],
+) -> bpy.types.Object:
+    spike = add_pointed_cone(name, location, radius, depth, material, vertices=8, rotation=rotation)
+    parts.append(_tag(spike, bone))
+    return spike
+
+
 def build_ancient_golem() -> BuiltModel:
-    stone = MATERIALS.get("ancient_stone", "#59686D")
-    dark_stone = MATERIALS.get("ancient_dark_stone", "#303C40")
-    light_stone = MATERIALS.get("ancient_light_stone", "#849497")
-    moss = MATERIALS.get("ancient_moss", "#416B48")
-    leaf = MATERIALS.get("ancient_leaf", "#6FA457")
-    rune = MATERIALS.get("ancient_rune", "#64D8D5")
-    rune_hot = MATERIALS.get("ancient_rune_hot", "#C5FFF0")
-    armature = create_standard_armature("ancient_golem", 1.36)
-    objects: list[bpy.types.Object] = []
+    """Heartstone colossus: massive strata, luminous runes, roots, and slam fists."""
+    stone = make_material("golem basalt", "#39464B", roughness=0.88)
+    stone_light = make_material("golem cut facets", "#647277", roughness=0.80)
+    stone_dark = make_material("golem deep seams", "#202A2E", roughness=0.96)
+    moss = make_material("golem moss", "#4E713D", roughness=0.92)
+    moss_light = make_material("golem new growth", "#8DAE55", roughness=0.88)
+    rune = make_material("golem heartstone", "#72E6D0", roughness=0.24, emission=0.46)
+    rune_hot = make_material("golem rune core", "#D4FFF1", roughness=0.16, emission=0.72)
+    root = make_material("golem old roots", "#5A3F2A", roughness=0.96)
+    armature = create_standard_armature("ancient_golem", scale=1.18)
+    parts: list[bpy.types.Object] = []
 
-    def attach(obj: bpy.types.Object, bone: str) -> None:
-        _bone_part(obj, armature, bone, objects)
+    # A three-tier geological trunk keeps the heartstone readable at runtime scale.
+    _boss_rock(parts, "golem pelvis monolith", (0.0, 0.02, 0.78), (0.58, 0.36, 0.39), stone_dark, "pelvis", rotation=(0.04, 0.08, 0.02))
+    _boss_rock(parts, "golem lower strata", (0.0, 0.0, 1.10), (0.68, 0.40, 0.43), stone, "spine", rotation=(-0.03, -0.07, 0.01))
+    _boss_rock(parts, "golem crown strata", (0.0, 0.03, 1.48), (0.78, 0.43, 0.49), stone, "chest", rotation=(0.03, 0.04, -0.02))
+    chest_back = add_cube("golem back slab", (0.0, 0.23, 1.49), (0.98, 0.20, 0.66), stone_dark, rotation=(0.04, 0.0, 0.0))
+    parts.append(_tag(chest_back, "chest"))
+    for index, (x, z, sx, rot) in enumerate(((-0.42, 1.52, 0.32, -0.12), (0.42, 1.52, 0.32, 0.12), (-0.24, 1.23, 0.27, 0.08), (0.24, 1.23, 0.27, -0.08))):
+        _boss_rock(parts, f"golem chest plate {index}", (x, -0.30, z), (sx, 0.15, 0.24), stone_light, "chest", rotation=(0.0, rot, rot))
+    heart = _boss_rock(parts, "golem exposed heartstone", (0.0, -0.44, 1.47), (0.24, 0.10, 0.28), rune, "armor_socket", rotation=(0.0, 0.0, math.radians(45)))
+    heart_ring = add_torus("golem heartstone bezel", (0.0, -0.45, 1.47), 0.31, 0.045, stone_dark, major_segments=12, minor_segments=4, rotation=(math.radians(90), 0.0, 0.0))
+    parts.append(_tag(heart_ring, "armor_socket"))
+    heart_core = add_ico_sphere("golem heartstone core", (0.0, -0.52, 1.47), (0.09, 0.055, 0.11), rune_hot, subdivisions=2)
+    parts.append(_tag(heart_core, "armor_socket"))
 
-    # Interlocking megalith slabs create a broad silhouette with a protected heart.
-    attach(add_cube("golem_monolith_torso", (0, 0.02, 1.38),
-                    (1.18, 0.70, 1.23), stone, 0.14), "chest")
-    attach(add_cube("golem_chest_inset", (0, -0.39, 1.43),
-                    (0.66, 0.075, 0.72), dark_stone, 0.06), "chest")
-    attach(add_cube("golem_upper_slab", (0, -0.18, 1.83),
-                    (0.98, 0.44, 0.27), light_stone, 0.07), "chest")
-    attach(add_ico("golem_core_outer", (0, -0.48, 1.43),
-                   (0.27, 0.055, 0.34), rune, 2), "chest")
-    attach(add_ico("golem_core_inner", (0, -0.535, 1.43),
-                   (0.105, 0.025, 0.15), rune_hot, 1), "chest")
-    for index, (x, z, angle) in enumerate(((-0.28, 1.43, -0.30),
-                                           (0.28, 1.43, 0.30),
-                                           (0, 1.14, 0.0))):
-        rune_bar = add_cube(f"golem_rune_bar_{index}", (x, -0.47, z),
-                            (0.055, 0.025, 0.27), rune, 0.01)
-        rune_bar.rotation_euler.y = angle
-        attach(rune_bar, "chest")
-
-    attach(add_cube("golem_head", (0, -0.02, 2.25),
-                    (0.72, 0.60, 0.57), stone, 0.09), "head")
-    attach(add_cube("golem_brow_slab", (0, -0.37, 2.34),
-                    (0.62, 0.10, 0.15), dark_stone, 0.03), "head")
-    attach(add_cube("golem_jaw", (0, -0.34, 2.10),
-                    (0.44, 0.10, 0.13), dark_stone, 0.03), "head")
-    for index, (x, height, lean) in enumerate(((-0.25, 0.42, -0.18),
-                                               (0.02, 0.55, 0.04),
-                                               (0.26, 0.36, 0.20))):
-        attach(add_cone(f"golem_crown_shard_{index}", (x, 0.01, 2.62),
-                        0.11, 0.025, height, light_stone, 6,
-                        (0, lean, 0)), "head")
+    # Layered shoulders and asymmetric boulder limbs communicate extreme mass.
     for side, sign in (("L", -1), ("R", 1)):
-        eye = add_cube(f"golem_eye_{side}", (0.15 * sign, -0.435, 2.31),
-                       (0.13, 0.025, 0.045), rune_hot, 0.012)
-        eye.rotation_euler.y = -0.08 * sign
-        attach(eye, "head")
+        upper = f"upper_arm.{side}"
+        forearm = f"forearm.{side}"
+        hand = f"hand.{side}"
+        _boss_rock(parts, f"golem shoulder cap {side}", (0.68 * sign, 0.01, 1.52), (0.43, 0.43, 0.38), stone_light, upper, rotation=(0.08, 0.05 * sign, 0.12 * sign))
+        _boss_rock(parts, f"golem shoulder understone {side}", (0.58 * sign, 0.05, 1.38), (0.36, 0.32, 0.31), stone_dark, upper)
+        _boss_rock(parts, f"golem upper boulder {side}", (0.76 * sign, -0.02, 1.25), (0.29, 0.29, 0.37), stone, upper, rotation=(0.05, 0.15 * sign, 0.08 * sign))
+        _boss_rock(parts, f"golem elbow boulder {side}", (0.88 * sign, -0.08, 1.02), (0.28, 0.28, 0.30), stone_light, forearm)
+        _boss_rock(parts, f"golem forearm boulder {side}", (0.95 * sign, -0.09, 0.84), (0.34, 0.34, 0.40), stone, forearm, rotation=(0.04, 0.0, -0.09 * sign))
+        _boss_rock(parts, f"golem slam fist {side}", (1.02 * sign, -0.13, 0.62), (0.43, 0.40, 0.36), stone_dark, hand)
+        for knuckle in range(3):
+            _boss_rock(parts, f"golem knuckle {side} {knuckle}", ((0.82 + knuckle * 0.12) * sign, -0.42, 0.66), (0.11, 0.10, 0.10), stone_light, hand, subdivision=1)
+        seam = add_torus(f"golem forearm seam {side}", (0.93 * sign, -0.10, 0.96), 0.27, 0.035, rune, major_segments=10, minor_segments=4, rotation=(0.0, math.radians(12 * sign), 0.0))
+        parts.append(_tag(seam, forearm))
 
-    _humanoid_limbs(armature, objects, stone, dark_stone, moss, 1.28)
+    # Pillar legs, split feet, and toe strata anchor the slam silhouette.
     for side, sign in (("L", -1), ("R", 1)):
-        attach(add_ico(f"golem_boulder_{side}", (0.68 * sign, 0, 1.78),
-                       (0.43, 0.38, 0.40), light_stone, 2), f"upper_arm.{side}")
-        attach(add_cube(f"golem_forearm_plate_{side}", (0.73 * sign, -0.08, 1.10),
-                        (0.30, 0.30, 0.48), dark_stone, 0.07), f"forearm.{side}")
-        attach(add_cube(f"golem_shin_plate_{side}", (0.30 * sign, -0.07, 0.38),
-                        (0.33, 0.36, 0.44), stone, 0.07), f"shin.{side}")
-        attach(add_leaf(f"golem_moss_pauldron_{side}", (0.67 * sign, -0.20, 1.94),
-                        (0.28, 0.06, 0.22), moss, (0, 0, 0.25 * sign)),
-               f"upper_arm.{side}")
-    for index, (x, z, angle) in enumerate(((-0.37, 1.88, -0.35),
-                                           (0.34, 1.12, 0.25),
-                                           (-0.18, 0.94, -0.15))):
-        attach(add_leaf(f"golem_leaf_patch_{index}", (x, -0.39, z),
-                        (0.14, 0.035, 0.22), leaf, (0, 0, angle)), "chest")
+        thigh, shin, foot = f"thigh.{side}", f"shin.{side}", f"foot.{side}"
+        _boss_rock(parts, f"golem hip {side}", (0.35 * sign, 0.03, 0.68), (0.36, 0.34, 0.34), stone, thigh)
+        _boss_rock(parts, f"golem knee {side}", (0.38 * sign, -0.08, 0.43), (0.32, 0.30, 0.27), stone_light, shin)
+        _boss_rock(parts, f"golem shin pillar {side}", (0.39 * sign, 0.0, 0.25), (0.30, 0.31, 0.30), stone_dark, shin)
+        foot_rock = add_cube(f"golem split foot {side}", (0.40 * sign, -0.17, 0.12), (0.56, 0.65, 0.22), stone, rotation=(0.0, 0.04 * sign, 0.0))
+        parts.append(_tag(foot_rock, foot))
+        for toe in range(2):
+            toe_rock = add_cube(f"golem toe {side} {toe}", ((0.31 + toe * 0.18) * sign, -0.47, 0.12), (0.18, 0.27, 0.14), stone_light, rotation=(0.0, 0.0, 0.03 * sign))
+            parts.append(_tag(toe_rock, foot))
 
-    return BuiltModel(armature, objects, {
-        "silhouette": "heartstone_monolith",
+    # Low brow and trilithon crest keep the face ancient rather than humanoid-cute.
+    _boss_rock(parts, "golem head", (0.0, -0.01, 2.03), (0.46, 0.39, 0.36), stone, "head", rotation=(0.02, 0.0, 0.0))
+    jaw = add_cube("golem jaw ledge", (0.0, -0.34, 1.91), (0.62, 0.24, 0.20), stone_dark, rotation=(0.06, 0.0, 0.0))
+    brow = add_cube("golem monolithic brow", (0.0, -0.38, 2.10), (0.72, 0.18, 0.15), stone_light, rotation=(0.0, 0.0, -0.02))
+    parts.extend((_tag(jaw, "head"), _tag(brow, "head")))
+    for side, sign in (("L", -1), ("R", 1)):
+        eye = add_ico_sphere(f"golem rune eye {side}", (0.17 * sign, -0.50, 2.07), (0.07, 0.045, 0.055), rune_hot, subdivisions=2)
+        parts.append(_tag(eye, "head"))
+        _boss_spike(parts, f"golem crest pillar {side}", (0.28 * sign, 0.0, 2.38), 0.13, 0.48, stone_dark, "helmet_socket", (0.0, -0.08 * sign, 0.0))
+    _boss_spike(parts, "golem central crest", (0.0, 0.01, 2.45), 0.14, 0.58, stone_light, "helmet_socket", (0.0, 0.0, 0.0))
+
+    # Restrained moss and roots break up rock planes without obscuring landmarks.
+    for index, (x, y, z, sx, sz, bone) in enumerate((
+        (-0.40, -0.30, 1.70, 0.24, 0.13, "chest"), (0.48, -0.24, 1.31, 0.19, 0.12, "chest"),
+        (-0.62, -0.18, 1.47, 0.18, 0.13, "upper_arm.L"), (0.92, -0.17, 0.94, 0.16, 0.11, "forearm.R"),
+        (-0.18, -0.32, 2.27, 0.17, 0.12, "head"), (0.35, -0.27, 2.25, 0.13, 0.10, "head"),
+    )):
+        leaf = add_leaf(f"golem moss patch {index}", (x, y, z), (sx, 0.045, sz), moss if index % 2 == 0 else moss_light, rotation=(0.0, 0.0, 0.18 * (-1 if x < 0 else 1)))
+        parts.append(_tag(leaf, bone))
+    for index, (x, z, angle) in enumerate(((-0.52, 1.45, -0.18), (-0.43, 1.20, 0.10), (0.58, 1.42, 0.16), (0.50, 1.14, -0.12))):
+        vine = add_cylinder(f"golem root vine {index}", (x, -0.43, z), 0.035, 0.62, root, vertices=8, rotation=(0.0, angle, 0.0))
+        parts.append(_tag(vine, "chest"))
+    for side, sign in (("L", -1), ("R", 1)):
+        rune_stud = add_ico_sphere(f"golem shoulder rune {side}", (0.68 * sign, -0.40, 1.56), (0.085, 0.045, 0.11), rune, subdivisions=2)
+        parts.append(_tag(rune_stud, f"upper_arm.{side}"))
+
+    attach_meshes(armature, parts)
+    return BuiltModel(armature, parts, {
         "unique_attack": "ground_slam",
+        "modelRevision": "heartstone-colossus-v2",
+        "rigProfile": "premium-heavy-humanoid-v2",
+        "animationProfile": "ancient-golem-ground-slam-v2",
+        "silhouetteLandmarks": ["trilithon crest", "exposed heartstone", "paired slam fists", "split pillar feet"],
+        "surfaceLanguage": "faceted basalt strata, restrained moss, cyan rune seams",
         "visualQuality": "premium-v2",
     })
 
 
 def build_thorn_matriarch() -> BuiltModel:
-    bark = MATERIALS.get("matriarch_bark", "#573A34")
-    leaf = MATERIALS.get("matriarch_leaf", "#4D8C50")
-    bloom = MATERIALS.get("matriarch_bloom", "#C94D72")
-    armature = create_standard_armature("thorn_matriarch", 1.25)
-    objects: list[bpy.types.Object] = []
-    skirt = add_cone("root_skirt", (0, 0, 0.82), 0.95, 0.34, 1.55, bark, 9)
-    _bone_part(skirt, armature, "pelvis", objects)
-    torso = add_cone("vine_torso", (0, 0, 1.62), 0.43, 0.24, 1.08, leaf, 8)
-    _bone_part(torso, armature, "chest", objects)
-    head = add_ico("bloom_face", (0, -0.05, 2.20), (0.34, 0.30, 0.38), bloom, 2)
-    _bone_part(head, armature, "head", objects)
-    for index in range(7):
-        angle = index * math.tau / 7
-        petal = add_cone(
-            f"crown_petal_{index}",
-            (math.sin(angle) * 0.34, math.cos(angle) * 0.22, 2.22 + math.cos(angle) * 0.08),
-            0.18, 0.02, 0.62, leaf, 6,
-            (math.radians(90), angle, 0),
-        )
-        _bone_part(petal, armature, "head", objects)
-    _humanoid_limbs(armature, objects, bark, bark, bloom, 1.10)
-    return BuiltModel(armature, objects, {"silhouette": "flower_root_queen", "unique_attack": "thorn_cage"})
+    """Regal briar sovereign with blossom crown, rooted gown, and cage-forming arms."""
+    bark = make_material("matriarch heartwood", "#4D3428", roughness=0.92)
+    bark_light = make_material("matriarch cut bark", "#806044", roughness=0.86)
+    bark_dark = make_material("matriarch bark shadow", "#251F22", roughness=0.98)
+    leaf_dark = make_material("matriarch deep leaf", "#234431", roughness=0.90)
+    leaf = make_material("matriarch emerald leaf", "#467B45", roughness=0.84)
+    petal = make_material("matriarch blood blossom", "#A73650", roughness=0.76)
+    petal_light = make_material("matriarch petal edge", "#E68A9E", roughness=0.66)
+    thorn = make_material("matriarch ivory thorns", "#D8C58D", roughness=0.75)
+    pollen = make_material("matriarch pollen heart", "#FFD66B", roughness=0.30, emission=0.34)
+    armature = create_standard_armature("thorn_matriarch", scale=1.17)
+    parts: list[bpy.types.Object] = []
+
+    # A tiered root-gown gives a broad royal base without reading as a generic dress.
+    skirt = add_pointed_cone("matriarch root gown", (0.0, 0.05, 0.70), 0.63, 1.22, bark_dark, vertices=12)
+    parts.append(_tag(skirt, "pelvis"))
+    for index, (angle, radius, z, sx, sz) in enumerate((
+        (-1.05, 0.45, 0.62, 0.28, 0.62), (-0.62, 0.52, 0.54, 0.31, 0.72), (-0.22, 0.54, 0.50, 0.33, 0.77),
+        (0.20, 0.54, 0.50, 0.33, 0.77), (0.62, 0.52, 0.54, 0.31, 0.72), (1.05, 0.45, 0.62, 0.28, 0.62),
+    )):
+        x = math.sin(angle) * radius
+        y = -0.18 - math.cos(angle) * 0.16
+        panel = add_leaf(f"matriarch gown leaf {index}", (x, y, z), (sx, 0.07, sz), leaf_dark if index % 2 == 0 else leaf, rotation=(0.0, 0.0, -angle * 0.28))
+        parts.append(_tag(panel, "pelvis"))
+    waist = add_torus("matriarch living waist", (0.0, -0.01, 1.12), 0.33, 0.075, bark_light, major_segments=12, minor_segments=5)
+    parts.append(_tag(waist, "spine"))
+    _boss_rock(parts, "matriarch stem torso", (0.0, 0.0, 1.40), (0.34, 0.25, 0.48), bark, "chest")
+    corset = add_cube("matriarch split bark corset", (0.0, -0.26, 1.38), (0.48, 0.15, 0.56), bark_light, rotation=(0.0, 0.0, math.radians(45)))
+    parts.append(_tag(corset, "armor_socket"))
+    sternum = add_ico_sphere("matriarch pollen jewel", (0.0, -0.40, 1.49), (0.10, 0.06, 0.14), pollen, subdivisions=2)
+    parts.append(_tag(sternum, "armor_socket"))
+
+    # Root toes radiate from the gown and visually foreshadow the thorn cage.
+    for index, angle in enumerate((-1.15, -0.76, -0.38, 0.0, 0.38, 0.76, 1.15)):
+        x = math.sin(angle) * 0.64
+        y = -0.28 - math.cos(angle) * 0.20
+        root_toe = add_pointed_cone(f"matriarch radial root {index}", (x, y, 0.15), 0.15, 0.72, bark, vertices=8, rotation=(0.0, 0.95 * angle, 0.0))
+        parts.append(_tag(root_toe, "pelvis"))
+        _boss_spike(parts, f"matriarch root thorn {index}", (x * 1.25, y - 0.10, 0.28), 0.055, 0.30, thorn, "pelvis", (0.30, angle * 0.30, angle * 0.25))
+
+    # Vine arms terminate in blossom palms and carry readable cage-thorn fans.
+    for side, sign in (("L", -1), ("R", 1)):
+        upper_bone, fore_bone, hand_bone = f"upper_arm.{side}", f"forearm.{side}", f"hand.{side}"
+        shoulder_leaf = add_leaf(f"matriarch mantle {side}", (0.40 * sign, -0.01, 1.61), (0.42, 0.10, 0.25), leaf_dark, rotation=(0.0, 0.0, 0.42 * sign))
+        parts.append(_tag(shoulder_leaf, upper_bone))
+        upper = add_cylinder_between(f"matriarch upper vine {side}", (0.30 * sign, 0.0, 1.48), (0.62 * sign, -0.06, 1.24), 0.10, bark, vertices=9)
+        fore = add_cylinder_between(f"matriarch fore vine {side}", (0.60 * sign, -0.06, 1.25), (0.84 * sign, -0.13, 0.98), 0.075, bark_light, vertices=8)
+        parts.extend((_tag(upper, upper_bone), _tag(fore, fore_bone)))
+        palm = add_ico_sphere(f"matriarch blossom palm {side}", (0.88 * sign, -0.17, 0.92), (0.16, 0.10, 0.16), petal, subdivisions=2)
+        parts.append(_tag(palm, hand_bone))
+        for fan in range(3):
+            fan_z = 0.86 + fan * 0.17
+            fan_x = (0.90 + fan * 0.08) * sign
+            fan_leaf = add_leaf(f"matriarch cage leaf {side} {fan}", (fan_x, -0.12, fan_z), (0.20, 0.06, 0.28), leaf, rotation=(0.0, 0.0, (0.48 - fan * 0.18) * sign))
+            cage_socket = f"ring_socket.{side}"
+            parts.append(_tag(fan_leaf, cage_socket))
+            _boss_spike(parts, f"matriarch cage thorn {side} {fan}", ((1.02 + fan * 0.08) * sign, -0.17, fan_z + 0.11), 0.055, 0.38, thorn, cage_socket, (0.12, 0.42 * sign, 0.52 * sign))
+
+    # Flower-mask head and radial crown establish a unique boss portrait silhouette.
+    _boss_rock(parts, "matriarch seed mask", (0.0, -0.04, 1.97), (0.29, 0.23, 0.31), bark_dark, "head")
+    for side, sign in (("L", -1), ("R", 1)):
+        eye = add_ico_sphere(f"matriarch pollen eye {side}", (0.105 * sign, -0.265, 2.00), (0.045, 0.035, 0.055), pollen, subdivisions=2)
+        parts.append(_tag(eye, "head"))
+    for index in range(10):
+        angle = (math.tau * index / 10.0) + math.pi / 2.0
+        x = math.cos(angle) * 0.38
+        z = 2.02 + math.sin(angle) * 0.38
+        outer = add_leaf(f"matriarch crown petal {index}", (x, 0.0, z), (0.20, 0.07, 0.34), petal if index % 2 == 0 else petal_light, rotation=(0.0, 0.0, angle - math.pi / 2.0))
+        parts.append(_tag(outer, "helmet_socket"))
+    crown_core = add_ico_sphere("matriarch crown heart", (0.0, -0.08, 2.10), (0.24, 0.13, 0.24), pollen, subdivisions=2)
+    parts.append(_tag(crown_core, "helmet_socket"))
+    for index, angle in enumerate((-0.82, -0.42, 0.0, 0.42, 0.82)):
+        _boss_spike(parts, f"matriarch crown thorn {index}", (math.sin(angle) * 0.42, 0.02, 2.36 + math.cos(angle) * 0.10), 0.055, 0.42, thorn, "helmet_socket", (0.0, angle, angle * 0.28))
+
+    # Two restrained back-vines complete the circular cage motif without clutter.
+    for side, sign in (("L", -1), ("R", 1)):
+        points = ((0.28 * sign, 0.18, 1.50), (0.62 * sign, 0.25, 1.74), (0.80 * sign, 0.20, 1.98))
+        for segment in range(2):
+            vine = add_cylinder_between(f"matriarch halo vine {side} {segment}", points[segment], points[segment + 1], 0.045, bark_light, vertices=8)
+            parts.append(_tag(vine, "chest"))
+        _boss_spike(parts, f"matriarch halo tip {side}", points[-1], 0.06, 0.36, thorn, "chest", (0.0, -0.45 * sign, 0.50 * sign))
+
+    attach_meshes(armature, parts)
+    return BuiltModel(armature, parts, {
+        "unique_attack": "thorn_cage",
+        "modelRevision": "briar-sovereign-v2",
+        "rigProfile": "premium-rooted-caster-v2",
+        "animationProfile": "thorn-matriarch-thorn-cage-v2",
+        "silhouetteLandmarks": ["ten-petal crown", "rooted royal gown", "paired cage-thorn fans", "briar halo"],
+        "surfaceLanguage": "layered heartwood, emerald leaves, blood-petal crown, ivory thorns",
+        "visualQuality": "premium-v2",
+    })
 
 
 def build_ember_wyrm() -> BuiltModel:
-    scale = MATERIALS.get("wyrm_scale", "#8E382E")
-    plate = MATERIALS.get("wyrm_plate", PALETTE["amber"])
-    flame = MATERIALS.get("wyrm_flame", "#FFD15A")
-    armature = create_standard_armature("ember_wyrm", 1.20)
-    objects: list[bpy.types.Object] = []
-    body = add_cone("wyrm_body", (0, 0.22, 1.26), 0.66, 0.32, 1.75, scale, 9)
-    _bone_part(body, armature, "spine", objects)
-    neck = add_cone("wyrm_neck", (0, -0.28, 2.00), 0.32, 0.22, 0.92, scale, 8, (math.radians(18), 0, 0))
-    _bone_part(neck, armature, "neck", objects)
-    head = add_cone("wyrm_head", (0, -0.58, 2.40), 0.32, 0.12, 0.75, plate, 8, (math.radians(90), 0, 0))
-    _bone_part(head, armature, "head", objects)
+    """Winged furnace wyrm with plated belly, sweeping tail, and flame-sweep profile."""
+    scale_dark = make_material("wyrm obsidian scale", "#241F24", roughness=0.82, metallic=0.08)
+    scale = make_material("wyrm crimson scale", "#7D2F2B", roughness=0.76)
+    scale_hot = make_material("wyrm ember scale", "#C9532F", roughness=0.68)
+    plate = make_material("wyrm belly gold", "#D39A49", roughness=0.62, metallic=0.16)
+    horn = make_material("wyrm charred horn", "#49372D", roughness=0.86)
+    membrane = make_material("wyrm wing membrane", "#9A4039", roughness=0.78)
+    membrane_hot = make_material("wyrm membrane ember", "#DF6B45", roughness=0.68)
+    flame = make_material("wyrm flame", "#FF9B38", roughness=0.24, emission=0.55)
+    flame_core = make_material("wyrm flame core", "#FFF0A0", roughness=0.16, emission=0.82)
+    armature = create_standard_armature("ember_wyrm", scale=1.13)
+    parts: list[bpy.types.Object] = []
+
+    # Serpentine body volumes overlap as purposeful armour rings rather than a robe.
+    _boss_rock(parts, "wyrm haunch", (0.0, 0.08, 0.73), (0.48, 0.34, 0.42), scale_dark, "pelvis", rotation=(0.04, 0.0, 0.0))
+    _boss_rock(parts, "wyrm furnace belly", (0.0, 0.02, 1.08), (0.47, 0.34, 0.47), scale, "spine", rotation=(-0.04, 0.0, 0.0))
+    _boss_rock(parts, "wyrm ribcage", (0.0, 0.03, 1.45), (0.55, 0.37, 0.48), scale_dark, "chest", rotation=(0.04, 0.0, 0.0))
+    for index in range(6):
+        z = 0.84 + index * 0.15
+        belly = add_leaf(f"wyrm belly plate {index}", (0.0, -0.34 - index * 0.008, z), (0.24 + index * 0.015, 0.055, 0.13), plate if index % 2 == 0 else scale_hot, rotation=(0.0, 0.0, 0.0))
+        parts.append(_tag(belly, "spine" if index < 3 else "chest"))
     for side, sign in (("L", -1), ("R", 1)):
-        wing = add_cone(
-            f"wyrm_wing_{side}", (0.75 * sign, 0.14, 1.72), 0.72, 0.04, 1.75,
-            scale, 5, (0, math.radians(72 * sign), math.radians(12 * sign)),
-        )
-        _bone_part(wing, armature, f"upper_arm.{side}", objects)
-        horn = add_cone(f"wyrm_horn_{side}", (0.20 * sign, -0.32, 2.67), 0.09, 0, 0.52, plate, 6, (0, math.radians(18 * sign), 0))
-        _bone_part(horn, armature, "head", objects)
-    tail = add_cone("wyrm_tail", (0, 0.92, 0.82), 0.35, 0.03, 2.20, scale, 9, (math.radians(-55), 0, 0))
-    _bone_part(tail, armature, "pelvis", objects)
-    flame_obj = add_cone("wyrm_flame", (0, -1.03, 2.32), 0.22, 0, 0.72, flame, 7, (math.radians(90), 0, 0))
-    _bone_part(flame_obj, armature, "head", objects)
-    return BuiltModel(armature, objects, {"silhouette": "winged_wyrm", "unique_attack": "flame_sweep"})
+        for index in range(3):
+            body_scale = add_leaf(f"wyrm flank scale {side} {index}", ((0.34 + 0.07 * index) * sign, -0.25, 1.17 + 0.16 * index), (0.20, 0.055, 0.20), scale_hot if index == 1 else scale, rotation=(0.0, 0.0, 0.32 * sign))
+            parts.append(_tag(body_scale, "chest"))
+
+    # Digitigrade legs and triple claws keep the grounded monster silhouette clear.
+    for side, sign in (("L", -1), ("R", 1)):
+        thigh, shin, foot = f"thigh.{side}", f"shin.{side}", f"foot.{side}"
+        _boss_rock(parts, f"wyrm thigh {side}", (0.31 * sign, 0.05, 0.59), (0.28, 0.27, 0.34), scale, thigh)
+        _boss_rock(parts, f"wyrm hock {side}", (0.36 * sign, -0.02, 0.33), (0.22, 0.22, 0.26), scale_dark, shin)
+        foot_plate = add_cube(f"wyrm foot {side}", (0.38 * sign, -0.20, 0.14), (0.42, 0.52, 0.18), scale, rotation=(0.0, 0.06 * sign, 0.0))
+        parts.append(_tag(foot_plate, foot))
+        for claw in range(3):
+            claw_x = (0.25 + claw * 0.13) * sign
+            _boss_spike(parts, f"wyrm foot claw {side} {claw}", (claw_x, -0.50, 0.14), 0.045, 0.28, horn, foot, (math.radians(72), 0.0, 0.0))
+
+    # Broad bat-like wings use bone spars plus three faceted membrane panels each.
+    for side, sign in (("L", -1), ("R", 1)):
+        wing_bone = f"upper_arm.{side}"
+        fore_bone = f"forearm.{side}"
+        root_point = (0.36 * sign, 0.13, 1.56)
+        elbow = (0.83 * sign, 0.16, 1.91)
+        high_tip = (1.33 * sign, 0.12, 2.28)
+        low_tip = (1.27 * sign, 0.10, 1.34)
+        spar_a = add_cylinder_between(f"wyrm wing spar high {side}", root_point, elbow, 0.065, horn, vertices=8)
+        spar_b = add_cylinder_between(f"wyrm wing spar tip {side}", elbow, high_tip, 0.055, horn, vertices=8)
+        spar_c = add_cylinder_between(f"wyrm wing spar low {side}", elbow, low_tip, 0.052, horn, vertices=8)
+        parts.extend((_tag(spar_a, wing_bone), _tag(spar_b, fore_bone), _tag(spar_c, fore_bone)))
+        for index, (x, z, sx, sz, rot) in enumerate((
+            (0.60, 1.68, 0.43, 0.45, 0.54), (0.93, 1.94, 0.47, 0.54, 0.72), (1.07, 1.55, 0.44, 0.53, -0.34),
+        )):
+            panel = add_leaf(f"wyrm wing membrane {side} {index}", (x * sign, 0.17, z), (sx, 0.065, sz), membrane_hot if index == 1 else membrane, rotation=(0.0, 0.0, rot * sign))
+            parts.append(_tag(panel, wing_bone if index == 0 else fore_bone))
+        _boss_spike(parts, f"wyrm wing hook {side}", high_tip, 0.06, 0.38, horn, fore_bone, (0.0, -0.62 * sign, 0.45 * sign))
+        # Small grasping arm under each wing root.
+        arm = add_cylinder_between(f"wyrm grasping arm {side}", (0.32 * sign, -0.18, 1.38), (0.62 * sign, -0.30, 1.13), 0.07, scale, vertices=8)
+        parts.append(_tag(arm, wing_bone))
+        for claw in range(2):
+            _boss_spike(parts, f"wyrm hand claw {side} {claw}", ((0.65 + claw * 0.08) * sign, -0.33, 1.08 - claw * 0.05), 0.035, 0.22, horn, f"hand.{side}", (math.radians(64), 0.0, 0.20 * sign))
+
+    # Long neck, horned dragon head, and visible jaws replace the old humanoid read.
+    for index, (location, local_scale, bone) in enumerate((
+        ((0.0, 0.02, 1.69), (0.35, 0.28, 0.30), "neck"),
+        ((0.0, -0.02, 1.90), (0.31, 0.26, 0.29), "neck"),
+        ((0.0, -0.08, 2.10), (0.36, 0.30, 0.30), "head"),
+    )):
+        _boss_rock(parts, f"wyrm neck scale {index}", location, local_scale, scale if index != 1 else scale_hot, bone)
+    muzzle = add_cube("wyrm long muzzle", (0.0, -0.40, 2.05), (0.52, 0.50, 0.24), scale, rotation=(0.05, 0.0, 0.0))
+    jaw = add_cube("wyrm lower jaw", (0.0, -0.43, 1.91), (0.44, 0.46, 0.12), scale_dark, rotation=(-0.10, 0.0, 0.0))
+    parts.extend((_tag(muzzle, "head"), _tag(jaw, "head")))
+    for side, sign in (("L", -1), ("R", 1)):
+        eye = add_ico_sphere(f"wyrm furnace eye {side}", (0.16 * sign, -0.39, 2.15), (0.055, 0.04, 0.055), flame_core, subdivisions=2)
+        parts.append(_tag(eye, "head"))
+        _boss_spike(parts, f"wyrm crown horn {side}", (0.23 * sign, 0.0, 2.31), 0.075, 0.52, horn, "head", (0.0, -0.38 * sign, 0.20 * sign))
+        cheek = add_leaf(f"wyrm cheek plate {side}", (0.24 * sign, -0.30, 2.01), (0.17, 0.05, 0.22), plate, rotation=(0.0, 0.0, 0.32 * sign))
+        parts.append(_tag(cheek, "head"))
+    for tooth_index, x in enumerate((-0.14, -0.05, 0.05, 0.14)):
+        _boss_spike(parts, f"wyrm jaw tooth {tooth_index}", (x, -0.65, 1.95), 0.025, 0.14, horn, "head", (math.radians(180), 0.0, 0.0))
+    # A reserved head-child socket scales this layered breath from hidden pilot to
+    # full signature sweep without changing the fixed mesh/atlas contract.
+    flame_tongue = add_pointed_cone("wyrm breath plume", (0.0, -0.88, 1.98), 0.17, 0.82, flame, vertices=10, rotation=(math.radians(78), 0.0, 0.0))
+    flame_inner = add_pointed_cone("wyrm breath inner plume", (0.0, -0.78, 1.98), 0.095, 0.56, flame_core, vertices=9, rotation=(math.radians(78), 0.0, 0.0))
+    flame_seed = add_ico_sphere("wyrm breath core", (0.0, -0.58, 1.99), (0.10, 0.13, 0.10), flame_core, subdivisions=2)
+    parts.extend((
+        _tag(flame_tongue, "helmet_socket"),
+        _tag(flame_inner, "helmet_socket"),
+        _tag(flame_seed, "helmet_socket"),
+    ))
+
+    # Segmented tail sweeps sideways to distinguish the Wyrm even in a still frame.
+    tail_points = ((0.10, 0.16, 0.73), (0.45, 0.20, 0.61), (0.76, 0.16, 0.47), (1.02, 0.08, 0.34), (1.22, 0.0, 0.30))
+    for index in range(len(tail_points) - 1):
+        segment = add_cylinder_between(f"wyrm tail segment {index}", tail_points[index], tail_points[index + 1], 0.17 - index * 0.025, scale if index < 2 else scale_dark, vertices=9)
+        parts.append(_tag(segment, "pelvis"))
+        if index > 0:
+            fin = add_leaf(f"wyrm tail fin {index}", (tail_points[index][0], tail_points[index][1], tail_points[index][2] + 0.13), (0.13, 0.04, 0.20), scale_hot, rotation=(0.0, 0.0, 0.25))
+            parts.append(_tag(fin, "pelvis"))
+    _boss_spike(parts, "wyrm tail barb", tail_points[-1], 0.09, 0.46, horn, "pelvis", (0.0, math.radians(72), 0.0))
+
+    attach_meshes(armature, parts)
+    return BuiltModel(armature, parts, {
+        "unique_attack": "flame_sweep",
+        "modelRevision": "furnace-wyrm-v2",
+        "rigProfile": "premium-winged-wyrm-mapped-v2",
+        "animationProfile": "ember-wyrm-flame-sweep-v2",
+        "silhouetteLandmarks": ["faceted bat wings", "horned long muzzle", "gold furnace belly", "barbed sweeping tail"],
+        "surfaceLanguage": "obsidian scales, crimson membranes, gold belly plates, restrained emissive flame",
+        "visualQuality": "premium-v2",
+    })
 
 
 def build_void_knight() -> BuiltModel:
-    armor = MATERIALS.get("void_armor", "#252536", True)
-    violet = MATERIALS.get("void_energy", "#8D61C7")
-    silver = MATERIALS.get("void_silver", "#8794A3", True)
-    armature = create_standard_armature("void_knight", 1.24)
-    objects: list[bpy.types.Object] = []
-    torso = add_cube("void_breastplate", (0, 0, 1.45), (0.88, 0.54, 1.10), armor, 0.10)
-    _bone_part(torso, armature, "chest", objects)
-    helmet = add_cone("void_helmet", (0, 0, 2.18), 0.42, 0.18, 0.72, armor, 8)
-    _bone_part(helmet, armature, "head", objects)
-    visor = add_cube("void_visor", (0, -0.36, 2.15), (0.48, 0.07, 0.15), violet, 0.02)
-    _bone_part(visor, armature, "head", objects)
-    _humanoid_limbs(armature, objects, armor, armor, silver, 1.18)
-    sword = add_cylinder_between("void_greatsword", (0.88, -0.08, 0.55), (0.88, -0.08, 2.42), 0.09, silver, 6)
-    _bone_part(sword, armature, "weapon_socket", objects)
-    blade_tip = add_cone("void_blade_tip", (0.88, -0.08, 2.55), 0.17, 0, 0.42, violet, 4)
-    _bone_part(blade_tip, armature, "weapon_socket", objects)
-    cape = add_cone("void_cape", (0, 0.26, 1.35), 0.72, 0.26, 1.46, violet, 7)
-    _bone_part(cape, armature, "chest", objects)
-    return BuiltModel(armature, objects, {"silhouette": "armored_greatsword", "unique_attack": "void_charge"})
+    """Horned abyss champion with layered black plate, torn cape, and void greatblade."""
+    armor_dark = make_material("void knight black plate", "#20242E", roughness=0.54, metallic=0.62)
+    armor = make_material("void knight gunmetal", "#41495C", roughness=0.48, metallic=0.70)
+    edge = make_material("void knight silver edge", "#9EABC2", roughness=0.38, metallic=0.78)
+    cloth = make_material("void knight cape", "#30233E", roughness=0.88)
+    cloth_light = make_material("void knight cape lining", "#56356D", roughness=0.82)
+    void = make_material("void knight abyss", "#7A3ED1", roughness=0.24, emission=0.44)
+    void_hot = make_material("void knight void core", "#D8B5FF", roughness=0.16, emission=0.76)
+    gold = make_material("void knight old gold", "#B88B49", roughness=0.54, metallic=0.54)
+    leather = make_material("void knight grip", "#4A3028", roughness=0.90)
+    armature = create_standard_armature("void_knight", scale=1.14)
+    parts: list[bpy.types.Object] = []
+
+    # Plate hierarchy: dark under-shell, overlapping chest facets, and a bright trim key.
+    _boss_rock(parts, "void knight underbody", (0.0, 0.04, 1.22), (0.46, 0.30, 0.63), armor_dark, "spine")
+    chest = add_cube("void knight breastplate", (0.0, -0.16, 1.47), (0.76, 0.30, 0.61), armor, rotation=(0.03, 0.0, 0.0))
+    parts.append(_tag(chest, "chest"))
+    for index, (x, z, rot) in enumerate(((-0.21, 1.51, -0.12), (0.21, 1.51, 0.12), (-0.16, 1.25, 0.08), (0.16, 1.25, -0.08))):
+        plate_piece = add_cube(f"void knight chest facet {index}", (x, -0.34, z), (0.32, 0.10, 0.27), armor_dark if index > 1 else edge, rotation=(0.0, rot, rot))
+        parts.append(_tag(plate_piece, "chest"))
+    core = add_ico_sphere("void knight abyss core", (0.0, -0.43, 1.45), (0.13, 0.06, 0.17), void, subdivisions=2, rotation=(0.0, 0.0, math.radians(45)))
+    core_seed = add_ico_sphere("void knight abyss seed", (0.0, -0.49, 1.45), (0.055, 0.035, 0.075), void_hot, subdivisions=2)
+    parts.extend((_tag(core, "armor_socket"), _tag(core_seed, "armor_socket")))
+    belt = add_torus("void knight war belt", (0.0, 0.0, 0.98), 0.38, 0.07, gold, major_segments=12, minor_segments=4)
+    parts.append(_tag(belt, "pelvis"))
+    buckle = add_cube("void knight crest buckle", (0.0, -0.38, 0.98), (0.20, 0.10, 0.24), gold, rotation=(0.0, 0.0, math.radians(45)))
+    parts.append(_tag(buckle, "pelvis"))
+
+    # Asymmetric pauldrons, vambraces, and knuckle ridges reinforce boss scale.
+    for side, sign in (("L", -1), ("R", 1)):
+        upper_bone, fore_bone, hand_bone = f"upper_arm.{side}", f"forearm.{side}", f"hand.{side}"
+        _boss_rock(parts, f"void knight pauldron {side}", (0.53 * sign, 0.0, 1.59), (0.40 if side == "R" else 0.35, 0.31, 0.27), armor, upper_bone)
+        rim = add_torus(f"void knight pauldron rim {side}", (0.55 * sign, -0.22, 1.59), 0.30 if side == "R" else 0.26, 0.035, edge, major_segments=10, minor_segments=4, rotation=(math.radians(90), 0.0, 0.0))
+        parts.append(_tag(rim, upper_bone))
+        if side == "R":
+            _boss_spike(parts, "void knight high pauldron spike", (0.72, 0.02, 1.89), 0.09, 0.52, edge, upper_bone, (0.0, -0.36, 0.18))
+        upper = add_cylinder_between(f"void knight rerebrace {side}", (0.43 * sign, 0.0, 1.42), (0.68 * sign, -0.04, 1.19), 0.18, armor_dark, vertices=10)
+        fore = add_cylinder_between(f"void knight vambrace {side}", (0.68 * sign, -0.04, 1.18), (0.88 * sign, -0.10, 0.92), 0.17, armor, vertices=10)
+        parts.extend((_tag(upper, upper_bone), _tag(fore, fore_bone)))
+        gauntlet = add_ico_sphere(f"void knight gauntlet {side}", (0.91 * sign, -0.13, 0.86), (0.22, 0.20, 0.20), armor_dark, subdivisions=2)
+        parts.append(_tag(gauntlet, hand_bone))
+        for knuckle in range(3):
+            ridge = add_cube(f"void knight knuckle {side} {knuckle}", ((0.79 + knuckle * 0.10) * sign, -0.31, 0.86), (0.08, 0.08, 0.08), edge)
+            parts.append(_tag(ridge, hand_bone))
+
+    # Segmented cuisses, winged knees, and sabatons create a complete armoured figure.
+    for side, sign in (("L", -1), ("R", 1)):
+        thigh, shin, foot = f"thigh.{side}", f"shin.{side}", f"foot.{side}"
+        tasset = add_leaf(f"void knight tasset {side}", (0.26 * sign, -0.22, 0.91), (0.28, 0.07, 0.40), cloth_light, rotation=(0.0, 0.0, 0.12 * sign))
+        parts.append(_tag(tasset, thigh))
+        cuisse = add_cylinder(f"void knight cuisse {side}", (0.27 * sign, 0.0, 0.65), 0.20, 0.48, armor, vertices=10)
+        parts.append(_tag(cuisse, thigh))
+        knee = add_ico_sphere(f"void knight poleyn {side}", (0.29 * sign, -0.15, 0.43), (0.23, 0.18, 0.20), edge, subdivisions=2)
+        parts.append(_tag(knee, shin))
+        _boss_spike(parts, f"void knight knee wing {side}", (0.48 * sign, -0.15, 0.44), 0.06, 0.34, edge, shin, (0.0, -0.62 * sign, 0.44 * sign))
+        greave = add_cylinder(f"void knight greave {side}", (0.30 * sign, 0.0, 0.24), 0.18, 0.40, armor_dark, vertices=10)
+        parts.append(_tag(greave, shin))
+        sabaton = add_cube(f"void knight sabaton {side}", (0.31 * sign, -0.20, 0.11), (0.38, 0.60, 0.18), armor, rotation=(0.0, 0.04 * sign, 0.0))
+        toe_cap = add_cube(f"void knight toe cap {side}", (0.31 * sign, -0.48, 0.12), (0.31, 0.22, 0.14), edge)
+        parts.extend((_tag(sabaton, foot), _tag(toe_cap, foot)))
+
+    # Horned enclosed helm, narrow luminous visor, and crown ridge are iconic at 256 px.
+    _boss_rock(parts, "void knight helm", (0.0, -0.02, 2.03), (0.39, 0.33, 0.38), armor_dark, "head")
+    faceplate = add_cube("void knight faceplate", (0.0, -0.34, 2.01), (0.54, 0.16, 0.43), armor, rotation=(0.04, 0.0, 0.0))
+    visor = add_cube("void knight void visor", (0.0, -0.44, 2.09), (0.39, 0.045, 0.075), void_hot, rotation=(0.0, 0.0, 0.0))
+    chin = add_pointed_cone("void knight pointed bevor", (0.0, -0.36, 1.82), 0.22, 0.32, armor_dark, vertices=8, rotation=(0.0, 0.0, math.radians(180)))
+    parts.extend((_tag(faceplate, "head"), _tag(visor, "head"), _tag(chin, "head")))
+    crest = add_cube("void knight helm crest", (0.0, 0.02, 2.36), (0.12, 0.22, 0.42), gold, rotation=(0.0, 0.0, 0.0))
+    parts.append(_tag(crest, "helmet_socket"))
+    for side, sign in (("L", -1), ("R", 1)):
+        _boss_spike(parts, f"void knight crown horn {side}", (0.26 * sign, 0.0, 2.32), 0.095, 0.62, armor, "helmet_socket", (0.0, -0.52 * sign, 0.28 * sign))
+
+    # Split torn cape sits behind the armour and streams clearly during the charge.
+    for index, (x, z, sx, sz, rot) in enumerate(((-0.23, 1.30, 0.38, 0.78, -0.12), (0.23, 1.28, 0.40, 0.82, 0.14), (-0.47, 1.18, 0.27, 0.60, -0.25), (0.47, 1.14, 0.25, 0.56, 0.28))):
+        cape = add_leaf(f"void knight cape panel {index}", (x, 0.26, z), (sx, 0.065, sz), cloth if index < 2 else cloth_light, rotation=(0.0, 0.0, rot))
+        parts.append(_tag(cape, "chest"))
+
+    # Oversized greatblade remains one coherent socket-driven weapon during charge.
+    grip = add_cylinder("void greatblade grip", (0.91, -0.08, 1.01), 0.07, 0.46, leather, vertices=10)
+    pommel = add_ico_sphere("void greatblade pommel", (0.91, -0.08, 0.77), (0.13, 0.12, 0.13), void, subdivisions=2)
+    guard = add_cube("void greatblade crossguard", (0.91, -0.08, 1.25), (0.72, 0.14, 0.11), gold, rotation=(0.0, 0.0, 0.0))
+    blade = add_cube("void greatblade blade", (0.91, -0.07, 1.78), (0.25, 0.12, 1.05), armor, rotation=(0.0, 0.0, 0.0))
+    fuller = add_cube("void greatblade fuller", (0.91, -0.14, 1.78), (0.065, 0.035, 0.88), void, rotation=(0.0, 0.0, 0.0))
+    blade_edge_l = add_cube("void greatblade edge L", (0.78, -0.08, 1.78), (0.055, 0.15, 1.06), edge, rotation=(0.0, 0.0, -0.02))
+    blade_edge_r = add_cube("void greatblade edge R", (1.04, -0.08, 1.78), (0.055, 0.15, 1.06), edge, rotation=(0.0, 0.0, 0.02))
+    tip = add_pointed_cone("void greatblade point", (0.91, -0.07, 2.39), 0.18, 0.44, edge, vertices=4, rotation=(0.0, 0.0, math.radians(45)))
+    for piece in (grip, pommel, guard, blade, fuller, blade_edge_l, blade_edge_r, tip):
+        parts.append(_tag(piece, "weapon_socket"))
+
+    attach_meshes(armature, parts)
+    return BuiltModel(armature, parts, {
+        "unique_attack": "void_charge",
+        "modelRevision": "abyss-champion-v2",
+        "rigProfile": "premium-armored-humanoid-v2",
+        "animationProfile": "void-knight-void-charge-v2",
+        "silhouetteLandmarks": ["forked void horns", "asymmetric pauldrons", "split torn cape", "socket-driven greatblade"],
+        "surfaceLanguage": "layered gunmetal plate, silver edges, old gold, restrained violet abyss glow",
+        "visualQuality": "premium-v2",
+    })
 
 
 BUILDERS: dict[str, Callable[[], BuiltModel]] = {

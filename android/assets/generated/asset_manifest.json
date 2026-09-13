@@ -2,6 +2,7 @@
   "assets": [
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "animationProfile": "ancient-golem-ground-slam-v2",
       "armature": "ancient_golem_armature",
       "atlas": "sprites/ancient_golem.atlas",
       "boneAnimated": true,
@@ -33,6 +34,11 @@
         "weapon_socket"
       ],
       "builder": "ancient_golem",
+      "categoryReview": {
+        "category": "bosses",
+        "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -272,6 +278,10 @@
       "frameRate": 12,
       "frameSize": 256,
       "key": "ancient_golem",
+      "materialCount": 9,
+      "meshParts": 64,
+      "modelRevision": "heartstone-colossus-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -279,7 +289,9 @@
       },
       "renderSamples": 16,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-heavy-humanoid-v2",
       "sheet": "sprites/ancient_golem.png",
       "sheetHeight": 1024,
       "sheetWidth": 2048,
@@ -291,8 +303,14 @@
           "width": 2048
         }
       ],
-      "silhouette": "heartstone_monolith",
-      "triangles": 1524,
+      "silhouetteLandmarks": [
+        "trilithon crest",
+        "exposed heartstone",
+        "paired slam fists",
+        "split pillar feet"
+      ],
+      "surfaceLanguage": "faceted basalt strata, restrained moss, cyan rune seams",
+      "triangles": 3442,
       "unique_attack": "ground_slam",
       "visualQuality": "premium-v2"
     },
@@ -416,6 +434,7 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "animationProfile": "ember-wyrm-flame-sweep-v2",
       "armature": "ember_wyrm_armature",
       "atlas": "sprites/ember_wyrm.atlas",
       "boneAnimated": true,
@@ -447,6 +466,11 @@
         "weapon_socket"
       ],
       "builder": "ember_wyrm",
+      "categoryReview": {
+        "category": "bosses",
+        "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -686,11 +710,19 @@
       "frameRate": 12,
       "frameSize": 256,
       "key": "ember_wyrm",
+      "materialCount": 10,
+      "meshParts": 74,
+      "modelRevision": "furnace-wyrm-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-winged-wyrm-mapped-v2",
       "sheet": "sprites/ember_wyrm.png",
       "sheetHeight": 1024,
       "sheetWidth": 2048,
@@ -702,9 +734,16 @@
           "width": 2048
         }
       ],
-      "silhouette": "winged_wyrm",
-      "triangles": 308,
-      "unique_attack": "flame_sweep"
+      "silhouetteLandmarks": [
+        "faceted bat wings",
+        "horned long muzzle",
+        "gold furnace belly",
+        "barbed sweeping tail"
+      ],
+      "surfaceLanguage": "obsidian scales, crimson membranes, gold belly plates, restrained emissive flame",
+      "triangles": 2324,
+      "unique_attack": "flame_sweep",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -14831,6 +14870,7 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "animationProfile": "thorn-matriarch-thorn-cage-v2",
       "armature": "thorn_matriarch_armature",
       "atlas": "sprites/thorn_matriarch.atlas",
       "boneAnimated": true,
@@ -14862,6 +14902,11 @@
         "weapon_socket"
       ],
       "builder": "thorn_matriarch",
+      "categoryReview": {
+        "category": "bosses",
+        "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -15101,11 +15146,19 @@
       "frameRate": 12,
       "frameSize": 256,
       "key": "thorn_matriarch",
+      "materialCount": 10,
+      "meshParts": 71,
+      "modelRevision": "briar-sovereign-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-rooted-caster-v2",
       "sheet": "sprites/thorn_matriarch.png",
       "sheetHeight": 1024,
       "sheetWidth": 2048,
@@ -15117,9 +15170,16 @@
           "width": 2048
         }
       ],
-      "silhouette": "flower_root_queen",
-      "triangles": 724,
-      "unique_attack": "thorn_cage"
+      "silhouetteLandmarks": [
+        "ten-petal crown",
+        "rooted royal gown",
+        "paired cage-thorn fans",
+        "briar halo"
+      ],
+      "surfaceLanguage": "layered heartwood, emerald leaves, blood-petal crown, ivory thorns",
+      "triangles": 2008,
+      "unique_attack": "thorn_cage",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15735,6 +15795,7 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "animationProfile": "void-knight-void-charge-v2",
       "armature": "void_knight_armature",
       "atlas": "sprites/void_knight.atlas",
       "boneAnimated": true,
@@ -15766,6 +15827,11 @@
         "weapon_socket"
       ],
       "builder": "void_knight",
+      "categoryReview": {
+        "category": "bosses",
+        "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
       "clips": {
         "attack": [
           {
@@ -16005,11 +16071,19 @@
       "frameRate": 12,
       "frameSize": 256,
       "key": "void_knight",
+      "materialCount": 10,
+      "meshParts": 61,
+      "modelRevision": "abyss-champion-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.12
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+      "rigBoneCount": 25,
+      "rigProfile": "premium-armored-humanoid-v2",
       "sheet": "sprites/void_knight.png",
       "sheetHeight": 1024,
       "sheetWidth": 2048,
@@ -16021,9 +16095,16 @@
           "width": 2048
         }
       ],
-      "silhouette": "armored_greatsword",
-      "triangles": 610,
-      "unique_attack": "void_charge"
+      "silhouetteLandmarks": [
+        "forked void horns",
+        "asymmetric pauldrons",
+        "split torn cape",
+        "socket-driven greatblade"
+      ],
+      "surfaceLanguage": "layered gunmetal plate, silver edges, old gold, restrained violet abyss glow",
+      "triangles": 2082,
+      "unique_attack": "void_charge",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16206,7 +16287,7 @@
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
   "frameRate": 12,
-  "generatedBatch": "enemies",
+  "generatedBatch": "bosses",
   "maxAtlasPageSize": 2048,
   "opaqueRenderSamples": 16,
   "overlayRenderSamples": 8,

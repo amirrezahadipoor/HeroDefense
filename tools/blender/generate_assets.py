@@ -80,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "enemies", "characters", "world-tree", "equipment", "environment", "ui", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "environment", "ui", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -611,6 +611,12 @@ def main() -> None:
         generated.extend(
             render_character(asset, output, args.keep_frames)
             for asset in REGULAR_CHARACTERS[1:]
+            if not only or asset.key in only
+        )
+    if args.batch == "bosses":
+        generated.extend(
+            render_character(asset, output, args.keep_frames)
+            for asset in BOSSES
             if not only or asset.key in only
         )
     if args.batch in {"characters", "all"}:

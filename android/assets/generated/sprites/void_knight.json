@@ -1,5 +1,6 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "animationProfile": "void-knight-void-charge-v2",
   "armature": "void_knight_armature",
   "atlas": "sprites/void_knight.atlas",
   "boneAnimated": true,
@@ -31,6 +32,11 @@
     "weapon_socket"
   ],
   "builder": "void_knight",
+  "categoryReview": {
+    "category": "bosses",
+    "document": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+    "status": "accepted"
+  },
   "clips": {
     "attack": [
       {
@@ -270,11 +276,19 @@
   "frameRate": 12,
   "frameSize": 256,
   "key": "void_knight",
+  "materialCount": 10,
+  "meshParts": 61,
+  "modelRevision": "abyss-champion-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.12
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
+  "rigBoneCount": 25,
+  "rigProfile": "premium-armored-humanoid-v2",
   "sheet": "sprites/void_knight.png",
   "sheetHeight": 1024,
   "sheetWidth": 2048,
@@ -286,7 +300,14 @@
       "width": 2048
     }
   ],
-  "silhouette": "armored_greatsword",
-  "triangles": 610,
-  "unique_attack": "void_charge"
+  "silhouetteLandmarks": [
+    "forked void horns",
+    "asymmetric pauldrons",
+    "split torn cape",
+    "socket-driven greatblade"
+  ],
+  "surfaceLanguage": "layered gunmetal plate, silver edges, old gold, restrained violet abyss glow",
+  "triangles": 2082,
+  "unique_attack": "void_charge",
+  "visualQuality": "premium-v2"
 }
