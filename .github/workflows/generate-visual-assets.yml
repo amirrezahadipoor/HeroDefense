@@ -18,6 +18,7 @@ on:
           - equipment
           - arena
           - environment
+          - ui
           - all
 
 permissions:
