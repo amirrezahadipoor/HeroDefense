@@ -241,15 +241,6 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Upgrade the Shop presentation, including stat cards, price/affordability states, purchase feedback, and paused-game context.
 - [x] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard. (Accepted evidence: [`FLOW_SURFACES_PREMIUM_V2_REVIEW.md`](docs/art_reviews/FLOW_SURFACES_PREMIUM_V2_REVIEW.md))
 - [x] Upgrade projectiles, impacts, critical hits, enemy deaths, Boss entrances/deaths, item collection, coins, World Tree damage, and ambient arena VFX with restrained visual layering.
-- [ ] Re-review the launcher/store icon against the final premium-v2 in-game style and replace it only if the integrated style no longer matches.
-
-### 16.6 Integrated Verification
-
-- [ ] Review contact sheets and real-size emulator screenshots for every premium-v2 batch before acceptance and push.
-- [ ] Pass the full core suite, runtime asset-contract suite, Android lint, touch-only emulator journeys, save migration checks, and signed Cafe Bazaar APK workflow.
-- [ ] Measure startup, frame pacing, peak texture residency, APK/repository size, and readability on the minimum-device profile; optimize without lowering the accepted art bar.
-- [ ] Perform and record the final Waves 1/5/25/50/75/100 touch playtest with the completed visuals and UX; retain an explicit physical-device caveat if no real device is available.
-
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
