@@ -19,8 +19,8 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
     static final float HEADER_PANEL_Y = 1010f;
     static final float HEADER_PANEL_WIDTH = 600f;
     static final float HEADER_PANEL_HEIGHT = 190f;
-    static final float FOOTER_PANEL_Y = 150f;
-    static final float FOOTER_PANEL_HEIGHT = 84f;
+    static final float FOOTER_PANEL_Y = 140f;
+    static final float FOOTER_PANEL_HEIGHT = 104f;
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -88,9 +88,9 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
         }
 
         text.drawCentered(batch, "Exactly one card applies immediately. The other two are lost.",
-            360f, FOOTER_PANEL_Y + 50f, 0.70f, OverlayText.IVORY);
+            360f, FOOTER_PANEL_Y + 66f, 0.70f, OverlayText.IVORY);
         text.drawCentered(batch, "Wave " + state.waveNumber + " cleared  |  Combat resumes after your choice",
-            360f, FOOTER_PANEL_Y + 22f, 0.62f, OverlayText.SUBTLE);
+            360f, FOOTER_PANEL_Y + 34f, 0.62f, OverlayText.SUBTLE);
         batch.end();
     }
 
