@@ -227,6 +227,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         audioManager.update(settings);
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
         touchFeedbackSystem.update(deltaSeconds);
+        inventoryTouchController.update(deltaSeconds);
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
@@ -261,6 +262,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     /** Read-only test visibility; inventory actions themselves still require touch. */
     public boolean inventoryOpen() {
         return inventoryTouchController != null && inventoryTouchController.isOpen();
+    }
+
+    /** Read-only test visibility; inventory selection still changes only through touch. */
+    public int inventorySelectedIndex() {
+        return inventoryTouchController == null ? -1 : inventoryTouchController.selectedIndex();
+    }
+
+    /** Read-only test visibility; action feedback still originates only from touch. */
+    public String inventoryFeedbackMessage() {
+        return inventoryTouchController == null ? null : inventoryTouchController.feedbackMessage();
     }
 
     /** Read-only test visibility used to confirm device touches reached libGDX coordinates. */

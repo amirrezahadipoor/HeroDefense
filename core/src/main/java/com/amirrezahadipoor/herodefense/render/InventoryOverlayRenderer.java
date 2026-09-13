@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -25,12 +26,23 @@ import java.util.Set;
 
 /** Vector phone overlay with lazy 96-pixel item icons and touch-matched bounds. */
 public final class InventoryOverlayRenderer implements AutoCloseable {
+    private static final Color GOLD = Color.valueOf("EAC66D");
+    private static final Color IVORY = Color.valueOf("F3E4BC");
+    private static final Color SUBTLE = Color.valueOf("AEBCAE");
+    private static final Color POSITIVE = Color.valueOf("69C884");
+    private static final Color NEGATIVE = Color.valueOf("DF6A65");
+    private static final Color MUTED = Color.valueOf("777D76");
+
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final BitmapFont font = new BitmapFont();
+    private final GlyphLayout textLayout = new GlyphLayout();
     private final Map<String, Texture> icons = new HashMap<>();
 
     public InventoryOverlayRenderer() {
-        font.getData().setScale(1.3f);
+        font.getRegion().getTexture().setFilter(
+            Texture.TextureFilter.Linear,
+            Texture.TextureFilter.Linear
+        );
     }
 
     public void drawPauseMenu(
@@ -53,6 +65,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 480f, 360f, 240f, true, false);
         frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 760f, 360f, 140f, true, false);
         frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 930f, 360f, 140f, true, false);
+        font.getData().setScale(1.3f);
         font.setColor(Color.valueOf("E7D8B1"));
         uiIcons.draw(batch, "continue", 205f, 550f, 92f, frames.resolve(
             true, false, 180f, 480f, 360f, 240f
@@ -79,95 +92,36 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         UiFrameRenderer frames
     ) {
         Set<String> visibleIcons = new HashSet<>();
+        Item selected = controller.selectedItem(state);
         beginShapes(projection);
-        shapes.setColor(0.025f, 0.055f, 0.065f, 0.97f);
+        shapes.setColor(0.006f, 0.022f, 0.021f, 0.975f);
         shapes.rect(0f, 0f, 720f, 1280f);
-        shapes.setColor(0.20f, 0.34f, 0.29f, 1f);
-        shapes.rect(
-            InventoryTouchLayout.CLOSE_X,
-            InventoryTouchLayout.CLOSE_Y,
-            InventoryTouchLayout.CLOSE_SIZE,
-            InventoryTouchLayout.CLOSE_SIZE
-        );
-        for (int index = 0; index < EquipmentSlot.values().length; index++) {
-            int column = index % 2;
-            int row = index / 2;
-            float x = column == 0
-                ? InventoryTouchLayout.SLOT_LEFT_X
-                : InventoryTouchLayout.SLOT_RIGHT_X;
-            float y = InventoryTouchLayout.SLOT_TOP_Y
-                - InventoryTouchLayout.SLOT_HEIGHT
-                - row * InventoryTouchLayout.SLOT_ROW_STRIDE;
-            panel(x, y, InventoryTouchLayout.SLOT_WIDTH, InventoryTouchLayout.SLOT_HEIGHT);
-        }
-        for (int row = 0; row < InventoryTouchLayout.VISIBLE_ROWS; row++) {
-            int itemIndex = controller.firstVisibleIndex() + row;
-            float y = InventoryTouchLayout.LIST_TOP_Y
-                - InventoryTouchLayout.LIST_ROW_HEIGHT
-                - row * InventoryTouchLayout.LIST_ROW_STRIDE;
-            if (itemIndex == controller.selectedIndex()) {
-                shapes.setColor(0.28f, 0.43f, 0.30f, 1f);
-            } else {
-                shapes.setColor(0.10f, 0.17f, 0.18f, 1f);
-            }
-            shapes.rect(
-                InventoryTouchLayout.LIST_X,
-                y,
-                InventoryTouchLayout.LIST_WIDTH,
-                InventoryTouchLayout.LIST_ROW_HEIGHT
-            );
-        }
-        panel(
-            InventoryTouchLayout.DETAILS_X,
-            InventoryTouchLayout.DETAILS_Y,
-            InventoryTouchLayout.DETAILS_WIDTH,
-            InventoryTouchLayout.DETAILS_HEIGHT
-        );
-        panel(
-            InventoryTouchLayout.EQUIP_X,
-            InventoryTouchLayout.ACTION_Y,
-            InventoryTouchLayout.ACTION_WIDTH,
-            InventoryTouchLayout.ACTION_HEIGHT
-        );
-        panel(
-            InventoryTouchLayout.SELL_X,
-            InventoryTouchLayout.ACTION_Y,
-            InventoryTouchLayout.ACTION_WIDTH,
-            InventoryTouchLayout.ACTION_HEIGHT
-        );
+        shapes.setColor(0.04f, 0.13f, 0.11f, 0.82f);
+        shapes.rect(0f, 1160f, 720f, 120f);
         shapes.end();
         endShapes();
 
         batch.setProjectionMatrix(projection);
         batch.begin();
         drawInventoryFrames(batch, state, controller, frames);
-        font.setColor(Color.valueOf("E7D8B1"));
-        uiIcons.draw(batch, "close", 588f, 1128f, 64f, frames.resolve(
-            true, false,
-            InventoryTouchLayout.CLOSE_X, InventoryTouchLayout.CLOSE_Y,
-            InventoryTouchLayout.CLOSE_SIZE, InventoryTouchLayout.CLOSE_SIZE
-        ));
-        font.draw(batch, "Equipment & Inventory", 205f, 1225f);
+        if (controller.feedbackMessage() != null) {
+            frames.draw(batch, UiFrameRenderer.Kind.PANEL, 130f, 202f, 460f, 42f, true, false);
+        }
+        batch.end();
+
+        beginShapes(projection);
         for (int index = 0; index < EquipmentSlot.values().length; index++) {
             EquipmentSlot slot = EquipmentSlot.values()[index];
+            Item item = state.equippedItems.get(slot.name());
+            if (item == null) continue;
             int column = index % 2;
             int row = index / 2;
-            float x = column == 0
-                ? InventoryTouchLayout.SLOT_LEFT_X
-                : InventoryTouchLayout.SLOT_RIGHT_X;
+            float x = column == 0 ? InventoryTouchLayout.SLOT_LEFT_X : InventoryTouchLayout.SLOT_RIGHT_X;
             float y = InventoryTouchLayout.SLOT_TOP_Y
                 - InventoryTouchLayout.SLOT_HEIGHT
                 - row * InventoryTouchLayout.SLOT_ROW_STRIDE;
-            Item item = state.equippedItems.get(slot.name());
-            font.draw(batch, pretty(slot.name()), x + 10f, y + 76f);
-            if (item == null) {
-                font.draw(batch, "Empty", x + 112f, y + 42f);
-            } else {
-                drawIcon(batch, item, x + 10f, y + 7f, 58f, visibleIcons);
-                font.draw(batch, item.name, x + 76f, y + 40f);
-            }
+            rarityAccent(x + 5f, y + 9f, 5f, InventoryTouchLayout.SLOT_HEIGHT - 18f, item.tier);
         }
-        font.getData().setScale(0.95f);
         for (int row = 0; row < InventoryTouchLayout.VISIBLE_ROWS; row++) {
             int itemIndex = controller.firstVisibleIndex() + row;
             if (itemIndex >= state.inventory.size()) continue;
@@ -175,15 +129,114 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             float y = InventoryTouchLayout.LIST_TOP_Y
                 - InventoryTouchLayout.LIST_ROW_HEIGHT
                 - row * InventoryTouchLayout.LIST_ROW_STRIDE;
-            drawIcon(batch, item, InventoryTouchLayout.LIST_X + 8f, y + 8f, 72f, visibleIcons);
-            font.draw(batch, item.name, InventoryTouchLayout.LIST_X + 94f, y + 62f);
-            font.draw(batch, item.tier + " · " + item.sellPrice + " coins", InventoryTouchLayout.LIST_X + 94f, y + 28f);
+            rarityAccent(
+                InventoryTouchLayout.LIST_X + 5f,
+                y + 9f,
+                5f,
+                InventoryTouchLayout.LIST_ROW_HEIGHT - 18f,
+                item.tier
+            );
         }
-        drawDetails(batch, state, controller.selectedItem(state));
-        font.getData().setScale(1.3f);
-        font.setColor(Color.valueOf("E7D8B1"));
-        font.draw(batch, "Equip", InventoryTouchLayout.EQUIP_X + 102f, 145f);
-        font.draw(batch, "Sell", InventoryTouchLayout.SELL_X + 112f, 145f);
+        shapes.end();
+        endShapes();
+
+        batch.begin();
+        uiIcons.draw(batch, "close", 588f, 1128f, 64f, frames.resolve(
+            true, false,
+            InventoryTouchLayout.CLOSE_X, InventoryTouchLayout.CLOSE_Y,
+            InventoryTouchLayout.CLOSE_SIZE, InventoryTouchLayout.CLOSE_SIZE
+        ));
+        drawText(batch, "EQUIPMENT & INVENTORY", 40f, 1232f, 1.35f, GOLD);
+        drawText(batch, "Tap a loadout slot to unequip", 40f, 1189f, 0.76f, SUBTLE);
+        drawText(batch, "EQUIPPED LOADOUT", 40f, 1023f, 0.72f, GOLD);
+        drawText(
+            batch,
+            "BACKPACK  " + state.inventory.size(),
+            InventoryTouchLayout.LIST_X,
+            668f,
+            0.68f,
+            GOLD
+        );
+        drawText(batch, "ITEM DETAILS", InventoryTouchLayout.DETAILS_X, 681f, 0.72f, GOLD);
+
+        for (int index = 0; index < EquipmentSlot.values().length; index++) {
+            EquipmentSlot slot = EquipmentSlot.values()[index];
+            int column = index % 2;
+            int row = index / 2;
+            float x = column == 0 ? InventoryTouchLayout.SLOT_LEFT_X : InventoryTouchLayout.SLOT_RIGHT_X;
+            float y = InventoryTouchLayout.SLOT_TOP_Y
+                - InventoryTouchLayout.SLOT_HEIGHT
+                - row * InventoryTouchLayout.SLOT_ROW_STRIDE;
+            Item item = state.equippedItems.get(slot.name());
+            drawText(batch, pretty(slot.name()).toUpperCase(Locale.ROOT), x + 16f, y + 74f, 0.62f, GOLD);
+            if (item == null) {
+                drawText(batch, "Empty slot", x + 112f, y + 39f, 0.78f, MUTED);
+            } else {
+                drawIcon(batch, item, x + 14f, y + 8f, 58f, visibleIcons);
+                drawText(batch, item.name, x + 80f, y + 41f, 0.78f, IVORY);
+                drawText(batch, prettyOrUnknown(item.tier), x + 222f, y + 70f, 0.54f, rarityColor(item.tier));
+            }
+        }
+
+        for (int row = 0; row < InventoryTouchLayout.VISIBLE_ROWS; row++) {
+            int itemIndex = controller.firstVisibleIndex() + row;
+            if (itemIndex >= state.inventory.size()) continue;
+            Item item = state.inventory.get(itemIndex);
+            float y = InventoryTouchLayout.LIST_TOP_Y
+                - InventoryTouchLayout.LIST_ROW_HEIGHT
+                - row * InventoryTouchLayout.LIST_ROW_STRIDE;
+            drawIcon(batch, item, InventoryTouchLayout.LIST_X + 12f, y + 9f, 70f, visibleIcons);
+            drawText(batch, item.name, InventoryTouchLayout.LIST_X + 92f, y + 61f, 0.79f, IVORY);
+            drawText(
+                batch,
+                prettyOrUnknown(item.tier).toUpperCase(Locale.ROOT),
+                InventoryTouchLayout.LIST_X + 92f,
+                y + 29f,
+                0.58f,
+                rarityColor(item.tier)
+            );
+            drawText(batch, "$ " + item.sellPrice, InventoryTouchLayout.LIST_X + 247f, y + 29f, 0.62f, GOLD);
+        }
+
+        drawDetails(batch, state, selected);
+        boolean hasSelection = selected != null;
+        UiFrameRenderer.State equipState = frames.resolve(
+            hasSelection, false,
+            InventoryTouchLayout.EQUIP_X, InventoryTouchLayout.ACTION_Y,
+            InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT
+        );
+        UiFrameRenderer.State sellState = frames.resolve(
+            hasSelection, false,
+            InventoryTouchLayout.SELL_X, InventoryTouchLayout.ACTION_Y,
+            InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT
+        );
+        float equipOffset = MainMenuRenderer.pressedOffset(equipState);
+        float sellOffset = MainMenuRenderer.pressedOffset(sellState);
+        String equipLabel = selected != null
+            && InventoryItemDetails.inspect(state, selected).comparedItemName() != null
+            ? "REPLACE"
+            : "EQUIP";
+        drawCentered(
+            batch, equipLabel,
+            InventoryTouchLayout.EQUIP_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f,
+            145f + equipOffset,
+            1.02f,
+            hasSelection ? IVORY : MUTED
+        );
+        drawCentered(
+            batch,
+            selected == null ? "SELL" : "SELL  $ " + selected.sellPrice,
+            InventoryTouchLayout.SELL_X + InventoryTouchLayout.ACTION_WIDTH * 0.5f,
+            145f + sellOffset,
+            1.02f,
+            hasSelection ? GOLD : MUTED
+        );
+        String feedback = controller.feedbackMessage();
+        if (feedback != null) {
+            Color feedbackColor = new Color(GOLD);
+            feedbackColor.a = controller.feedbackAlpha();
+            drawCentered(batch, feedback, 360f, 231f, 0.72f, feedbackColor);
+        }
         batch.end();
         disposeHiddenIcons(visibleIcons);
     }
@@ -250,55 +303,62 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
 
     private void drawDetails(SpriteBatch batch, GameState state, Item selected) {
         float x = InventoryTouchLayout.DETAILS_X + 16f;
-        float top = InventoryTouchLayout.DETAILS_Y + InventoryTouchLayout.DETAILS_HEIGHT - 24f;
-        font.getData().setScale(1.0f);
+        float top = InventoryTouchLayout.DETAILS_Y + InventoryTouchLayout.DETAILS_HEIGHT - 25f;
         if (selected == null) {
-            font.setColor(Color.valueOf("AAB8AE"));
-            font.draw(batch, "Select an item to inspect", x, top);
-            font.draw(batch, "all stats and comparison.", x, top - 38f);
+            drawText(batch, "SELECT AN ITEM", x, top, 0.82f, SUBTLE);
+            drawText(batch, "Review every bonus and compare", x, top - 46f, 0.66f, MUTED);
+            drawText(batch, "it with the equipped slot.", x, top - 76f, 0.66f, MUTED);
+            drawText(batch, "Green = upgrade", x, top - 150f, 0.66f, POSITIVE);
+            drawText(batch, "Red = downgrade", x, top - 182f, 0.66f, NEGATIVE);
             return;
         }
 
         Details details = InventoryItemDetails.inspect(state, selected);
-        font.setColor(rarityColor(details.rarity()));
-        font.draw(batch, details.name(), x, top);
-        font.setColor(Color.valueOf("E7D8B1"));
-        font.draw(batch, "Rarity: " + prettyOrUnknown(details.rarity()), x, top - 42f);
-        font.draw(
+        drawText(batch, details.name(), x, top, 0.86f, rarityColor(details.rarity()));
+        drawText(
             batch,
-            "Slot: " + (details.slot() == null ? "Unknown" : pretty(details.slot().name())),
+            prettyOrUnknown(details.rarity()).toUpperCase(Locale.ROOT)
+                + "  |  " + (details.slot() == null ? "UNKNOWN" : details.slot().name()),
             x,
-            top - 78f
+            top - 40f,
+            0.60f,
+            GOLD
         );
-        font.draw(
+        drawText(
             batch,
-            "Status: " + (details.equipped() ? "Equipped" : "In Inventory"),
+            details.equipped() ? "CURRENTLY EQUIPPED" : "IN BACKPACK",
             x,
-            top - 114f
+            top - 73f,
+            0.58f,
+            details.equipped() ? POSITIVE : SUBTLE
         );
-        font.draw(
+        drawText(
             batch,
-            "Compared: " + (
-                details.comparedItemName() == null ? "Empty slot" : details.comparedItemName()
-            ),
+            "VS  " + (details.comparedItemName() == null ? "EMPTY SLOT" : details.comparedItemName()),
             x,
-            top - 150f
+            top - 108f,
+            0.60f,
+            SUBTLE
         );
-        font.setColor(Color.valueOf("D6AD4C"));
-        font.draw(batch, "Stat bonuses", x, top - 194f);
-        font.setColor(Color.valueOf("E7D8B1"));
+        drawText(batch, "STAT COMPARISON", x, top - 151f, 0.64f, GOLD);
         if (details.stats().isEmpty()) {
-            font.draw(batch, "None", x, top - 232f);
+            drawText(batch, "No stat bonuses", x, top - 194f, 0.68f, MUTED);
             return;
         }
+        boolean compared = details.comparedItemName() != null;
         for (int index = 0; index < details.stats().size(); index++) {
             StatComparison comparison = details.stats().get(index);
-            String line = pretty(comparison.stat().name())
-                + " " + signed(comparison.candidateValue());
-            if (details.comparedItemName() != null) {
-                line += "  (diff " + signed(comparison.difference()) + ")";
-            }
-            font.draw(batch, line, x, top - 232f - index * 34f);
+            float y = top - 194f - index * 43f;
+            drawText(batch, pretty(comparison.stat().name()), x, y, 0.62f, IVORY);
+            drawText(batch, signed(comparison.candidateValue()), x + 104f, y, 0.62f, IVORY);
+            drawText(
+                batch,
+                comparisonLabel(comparison.difference(), compared),
+                x + 165f,
+                y,
+                0.57f,
+                comparisonColor(comparison.difference(), compared)
+            );
         }
     }
 
@@ -348,6 +408,42 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         shapes.rect(x, y, width, height);
         shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
         shapes.rect(x, y + height - 5f, width, 5f);
+    }
+
+    private void rarityAccent(float x, float y, float width, float height, String rarity) {
+        shapes.setColor(rarityColor(rarity));
+        shapes.rect(x, y, width, height);
+    }
+
+    private void drawCentered(
+        SpriteBatch batch, String text, float centerX, float y, float scale, Color color
+    ) {
+        font.getData().setScale(scale);
+        textLayout.setText(font, text);
+        drawText(batch, text, centerX - textLayout.width * 0.5f, y, scale, color);
+    }
+
+    private void drawText(
+        SpriteBatch batch, String text, float x, float y, float scale, Color color
+    ) {
+        font.getData().setScale(scale);
+        font.setColor(0.003f, 0.010f, 0.009f, color.a);
+        font.draw(batch, text, x + 1.5f, y - 2f);
+        font.setColor(color);
+        font.draw(batch, text, x, y);
+    }
+
+    static String comparisonLabel(float difference, boolean compared) {
+        if (!compared) return "NEW " + signed(difference);
+        if (difference > 0.001f) return "UP " + signed(difference);
+        if (difference < -0.001f) return "DOWN " + signed(difference);
+        return "SAME";
+    }
+
+    private static Color comparisonColor(float difference, boolean compared) {
+        if (!compared || difference > 0.001f) return POSITIVE;
+        if (difference < -0.001f) return NEGATIVE;
+        return MUTED;
     }
 
     private static Color rarityColor(String rarity) {
