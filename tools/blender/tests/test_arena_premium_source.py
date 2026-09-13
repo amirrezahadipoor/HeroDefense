@@ -33,7 +33,7 @@ class ArenaPremiumSourceTest(unittest.TestCase):
         self.assertIn('"assetKind": "arenaBackdrop"', self.generator)
 
     def test_portrait_backdrop_has_an_explicit_non_square_contract(self) -> None:
-        self.assertIn('"arena": (360, 640)', self.config)
+        self.assertIn('"arena": (720, 1280)', self.config)
         self.assertIn('"arena": 11.5', self.config)
         self.assertIn("FRAME_DIMENSIONS", self.scene)
         self.assertIn("target_width, target_height = target_size", self.scene)
@@ -74,7 +74,7 @@ class ArenaPremiumSourceTest(unittest.TestCase):
         ):
             self.assertIn(landmark, source)
         self.assertIn('("root-path", "waystone-crossing", "moss-clearing")', source)
-        self.assertIn('"arena-ground-premium-v2"', source)
+        self.assertIn('"arena-ground-premium-v3"', source)
         self.assertIn("if variant not in range(3)", source)
 
     def test_each_crystal_has_a_named_silhouette_and_no_baked_glow(self) -> None:
@@ -117,7 +117,7 @@ class ArenaPremiumSourceTest(unittest.TestCase):
     def test_style_guide_names_the_arena_exception_and_runtime_hierarchy(self) -> None:
         for phrase in (
             "Arena backdrop",
-            "360×640",
+            "720×1280",
             "portrait depth",
             "clear combat lane",
         ):

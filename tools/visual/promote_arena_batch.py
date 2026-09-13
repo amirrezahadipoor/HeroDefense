@@ -95,7 +95,7 @@ def main() -> None:
     catalog["assets"] = [by_key[key] for key in sorted(by_key)]
     write_json(catalog_path, catalog)
     print(
-        f"Promoted exactly seven reviewed premium-v2 arena assets from audit "
+        f"Promoted exactly seven reviewed premium-v3 arena assets from audit "
         f"{sha256_file(AUDIT_PATH)[:12]}"
     )
 
@@ -256,7 +256,7 @@ def validate_review_evidence(
         )
 
     audit = read_json(AUDIT_PATH)
-    if audit.get("schemaVersion") != 1 or audit.get("batch") != "arena-premium-v2":
+    if audit.get("schemaVersion") != 1 or audit.get("batch") != "arena-premium-v3":
         raise ValueError("Unexpected arena audit contract")
     if audit.get("expectedKeys") != list(EXPECTED_KEYS):
         raise ValueError("Arena audit key order mismatch")
@@ -310,7 +310,8 @@ def validate_review_evidence(
             if record.get(field) != expected:
                 raise ValueError(f"Arena audit provenance mismatch: {key} {field}")
         destination_png = destination / candidate["sheet"]
-        if key == "arena_backdrop" and baseline_state:
+        if key == "arena_backdrop" and baseline_state and "baselineSheetSha256" not in record:
+            # First-ever backdrop promotion: the reviewed baseline must not contain one yet.
             if destination_png.exists():
                 raise ValueError("Reviewed baseline unexpectedly already contains the backdrop")
         else:
@@ -334,8 +335,8 @@ def validate_review_evidence(
         "portraitBackdropCount": 1,
         "groundTileCount": 3,
         "crystalPropCount": 3,
-        "decodedBytes": 1_806_336,
-        "decodedBudgetBytes": 2_097_152,
+        "decodedBytes": 7_225_344,
+        "decodedBudgetBytes": 8_388_608,
     }
     for field, expected in exact_summary.items():
         if summary.get(field) != expected:

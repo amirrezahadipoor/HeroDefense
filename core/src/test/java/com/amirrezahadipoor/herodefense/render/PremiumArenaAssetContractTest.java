@@ -31,22 +31,22 @@ final class PremiumArenaAssetContractTest {
         REPOSITORY.resolve("docs/art_reviews/arena_premium_v2");
     private static final Path AUDIT = REVIEW_DIRECTORY.resolve("arena_audit.json");
     private static final String AUDIT_SHA256 =
-        "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320";
+        "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f";
     private static final String SOURCE_MANIFEST_SHA256 =
-        "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801";
+        "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8";
     private static final Set<String> EXPECTED_KEYS = Set.of(
         "arena_backdrop",
         "ground_tile_0", "ground_tile_1", "ground_tile_2",
         "crystal_prop_0", "crystal_prop_1", "crystal_prop_2"
     );
     private static final Map<String, String> SHEET_HASHES = Map.of(
-        "arena_backdrop", "9cd32149c5ec5c16de0d5744d94dcdb4c9f73a10ac1030a063df78cf1e12cc86",
-        "ground_tile_0", "727f587265e3d6251c1039da46c78af0e5851609fcc98662a560f90656e334c0",
-        "ground_tile_1", "40a40973baea503feb3b08412345d5e75eb5d2f5d29b98c61ea720be2b69fbe7",
-        "ground_tile_2", "de668bbcd8940cdaa66f7bbb6c2ac5dc648721113985ce2fd8cb0fc778b07b4b",
-        "crystal_prop_0", "4b37a9885f2bb0a16ab8f82006b9aa8f93a787f27ef257e8686401f8a8db0bb2",
-        "crystal_prop_1", "d70c35e11dd34b06de70e08c456ff275656bf5b6a3b924095eb5c7ee0ec57e20",
-        "crystal_prop_2", "0c2411184ff4d3a8cbf8866ee65087c0ece866608cc8e7623322d8ac187a029c"
+        "arena_backdrop", "3fed1b8e8d227b224cd2060f7396b10a4898d8ba6e8ebe44f25329575f52f608",
+        "ground_tile_0", "b298e52a52d88d13be5acaf12364fb5956137f8d964bb517e3f2e7503ec3d512",
+        "ground_tile_1", "33be1a79dc93ed5bcb6dfa72094dd6fb646131d5a35b54eb31c9429c62f0d633",
+        "ground_tile_2", "25db0fcd43b0200df92f132bc1df13ce40ee9d03e80907738d78f92364d05ad7",
+        "crystal_prop_0", "458dd7f0712446cf82024e969d4fe8761922374297bdc40b285bc41d4b1356a7",
+        "crystal_prop_1", "ab62b5a38ec6df9109dff11d15c8da2b5e498cc3ceb506a4a7d6c0208b8fc208",
+        "crystal_prop_2", "4c170c5984d464ec7b42990a921f80c399b862ae43dba85c2f21d1887f59314f"
     );
 
     @Test
@@ -58,7 +58,7 @@ final class PremiumArenaAssetContractTest {
         assertTrue(review.contains(SOURCE_MANIFEST_SHA256));
 
         JsonValue audit = json(AUDIT);
-        assertEquals("arena-premium-v2", audit.getString("batch"));
+        assertEquals("arena-premium-v3", audit.getString("batch"));
         assertEquals(SOURCE_MANIFEST_SHA256, audit.getString("candidateManifestSha256"));
         JsonValue summary = audit.get("summary");
         assertEquals(7, summary.getInt("assetCount"));
@@ -66,8 +66,8 @@ final class PremiumArenaAssetContractTest {
         assertEquals(1, summary.getInt("portraitBackdropCount"));
         assertEquals(3, summary.getInt("groundTileCount"));
         assertEquals(3, summary.getInt("crystalPropCount"));
-        assertEquals(1_806_336L, summary.getLong("decodedBytes"));
-        assertEquals(9, summary.getInt("minimumTransparentAssetMargin"));
+        assertEquals(7_225_344L, summary.getLong("decodedBytes"));
+        assertEquals(20, summary.getInt("minimumTransparentAssetMargin"));
         assertEquals(6, audit.getInt("reviewSheetCount"));
         for (JsonValue sheet = audit.get("reviewSheets").child;
              sheet != null; sheet = sheet.next) {
@@ -109,7 +109,7 @@ final class PremiumArenaAssetContractTest {
                 metadata.toJson(JsonWriter.OutputType.json), key);
 
             if (key.startsWith("ground_tile_")) {
-                assertEquals("arena-ground-premium-v2", asset.getString("modelRevision"), key);
+                assertEquals("arena-ground-premium-v3", asset.getString("modelRevision"), key);
                 assertTrue(asset.getInt("triangles") >= 300 && asset.getInt("triangles") <= 600, key);
                 assertTrue(asset.getInt("meshParts") >= 20, key);
                 assertTrue(asset.getInt("materialCount") >= 6, key);
@@ -129,16 +129,16 @@ final class PremiumArenaAssetContractTest {
     void portraitBackdropIsFullBleedDarkAndCenterWeighted() throws IOException {
         JsonValue asset = assetsByKey(json(MANIFEST)).get("arena_backdrop");
         assertEquals("arena", asset.getString("frameClass"));
-        assertEquals(360, asset.getInt("frameWidth"));
-        assertEquals(640, asset.getInt("frameHeight"));
-        assertEquals("forest-sanctuary-backdrop-v2", asset.getString("modelRevision"));
+        assertEquals(720, asset.getInt("frameWidth"));
+        assertEquals(1280, asset.getInt("frameHeight"));
+        assertEquals("forest-sanctuary-backdrop-v3", asset.getString("modelRevision"));
         assertEquals("portrait-clear-lane-v2", asset.getString("compositionProfile"));
         assertEquals(5, asset.getInt("depthBands"));
         assertTrue(asset.getInt("triangles") >= 1_000 && asset.getInt("triangles") <= 3_000);
 
         BufferedImage image = read(GENERATED.resolve(asset.getString("sheet")));
-        assertEquals(360, image.getWidth());
-        assertEquals(640, image.getHeight());
+        assertEquals(720, image.getWidth());
+        assertEquals(1280, image.getHeight());
         long total = 0;
         long center = 0;
         long edges = 0;
@@ -150,11 +150,11 @@ final class PremiumArenaAssetContractTest {
                 assertEquals(255, argb >>> 24, "backdrop alpha at " + x + "," + y);
                 int value = luminance(argb);
                 total += value;
-                if (x >= 108 && x < 252 && y >= 96 && y < 576) {
+                if (x >= 216 && x < 504 && y >= 192 && y < 1152) {
                     center += value;
                     centerCount++;
                 }
-                if (x < 72 || x >= 288) {
+                if (x < 144 || x >= 576) {
                     edges += value;
                     edgeCount++;
                 }

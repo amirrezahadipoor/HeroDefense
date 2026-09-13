@@ -203,8 +203,8 @@ Character armatures use these stable bone names:
 | World Tree | 256×256 PNG | 6 px extrusion |
 | Equipment / potion / UI control icon | 96×96 PNG | 4 px extrusion |
 | Reusable UI nine-patch frame | 96×96 PNG | 24 px fixed inset per edge |
-| Ground tile / prop | 192×192 PNG | 4 px extrusion |
-| Arena backdrop | 360×640 PNG | full-bleed opaque edge |
+| Ground tile / prop | 384×384 PNG | 4 px extrusion |
+| Arena backdrop | 720×1280 PNG | full-bleed opaque edge |
 
 - PNG: RGBA8, straight alpha. Characters, props, and tiles use transparent backgrounds; the Arena backdrop is intentionally opaque and full-bleed.
 - Filenames: `<entity>_<variant>_<clip>_<frame:02>.png`, lowercase snake case.

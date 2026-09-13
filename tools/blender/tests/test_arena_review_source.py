@@ -28,7 +28,7 @@ class ArenaReviewSourceTest(unittest.TestCase):
         self.assertIn('actual_keys != sorted(EXPECTED_KEYS)', self.review)
         self.assertIn('actual_payload != expected_payload', self.promote)
         self.assertIn('"staticFrameCount": len(records)', self.review)
-        self.assertIn('"decodedBytes": 1_806_336', self.promote)
+        self.assertIn('"decodedBytes": 7_225_344', self.promote)
 
     def test_review_covers_composition_value_alpha_scale_and_identity(self) -> None:
         for function in (

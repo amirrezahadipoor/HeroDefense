@@ -1,19 +1,19 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
   "categoryReview": {
-    "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+    "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
     "category": "arena_environment",
     "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-    "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+    "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
     "status": "accepted"
   },
   "clips": {
     "idle": [
       {
-        "height": 192,
+        "height": 384,
         "index": 0,
         "page": 0,
-        "width": 192,
+        "width": 384,
         "x": 0,
         "y": 0
       }
@@ -21,9 +21,9 @@
   },
   "family": "environment",
   "frameClass": "environment",
-  "frameHeight": 192,
-  "frameSize": 192,
-  "frameWidth": 192,
+  "frameHeight": 384,
+  "frameSize": 384,
+  "frameWidth": 384,
   "key": "crystal_prop_2",
   "materialCount": 9,
   "meshParts": 36,
@@ -39,14 +39,14 @@
   "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
   "runtimeGlow": false,
   "sheet": "environment/crystal_prop_2.png",
-  "sheetHeight": 192,
-  "sheetWidth": 192,
+  "sheetHeight": 384,
+  "sheetWidth": 384,
   "sheets": [
     {
-      "decodedBytes": 147456,
+      "decodedBytes": 589824,
       "file": "environment/crystal_prop_2.png",
-      "height": 192,
-      "width": 192
+      "height": 384,
+      "width": 384
     }
   ],
   "silhouetteLandmarks": [

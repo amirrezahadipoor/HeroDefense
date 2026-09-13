@@ -318,20 +318,20 @@
       "alphaMode": "STRAIGHT_RGBA",
       "backdrop": "layered-heartwood-arena",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clearLaneFraction": 0.55,
       "clips": {
         "idle": [
           {
-            "height": 640,
+            "height": 1280,
             "index": 0,
             "page": 0,
-            "width": 360,
+            "width": 720,
             "x": 0,
             "y": 0
           }
@@ -341,13 +341,13 @@
       "depthBands": 5,
       "family": "environment",
       "frameClass": "arena",
-      "frameHeight": 640,
-      "frameSize": 360,
-      "frameWidth": 360,
+      "frameHeight": 1280,
+      "frameSize": 720,
+      "frameWidth": 720,
       "key": "arena_backdrop",
       "materialCount": 9,
       "meshParts": 63,
-      "modelRevision": "forest-sanctuary-backdrop-v2",
+      "modelRevision": "forest-sanctuary-backdrop-v3",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -357,14 +357,14 @@
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/arena_backdrop.png",
-      "sheetHeight": 640,
-      "sheetWidth": 360,
+      "sheetHeight": 1280,
+      "sheetWidth": 720,
       "sheets": [
         {
-          "decodedBytes": 921600,
+          "decodedBytes": 3686400,
           "file": "environment/arena_backdrop.png",
-          "height": 640,
-          "width": 360
+          "height": 1280,
+          "width": 720
         }
       ],
       "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
@@ -374,19 +374,19 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clips": {
         "idle": [
           {
-            "height": 192,
+            "height": 384,
             "index": 0,
             "page": 0,
-            "width": 192,
+            "width": 384,
             "x": 0,
             "y": 0
           }
@@ -394,9 +394,9 @@
       },
       "family": "environment",
       "frameClass": "environment",
-      "frameHeight": 192,
-      "frameSize": 192,
-      "frameWidth": 192,
+      "frameHeight": 384,
+      "frameSize": 384,
+      "frameWidth": 384,
       "key": "crystal_prop_0",
       "materialCount": 8,
       "meshParts": 36,
@@ -413,14 +413,14 @@
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
       "sheet": "environment/crystal_prop_0.png",
-      "sheetHeight": 192,
-      "sheetWidth": 192,
+      "sheetHeight": 384,
+      "sheetWidth": 384,
       "sheets": [
         {
-          "decodedBytes": 147456,
+          "decodedBytes": 589824,
           "file": "environment/crystal_prop_0.png",
-          "height": 192,
-          "width": 192
+          "height": 384,
+          "width": 384
         }
       ],
       "silhouetteLandmarks": [
@@ -437,19 +437,19 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clips": {
         "idle": [
           {
-            "height": 192,
+            "height": 384,
             "index": 0,
             "page": 0,
-            "width": 192,
+            "width": 384,
             "x": 0,
             "y": 0
           }
@@ -457,9 +457,9 @@
       },
       "family": "environment",
       "frameClass": "environment",
-      "frameHeight": 192,
-      "frameSize": 192,
-      "frameWidth": 192,
+      "frameHeight": 384,
+      "frameSize": 384,
+      "frameWidth": 384,
       "key": "crystal_prop_1",
       "materialCount": 8,
       "meshParts": 36,
@@ -475,14 +475,14 @@
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
       "sheet": "environment/crystal_prop_1.png",
-      "sheetHeight": 192,
-      "sheetWidth": 192,
+      "sheetHeight": 384,
+      "sheetWidth": 384,
       "sheets": [
         {
-          "decodedBytes": 147456,
+          "decodedBytes": 589824,
           "file": "environment/crystal_prop_1.png",
-          "height": 192,
-          "width": 192
+          "height": 384,
+          "width": 384
         }
       ],
       "silhouetteLandmarks": [
@@ -499,19 +499,19 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clips": {
         "idle": [
           {
-            "height": 192,
+            "height": 384,
             "index": 0,
             "page": 0,
-            "width": 192,
+            "width": 384,
             "x": 0,
             "y": 0
           }
@@ -519,9 +519,9 @@
       },
       "family": "environment",
       "frameClass": "environment",
-      "frameHeight": 192,
-      "frameSize": 192,
-      "frameWidth": 192,
+      "frameHeight": 384,
+      "frameSize": 384,
+      "frameWidth": 384,
       "key": "crystal_prop_2",
       "materialCount": 9,
       "meshParts": 36,
@@ -537,14 +537,14 @@
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
       "sheet": "environment/crystal_prop_2.png",
-      "sheetHeight": 192,
-      "sheetWidth": 192,
+      "sheetHeight": 384,
+      "sheetWidth": 384,
       "sheets": [
         {
-          "decodedBytes": 147456,
+          "decodedBytes": 589824,
           "file": "environment/crystal_prop_2.png",
-          "height": 192,
-          "width": 192
+          "height": 384,
+          "width": 384
         }
       ],
       "silhouetteLandmarks": [
@@ -13733,19 +13733,19 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clips": {
         "idle": [
           {
-            "height": 192,
+            "height": 384,
             "index": 0,
             "page": 0,
-            "width": 192,
+            "width": 384,
             "x": 0,
             "y": 0
           }
@@ -13753,14 +13753,14 @@
       },
       "family": "environment",
       "frameClass": "environment",
-      "frameHeight": 192,
-      "frameSize": 192,
-      "frameWidth": 192,
+      "frameHeight": 384,
+      "frameSize": 384,
+      "frameWidth": 384,
       "groundIdentity": "root-path",
       "key": "ground_tile_0",
       "materialCount": 6,
       "meshParts": 23,
-      "modelRevision": "arena-ground-premium-v2",
+      "modelRevision": "arena-ground-premium-v3",
       "overlapProfile": "staggered-soft-edge-v2",
       "pivot": {
         "units": "normalized-bottom-left",
@@ -13771,14 +13771,14 @@
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_0.png",
-      "sheetHeight": 192,
-      "sheetWidth": 192,
+      "sheetHeight": 384,
+      "sheetWidth": 384,
       "sheets": [
         {
-          "decodedBytes": 147456,
+          "decodedBytes": 589824,
           "file": "environment/ground_tile_0.png",
-          "height": 192,
-          "width": 192
+          "height": 384,
+          "width": 384
         }
       ],
       "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
@@ -13790,19 +13790,19 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clips": {
         "idle": [
           {
-            "height": 192,
+            "height": 384,
             "index": 0,
             "page": 0,
-            "width": 192,
+            "width": 384,
             "x": 0,
             "y": 0
           }
@@ -13810,14 +13810,14 @@
       },
       "family": "environment",
       "frameClass": "environment",
-      "frameHeight": 192,
-      "frameSize": 192,
-      "frameWidth": 192,
+      "frameHeight": 384,
+      "frameSize": 384,
+      "frameWidth": 384,
       "groundIdentity": "waystone-crossing",
       "key": "ground_tile_1",
       "materialCount": 6,
       "meshParts": 24,
-      "modelRevision": "arena-ground-premium-v2",
+      "modelRevision": "arena-ground-premium-v3",
       "overlapProfile": "staggered-soft-edge-v2",
       "pivot": {
         "units": "normalized-bottom-left",
@@ -13828,14 +13828,14 @@
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_1.png",
-      "sheetHeight": 192,
-      "sheetWidth": 192,
+      "sheetHeight": 384,
+      "sheetWidth": 384,
       "sheets": [
         {
-          "decodedBytes": 147456,
+          "decodedBytes": 589824,
           "file": "environment/ground_tile_1.png",
-          "height": 192,
-          "width": 192
+          "height": 384,
+          "width": 384
         }
       ],
       "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
@@ -13847,19 +13847,19 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "categoryReview": {
-        "auditSha256": "68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320",
+        "auditSha256": "c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f",
         "category": "arena_environment",
         "document": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
-        "sourceManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+        "sourceManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
         "status": "accepted"
       },
       "clips": {
         "idle": [
           {
-            "height": 192,
+            "height": 384,
             "index": 0,
             "page": 0,
-            "width": 192,
+            "width": 384,
             "x": 0,
             "y": 0
           }
@@ -13867,14 +13867,14 @@
       },
       "family": "environment",
       "frameClass": "environment",
-      "frameHeight": 192,
-      "frameSize": 192,
-      "frameWidth": 192,
+      "frameHeight": 384,
+      "frameSize": 384,
+      "frameWidth": 384,
       "groundIdentity": "moss-clearing",
       "key": "ground_tile_2",
       "materialCount": 6,
       "meshParts": 23,
-      "modelRevision": "arena-ground-premium-v2",
+      "modelRevision": "arena-ground-premium-v3",
       "overlapProfile": "staggered-soft-edge-v2",
       "pivot": {
         "units": "normalized-bottom-left",
@@ -13885,14 +13885,14 @@
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_2.png",
-      "sheetHeight": 192,
-      "sheetWidth": 192,
+      "sheetHeight": 384,
+      "sheetWidth": 384,
       "sheets": [
         {
-          "decodedBytes": 147456,
+          "decodedBytes": 589824,
           "file": "environment/ground_tile_2.png",
-          "height": 192,
-          "width": 192
+          "height": 384,
+          "width": 384
         }
       ],
       "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
@@ -17960,7 +17960,7 @@
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
   "frameRate": 12,
-  "generatedBatch": "ui-supplement",
+  "generatedBatch": "arena",
   "maxAtlasPageSize": 2048,
   "opaqueRenderSamples": 16,
   "overlayRenderSamples": 8,

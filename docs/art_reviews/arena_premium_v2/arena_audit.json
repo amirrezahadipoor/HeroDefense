@@ -1,170 +1,171 @@
 {
   "assets": [
     {
-      "centerLaneMeanValue": 32.464,
-      "decodedBytes": 921600,
+      "baselineSheetSha256": "9cd32149c5ec5c16de0d5744d94dcdb4c9f73a10ac1030a063df78cf1e12cc86",
+      "centerLaneMeanValue": 49.417,
+      "decodedBytes": 3686400,
       "dimensions": {
-        "height": 640,
-        "width": 360
+        "height": 1280,
+        "width": 720
       },
-      "edgeMeanValue": 19.935,
+      "edgeMeanValue": 32.021,
       "fullBleedMinimumEdgeAlpha": 255,
       "key": "arena_backdrop",
       "materialCount": 9,
-      "meanValue": 23.836,
+      "meanValue": 37.442,
       "meshParts": 63,
-      "metadataSha256": "91e162a1a46359bc38ba35a48b2d46f485774a12cf88d84b252f7ed90eebf1a5",
-      "modelRevision": "forest-sanctuary-backdrop-v2",
+      "metadataSha256": "4d3d41e24166b966ffb812ba694ff543d6b1ad2e1a1afb08536b0433dae33a8e",
+      "modelRevision": "forest-sanctuary-backdrop-v3",
       "opaquePixelFraction": 1.0,
-      "sheetSha256": "9cd32149c5ec5c16de0d5744d94dcdb4c9f73a10ac1030a063df78cf1e12cc86",
+      "sheetSha256": "3fed1b8e8d227b224cd2060f7396b10a4898d8ba6e8ebe44f25329575f52f608",
       "triangles": 1704
     },
     {
       "alphaMargins": {
-        "bottom": 13,
-        "left": 9,
-        "right": 9,
-        "top": 101
+        "bottom": 28,
+        "left": 20,
+        "right": 20,
+        "top": 203
       },
-      "baselineSheetSha256": "d7917b071baa2d2137a01526d4882fe03d11cd89d6789a87f888297c7d736864",
-      "decodedBytes": 147456,
+      "baselineSheetSha256": "727f587265e3d6251c1039da46c78af0e5851609fcc98662a560f90656e334c0",
+      "decodedBytes": 589824,
       "dimensions": {
-        "height": 192,
-        "width": 192
+        "height": 384,
+        "width": 384
       },
       "key": "ground_tile_0",
       "materialCount": 6,
       "meshParts": 23,
-      "metadataSha256": "20c45a0296f22b5538c36e69310ab85ffd2d5b0ed1ad250c4fbbf774aecbcee4",
-      "modelRevision": "arena-ground-premium-v2",
-      "sheetSha256": "727f587265e3d6251c1039da46c78af0e5851609fcc98662a560f90656e334c0",
+      "metadataSha256": "bf297d9f8410c3cb58eb4fd0cbd4c53f4b377bd695265fc755d64746fc15c55c",
+      "modelRevision": "arena-ground-premium-v3",
+      "sheetSha256": "b298e52a52d88d13be5acaf12364fb5956137f8d964bb517e3f2e7503ec3d512",
       "triangles": 504
     },
     {
       "alphaMargins": {
-        "bottom": 13,
-        "left": 9,
-        "right": 9,
-        "top": 99
+        "bottom": 28,
+        "left": 20,
+        "right": 20,
+        "top": 199
       },
-      "baselineSheetSha256": "3b1b693324973328864a7781ffbb5c32a791548d9cdcf21d73fbca25fb9d05d5",
-      "decodedBytes": 147456,
+      "baselineSheetSha256": "40a40973baea503feb3b08412345d5e75eb5d2f5d29b98c61ea720be2b69fbe7",
+      "decodedBytes": 589824,
       "dimensions": {
-        "height": 192,
-        "width": 192
+        "height": 384,
+        "width": 384
       },
       "key": "ground_tile_1",
       "materialCount": 6,
       "meshParts": 24,
-      "metadataSha256": "396ebec0848258261907d6c04e1ef4a4759a9aea3470db842c114197b5c7706e",
-      "modelRevision": "arena-ground-premium-v2",
-      "sheetSha256": "40a40973baea503feb3b08412345d5e75eb5d2f5d29b98c61ea720be2b69fbe7",
+      "metadataSha256": "1fcc0fc41c48918eaad6c4883de10a5f79dbf6c37074fc51b5c409f79ede6440",
+      "modelRevision": "arena-ground-premium-v3",
+      "sheetSha256": "33be1a79dc93ed5bcb6dfa72094dd6fb646131d5a35b54eb31c9429c62f0d633",
       "triangles": 524
     },
     {
       "alphaMargins": {
-        "bottom": 13,
-        "left": 9,
-        "right": 9,
-        "top": 101
+        "bottom": 28,
+        "left": 20,
+        "right": 20,
+        "top": 203
       },
-      "baselineSheetSha256": "c0452dd8b64f9d976ced6d81a28b74177cacb5c1af10a43163c6eda321eb0b94",
-      "decodedBytes": 147456,
+      "baselineSheetSha256": "de668bbcd8940cdaa66f7bbb6c2ac5dc648721113985ce2fd8cb0fc778b07b4b",
+      "decodedBytes": 589824,
       "dimensions": {
-        "height": 192,
-        "width": 192
+        "height": 384,
+        "width": 384
       },
       "key": "ground_tile_2",
       "materialCount": 6,
       "meshParts": 23,
-      "metadataSha256": "9405f2c2110416d94443075d3d6a5c822de542f671df4e78370134e4be2a14a3",
-      "modelRevision": "arena-ground-premium-v2",
-      "sheetSha256": "de668bbcd8940cdaa66f7bbb6c2ac5dc648721113985ce2fd8cb0fc778b07b4b",
+      "metadataSha256": "a2b595155cbbf329c63d43062abc1d38d719f2091adb18e5b3d743270a6c2dad",
+      "modelRevision": "arena-ground-premium-v3",
+      "sheetSha256": "25db0fcd43b0200df92f132bc1df13ce40ee9d03e80907738d78f92364d05ad7",
       "triangles": 504
     },
     {
       "alphaMargins": {
-        "bottom": 46,
-        "left": 61,
-        "right": 57,
-        "top": 36
+        "bottom": 94,
+        "left": 122,
+        "right": 116,
+        "top": 74
       },
-      "baselineSheetSha256": "2adb2acd5f78bb723829e76bd36038959707e4c1ada8cab995b8a58125bf3052",
-      "decodedBytes": 147456,
+      "baselineSheetSha256": "4b37a9885f2bb0a16ab8f82006b9aa8f93a787f27ef257e8686401f8a8db0bb2",
+      "decodedBytes": 589824,
       "dimensions": {
-        "height": 192,
-        "width": 192
+        "height": 384,
+        "width": 384
       },
       "key": "crystal_prop_0",
       "materialCount": 8,
       "meshParts": 36,
-      "metadataSha256": "090c0035e9347e76c2030aaca0fc4647cbf441a022c8118256681b431dea79cd",
+      "metadataSha256": "dce585391fb1a092c8589b03603d0960c4e36a05ebb63def5dd65e1250478181",
       "modelRevision": "arena-crystal-premium-v2",
-      "sheetSha256": "4b37a9885f2bb0a16ab8f82006b9aa8f93a787f27ef257e8686401f8a8db0bb2",
+      "sheetSha256": "458dd7f0712446cf82024e969d4fe8761922374297bdc40b285bc41d4b1356a7",
       "triangles": 868
     },
     {
       "alphaMargins": {
-        "bottom": 46,
-        "left": 57,
-        "right": 57,
-        "top": 33
+        "bottom": 94,
+        "left": 115,
+        "right": 116,
+        "top": 67
       },
-      "baselineSheetSha256": "b30c1309387d2bfae3852e5da2ab91ff3dc18c9f7bf42f13cb6a63f9d478e6b8",
-      "decodedBytes": 147456,
+      "baselineSheetSha256": "d70c35e11dd34b06de70e08c456ff275656bf5b6a3b924095eb5c7ee0ec57e20",
+      "decodedBytes": 589824,
       "dimensions": {
-        "height": 192,
-        "width": 192
+        "height": 384,
+        "width": 384
       },
       "key": "crystal_prop_1",
       "materialCount": 8,
       "meshParts": 36,
-      "metadataSha256": "92723457f810deddcd65a14d02d89e24c7b6aafd649aa596e886797cbd48aaf3",
+      "metadataSha256": "e89f4df044f4896a71482c20b521b208c6c6e96bc55d42c7605b9f5290332d42",
       "modelRevision": "arena-crystal-premium-v2",
-      "sheetSha256": "d70c35e11dd34b06de70e08c456ff275656bf5b6a3b924095eb5c7ee0ec57e20",
+      "sheetSha256": "ab62b5a38ec6df9109dff11d15c8da2b5e498cc3ceb506a4a7d6c0208b8fc208",
       "triangles": 1080
     },
     {
       "alphaMargins": {
-        "bottom": 46,
-        "left": 57,
-        "right": 57,
-        "top": 41
+        "bottom": 94,
+        "left": 116,
+        "right": 116,
+        "top": 83
       },
-      "baselineSheetSha256": "1311759c9399291e348246cebdee47018c5ca80784379efdceb5fa2e288efa4e",
-      "decodedBytes": 147456,
+      "baselineSheetSha256": "0c2411184ff4d3a8cbf8866ee65087c0ece866608cc8e7623322d8ac187a029c",
+      "decodedBytes": 589824,
       "dimensions": {
-        "height": 192,
-        "width": 192
+        "height": 384,
+        "width": 384
       },
       "key": "crystal_prop_2",
       "materialCount": 9,
       "meshParts": 36,
-      "metadataSha256": "19a46e7398fff8be68ca9223149673c0655e42320cc356ec9afdc63fb8b6ee74",
+      "metadataSha256": "e9f3b96e9c09f31d4859e6766b50d814e4b9e45ab55f1b674b8797b0b6e3cd76",
       "modelRevision": "arena-crystal-premium-v2",
-      "sheetSha256": "0c2411184ff4d3a8cbf8866ee65087c0ece866608cc8e7623322d8ac187a029c",
+      "sheetSha256": "4c170c5984d464ec7b42990a921f80c399b862ae43dba85c2f21d1887f59314f",
       "triangles": 896
     }
   ],
-  "baselineManifestSha256": "db9ae60241f20fd468ae363a93c9b584b804134ab19a76c2ae69e554cfda88ee",
-  "batch": "arena-premium-v2",
-  "candidateManifestSha256": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
+  "baselineManifestSha256": "483db19eaeb478c278fecceca8707463817f132f4572004c02edc350e2f027b7",
+  "batch": "arena-premium-v3",
+  "candidateManifestSha256": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
   "candidatePayload": {
-    "asset_manifest.json": "98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801",
-    "environment/arena_backdrop.json": "91e162a1a46359bc38ba35a48b2d46f485774a12cf88d84b252f7ed90eebf1a5",
-    "environment/arena_backdrop.png": "9cd32149c5ec5c16de0d5744d94dcdb4c9f73a10ac1030a063df78cf1e12cc86",
-    "environment/crystal_prop_0.json": "090c0035e9347e76c2030aaca0fc4647cbf441a022c8118256681b431dea79cd",
-    "environment/crystal_prop_0.png": "4b37a9885f2bb0a16ab8f82006b9aa8f93a787f27ef257e8686401f8a8db0bb2",
-    "environment/crystal_prop_1.json": "92723457f810deddcd65a14d02d89e24c7b6aafd649aa596e886797cbd48aaf3",
-    "environment/crystal_prop_1.png": "d70c35e11dd34b06de70e08c456ff275656bf5b6a3b924095eb5c7ee0ec57e20",
-    "environment/crystal_prop_2.json": "19a46e7398fff8be68ca9223149673c0655e42320cc356ec9afdc63fb8b6ee74",
-    "environment/crystal_prop_2.png": "0c2411184ff4d3a8cbf8866ee65087c0ece866608cc8e7623322d8ac187a029c",
-    "environment/ground_tile_0.json": "20c45a0296f22b5538c36e69310ab85ffd2d5b0ed1ad250c4fbbf774aecbcee4",
-    "environment/ground_tile_0.png": "727f587265e3d6251c1039da46c78af0e5851609fcc98662a560f90656e334c0",
-    "environment/ground_tile_1.json": "396ebec0848258261907d6c04e1ef4a4759a9aea3470db842c114197b5c7706e",
-    "environment/ground_tile_1.png": "40a40973baea503feb3b08412345d5e75eb5d2f5d29b98c61ea720be2b69fbe7",
-    "environment/ground_tile_2.json": "9405f2c2110416d94443075d3d6a5c822de542f671df4e78370134e4be2a14a3",
-    "environment/ground_tile_2.png": "de668bbcd8940cdaa66f7bbb6c2ac5dc648721113985ce2fd8cb0fc778b07b4b"
+    "asset_manifest.json": "526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8",
+    "environment/arena_backdrop.json": "4d3d41e24166b966ffb812ba694ff543d6b1ad2e1a1afb08536b0433dae33a8e",
+    "environment/arena_backdrop.png": "3fed1b8e8d227b224cd2060f7396b10a4898d8ba6e8ebe44f25329575f52f608",
+    "environment/crystal_prop_0.json": "dce585391fb1a092c8589b03603d0960c4e36a05ebb63def5dd65e1250478181",
+    "environment/crystal_prop_0.png": "458dd7f0712446cf82024e969d4fe8761922374297bdc40b285bc41d4b1356a7",
+    "environment/crystal_prop_1.json": "e89f4df044f4896a71482c20b521b208c6c6e96bc55d42c7605b9f5290332d42",
+    "environment/crystal_prop_1.png": "ab62b5a38ec6df9109dff11d15c8da2b5e498cc3ceb506a4a7d6c0208b8fc208",
+    "environment/crystal_prop_2.json": "e9f3b96e9c09f31d4859e6766b50d814e4b9e45ab55f1b674b8797b0b6e3cd76",
+    "environment/crystal_prop_2.png": "4c170c5984d464ec7b42990a921f80c399b862ae43dba85c2f21d1887f59314f",
+    "environment/ground_tile_0.json": "bf297d9f8410c3cb58eb4fd0cbd4c53f4b377bd695265fc755d64746fc15c55c",
+    "environment/ground_tile_0.png": "b298e52a52d88d13be5acaf12364fb5956137f8d964bb517e3f2e7503ec3d512",
+    "environment/ground_tile_1.json": "1fcc0fc41c48918eaad6c4883de10a5f79dbf6c37074fc51b5c409f79ede6440",
+    "environment/ground_tile_1.png": "33be1a79dc93ed5bcb6dfa72094dd6fb646131d5a35b54eb31c9429c62f0d633",
+    "environment/ground_tile_2.json": "a2b595155cbbf329c63d43062abc1d38d719f2091adb18e5b3d743270a6c2dad",
+    "environment/ground_tile_2.png": "25db0fcd43b0200df92f132bc1df13ce40ee9d03e80907738d78f92364d05ad7"
   },
   "expectedKeys": [
     "arena_backdrop",
@@ -178,41 +179,41 @@
   "reviewSheetCount": 6,
   "reviewSheets": {
     "arena_backdrop_value.png": {
-      "bytes": 281042,
-      "sha256": "cd9560c89deab249e9d6231a65753d53c7f3f97f5f4384f2431c68449efe654a"
+      "bytes": 313283,
+      "sha256": "a3aa777bfdc089a60e9024f953c5fa70f83e16ed69e0da3713ade4e321ca28bc"
     },
     "arena_crystal_lineup.png": {
-      "bytes": 75000,
-      "sha256": "aceb84231fdbc131edee31bba6305ec8b8bda17275b0307b2c0986e5a7ba255f"
+      "bytes": 88642,
+      "sha256": "1b4ca7f34cfa861c21ad2098fa8ecac089475b76ab8e0ff4fdaf0f481428af94"
     },
     "arena_depth_hierarchy.png": {
-      "bytes": 433379,
-      "sha256": "f0d6a168c6be2fbddf2a411945ca8b2c6a541041b59bdd225d5263db93d782f8"
+      "bytes": 637255,
+      "sha256": "af56af21668e90a47459dc12cea37ff7012f49520f9b9d52fdc5b6b511ad6c34"
     },
     "arena_ground_lineup.png": {
-      "bytes": 131747,
-      "sha256": "b55f3364066ed319dca877a13f181d0b2b8d1765579fbe9edb799829fe56103e"
+      "bytes": 137089,
+      "sha256": "145201d507b49556dc1f2d422191732c595f2fdcfae57561e02413e3a0b1945d"
     },
     "arena_integrated_composition.png": {
-      "bytes": 544022,
-      "sha256": "c162bd5a92b4c92fb562e5256fcefbd86afc1535a00c7b4196244cff29cec83e"
+      "bytes": 797395,
+      "sha256": "fe921f6b81a8cb0abc9dee94470063903f9f9bdd815f771bbe3cab874472da4d"
     },
     "arena_runtime_readability.png": {
-      "bytes": 100286,
-      "sha256": "e1726211553b656170e73a6f06f3727b397c5c20d0146593700022c330a3163b"
+      "bytes": 97831,
+      "sha256": "ee50c1da0a8d7697f05649b452a5f3fac317c8d87da1473a7aaee4c2d77bb3a3"
     }
   },
   "schemaVersion": 1,
   "summary": {
     "assetCount": 7,
     "crystalPropCount": 3,
-    "decodedBudgetBytes": 2097152,
-    "decodedBytes": 1806336,
+    "decodedBudgetBytes": 8388608,
+    "decodedBytes": 7225344,
     "groundTileCount": 3,
     "maximumTriangles": 1704,
     "minimumMaterialCount": 6,
     "minimumMeshParts": 23,
-    "minimumTransparentAssetMargin": 9,
+    "minimumTransparentAssetMargin": 20,
     "minimumTriangles": 504,
     "portraitBackdropCount": 1,
     "staticFrameCount": 7

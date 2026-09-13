@@ -1,48 +1,40 @@
-# Arena Environment Premium-v2 Review
+# Arena Environment Premium-v3 Review
 
 **Decision:** ACCEPTED
-**Scope:** Phase 16, item 18 — one portrait arena backdrop, all three ground patches, all three crystal landmarks, runtime composition, and depth treatment
-**Render workflow run:** `34746893212`
-**Artifact:** `10313864021` (`hero-defense-arena-sprites`)
-**Render source commit:** `fae33a39aeb76bbe3c2dd285112f1c2cf31acb4e`
-**Candidate archive SHA-256:** `b83f295d44e33b7f89ded6f12b02bdc2d9cf9726f16db25b084c5e5436cc2bb4`
-**Candidate manifest SHA-256:** `98f19dd23591722cb8027ed7756beedcd69bbe94851bbd715faa547689f23801`
-**Accepted audit SHA-256:** `68ee03cba63c1a64f0f4cccd63aa98c28cc3c80eff5cf46afc5b6c8f12277320`
+**Scope:** Display-quality pass — the portrait arena backdrop re-rendered at native 720×1280, all three ground patches and three crystal landmarks at 384×384, with the whole environment value range lifted so text and actors read on real OLED panels
+**Render workflow run:** `34773320326`
+**Artifact:** `hero-defense-arena-sprites`
+**Render source commit:** `7e1851a` (branch `phase17-display-quality`)
+**Candidate archive SHA-256:** `79f90e9bc5862b18c0f4e5346f70616fe34469550d0c37cf4a3210985d3c9264`
+**Candidate manifest SHA-256:** `526736515d316dd13cde2320931272c4309e60284d2168e55ade67866f9213d8`
+**Accepted audit SHA-256:** `c0d4efe8c3bb9f0db123d7780b52ba686f1089fe61af304a637f9b39f909330f`
+
+## Why this batch exists
+
+The accepted v2 backdrop was 360×640 and was upscaled 2× to the 720×1280 world and then 1.5× again to 1080p panels: three times its native size, visibly soft. Its mean value (≈24/255) combined with dark scrims left 93–97 % of every captured frame below 40/255. This batch fixes the source; the runtime changes (ExtendViewport, density-true fonts, lifted scrims) are reviewed separately in `DISPLAY_QUALITY_PREMIUM_V3_REVIEW.md`.
 
 ## Reviewed evidence
 
-I opened and inspected every accepted review sheet in `docs/art_reviews/arena_premium_v2/`:
+I opened and inspected every sheet in `docs/art_reviews/arena_premium_v2/` (directory name kept for tooling continuity):
 
-1. `arena_integrated_composition.png` — exact 720×1280 baseline/candidate comparison with the accepted Hero, regular enemies, and World Tree;
-2. `arena_backdrop_value.png` — native portrait source in color and grayscale with the protected center lane marked;
-3. `arena_ground_lineup.png` — all three before/after patches and repeated-overlap behavior;
-4. `arena_crystal_lineup.png` — all three before/after landmarks plus silhouette-only checks;
-5. `arena_runtime_readability.png` — accepted runtime sizes against dark, light, and grayscale fields;
-6. `arena_depth_hierarchy.png` — full-color and reduced-value composition with the clear-lane boundary.
-
-Their exact byte sizes and SHA-256 values are recorded in `arena_audit.json`. Promotion refuses changed, missing, or extra evidence.
+1. `arena_integrated_composition.png` — 720×1280 baseline/candidate with Hero, enemies, and World Tree;
+2. `arena_backdrop_value.png` — native portrait source, colour and grayscale, clear lane marked;
+3. `arena_ground_lineup.png` — three patches before/after and overlap behaviour;
+4. `arena_crystal_lineup.png` — three landmarks before/after plus silhouettes;
+5. `arena_runtime_readability.png` — runtime sizes on dark/light/grayscale fields;
+6. `arena_depth_hierarchy.png` — full colour and reduced value with the lane boundary.
 
 ## Acceptance findings
 
-- The candidate payload is exact: seven assets/seven static runtime frames, with no consumable or UI spillover.
-- The 360×640 Blender-rendered backdrop is fully opaque at every edge, keeps broad low-contrast forest value bands, and provides a lighter central sanctuary lane without becoming a second HUD layer.
-- Runtime composition uses only eight peripheral ground patches rather than repetitive full-width stripes. This keeps the Hero, enemies, reward paths, and World Tree readable while retaining environmental texture.
-- All three 192×192 ground patches have distinct construction identities—root path, waystone crossing, and moss clearing—with 9 px or more transparent margin and no clipped outline.
-- The crystal landmarks are no longer recolors of one tiny mesh: Azure is a tall waystone fan, Violet is a broad moon-geode construction, and Amber is a compact root lantern. Their silhouettes and value rhythms remain distinguishable in grayscale and at accepted runtime sizes.
-- No glow is baked into the crystal sprites. Highlights are controlled material facets; runtime rarity/VFX semantics remain separate.
-- Upper/peripheral props reduce in size and value, the central 55% stays clear, and near-edge silhouettes provide depth without unnecessary visual clutter.
-- The World Tree and Hero retain first-priority contrast in the integrated reference viewport.
+- Backdrop is native 720×1280: no upscale at world resolution, 1.5× at 1080p (acceptable for broad matte bands).
+- Mean backdrop value rose from ≈24 to ≈37/255; the centre lane still reads lighter than the edges, the 55 % clear lane is preserved, and the Hero/World Tree keep first-priority contrast.
+- Ground patches (384 px) hold a two-step value gap under the darker backdrop bands instead of merging with them.
+- Crystal landmarks are unchanged in construction, only re-rendered at 2× so facets no longer alias.
+- Decoded budget raised from 2 MiB to 8 MiB for this category (7225344 bytes used); combat residency budget is unchanged.
 
 ## Measured contract
 
 - Assets/frames: `7 / 7`
-- Backdrop: `360×640`, minimum edge alpha `255`, opaque-pixel fraction `1.0`
-- Backdrop mean value / center lane / edges: `23.836 / 32.464 / 19.935`
-- Ground and crystal frames: `192×192`
-- Minimum transparent-asset alpha margin: `9 px`
-- Triangle range: `504–1,704`; every asset is below its category hard maximum
-- Minimum mesh parts/material groups across the mixed batch: `23 / 6`
-- Decoded runtime bytes: `1,806,336` of the `2,097,152` batch budget
-- Render contract: Blender 4.2 LTS, fixed camera angle, 2× supersampling, 16 EEVEE samples, RGBA8 straight alpha
-
-The accepted evidence, audit, source identity, and candidate bytes are hash-bound. Only this artifact may be promoted.
+- Minimum transparent margin: `20 px`
+- Triangles: `504–1704`
+- Decoded bytes: `7225344` of `8388608`

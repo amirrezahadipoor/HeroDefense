@@ -29,8 +29,11 @@ EXPECTED_KEYS = (
 GROUND_IDENTITIES = ("root-path", "waystone-crossing", "moss-clearing")
 CRYSTAL_IDENTITIES = ("azure-waystone-fan", "violet-moon-geode", "amber-root-lantern")
 EXPECTED_PIVOT = {"units": "normalized-bottom-left", "x": 0.5, "y": 0.5}
-DECODED_BUDGET = 2 * 1024 * 1024
+DECODED_BUDGET = 8 * 1024 * 1024  # 720x1280 backdrop + six 384px props at premium-v3 density
 VIEWPORT = (720, 1280)
+
+BACKDROP_SIZE = (720, 1280)
+PROP_SIZE = 384
 
 
 def main() -> None:
@@ -104,7 +107,7 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
             raise ValueError(f"{key} manifest and per-asset metadata differ")
         image_path = candidate / entry["sheet"]
         image = Image.open(image_path).convert("RGBA")
-        expected_dimensions = (360, 640) if key == "arena_backdrop" else (192, 192)
+        expected_dimensions = BACKDROP_SIZE if key == "arena_backdrop" else (PROP_SIZE, PROP_SIZE)
         if image.size != expected_dimensions:
             raise ValueError(f"{key} is {image.size}, expected {expected_dimensions}")
         digest = sha256(image_path)
@@ -137,11 +140,15 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
                     f"opaque fraction {opaque_fraction:.5f}"
                 )
             value = ImageOps.grayscale(image.convert("RGB"))
-            center_mean = ImageStat.Stat(value.crop((108, 96, 252, 576))).mean[0]
-            edge = Image.new("L", image.size)
-            edge.paste(value.crop((0, 0, 72, 640)), (0, 0))
-            edge.paste(value.crop((288, 0, 360, 640)), (72, 0))
-            edge_mean = ImageStat.Stat(edge.crop((0, 0, 144, 640))).mean[0]
+            w, h = image.size
+            center_mean = ImageStat.Stat(
+                value.crop((int(w * 0.30), int(h * 0.15), int(w * 0.70), int(h * 0.90)))
+            ).mean[0]
+            edge_w = int(w * 0.20)
+            edge = Image.new("L", (edge_w * 2, h))
+            edge.paste(value.crop((0, 0, edge_w, h)), (0, 0))
+            edge.paste(value.crop((w - edge_w, 0, w, h)), (edge_w, 0))
+            edge_mean = ImageStat.Stat(edge).mean[0]
             overall_mean = ImageStat.Stat(value).mean[0]
             if not (20 <= overall_mean <= 105):
                 raise ValueError(f"Backdrop mean value is not restrained: {overall_mean:.2f}")
@@ -157,6 +164,12 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
                 "centerLaneMeanValue": round(center_mean, 3),
                 "edgeMeanValue": round(edge_mean, 3),
             })
+            baseline_entry = baseline_entries.get(key)
+            if baseline_entry is not None:
+                baseline_path = baseline / baseline_entry["sheet"]
+                if sha256(baseline_path) == digest:
+                    raise ValueError(f"{key} is byte-identical to its baseline")
+                record["baselineSheetSha256"] = sha256(baseline_path)
         else:
             left, top, right, bottom = bounds
             margins = {
@@ -183,7 +196,7 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
     payload_hashes = {relative: sha256(candidate / relative) for relative in payload}
     return {
         "schemaVersion": 1,
-        "batch": "arena-premium-v2",
+        "batch": "arena-premium-v3",
         "expectedKeys": list(EXPECTED_KEYS),
         "baselineManifestSha256": sha256(baseline_manifest_path),
         "candidateManifestSha256": sha256(candidate_manifest_path),
@@ -211,12 +224,12 @@ def validate_metadata(entry: dict, key: str) -> None:
         expected = {
             "family": "environment",
             "frameClass": "arena",
-            "frameSize": 360,
-            "frameWidth": 360,
-            "frameHeight": 640,
-            "sheetWidth": 360,
-            "sheetHeight": 640,
-            "modelRevision": "forest-sanctuary-backdrop-v2",
+            "frameSize": BACKDROP_SIZE[0],
+            "frameWidth": BACKDROP_SIZE[0],
+            "frameHeight": BACKDROP_SIZE[1],
+            "sheetWidth": BACKDROP_SIZE[0],
+            "sheetHeight": BACKDROP_SIZE[1],
+            "modelRevision": "forest-sanctuary-backdrop-v3",
             "compositionProfile": "portrait-clear-lane-v2",
             "depthBands": 5,
             "visualQuality": "premium-v2",
@@ -229,12 +242,12 @@ def validate_metadata(entry: dict, key: str) -> None:
         expected = {
             "family": "environment",
             "frameClass": "environment",
-            "frameSize": 192,
-            "frameWidth": 192,
-            "frameHeight": 192,
-            "sheetWidth": 192,
-            "sheetHeight": 192,
-            "modelRevision": "arena-ground-premium-v2",
+            "frameSize": PROP_SIZE,
+            "frameWidth": PROP_SIZE,
+            "frameHeight": PROP_SIZE,
+            "sheetWidth": PROP_SIZE,
+            "sheetHeight": PROP_SIZE,
+            "modelRevision": "arena-ground-premium-v3",
             "groundIdentity": GROUND_IDENTITIES[variant],
             "variant": variant,
             "visualQuality": "premium-v2",
@@ -247,11 +260,11 @@ def validate_metadata(entry: dict, key: str) -> None:
         expected = {
             "family": "environment",
             "frameClass": "environment",
-            "frameSize": 192,
-            "frameWidth": 192,
-            "frameHeight": 192,
-            "sheetWidth": 192,
-            "sheetHeight": 192,
+            "frameSize": PROP_SIZE,
+            "frameWidth": PROP_SIZE,
+            "frameHeight": PROP_SIZE,
+            "sheetWidth": PROP_SIZE,
+            "sheetHeight": PROP_SIZE,
             "modelRevision": "arena-crystal-premium-v2",
             "prop": CRYSTAL_IDENTITIES[variant],
             "variant": variant,
