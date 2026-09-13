@@ -34,7 +34,10 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     }
 
     public void drawPauseMenu(
-        SpriteBatch batch, Matrix4 projection, UiIconRenderer uiIcons
+        SpriteBatch batch,
+        Matrix4 projection,
+        UiIconRenderer uiIcons,
+        UiFrameRenderer frames
     ) {
         beginShapes(projection);
         shapes.setColor(0.03f, 0.06f, 0.075f, 0.90f);
@@ -47,10 +50,19 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
 
         batch.setProjectionMatrix(projection);
         batch.begin();
+        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 480f, 360f, 240f, true, false);
+        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 760f, 360f, 140f, true, false);
+        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 930f, 360f, 140f, true, false);
         font.setColor(Color.valueOf("E7D8B1"));
-        uiIcons.draw(batch, "continue", 205f, 550f, 92f);
-        uiIcons.draw(batch, "inventory", 205f, 785f, 92f);
-        uiIcons.draw(batch, "shop", 205f, 955f, 92f);
+        uiIcons.draw(batch, "continue", 205f, 550f, 92f, frames.resolve(
+            true, false, 180f, 480f, 360f, 240f
+        ));
+        uiIcons.draw(batch, "inventory", 205f, 785f, 92f, frames.resolve(
+            true, false, 180f, 760f, 360f, 140f
+        ));
+        uiIcons.draw(batch, "shop", 205f, 955f, 92f, frames.resolve(
+            true, false, 180f, 930f, 360f, 140f
+        ));
         font.draw(batch, "Paused", 295f, 1170f);
         font.draw(batch, "Resume", 315f, 615f);
         font.draw(batch, "Inventory", 315f, 845f);
@@ -63,7 +75,8 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         Matrix4 projection,
         GameState state,
         InventoryTouchController controller,
-        UiIconRenderer uiIcons
+        UiIconRenderer uiIcons,
+        UiFrameRenderer frames
     ) {
         Set<String> visibleIcons = new HashSet<>();
         beginShapes(projection);
@@ -127,8 +140,13 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
 
         batch.setProjectionMatrix(projection);
         batch.begin();
+        drawInventoryFrames(batch, state, controller, frames);
         font.setColor(Color.valueOf("E7D8B1"));
-        uiIcons.draw(batch, "close", 588f, 1128f, 64f);
+        uiIcons.draw(batch, "close", 588f, 1128f, 64f, frames.resolve(
+            true, false,
+            InventoryTouchLayout.CLOSE_X, InventoryTouchLayout.CLOSE_Y,
+            InventoryTouchLayout.CLOSE_SIZE, InventoryTouchLayout.CLOSE_SIZE
+        ));
         font.draw(batch, "Equipment & Inventory", 205f, 1225f);
         for (int index = 0; index < EquipmentSlot.values().length; index++) {
             EquipmentSlot slot = EquipmentSlot.values()[index];
@@ -168,6 +186,66 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         font.draw(batch, "Sell", InventoryTouchLayout.SELL_X + 112f, 145f);
         batch.end();
         disposeHiddenIcons(visibleIcons);
+    }
+
+    private void drawInventoryFrames(
+        SpriteBatch batch,
+        GameState state,
+        InventoryTouchController controller,
+        UiFrameRenderer frames
+    ) {
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            InventoryTouchLayout.CLOSE_X, InventoryTouchLayout.CLOSE_Y,
+            InventoryTouchLayout.CLOSE_SIZE, InventoryTouchLayout.CLOSE_SIZE,
+            true, false
+        );
+        for (int index = 0; index < EquipmentSlot.values().length; index++) {
+            int column = index % 2;
+            int row = index / 2;
+            float x = column == 0
+                ? InventoryTouchLayout.SLOT_LEFT_X
+                : InventoryTouchLayout.SLOT_RIGHT_X;
+            float y = InventoryTouchLayout.SLOT_TOP_Y
+                - InventoryTouchLayout.SLOT_HEIGHT
+                - row * InventoryTouchLayout.SLOT_ROW_STRIDE;
+            frames.draw(
+                batch, UiFrameRenderer.Kind.SLOT, x, y,
+                InventoryTouchLayout.SLOT_WIDTH, InventoryTouchLayout.SLOT_HEIGHT,
+                true, false
+            );
+        }
+        for (int row = 0; row < InventoryTouchLayout.VISIBLE_ROWS; row++) {
+            int itemIndex = controller.firstVisibleIndex() + row;
+            float y = InventoryTouchLayout.LIST_TOP_Y
+                - InventoryTouchLayout.LIST_ROW_HEIGHT
+                - row * InventoryTouchLayout.LIST_ROW_STRIDE;
+            frames.draw(
+                batch, UiFrameRenderer.Kind.SLOT,
+                InventoryTouchLayout.LIST_X, y,
+                InventoryTouchLayout.LIST_WIDTH, InventoryTouchLayout.LIST_ROW_HEIGHT,
+                itemIndex < state.inventory.size(), itemIndex == controller.selectedIndex()
+            );
+        }
+        frames.draw(
+            batch, UiFrameRenderer.Kind.PANEL,
+            InventoryTouchLayout.DETAILS_X, InventoryTouchLayout.DETAILS_Y,
+            InventoryTouchLayout.DETAILS_WIDTH, InventoryTouchLayout.DETAILS_HEIGHT,
+            true, false
+        );
+        boolean hasSelection = controller.selectedItem(state) != null;
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            InventoryTouchLayout.EQUIP_X, InventoryTouchLayout.ACTION_Y,
+            InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT,
+            hasSelection, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            InventoryTouchLayout.SELL_X, InventoryTouchLayout.ACTION_Y,
+            InventoryTouchLayout.ACTION_WIDTH, InventoryTouchLayout.ACTION_HEIGHT,
+            hasSelection, false
+        );
     }
 
     private void drawDetails(SpriteBatch batch, GameState state, Item selected) {

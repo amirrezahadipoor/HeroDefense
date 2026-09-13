@@ -1,0 +1,62 @@
+{
+  "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+    "category": "ui_assets",
+    "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+    "scope": "potion-and-reward-card-icon-supplement",
+    "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+    "status": "accepted"
+  },
+  "clips": {
+    "idle": [
+      {
+        "height": 96,
+        "index": 0,
+        "page": 0,
+        "width": 96,
+        "x": 0,
+        "y": 0
+      }
+    ]
+  },
+  "family": "icons",
+  "frameClass": "item",
+  "frameHeight": 96,
+  "frameSize": 96,
+  "frameWidth": 96,
+  "iconFamily": "heartwood-control-medallion",
+  "key": "ui_lifesteal",
+  "materialCount": 6,
+  "meshParts": 9,
+  "modelRevision": "ui-control-icon-premium-v2",
+  "pivot": {
+    "units": "normalized-bottom-left",
+    "x": 0.5,
+    "y": 0.5
+  },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+  "sheet": "icons/ui_lifesteal.png",
+  "sheetHeight": 96,
+  "sheetWidth": 96,
+  "sheets": [
+    {
+      "decodedBytes": 36864,
+      "file": "icons/ui_lifesteal.png",
+      "height": 96,
+      "width": 96
+    }
+  ],
+  "silhouetteLayers": [
+    "shadow medallion",
+    "guard ring",
+    "semantic glyph",
+    "paired gold anchors"
+  ],
+  "touchOnlyUI": true,
+  "triangles": 534,
+  "uiIcon": "lifesteal",
+  "visualQuality": "premium-v2"
+}

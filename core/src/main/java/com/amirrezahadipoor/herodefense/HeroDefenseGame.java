@@ -74,6 +74,7 @@ import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.TouchFeedbackRenderer;
+import com.amirrezahadipoor.herodefense.render.UiFrameRenderer;
 import com.amirrezahadipoor.herodefense.render.UiIconRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
@@ -129,6 +130,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private StatShopSystem statShopSystem;
     private TouchFeedbackRenderer touchFeedbackRenderer;
     private TouchFeedbackSystem touchFeedbackSystem;
+    private UiFrameRenderer uiFrameRenderer;
     private UiIconRenderer uiIconRenderer;
     private SpriteBatch spriteBatch;
     private LocalSaveRepository saves;
@@ -209,6 +211,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
         touchFeedbackRenderer = new TouchFeedbackRenderer();
+        uiFrameRenderer = new UiFrameRenderer();
         uiIconRenderer = new UiIconRenderer();
         installTouchInput();
         readyForTouch = true;
@@ -346,6 +349,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (touchFeedbackRenderer != null) {
             touchFeedbackRenderer.close();
         }
+        if (uiFrameRenderer != null) {
+            uiFrameRenderer.close();
+        }
         if (uiIconRenderer != null) {
             uiIconRenderer.close();
         }
@@ -365,6 +371,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(new TouchInputController(viewport, new TouchInputController.Listener() {
             @Override
             public boolean onTouchDown(float worldX, float worldY, int pointer) {
+                uiFrameRenderer.press(worldX, worldY);
                 return true;
             }
 
@@ -376,6 +383,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 float deltaY,
                 int pointer
             ) {
+                uiFrameRenderer.movePress(worldX, worldY);
                 if (flow.state() == GameScreenState.INVENTORY
                     && inventoryTouchController.isOpen()) {
                     inventoryTouchController.drag(gameState, deltaY);
@@ -385,6 +393,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
             @Override
             public boolean onTouchUp(float worldX, float worldY, int pointer, boolean isTap) {
+                uiFrameRenderer.release();
                 lastTouchWorldX = worldX;
                 lastTouchWorldY = worldY;
                 handledTouchUpCount++;
@@ -724,7 +733,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             camera.update();
         }
         if (flow.state() == GameScreenState.PLAYING) {
-            hudRenderer.draw(spriteBatch, camera.combined, gameState, uiIconRenderer);
+            hudRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
+            );
         }
         if (flow.state() == GameScreenState.MENU) {
             mainMenuRenderer.draw(
@@ -732,7 +743,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 camera.combined,
                 continueAvailable,
                 gameState.coins,
-                uiIconRenderer
+                uiIconRenderer,
+                uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.SETTINGS) {
             settingsOverlayRenderer.draw(spriteBatch, camera.combined, settings, uiIconRenderer);
@@ -747,7 +759,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 gameOverPresentationSeconds
             );
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
-            rewardCardOverlayRenderer.draw(spriteBatch, camera.combined, gameState);
+            rewardCardOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer
+            );
         } else if (flow.state() == GameScreenState.SHOP) {
             statShopOverlayRenderer.draw(
                 spriteBatch, camera.combined, gameState, statShopSystem, uiIconRenderer
@@ -758,11 +772,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 camera.combined,
                 gameState,
                 inventoryTouchController,
-                uiIconRenderer
+                uiIconRenderer,
+                uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.PAUSED) {
             inventoryOverlayRenderer.drawPauseMenu(
-                spriteBatch, camera.combined, uiIconRenderer
+                spriteBatch, camera.combined, uiIconRenderer, uiFrameRenderer
             );
         }
         touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);

@@ -1,5 +1,12 @@
 {
   "alphaMode": "STRAIGHT_RGBA",
+  "categoryReview": {
+    "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+    "category": "ui_assets",
+    "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+    "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+    "status": "accepted"
+  },
   "clips": {
     "idle": [
       {
@@ -14,13 +21,22 @@
   },
   "family": "icons",
   "frameClass": "item",
+  "frameHeight": 96,
   "frameSize": 96,
+  "frameWidth": 96,
+  "iconFamily": "heartwood-control-medallion",
   "key": "ui_coin",
+  "materialCount": 5,
+  "meshParts": 7,
+  "modelRevision": "ui-control-icon-premium-v2",
   "pivot": {
     "units": "normalized-bottom-left",
     "x": 0.5,
     "y": 0.5
   },
+  "renderSamples": 16,
+  "renderSupersample": 2,
+  "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
   "sheet": "icons/ui_coin.png",
   "sheetHeight": 96,
   "sheetWidth": 96,
@@ -32,7 +48,14 @@
       "width": 96
     }
   ],
+  "silhouetteLayers": [
+    "shadow medallion",
+    "guard ring",
+    "semantic glyph",
+    "paired gold anchors"
+  ],
   "touchOnlyUI": true,
-  "triangles": 88,
-  "uiIcon": "coin"
+  "triangles": 488,
+  "uiIcon": "coin",
+  "visualQuality": "premium-v2"
 }

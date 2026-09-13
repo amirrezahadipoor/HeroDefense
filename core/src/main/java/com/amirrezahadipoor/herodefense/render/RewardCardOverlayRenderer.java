@@ -23,7 +23,12 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
         font.getData().setScale(1.8f);
     }
 
-    public void draw(SpriteBatch batch, Matrix4 projection, GameState state) {
+    public void draw(
+        SpriteBatch batch,
+        Matrix4 projection,
+        GameState state,
+        UiIconRenderer icons
+    ) {
         if (!state.awaitingBossReward
             || state.pendingRewardCards.size() != BossRewardCardSystem.CHOICE_COUNT) {
             return;
@@ -51,11 +56,12 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
         for (int index = 0; index < BossRewardCardSystem.CHOICE_COUNT; index++) {
             RewardCardId card = RewardCardId.valueOf(state.pendingRewardCards.get(index));
             float y = RewardCardTouchLayout.FIRST_CARD_Y - index * RewardCardTouchLayout.CARD_STRIDE;
-            font.draw(batch, card.title(), RewardCardTouchLayout.CARD_X + 34f, y + 128f);
+            icons.draw(batch, card.iconKey(), RewardCardTouchLayout.CARD_X + 24f, y + 43f, 96f);
+            font.draw(batch, card.title(), RewardCardTouchLayout.CARD_X + 136f, y + 128f);
             font.draw(
                 batch,
                 powerBudget.description(card, state.pendingRewardBossNumber),
-                RewardCardTouchLayout.CARD_X + 34f,
+                RewardCardTouchLayout.CARD_X + 136f,
                 y + 72f
             );
         }

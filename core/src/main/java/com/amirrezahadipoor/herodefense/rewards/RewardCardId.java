@@ -43,4 +43,18 @@ public enum RewardCardId {
     public float baseMagnitude() {
         return baseMagnitude;
     }
+
+    /** Semantic Heartwood medallion shared by every reward-card presentation. */
+    public String iconKey() {
+        return switch (this) {
+            case STRENGTH -> "strength";
+            case AGILITY -> "agility";
+            case LUCK -> "luck";
+            case DODGE -> "dodge";
+            case HEALTH -> "health";
+            case GENERAL_POWER -> "general_power";
+            case COIN_INCOME -> "coin";
+            case LIFESTEAL -> "lifesteal";
+        };
+    }
 }

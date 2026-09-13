@@ -10,11 +10,18 @@ Run:
 
 The pinned, checksum-verified Blender 4.2 LTS binary is extracted below `${TMPDIR:-/tmp}/hero-defense-tools`. Keep Blender, display helpers, render intermediates, and dependency caches in `/tmp` or an ephemeral CI runner; never extract them into the repository. On a constrained runner, clear stale `/tmp` data and render category batches sequentially rather than retaining a second tool installation.
 
-Render the required low-poly UI icon batch with:
+Render the exact premium UI batch—16 semantic control medallions plus normal, pressed,
+selected, and disabled variants of the reusable button, panel, and slot nine-patches—into a
+disposable candidate directory:
 
 ```sh
 blender --background --factory-startup --python tools/blender/generate_assets.py -- \
-  --batch ui --output android/assets/generated --isolate-frames
+  --batch ui --output /tmp/hero-defense-ui-candidate --isolate-frames
+python3 tools/visual/create_ui_batch_review.py \
+  android/assets/generated /tmp/hero-defense-ui-candidate \
+  docs/art_reviews/ui_assets_premium_v2
+python3 tools/visual/promote_ui_batch.py \
+  /tmp/hero-defense-ui-candidate android/assets/generated
 ```
 
 ## Premium-v2 pilot

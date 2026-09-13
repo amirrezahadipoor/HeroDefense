@@ -853,6 +853,15 @@ def build_crystal_prop(variant: int = 0) -> BuiltModel:
     })
 
 
+UI_FRAME_KINDS = ("button", "panel", "slot")
+UI_FRAME_STATES = ("normal", "pressed", "selected", "disabled")
+UI_FRAME_KEYS = tuple(
+    f"ui_frame_{kind}_{state}"
+    for kind in UI_FRAME_KINDS
+    for state in UI_FRAME_STATES
+)
+
+
 UI_ICON_KEYS = (
     "ui_health",
     "ui_wave",
@@ -872,10 +881,114 @@ UI_ICON_KEYS = (
     "ui_dodge",
 )
 
+# Reward cards reuse the matching control medallions above. Only the two semantic
+# effects without a control equivalent need additional authored medallions.
+REWARD_CARD_ICON_KEYS = (
+    "ui_general_power",
+    "ui_lifesteal",
+)
+
+
+def build_ui_frame(key: str) -> BuiltModel:
+    """Build a camera-facing nine-patch frame with a construction-specific UI state."""
+    if key not in UI_FRAME_KEYS:
+        raise ValueError(f"Unknown UI frame: {key}")
+    remainder = key.removeprefix("ui_frame_")
+    kind, state = remainder.rsplit("_", 1)
+    state_colors = {
+        "normal": ("#142823", "#21433A", "#987D3D", "#D6AD4C"),
+        "pressed": ("#101D1B", "#18342D", "#467D68", "#78BA91"),
+        "selected": ("#193128", "#2A5140", "#C3953E", "#F2D58A"),
+        "disabled": ("#1B2322", "#29312F", "#454F4B", "#69716C"),
+    }
+    outer_hex, inner_hex, trim_hex, accent_hex = state_colors[state]
+    outer = MATERIALS.get(f"ui_frame_outer_{state}", outer_hex)
+    inner = MATERIALS.get(f"ui_frame_inner_{state}", inner_hex)
+    trim = MATERIALS.get(f"ui_frame_trim_{state}", trim_hex, state == "selected")
+    accent = MATERIALS.get(f"ui_frame_accent_{state}", accent_hex, state == "selected")
+    shadow = MATERIALS.get("ui_frame_shadow", "#0B1419")
+
+    view = (Vector(CAMERA_TARGET) - Vector(CAMERA_LOCATION)).normalized()
+    rotation = view.to_track_quat("-Z", "Y")
+    right = rotation @ Vector((1.0, 0.0, 0.0))
+    up = rotation @ Vector((0.0, 1.0, 0.0))
+    center = Vector(CAMERA_TARGET) - up * 0.18
+    facing = rotation.to_euler()
+    objects = []
+
+    def point(x: float, y: float, toward_camera: float = 0.0) -> tuple[float, float, float]:
+        return tuple(center + right * x + up * y - view * toward_camera)
+
+    def plate(name: str, x: float, y: float, width: float, height: float,
+              depth: float, material, bevel: float = 0.0) -> bpy.types.Object:
+        obj = add_cube(name, point(x, y, depth), (width, height, 0.075),
+                       material, bevel, facing)
+        objects.append(obj)
+        return obj
+
+    inset = 0.08 if state == "pressed" else 0.0
+    outer_size = 1.70 if kind == "panel" else 1.66 if kind == "button" else 1.58
+    inner_size = outer_size - (0.26 if kind == "panel" else 0.30)
+    plate("frame_shadow", 0.025, -0.035, outer_size + 0.05, outer_size + 0.05,
+          0.00, shadow, 0.10)
+    plate("frame_outer", 0.0, 0.0, outer_size, outer_size,
+          0.04, outer, 0.095)
+    plate("frame_inner", 0.0, -inset, inner_size, inner_size - inset,
+          0.08, inner, 0.075)
+
+    edge_width = 0.105 if kind == "slot" else 0.085
+    for side, sign in (("left", -1.0), ("right", 1.0)):
+        plate(f"frame_edge_{side}", sign * (outer_size * 0.5 - 0.075), 0.0,
+              edge_width, outer_size - 0.28, 0.12, trim, 0.025)
+    plate("frame_edge_top", 0.0, outer_size * 0.5 - 0.075,
+          outer_size - 0.28, edge_width, 0.12, accent, 0.025)
+    plate("frame_edge_bottom", 0.0, -outer_size * 0.5 + 0.075,
+          outer_size - 0.28, edge_width, 0.12, trim, 0.025)
+
+    for horizontal, sx in (("L", -1.0), ("R", 1.0)):
+        for vertical, sy in (("B", -1.0), ("T", 1.0)):
+            corner_material = accent if state == "selected" or sy > 0 else trim
+            plate(
+                f"frame_corner_{horizontal}{vertical}",
+                sx * (outer_size * 0.5 - 0.13),
+                sy * (outer_size * 0.5 - 0.13),
+                0.23, 0.23, 0.16, corner_material, 0.045,
+            )
+
+    if state == "selected":
+        for side, sign in (("L", -1.0), ("R", 1.0)):
+            leaf_obj = add_leaf(
+                f"frame_selected_leaf_{side}",
+                point(sign * 0.55, 0.55, 0.19),
+                (0.10, 0.035, 0.22), accent,
+            )
+            leaf_obj.rotation_euler = facing
+            leaf_obj.rotation_euler.rotate_axis("Z", sign * 0.72)
+            objects.append(leaf_obj)
+    elif state == "pressed":
+        plate("frame_pressed_notch", 0.0, -0.56, 0.48, 0.075, 0.18, accent, 0.02)
+    elif state == "disabled":
+        plate("frame_disabled_bar", 0.0, 0.0, 0.72, 0.055, 0.18, accent, 0.015)
+
+    return BuiltModel(None, objects, {
+        "uiSkin": kind,
+        "uiState": state,
+        "ninePatchInsets": {"left": 24, "right": 24, "top": 24, "bottom": 24},
+        "stateConstruction": {
+            "normal": "warm top priority edge",
+            "pressed": "inset face and green confirmation notch",
+            "selected": "complete gold corners and paired leaf tabs",
+            "disabled": "desaturated slate frame and quiet center bar",
+        }[state],
+        "modelRevision": "forest-glass-nine-patch-v2",
+        "touchOnlyUI": True,
+        "visualQuality": "premium-v2",
+    })
+
 
 def build_ui_icon(key: str) -> BuiltModel:
-    """Build one low-poly, front-facing mobile UI symbol from locked-palette materials."""
-    if key not in UI_ICON_KEYS:
+    """Build one premium low-poly mobile control symbol from the locked palette."""
+    if key not in (*UI_ICON_KEYS, *REWARD_CARD_ICON_KEYS):
         raise ValueError(f"Unknown UI icon: {key}")
     gold = MATERIALS.get("ui_gold", PALETTE["hero_gold"], True)
     green = MATERIALS.get("ui_green", PALETTE["hero_green"])
@@ -885,7 +998,21 @@ def build_ui_icon(key: str) -> BuiltModel:
     cyan = MATERIALS.get("ui_cyan", PALETTE["cyan"])
     crimson = MATERIALS.get("ui_crimson", PALETTE["crimson"])
     stone = MATERIALS.get("ui_stone", PALETTE["stone"])
-    objects = []
+    medallion = MATERIALS.get("ui_medallion", "#16342E")
+    medallion_edge = MATERIALS.get("ui_medallion_edge", "#47715D")
+    medallion_shadow = MATERIALS.get("ui_medallion_shadow", "#0B1717")
+    objects = [
+        add_ico("icon_shadow_medallion", (0.03, 0.24, 0.97),
+                (0.90, 0.12, 0.90), medallion_shadow, 2),
+        add_ico("icon_inner_medallion", (0.0, 0.16, 1.0),
+                (0.79, 0.10, 0.79), medallion, 2),
+        add_torus("icon_guard_ring", (0.0, 0.09, 1.0), 0.75, 0.055,
+                  medallion_edge, (math.pi / 2, 0.0, 0.0), 20, 5),
+        add_ico("icon_gold_stud_left", (-0.61, -0.01, 0.48),
+                (0.07, 0.035, 0.07), gold, 1),
+        add_ico("icon_gold_stud_right", (0.61, -0.01, 0.48),
+                (0.07, 0.035, 0.07), gold, 1),
+    ]
 
     def cube(name, location, scale, material, rotation_y=0.0, bevel=0.04):
         obj = add_cube(name, location, scale, material, bevel)
@@ -1002,11 +1129,51 @@ def build_ui_icon(key: str) -> BuiltModel:
         cube("clover_stem", (0.20, 0, 0.55), (0.12, 0.14, 0.62), green, -0.35)
     elif key == "ui_dodge":
         shield(cyan)
+    elif key == "ui_general_power":
+        # A four-ray sunstone reads as global power rather than another weapon.
+        objects.append(add_ico(
+            "power_heartstone", (0, -0.08, 1.0), (0.38, 0.22, 0.38), leaf, 2,
+        ))
+        for index in range(4):
+            angle = index * math.pi / 2
+            cube(
+                f"power_ray_{index}",
+                (math.cos(angle) * 0.52, 0, 1.0 + math.sin(angle) * 0.52),
+                (0.38, 0.16, 0.15), gold, -angle, 0.025,
+            )
+    elif key == "ui_lifesteal":
+        # A blood drop cradled by living leaves keeps lifesteal distinct from HP.
+        objects.append(add_ico(
+            "lifesteal_drop_crown", (0, -0.06, 1.18),
+            (0.38, 0.22, 0.40), crimson, 2,
+        ))
+        objects.append(add_cone(
+            "lifesteal_drop_point", (0, -0.06, 0.82),
+            0.38, 0.0, 0.72, crimson, 8, (math.pi, 0, 0),
+        ))
+        for side, sign in (("L", -1), ("R", 1)):
+            leaf_obj = add_leaf(
+                f"lifesteal_root_leaf_{side}",
+                (0.39 * sign, -0.14, 0.76),
+                (0.20, 0.08, 0.38), leaf,
+                (0, 0, -0.68 * sign),
+            )
+            objects.append(leaf_obj)
+
+    # Apply one shared image-plane correction so every glyph and medallion retains
+    # transparent safety despite the locked item-camera framing shift.
+    view = (Vector(CAMERA_TARGET) - Vector(CAMERA_LOCATION)).normalized()
+    camera_up = view.to_track_quat("-Z", "Y") @ Vector((0.0, 1.0, 0.0))
+    for obj in objects:
+        obj.location -= camera_up * 0.15
 
     return BuiltModel(None, objects, {
         "uiIcon": key.removeprefix("ui_"),
+        "iconFamily": "heartwood-control-medallion",
+        "modelRevision": "ui-control-icon-premium-v2",
+        "silhouetteLayers": ["shadow medallion", "guard ring", "semantic glyph", "paired gold anchors"],
         "touchOnlyUI": True,
-        "visualQuality": "premium-v2" if key == "ui_inventory" else "baseline-compatible",
+        "visualQuality": "premium-v2",
     })
 
 
@@ -1036,24 +1203,36 @@ def build_potion_icon(tier: int) -> BuiltModel:
         add_cone("potion_heart_point", (0, -0.405, 0.56), 0.105, 0.0, 0.20,
                  heart, 6, (math.pi, 0, 0)),
     ]
-    if tier >= 5:
-        for index, sign in enumerate((-1, 1)):
+    # Escalate the silhouette one restrained construction step per tier. Color is
+    # supportive, never the only tier cue at runtime size or in grayscale.
+    if tier >= 2:
+        leaf_signs = (1,) if tier == 2 else (-1, 1)
+        for index, sign in enumerate(leaf_signs):
             objects.append(add_leaf(
                 f"potion_collar_leaf_{index}", (0.23 * sign, -0.16, 1.22),
-                (0.13, 0.045, 0.22), leaf, (0, 0, 0.62 * sign),
+                (0.11 + 0.01 * tier, 0.045, 0.18 + 0.01 * tier),
+                leaf, (0, 0, 0.62 * sign),
+            ))
+    if tier >= 4:
+        objects.append(add_torus(
+            "potion_tier_foot_ring", (0, -0.06, 0.22), 0.34, 0.030,
+            gold, (math.pi / 2, 0, 0),
+        ))
+    if tier >= 5:
+        for side, sign in (("L", -1), ("R", 1)):
+            objects.append(add_ico(
+                f"potion_shoulder_seed_{side}",
+                (0.34 * sign, -0.28, 0.94),
+                (0.075, 0.035, 0.075), gold, 1,
             ))
     if tier == 6:
         # Restrained legendary framing creates a distinct silhouette without masking
-        # the liquid mass: two cradle rails, a foot ring, and a seed-like stopper cap.
+        # the liquid mass: two cradle rails and a seed-like stopper cap.
         for side, sign in (("L", -1), ("R", 1)):
             objects.append(add_cylinder_between(
                 f"potion_cradle_{side}", (0.37 * sign, -0.34, 0.35),
                 (0.23 * sign, -0.34, 1.03), 0.035, gold, 6,
             ))
-        objects.append(add_torus(
-            "potion_foot_ring", (0, -0.06, 0.22), 0.34, 0.035,
-            gold, (math.pi / 2, 0, 0),
-        ))
         objects.append(add_leaf(
             "potion_stopper_seed", (0, -0.04, 1.50),
             (0.13, 0.07, 0.18), leaf,
@@ -1061,5 +1240,15 @@ def build_potion_icon(tier: int) -> BuiltModel:
     return BuiltModel(None, objects, {
         "tier": tier,
         "heal_icon": True,
-        "visualQuality": "premium-v2" if tier == 6 else "baseline-compatible",
+        "potionFamily": "heartwood-elixir",
+        "modelRevision": "health-potion-premium-v2",
+        "tierConstruction": (
+            "clean faceted vial",
+            "single collar leaf",
+            "paired collar leaves",
+            "paired leaves and foot ring",
+            "seeded shoulders and foot ring",
+            "legendary cradle rails and living stopper",
+        )[tier - 1],
+        "visualQuality": "premium-v2",
     })

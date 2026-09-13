@@ -335,6 +335,7 @@ final class PremiumAssetContractTest {
         addFamily(peakResidency, sheetPathsByFamily, "enemy");
         addFamily(peakResidency, sheetPathsByFamily, "world_tree");
         addFamily(peakResidency, sheetPathsByFamily, "environment");
+        addFamily(peakResidency, sheetPathsByFamily, "ui");
         largestAsset(bossSheets, imageInfo).forEach(peakResidency::add);
         equipmentSheets.stream()
             .sorted(Comparator.comparingLong((List<Path> paths) -> decodedBytes(paths, imageInfo)).reversed())

@@ -13903,6 +13903,14 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -13917,14 +13925,23 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
       "heal_icon": true,
       "key": "health_potion_1",
+      "materialCount": 6,
+      "meshParts": 10,
+      "modelRevision": "health-potion-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "potionFamily": "heartwood-elixir",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_1.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -13937,10 +13954,20 @@
         }
       ],
       "tier": 1,
-      "triangles": 272
+      "tierConstruction": "clean faceted vial",
+      "triangles": 450,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -13955,14 +13982,23 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
       "heal_icon": true,
       "key": "health_potion_2",
+      "materialCount": 7,
+      "meshParts": 11,
+      "modelRevision": "health-potion-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "potionFamily": "heartwood-elixir",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_2.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -13975,10 +14011,20 @@
         }
       ],
       "tier": 2,
-      "triangles": 272
+      "tierConstruction": "single collar leaf",
+      "triangles": 470,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -13993,14 +14039,23 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
       "heal_icon": true,
       "key": "health_potion_3",
+      "materialCount": 7,
+      "meshParts": 12,
+      "modelRevision": "health-potion-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "potionFamily": "heartwood-elixir",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_3.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -14013,10 +14068,20 @@
         }
       ],
       "tier": 3,
-      "triangles": 272
+      "tierConstruction": "paired collar leaves",
+      "triangles": 490,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -14031,14 +14096,23 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
       "heal_icon": true,
       "key": "health_potion_4",
+      "materialCount": 7,
+      "meshParts": 13,
+      "modelRevision": "health-potion-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "potionFamily": "heartwood-elixir",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_4.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -14051,10 +14125,20 @@
         }
       ],
       "tier": 4,
-      "triangles": 272
+      "tierConstruction": "paired leaves and foot ring",
+      "triangles": 586,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -14069,14 +14153,23 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
       "heal_icon": true,
       "key": "health_potion_5",
+      "materialCount": 7,
+      "meshParts": 15,
+      "modelRevision": "health-potion-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "potionFamily": "heartwood-elixir",
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_5.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -14089,10 +14182,20 @@
         }
       ],
       "tier": 5,
-      "triangles": 272
+      "tierConstruction": "seeded shoulders and foot ring",
+      "triangles": 626,
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -14107,17 +14210,24 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
       "heal_icon": true,
       "key": "health_potion_6",
+      "materialCount": 7,
+      "meshParts": 18,
+      "modelRevision": "health-potion-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "potionFamily": "heartwood-elixir",
       "renderSamples": 16,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_6.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -14130,7 +14240,8 @@
         }
       ],
       "tier": 6,
-      "triangles": 646,
+      "tierConstruction": "legendary cradle rails and living stopper",
+      "triangles": 686,
       "visualQuality": "premium-v2"
     },
     {
@@ -15366,6 +15477,13 @@
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15380,13 +15498,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_agility",
+      "materialCount": 5,
+      "meshParts": 11,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_agility.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15398,12 +15525,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 264,
-      "uiIcon": "agility"
+      "triangles": 664,
+      "uiIcon": "agility",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15418,13 +15559,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_close",
+      "materialCount": 5,
+      "meshParts": 7,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_close.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15436,12 +15586,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 88,
-      "uiIcon": "close"
+      "triangles": 488,
+      "uiIcon": "close",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15456,13 +15620,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_coin",
+      "materialCount": 5,
+      "meshParts": 7,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_coin.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15474,12 +15647,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 88,
-      "uiIcon": "coin"
+      "triangles": 488,
+      "uiIcon": "coin",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15494,13 +15681,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_continue",
+      "materialCount": 5,
+      "meshParts": 7,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_continue.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15512,12 +15708,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 54,
-      "uiIcon": "continue"
+      "triangles": 454,
+      "uiIcon": "continue",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15532,13 +15742,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_dodge",
+      "materialCount": 5,
+      "meshParts": 7,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_dodge.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15550,12 +15769,771 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 124,
-      "uiIcon": "dodge"
+      "triangles": 524,
+      "uiIcon": "dodge",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_button_disabled",
+      "materialCount": 5,
+      "meshParts": 12,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_button_disabled.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_button_disabled.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "desaturated slate frame and quiet center bar",
+      "touchOnlyUI": true,
+      "triangles": 528,
+      "uiSkin": "button",
+      "uiState": "disabled",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_button_normal",
+      "materialCount": 5,
+      "meshParts": 11,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_button_normal.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_button_normal.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "warm top priority edge",
+      "touchOnlyUI": true,
+      "triangles": 484,
+      "uiSkin": "button",
+      "uiState": "normal",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_button_pressed",
+      "materialCount": 5,
+      "meshParts": 12,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_button_pressed.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_button_pressed.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "inset face and green confirmation notch",
+      "touchOnlyUI": true,
+      "triangles": 528,
+      "uiSkin": "button",
+      "uiState": "pressed",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_button_selected",
+      "materialCount": 5,
+      "meshParts": 13,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_button_selected.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_button_selected.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "complete gold corners and paired leaf tabs",
+      "touchOnlyUI": true,
+      "triangles": 524,
+      "uiSkin": "button",
+      "uiState": "selected",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_panel_disabled",
+      "materialCount": 5,
+      "meshParts": 12,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_panel_disabled.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_panel_disabled.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "desaturated slate frame and quiet center bar",
+      "touchOnlyUI": true,
+      "triangles": 528,
+      "uiSkin": "panel",
+      "uiState": "disabled",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_panel_normal",
+      "materialCount": 5,
+      "meshParts": 11,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_panel_normal.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_panel_normal.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "warm top priority edge",
+      "touchOnlyUI": true,
+      "triangles": 484,
+      "uiSkin": "panel",
+      "uiState": "normal",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_panel_pressed",
+      "materialCount": 5,
+      "meshParts": 12,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_panel_pressed.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_panel_pressed.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "inset face and green confirmation notch",
+      "touchOnlyUI": true,
+      "triangles": 528,
+      "uiSkin": "panel",
+      "uiState": "pressed",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_panel_selected",
+      "materialCount": 5,
+      "meshParts": 13,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_panel_selected.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_panel_selected.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "complete gold corners and paired leaf tabs",
+      "touchOnlyUI": true,
+      "triangles": 524,
+      "uiSkin": "panel",
+      "uiState": "selected",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_slot_disabled",
+      "materialCount": 5,
+      "meshParts": 12,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_slot_disabled.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_slot_disabled.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "desaturated slate frame and quiet center bar",
+      "touchOnlyUI": true,
+      "triangles": 528,
+      "uiSkin": "slot",
+      "uiState": "disabled",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_slot_normal",
+      "materialCount": 5,
+      "meshParts": 11,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_slot_normal.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_slot_normal.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "warm top priority edge",
+      "touchOnlyUI": true,
+      "triangles": 484,
+      "uiSkin": "slot",
+      "uiState": "normal",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_slot_pressed",
+      "materialCount": 5,
+      "meshParts": 12,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_slot_pressed.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_slot_pressed.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "inset face and green confirmation notch",
+      "touchOnlyUI": true,
+      "triangles": 528,
+      "uiSkin": "slot",
+      "uiState": "pressed",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "ui",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "key": "ui_frame_slot_selected",
+      "materialCount": 5,
+      "meshParts": 13,
+      "modelRevision": "forest-glass-nine-patch-v2",
+      "ninePatchInsets": {
+        "bottom": 24,
+        "left": 24,
+        "right": 24,
+        "top": 24
+      },
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "ui/ui_frame_slot_selected.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "ui/ui_frame_slot_selected.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "stateConstruction": "complete gold corners and paired leaf tabs",
+      "touchOnlyUI": true,
+      "triangles": 524,
+      "uiSkin": "slot",
+      "uiState": "selected",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15570,13 +16548,83 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
-      "key": "ui_health",
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
+      "key": "ui_general_power",
+      "materialCount": 5,
+      "meshParts": 10,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "icons/ui_general_power.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "icons/ui_general_power.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
+      "touchOnlyUI": true,
+      "triangles": 656,
+      "uiIcon": "general_power",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
+      "key": "ui_health",
+      "materialCount": 5,
+      "meshParts": 8,
+      "modelRevision": "ui-control-icon-premium-v2",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_health.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15588,12 +16636,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 54,
-      "uiIcon": "health"
+      "triangles": 454,
+      "uiIcon": "health",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15608,8 +16670,15 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_inventory",
+      "materialCount": 10,
+      "meshParts": 18,
+      "modelRevision": "ui-control-icon-premium-v2",
+      "pilotReviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
@@ -15617,7 +16686,7 @@
       },
       "renderSamples": 16,
       "renderSupersample": 2,
-      "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_inventory.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15629,13 +16698,27 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 504,
+      "triangles": 904,
       "uiIcon": "inventory",
       "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "c8f0a8f0950a03e2d6e9ca394668fa1f0df80377720fcf8803e9041f83ca6239",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "scope": "potion-and-reward-card-icon-supplement",
+        "sourceManifestSha256": "143a6f992d664f6be134a920398e7ce6d61090ecba68e2961689a39131f8fe02",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15650,13 +16733,83 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
-      "key": "ui_luck",
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
+      "key": "ui_lifesteal",
+      "materialCount": 6,
+      "meshParts": 9,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+      "sheet": "icons/ui_lifesteal.png",
+      "sheetHeight": 96,
+      "sheetWidth": 96,
+      "sheets": [
+        {
+          "decodedBytes": 36864,
+          "file": "icons/ui_lifesteal.png",
+          "height": 96,
+          "width": 96
+        }
+      ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
+      "touchOnlyUI": true,
+      "triangles": 534,
+      "uiIcon": "lifesteal",
+      "visualQuality": "premium-v2"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
+      "clips": {
+        "idle": [
+          {
+            "height": 96,
+            "index": 0,
+            "page": 0,
+            "width": 96,
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "family": "icons",
+      "frameClass": "item",
+      "frameHeight": 96,
+      "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
+      "key": "ui_luck",
+      "materialCount": 6,
+      "meshParts": 10,
+      "modelRevision": "ui-control-icon-premium-v2",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_luck.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15668,12 +16821,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 124,
-      "uiIcon": "luck"
+      "triangles": 524,
+      "uiIcon": "luck",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15688,13 +16855,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_new_game",
+      "materialCount": 7,
+      "meshParts": 10,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_new_game.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15706,12 +16882,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 196,
-      "uiIcon": "new_game"
+      "triangles": 596,
+      "uiIcon": "new_game",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15726,13 +16916,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_pause",
+      "materialCount": 5,
+      "meshParts": 7,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_pause.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15744,12 +16943,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 88,
-      "uiIcon": "pause"
+      "triangles": 488,
+      "uiIcon": "pause",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15764,13 +16977,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_restart",
+      "materialCount": 5,
+      "meshParts": 7,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_restart.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15782,12 +17004,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 106,
-      "uiIcon": "restart"
+      "triangles": 506,
+      "uiIcon": "restart",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15802,13 +17038,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_settings",
+      "materialCount": 5,
+      "meshParts": 14,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_settings.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15820,12 +17065,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 448,
-      "uiIcon": "settings"
+      "triangles": 848,
+      "uiIcon": "settings",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15840,13 +17099,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_shop",
+      "materialCount": 8,
+      "meshParts": 11,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_shop.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15858,12 +17126,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 264,
-      "uiIcon": "shop"
+      "triangles": 664,
+      "uiIcon": "shop",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15878,13 +17160,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_speed",
+      "materialCount": 5,
+      "meshParts": 9,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_speed.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15896,12 +17187,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 108,
-      "uiIcon": "speed"
+      "triangles": 508,
+      "uiIcon": "speed",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15916,13 +17221,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_strength",
+      "materialCount": 6,
+      "meshParts": 8,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_strength.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15934,12 +17248,26 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 108,
-      "uiIcon": "strength"
+      "triangles": 508,
+      "uiIcon": "strength",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
+      "categoryReview": {
+        "auditSha256": "d058a4403e947e67addcf270cbe7ef98b561d9329e36682ba51435c1b137fc32",
+        "category": "ui_assets",
+        "document": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
+        "sourceManifestSha256": "981a2a9079bcafb5caa97cfedeca487bcb5f45bce9259f6e1bd7af3688936dce",
+        "status": "accepted"
+      },
       "clips": {
         "idle": [
           {
@@ -15954,13 +17282,22 @@
       },
       "family": "icons",
       "frameClass": "item",
+      "frameHeight": 96,
       "frameSize": 96,
+      "frameWidth": 96,
+      "iconFamily": "heartwood-control-medallion",
       "key": "ui_wave",
+      "materialCount": 5,
+      "meshParts": 8,
+      "modelRevision": "ui-control-icon-premium-v2",
       "pivot": {
         "units": "normalized-bottom-left",
         "x": 0.5,
         "y": 0.5
       },
+      "renderSamples": 16,
+      "renderSupersample": 2,
+      "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_wave.png",
       "sheetHeight": 96,
       "sheetWidth": 96,
@@ -15972,9 +17309,16 @@
           "width": 96
         }
       ],
+      "silhouetteLayers": [
+        "shadow medallion",
+        "guard ring",
+        "semantic glyph",
+        "paired gold anchors"
+      ],
       "touchOnlyUI": true,
-      "triangles": 60,
-      "uiIcon": "wave"
+      "triangles": 460,
+      "uiIcon": "wave",
+      "visualQuality": "premium-v2"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16616,7 +17960,7 @@
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
   "frameRate": 12,
-  "generatedBatch": "arena",
+  "generatedBatch": "ui-supplement",
   "maxAtlasPageSize": 2048,
   "opaqueRenderSamples": 16,
   "overlayRenderSamples": 8,
