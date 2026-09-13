@@ -45,44 +45,6 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         );
     }
 
-    public void drawPauseMenu(
-        SpriteBatch batch,
-        Matrix4 projection,
-        UiIconRenderer uiIcons,
-        UiFrameRenderer frames
-    ) {
-        beginShapes(projection);
-        shapes.setColor(0.03f, 0.06f, 0.075f, 0.90f);
-        shapes.rect(0f, 0f, 720f, 1280f);
-        panel(180f, 480f, 360f, 240f);
-        panel(180f, 760f, 360f, 140f);
-        panel(180f, 930f, 360f, 140f);
-        shapes.end();
-        endShapes();
-
-        batch.setProjectionMatrix(projection);
-        batch.begin();
-        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 480f, 360f, 240f, true, false);
-        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 760f, 360f, 140f, true, false);
-        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, 180f, 930f, 360f, 140f, true, false);
-        font.getData().setScale(1.3f);
-        font.setColor(Color.valueOf("E7D8B1"));
-        uiIcons.draw(batch, "continue", 205f, 550f, 92f, frames.resolve(
-            true, false, 180f, 480f, 360f, 240f
-        ));
-        uiIcons.draw(batch, "inventory", 205f, 785f, 92f, frames.resolve(
-            true, false, 180f, 760f, 360f, 140f
-        ));
-        uiIcons.draw(batch, "shop", 205f, 955f, 92f, frames.resolve(
-            true, false, 180f, 930f, 360f, 140f
-        ));
-        font.draw(batch, "Paused", 295f, 1170f);
-        font.draw(batch, "Resume", 315f, 615f);
-        font.draw(batch, "Inventory", 315f, 845f);
-        font.draw(batch, "Stat Shop", 315f, 1015f);
-        batch.end();
-    }
-
     public void drawInventory(
         SpriteBatch batch,
         Matrix4 projection,
@@ -401,13 +363,6 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
 
     private void endShapes() {
         Gdx.gl.glDisable(GL20.GL_BLEND);
-    }
-
-    private void panel(float x, float y, float width, float height) {
-        shapes.setColor(0.11f, 0.20f, 0.19f, 1f);
-        shapes.rect(x, y, width, height);
-        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-        shapes.rect(x, y + height - 5f, width, 5f);
     }
 
     private void rarityAccent(float x, float y, float width, float height, String rarity) {

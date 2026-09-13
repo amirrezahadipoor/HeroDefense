@@ -1,61 +1,138 @@
 package com.amirrezahadipoor.herodefense.render;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.amirrezahadipoor.herodefense.input.SettingsTouchLayout;
 import com.amirrezahadipoor.herodefense.settings.GameSettings;
 
-/** Main-menu settings overlay with large sound and music toggles. */
+/** Premium settings surface: two large explicit ON/OFF toggles over the reviewed arena. */
 public final class SettingsOverlayRenderer implements AutoCloseable {
-    private final ShapeRenderer shapes = new ShapeRenderer();
-    private final BitmapFont font = new BitmapFont();
+    static final float CLOSE_X = 570f;
+    static final float CLOSE_Y = 1120f;
+    static final float CLOSE_SIZE = 100f;
+    static final float SOUND_ROW_Y = 700f;
+    static final float MUSIC_ROW_Y = 500f;
+    static final float NOTE_PANEL_X = 100f;
+    static final float NOTE_PANEL_Y = 300f;
+    static final float NOTE_PANEL_WIDTH = 520f;
+    static final float NOTE_PANEL_HEIGHT = 120f;
 
-    public SettingsOverlayRenderer() {
-        font.getData().setScale(1.5f);
-    }
+    private final ShapeRenderer shapes = new ShapeRenderer();
+    private final OverlayText text = new OverlayText();
+    private Texture backdrop;
 
     public void draw(
-        SpriteBatch batch, Matrix4 projection, GameSettings settings, UiIconRenderer icons
+        SpriteBatch batch,
+        Matrix4 projection,
+        GameSettings settings,
+        UiIconRenderer icons,
+        UiFrameRenderer frames
     ) {
+        batch.setProjectionMatrix(projection);
+        batch.begin();
+        batch.setColor(0.52f, 0.62f, 0.58f, 1f);
+        batch.draw(backdrop(), 0f, 0f, 720f, 1280f);
+        batch.setColor(1f, 1f, 1f, 1f);
+        batch.end();
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.025f, 0.055f, 0.065f, 0.99f);
+        shapes.setColor(0.006f, 0.022f, 0.021f, 0.72f);
         shapes.rect(0f, 0f, 720f, 1280f);
-        panel(100f, 700f, 520f, 150f);
-        panel(100f, 500f, 520f, 150f);
-        panel(570f, 1120f, 100f, 100f);
+        shapes.setColor(0.04f, 0.13f, 0.11f, 0.62f);
+        shapes.rect(0f, 1096f, 720f, 184f);
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        batch.setProjectionMatrix(projection);
+        UiFrameRenderer.State closeState = frames.resolve(
+            true, false, CLOSE_X, CLOSE_Y, CLOSE_SIZE, CLOSE_SIZE
+        );
+        UiFrameRenderer.State soundState = frames.resolve(
+            true, settings.soundEnabled, SettingsTouchLayout.ROW_X, SOUND_ROW_Y,
+            SettingsTouchLayout.ROW_WIDTH, SettingsTouchLayout.ROW_HEIGHT
+        );
+        UiFrameRenderer.State musicState = frames.resolve(
+            true, settings.musicEnabled, SettingsTouchLayout.ROW_X, MUSIC_ROW_Y,
+            SettingsTouchLayout.ROW_WIDTH, SettingsTouchLayout.ROW_HEIGHT
+        );
+
         batch.begin();
-        font.setColor(Color.valueOf("F3E4BC"));
-        icons.draw(batch, "settings", 215f, 990f, 82f);
-        icons.draw(batch, "close", 588f, 1138f, 64f);
-        font.draw(batch, "Settings", 315f, 1060f);
-        font.draw(batch, "Sound effects", 140f, 792f);
-        font.draw(batch, settings.soundEnabled ? "ON" : "OFF", 515f, 792f);
-        font.draw(batch, "Music", 140f, 592f);
-        font.draw(batch, settings.musicEnabled ? "ON" : "OFF", 515f, 592f);
+        frames.draw(batch, UiFrameRenderer.Kind.BUTTON, CLOSE_X, CLOSE_Y, CLOSE_SIZE, CLOSE_SIZE,
+            true, false);
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON, SettingsTouchLayout.ROW_X, SOUND_ROW_Y,
+            SettingsTouchLayout.ROW_WIDTH, SettingsTouchLayout.ROW_HEIGHT, true,
+            settings.soundEnabled
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON, SettingsTouchLayout.ROW_X, MUSIC_ROW_Y,
+            SettingsTouchLayout.ROW_WIDTH, SettingsTouchLayout.ROW_HEIGHT, true,
+            settings.musicEnabled
+        );
+        frames.draw(batch, UiFrameRenderer.Kind.PANEL, NOTE_PANEL_X, NOTE_PANEL_Y,
+            NOTE_PANEL_WIDTH, NOTE_PANEL_HEIGHT, true, false);
+
+        icons.draw(batch, "settings", 60f, 1122f, 76f);
+        text.draw(batch, "SETTINGS", 156f, 1196f, 1.36f, OverlayText.GOLD);
+        text.draw(batch, "Comfort choices saved on this device", 156f, 1150f, 0.74f,
+            OverlayText.SUBTLE);
+        icons.draw(batch, "close", 588f, 1138f, 64f, closeState);
+
+        drawToggle(batch, "SOUND EFFECTS", "Hits, drops, level-ups, and boss entrances",
+            SOUND_ROW_Y, settings.soundEnabled, soundState);
+        drawToggle(batch, "MUSIC", "World Tree vigil theme",
+            MUSIC_ROW_Y, settings.musicEnabled, musicState);
+
+        text.draw(batch, "TOUCH ONLY", 130f, 386f, 0.66f, OverlayText.GOLD);
+        text.draw(batch, "Tap a row to switch it. Changes apply instantly.", 130f, 352f, 0.74f,
+            OverlayText.IVORY);
+        text.draw(batch, "Tap Close to return to the main menu.", 130f, 324f, 0.74f,
+            OverlayText.SUBTLE);
         batch.end();
     }
 
-    private void panel(float x, float y, float width, float height) {
-        shapes.setColor(0.10f, 0.20f, 0.19f, 1f);
-        shapes.rect(x, y, width, height);
-        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-        shapes.rect(x, y + height - 5f, width, 5f);
+    private void drawToggle(
+        SpriteBatch batch,
+        String title,
+        String subtitle,
+        float y,
+        boolean enabled,
+        UiFrameRenderer.State state
+    ) {
+        float offset = MainMenuRenderer.pressedOffset(state);
+        text.draw(batch, title, 136f, y + 104f + offset, 1.16f, OverlayText.IVORY);
+        text.draw(batch, subtitle, 136f, y + 54f + offset, 0.68f, OverlayText.SUBTLE);
+        text.drawRightAligned(batch, toggleLabel(enabled), 590f, y + 96f + offset, 1.14f,
+            enabled ? OverlayText.GOLD : OverlayText.MUTED);
+        text.drawRightAligned(batch, enabled ? "tap to mute" : "tap to enable", 590f,
+            y + 54f + offset, 0.62f, OverlayText.SUBTLE);
+    }
+
+    static String toggleLabel(boolean enabled) {
+        return enabled ? "ON" : "OFF";
+    }
+
+    private Texture backdrop() {
+        if (backdrop == null) {
+            backdrop = new Texture(Gdx.files.internal("generated/environment/arena_backdrop.png"));
+            backdrop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+        return backdrop;
     }
 
     @Override
     public void close() {
-        font.dispose();
+        text.close();
         shapes.dispose();
+        if (backdrop != null) {
+            backdrop.dispose();
+            backdrop = null;
+        }
     }
 }

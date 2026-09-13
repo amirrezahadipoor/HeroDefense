@@ -1,9 +1,7 @@
 package com.amirrezahadipoor.herodefense.render;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -13,21 +11,27 @@ import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import com.amirrezahadipoor.herodefense.rewards.RewardPowerBudget;
 
-/** Phone-readable presentation for the three mandatory post-boss choices. */
-public final class RewardCardOverlayRenderer implements AutoCloseable {
-    private final ShapeRenderer shapes = new ShapeRenderer();
-    private final BitmapFont font = new BitmapFont();
-    private final RewardPowerBudget powerBudget = new RewardPowerBudget();
+import java.util.Locale;
 
-    public RewardCardOverlayRenderer() {
-        font.getData().setScale(1.8f);
-    }
+/** Premium post-boss reward surface: boss context, three framed cards, and explicit rules. */
+public final class RewardCardOverlayRenderer implements AutoCloseable {
+    static final float HEADER_PANEL_X = 60f;
+    static final float HEADER_PANEL_Y = 1010f;
+    static final float HEADER_PANEL_WIDTH = 600f;
+    static final float HEADER_PANEL_HEIGHT = 190f;
+    static final float FOOTER_PANEL_Y = 150f;
+    static final float FOOTER_PANEL_HEIGHT = 84f;
+
+    private final ShapeRenderer shapes = new ShapeRenderer();
+    private final OverlayText text = new OverlayText();
+    private final RewardPowerBudget powerBudget = new RewardPowerBudget();
 
     public void draw(
         SpriteBatch batch,
         Matrix4 projection,
         GameState state,
-        UiIconRenderer icons
+        UiIconRenderer icons,
+        UiFrameRenderer frames
     ) {
         if (!state.awaitingBossReward
             || state.pendingRewardCards.size() != BossRewardCardSystem.CHOICE_COUNT) {
@@ -37,40 +41,85 @@ public final class RewardCardOverlayRenderer implements AutoCloseable {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.03f, 0.06f, 0.075f, 0.88f);
+        shapes.setColor(0.006f, 0.022f, 0.021f, 0.90f);
         shapes.rect(0f, 0f, 720f, 1280f);
-        for (int index = 0; index < BossRewardCardSystem.CHOICE_COUNT; index++) {
-            float y = RewardCardTouchLayout.FIRST_CARD_Y - index * RewardCardTouchLayout.CARD_STRIDE;
-            shapes.setColor(0.12f, 0.22f, 0.20f, 1f);
-            shapes.rect(RewardCardTouchLayout.CARD_X, y, RewardCardTouchLayout.CARD_WIDTH, RewardCardTouchLayout.CARD_HEIGHT);
-            shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-            shapes.rect(RewardCardTouchLayout.CARD_X, y + RewardCardTouchLayout.CARD_HEIGHT - 8f, RewardCardTouchLayout.CARD_WIDTH, 8f);
-        }
+        shapes.setColor(0.09f, 0.16f, 0.06f, 0.55f);
+        shapes.rect(0f, 1010f, 720f, 270f);
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         batch.setProjectionMatrix(projection);
         batch.begin();
-        font.setColor(Color.valueOf("E7D8B1"));
-        font.draw(batch, "Choose one reward", 190f, 1080f);
+        frames.draw(batch, UiFrameRenderer.Kind.PANEL, HEADER_PANEL_X, HEADER_PANEL_Y,
+            HEADER_PANEL_WIDTH, HEADER_PANEL_HEIGHT, true, false);
+        for (int index = 0; index < BossRewardCardSystem.CHOICE_COUNT; index++) {
+            float y = cardY(index);
+            frames.draw(batch, UiFrameRenderer.Kind.BUTTON, RewardCardTouchLayout.CARD_X, y,
+                RewardCardTouchLayout.CARD_WIDTH, RewardCardTouchLayout.CARD_HEIGHT, true, false);
+        }
+        frames.draw(batch, UiFrameRenderer.Kind.PANEL, HEADER_PANEL_X, FOOTER_PANEL_Y,
+            HEADER_PANEL_WIDTH, FOOTER_PANEL_HEIGHT, true, false);
+
+        int bossNumber = state.pendingRewardBossNumber;
+        text.drawCentered(batch, bossLabel(bossNumber), 360f, 1168f, 0.78f, OverlayText.GOLD);
+        text.drawCentered(batch, "CHOOSE ONE REWARD", 360f, 1122f, 1.62f, OverlayText.GOLD);
+        text.drawCentered(batch, budgetLabel(powerBudget, bossNumber), 360f, 1066f, 0.74f,
+            OverlayText.SUBTLE);
+
         for (int index = 0; index < BossRewardCardSystem.CHOICE_COUNT; index++) {
             RewardCardId card = RewardCardId.valueOf(state.pendingRewardCards.get(index));
-            float y = RewardCardTouchLayout.FIRST_CARD_Y - index * RewardCardTouchLayout.CARD_STRIDE;
-            icons.draw(batch, card.iconKey(), RewardCardTouchLayout.CARD_X + 24f, y + 43f, 96f);
-            font.draw(batch, card.title(), RewardCardTouchLayout.CARD_X + 136f, y + 128f);
-            font.draw(
-                batch,
-                powerBudget.description(card, state.pendingRewardBossNumber),
-                RewardCardTouchLayout.CARD_X + 136f,
-                y + 72f
+            float y = cardY(index);
+            UiFrameRenderer.State cardState = frames.resolve(
+                true, false, RewardCardTouchLayout.CARD_X, y,
+                RewardCardTouchLayout.CARD_WIDTH, RewardCardTouchLayout.CARD_HEIGHT
             );
+            float offset = MainMenuRenderer.pressedOffset(cardState);
+            icons.draw(batch, card.iconKey(), RewardCardTouchLayout.CARD_X + 26f, y + 47f + offset,
+                96f, cardState);
+            text.draw(batch, card.title().toUpperCase(Locale.ROOT),
+                RewardCardTouchLayout.CARD_X + 140f, y + 148f + offset, 1.18f, OverlayText.IVORY);
+            text.draw(batch, powerBudget.description(card, bossNumber),
+                RewardCardTouchLayout.CARD_X + 140f, y + 102f + offset, 0.98f, OverlayText.POSITIVE);
+            text.draw(batch, effectKind(card), RewardCardTouchLayout.CARD_X + 140f,
+                y + 58f + offset, 0.66f, OverlayText.SUBTLE);
+            text.drawRightAligned(batch, "PERMANENT",
+                RewardCardTouchLayout.CARD_X + RewardCardTouchLayout.CARD_WIDTH - 26f,
+                y + 148f + offset, 0.60f, OverlayText.GOLD);
         }
+
+        text.drawCentered(batch, "Exactly one card applies immediately. The other two are lost.",
+            360f, FOOTER_PANEL_Y + 50f, 0.70f, OverlayText.IVORY);
+        text.drawCentered(batch, "Wave " + state.waveNumber + " cleared  |  Combat resumes after your choice",
+            360f, FOOTER_PANEL_Y + 22f, 0.62f, OverlayText.SUBTLE);
         batch.end();
+    }
+
+    static float cardY(int index) {
+        return RewardCardTouchLayout.FIRST_CARD_Y - index * RewardCardTouchLayout.CARD_STRIDE;
+    }
+
+    static String bossLabel(int bossNumber) {
+        int clamped = Math.max(1, Math.min(20, bossNumber));
+        return "BOSS " + clamped + " OF 20 DEFEATED";
+    }
+
+    static String budgetLabel(RewardPowerBudget budget, int bossNumber) {
+        int percent = Math.round(budget.multiplier(bossNumber) * 100f);
+        return "Reward power " + percent + "%  |  scales with every boss you defeat";
+    }
+
+    static String effectKind(RewardCardId card) {
+        return switch (card.effectType()) {
+            case BASE_STAT -> "Base talent points, added like a level-up";
+            case GENERAL_POWER -> "Multiplies every point of Hero damage";
+            case COIN_INCOME -> "Boosts kill and boss coin rewards";
+            case LIFESTEAL -> "Heals a share of the damage you deal";
+        };
     }
 
     @Override
     public void close() {
-        font.dispose();
+        text.close();
         shapes.dispose();
     }
 }
