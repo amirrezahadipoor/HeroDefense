@@ -45,6 +45,7 @@ from hd_pipeline.environment import (  # noqa: E402
     build_potion_icon,
     build_ui_icon,
     build_world_tree,
+    author_world_tree_actions,
 )
 from hd_pipeline.models import MATERIALS, add_equipment_variant, build_character, build_hero  # noqa: E402
 from hd_pipeline.rig import author_standard_actions, stack_actions_for_single_render  # noqa: E402
@@ -179,31 +180,67 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
     return entry
 
 
+def _stack_tree_actions_for_render(
+    armature: bpy.types.Object,
+    actions: dict[str, bpy.types.Action],
+    frame_counts: dict[str, int],
+) -> dict[str, list[int]]:
+    """Arrange the living loop and optional destruction clip in one bounded render."""
+    armature.animation_data.action = None
+    for track in list(armature.animation_data.nla_tracks):
+        armature.animation_data.nla_tracks.remove(track)
+    track = armature.animation_data.nla_tracks.new()
+    track.name = "HD_EXPORT_TREE_CLIPS"
+    global_frame = 1
+    mapping = {}
+    for clip, count in frame_counts.items():
+        action = actions[clip]
+        strip = track.strips.new(clip, global_frame, action)
+        strip.action_frame_start = 1
+        strip.action_frame_end = count
+        strip.frame_start = global_frame
+        strip.frame_end = global_frame + count - 1
+        strip.extrapolation = "NOTHING"
+        strip.blend_type = "REPLACE"
+        mapping[clip] = list(range(global_frame, global_frame + count))
+        global_frame += count
+    return mapping
+
+
 def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
     key = "world_tree_damaged" if damaged else "world_tree_healthy"
     frame_root = output / "_frames" / key
+    clip_counts = {"idle": 6}
+    if damaged:
+        clip_counts["destroy"] = 10
     _fresh_directory(frame_root)
     reset_scene()
     MATERIALS.clear()
     scene = configure_scene("tree", frame_root)
     model = build_world_tree(damaged)
+    actions = author_world_tree_actions(model.armature, damaged)
     if ISOLATED_RENDERING:
-        frame_paths = {"idle": []}
-        for index in range(6):
-            target = frame_root / f"{key}_idle_{index:02d}.png"
-            _run_frame_worker({
-                "kind": "tree",
-                "damaged": damaged,
-                "frameClass": "tree",
-                "frame": index + 1,
-                "output": str(target),
-            })
-            frame_paths["idle"].append(target)
+        frame_paths = {clip: [] for clip in clip_counts}
+        for clip, count in clip_counts.items():
+            for index in range(count):
+                target = frame_root / f"{key}_{clip}_{index:02d}.png"
+                _run_frame_worker({
+                    "kind": "tree",
+                    "damaged": damaged,
+                    "frameClass": "tree",
+                    "clip": clip,
+                    "frame": index + 1,
+                    "output": str(target),
+                })
+                frame_paths[clip].append(target)
     else:
+        global_frames = _stack_tree_actions_for_render(
+            model.armature, actions, clip_counts
+        )
         frame_paths = _render_stacked_animation(
             scene,
             frame_root,
-            {"idle": list(range(1, 7))},
+            global_frames,
             lambda clip, index: f"{key}_{clip}_{index:02d}.png",
         )
     sprite_directory = output / "sprites"
@@ -212,6 +249,13 @@ def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
     pages, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE["tree"])
     atlas_path = sprite_directory / f"{key}.atlas"
     _write_libgdx_atlas(atlas_path, pages, regions)
+    mesh_parts = [obj for obj in model.render_objects if obj.type == "MESH"]
+    material_names = {
+        slot.material.name
+        for obj in mesh_parts
+        for slot in obj.material_slots
+        if slot.material is not None
+    }
     entry = {
         "key": key,
         "family": "world_tree",
@@ -225,9 +269,15 @@ def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
         "pivot": _pivot_for("tree"),
         "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
+        "frameRate": FRAME_RATE,
+        "renderSupersample": RENDER_SUPERSAMPLE,
+        "renderSamples": OPAQUE_RENDER_SAMPLES,
         "triangles": triangle_count(model.render_objects),
+        "meshParts": len(mesh_parts),
+        "materialCount": len(material_names),
         "armature": model.armature.name,
         "bones": sorted(bone.name for bone in model.armature.data.bones),
+        "rigBoneCount": len(model.armature.data.bones),
         "boneAnimated": True,
         **model.metadata,
     }
@@ -555,7 +605,9 @@ def _execute_frame_worker(payload_path: Path) -> None:
         actions = author_standard_actions(hero.armature, payload["key"])
         hero.armature.animation_data.action = actions[payload["clip"]]
     elif payload["kind"] == "tree":
-        build_world_tree(bool(payload["damaged"]))
+        model = build_world_tree(bool(payload["damaged"]))
+        actions = author_world_tree_actions(model.armature, bool(payload["damaged"]))
+        model.armature.animation_data.action = actions[payload.get("clip", "idle")]
     elif payload["kind"] == "static":
         asset_kind = payload["assetKind"]
         if asset_kind == "ground":
