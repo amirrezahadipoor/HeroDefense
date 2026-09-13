@@ -142,8 +142,22 @@ def author_world_tree_actions(
         # therefore a compact segmented fall rather than an unsafe axial twist.
         _tree_key(
             armature, 1,
-            rotations=resting,
-            scales={"heart": (0.92, 0.92, 0.92)},
+            rotations={
+                **resting,
+                "trunk.lower": (0.0, 0.0, 0.0),
+                "trunk.upper": (0.0, 0.0, 0.0),
+            },
+            locations={
+                "root": (0.0, 0.0, 0.0),
+                "debris.L": (0.0, 0.0, 0.0),
+                "debris.R": (0.0, 0.0, 0.0),
+            },
+            scales={
+                "heart": (0.92, 0.92, 0.92),
+                "crown": (1.0, 1.0, 1.0),
+                "canopy.L": (1.0, 1.0, 1.0),
+                "canopy.R": (1.0, 1.0, 1.0),
+            },
         )
         _tree_key(
             armature, 2,
@@ -239,9 +253,9 @@ def author_world_tree_actions(
         _tree_key(
             armature, 7,
             rotations={
-                "trunk.lower": (0.0, 0.0, 0.095),
-                "trunk.upper": (0.0, 0.0, 0.365),
-                "crown": (0.0, 0.0, 0.265),
+                "trunk.lower": (0.0, 0.0, 0.120),
+                "trunk.upper": (0.0, 0.0, 0.450),
+                "crown": (0.0, 0.0, 0.330),
                 "branch.L": (0.0, 0.0, -0.330),
                 "branch.R": (0.0, 0.0, 0.355),
                 "bough.L": (0.0, 0.0, -0.305),
@@ -250,7 +264,7 @@ def author_world_tree_actions(
                 "canopy.R": (0.0, 0.0, 0.210),
             },
             locations={
-                "root": (-0.175, -0.175, 0.0),
+                "root": (0.050, -0.175, 0.0),
                 "debris.L": (-0.24, -1.10, 0.0),
                 "debris.R": (0.28, -0.98, 0.0),
             },
@@ -261,9 +275,9 @@ def author_world_tree_actions(
             },
         )
         final_rotations = {
-            "trunk.lower": (0.0, 0.0, 0.125),
-            "trunk.upper": (0.0, 0.0, 0.485),
-            "crown": (0.0, 0.0, 0.330),
+            "trunk.lower": (0.0, 0.0, 0.170),
+            "trunk.upper": (0.0, 0.0, 0.620),
+            "crown": (0.0, 0.0, 0.460),
             "branch.L": (0.0, 0.0, -0.400),
             "branch.R": (0.0, 0.0, 0.425),
             "bough.L": (0.0, 0.0, -0.375),
@@ -272,7 +286,7 @@ def author_world_tree_actions(
             "canopy.R": (0.0, 0.0, 0.265),
         }
         final_locations = {
-            "root": (-0.285, -0.255, 0.0),
+            "root": (0.120, -0.255, 0.0),
             "debris.L": (-0.34, -1.62, 0.0),
             "debris.R": (0.39, -1.48, 0.0),
         }
