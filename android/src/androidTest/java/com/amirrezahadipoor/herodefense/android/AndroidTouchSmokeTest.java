@@ -63,12 +63,12 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(1_500L);
             captureScreen("live-hud-premium-v2.png");
 
-            tapWorld(surface, 450f + correction[0], 76f + correction[1]); // Direct Shop
+            tapWorld(surface, 450f + correction[0], utilityRowY(surface) + correction[1]); // Direct Shop
             await("direct shop opens", () -> game.screenState() == GameScreenState.SHOP);
             tapWorld(surface, 620f + correction[0], 1_170f + correction[1]); // Close Shop
             await("direct shop returns to play", () -> game.screenState() == GameScreenState.PLAYING);
 
-            tapWorld(surface, 270f + correction[0], 76f + correction[1]); // Direct Inventory
+            tapWorld(surface, 270f + correction[0], utilityRowY(surface) + correction[1]); // Direct Inventory
             await("direct inventory pauses", () ->
                 game.screenState() == GameScreenState.INVENTORY && game.inventoryOpen()
             );
@@ -80,7 +80,7 @@ public final class AndroidTouchSmokeTest {
             tapWorld(
                 surface,
                 600f + correction[0],
-                1115f + correction[1]
+                statusRowY(surface) + correction[1]
             ); // Pause HUD target, calibrated from the preceding real touch.
             await("paused", () -> game.screenState() == GameScreenState.PAUSED);
             SystemClock.sleep(600L);
@@ -93,7 +93,7 @@ public final class AndroidTouchSmokeTest {
             tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
             await("resume after shop", () -> game.screenState() == GameScreenState.PLAYING);
 
-            tapWorld(surface, 600f + correction[0], 1_115f + correction[1]); // Pause again
+            tapWorld(surface, 600f + correction[0], statusRowY(surface) + correction[1]); // Pause again
             await("paused again", () -> game.screenState() == GameScreenState.PAUSED);
             tapWorld(surface, 360f + correction[0], 830f + correction[1]); // Inventory
             await("inventory opens over pause", () ->
@@ -137,7 +137,7 @@ public final class AndroidTouchSmokeTest {
             float[] correction = touchCorrection(game, 360f, 570f);
             await("showcase run", () -> game.screenState() == GameScreenState.PLAYING);
 
-            tapWorld(surface, 270f + correction[0], 76f + correction[1]);
+            tapWorld(surface, 270f + correction[0], utilityRowY(surface) + correction[1]);
             await("premium inventory", () ->
                 game.screenState() == GameScreenState.INVENTORY && game.inventoryOpen()
             );
@@ -171,7 +171,7 @@ public final class AndroidTouchSmokeTest {
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
             float[] correction = touchCorrection(game, 360f, 570f);
             await("shop showcase run", () -> game.screenState() == GameScreenState.PLAYING);
-            tapWorld(surface, 450f + correction[0], 76f + correction[1]);
+            tapWorld(surface, 450f + correction[0], utilityRowY(surface) + correction[1]);
             await("premium shop", () -> game.screenState() == GameScreenState.SHOP);
             SystemClock.sleep(1_000L);
             captureScreen("shop-affordability-premium-v2.png");
@@ -427,6 +427,23 @@ public final class AndroidTouchSmokeTest {
         } finally {
             event.recycle();
         }
+    }
+
+    /** Mirrors HudTouchLayout: how far each HUD row slides toward the physical edge. */
+    private static float edgeShift(View surface) {
+        float visibleWorldHeight = surface.getHeight() / (surface.getWidth() / WORLD_WIDTH);
+        float clamped = Math.max(WORLD_HEIGHT, Math.min(1_720f, visibleWorldHeight));
+        return Math.min(72f, (clamped - WORLD_HEIGHT) * 0.5f);
+    }
+
+    /** World y through the middle of the inventory/shop row on this panel. */
+    private static float utilityRowY(View surface) {
+        return 76f - edgeShift(surface);
+    }
+
+    /** World y through the middle of the speed/pause row on this panel. */
+    private static float statusRowY(View surface) {
+        return 1_115f + edgeShift(surface);
     }
 
     /** Mirrors the ExtendViewport: width pinned to 720, extra height split above and below. */
