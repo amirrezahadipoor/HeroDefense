@@ -12,14 +12,14 @@ final class HeroProgressionSystemTest {
     private final HeroProgressionSystem system = new HeroProgressionSystem();
 
     @Test
-    void everyEarnedLevelAwardsExactlyOnePointAndCannotExceedOneHundred() {
+    void everyEarnedLevelAwardsExactlyOnePointAndCannotExceedTheCap() {
         GameState state = GameState.newRun(1L);
 
         int levels = system.grantExperience(state, Integer.MAX_VALUE);
 
-        assertEquals(99, levels);
+        assertEquals(HeroProgressionSystem.LEVEL_CAP - 1, levels);
         assertEquals(HeroProgressionSystem.LEVEL_CAP, state.heroLevel);
-        assertEquals(99, state.unspentTalentPoints);
+        assertEquals(HeroProgressionSystem.LEVEL_CAP - 1, state.unspentTalentPoints);
         assertEquals(0, state.heroExperience);
         assertEquals(0, system.grantExperience(state, 1_000));
     }
@@ -37,5 +37,16 @@ final class HeroProgressionSystemTest {
         assertTrue(system.allocateTalentPoint(state, HeroStat.STRENGTH));
         assertEquals(12f, state.hero.damagePerAttack());
         assertFalse(system.allocateTalentPoint(state, HeroStat.LUCK));
+    }
+
+    @Test
+    void levelsPastOneHundredCostProgressivelyMoreExperience() {
+        int atHundred = system.experienceRequiredForNextLevel(100);
+        int atHundredOne = system.experienceRequiredForNextLevel(101);
+        int atOneFifty = system.experienceRequiredForNextLevel(150);
+        assertEquals(50 + 100 * 25, atHundred);
+        assertTrue(atHundredOne > 50 + 101 * 25);
+        assertTrue(atOneFifty > atHundredOne * 3);
+        assertEquals(0, system.experienceRequiredForNextLevel(HeroProgressionSystem.LEVEL_CAP));
     }
 }

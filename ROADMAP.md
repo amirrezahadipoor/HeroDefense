@@ -301,6 +301,8 @@ Give every new run a short spoken opening, then sweep the game for bugs and roug
 
 ### 19.2 Polish and Bug Sweep
 
+- [x] Hero level cap raised 100 → 200 with progressive XP costs past 100 (`×1.03` per late level) so waves 101–200 keep granting talent points instead of showing `MAX` for the whole second half; save repair clamps to the new cap (`HeroProgressionSystemTest`, HUD contract test).
+- [x] Save repair: any run past wave 100 that is not mid-ceremony now has `secondTreePlanted = true`, so pre-18.4 saves at waves 101+ render the second tree and its siege target (`EdgeProbe` scenario → `GameStateTest`).
 - [ ] Systematic pass over every screen and flow (menu, HUD, combat, ceremony, opening, level-up, cards, inventory/anvil/auto-sell, shop, pause, settings, defeat/victory) for visual glitches, state-machine gaps, save/continue edge cases, and stale copy; each fix recorded here with its regression test.
 
 ### 19.3 Economy-Aware Rebalance

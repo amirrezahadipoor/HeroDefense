@@ -6,13 +6,19 @@ import com.amirrezahadipoor.herodefense.model.HeroStat;
 
 /** XP, level-cap, and one-point touch talent allocation rules. */
 public final class HeroProgressionSystem {
-    public static final int LEVEL_CAP = 100;
+    /** Raised from 100 in Phase 19 so the endless half (waves 101–200) keeps awarding points. */
+    public static final int LEVEL_CAP = 200;
+    /** Levels past this one cost progressively more XP so the second half is not a level flood. */
+    public static final int CORE_LEVELS = 100;
+    public static final float LATE_LEVEL_GROWTH = 1.03f;
 
     public int experienceRequiredForNextLevel(int level) {
         if (level >= LEVEL_CAP) {
             return 0;
         }
-        return 50 + Math.max(1, level) * 25;
+        int base = 50 + Math.max(1, level) * 25;
+        int late = Math.max(0, level - CORE_LEVELS);
+        return late == 0 ? base : (int) Math.min(Integer.MAX_VALUE / 4, base * Math.pow(LATE_LEVEL_GROWTH, late));
     }
 
     /** Returns the number of levels gained. Each level awards exactly one point. */

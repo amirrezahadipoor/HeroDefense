@@ -13,6 +13,8 @@ public final class GameState {
     public static final int FINAL_WAVE = 200;
     /** Clearing this wave (and its boss reward) triggers the planting ceremony. */
     public static final int PLANTING_WAVE = 100;
+    /** Mirrors {@code HeroProgressionSystem.LEVEL_CAP}; kept here so save repair has no gameplay dependency. */
+    public static final int MAX_HERO_LEVEL = 200;
     /** Seconds the monsters spend tearing down the trees after the Hero falls. */
     public static final float TREE_SIEGE_SECONDS = 3.2f;
     public static final float ARENA_CENTER_X = WorldLayout.HERO_CENTER_X;
@@ -121,7 +123,7 @@ public final class GameState {
     public void validateAndRepair() {
         schemaVersion = CURRENT_SCHEMA_VERSION;
         waveNumber = Math.max(1, Math.min(FINAL_WAVE, waveNumber));
-        heroLevel = Math.max(1, Math.min(100, heroLevel));
+        heroLevel = Math.max(1, Math.min(MAX_HERO_LEVEL, heroLevel));
         coins = Math.max(0, coins);
         heroExperience = Math.max(0, heroExperience);
         unspentTalentPoints = Math.max(0, unspentTalentPoints);
@@ -147,6 +149,9 @@ public final class GameState {
         if (waveNumber <= PLANTING_WAVE) {
             ceremonyPending = false;
             secondTreePlanted = false;
+        } else if (!ceremonyPending) {
+            // Any run already past the planting wave has its second tree standing.
+            secondTreePlanted = true;
         }
         if (ceremonyPending) waveActive = false;
         if (aliveEnemies == null) aliveEnemies = new ArrayList<>();

@@ -1,6 +1,8 @@
 package com.amirrezahadipoor.herodefense.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.Test;
@@ -55,5 +57,21 @@ final class GameStateTest {
         assertEquals(1, state.heroLevel);
         assertEquals(0, state.coins);
         assertEquals(1f, state.simulationSpeed);
+    }
+
+    @Test
+    void runsPastThePlantingWaveAlwaysHaveTheSecondTreeStanding() {
+        GameState state = new GameState();
+        state.waveNumber = 150;
+        state.secondTreePlanted = false;
+        state.validateAndRepair();
+        assertTrue(state.secondTreePlanted);
+
+        GameState midCeremony = new GameState();
+        midCeremony.waveNumber = 101;
+        midCeremony.ceremonyPending = true;
+        midCeremony.validateAndRepair();
+        assertFalse(midCeremony.secondTreePlanted);
+        assertTrue(midCeremony.ceremonyPending);
     }
 }
