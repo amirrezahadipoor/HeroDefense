@@ -341,10 +341,12 @@ public final class AndroidTouchSmokeTest {
                 game.screenState() == GameScreenState.PLAYING
                     && game.gameState().aliveBosses.stream().anyMatch(boss -> boss.alive)
             );
-            SystemClock.sleep(180L); // Arrival shockwave is mid-expansion
-            captureScreen("vfx-boss-entrance-premium-v2.png");
-            SystemClock.sleep(2_200L); // Projectile trails, impact cores, and ambient spores
-            captureScreen("vfx-combat-premium-v2.png");
+            captureScreen("vfx-boss-entrance-premium-v2.png"); // Arrival shockwave mid-expansion
+            SystemClock.sleep(1_600L);
+            for (int frame = 0; frame < 4; frame++) { // Burst so trails and impacts are caught in flight
+                captureScreen("vfx-combat-" + frame + "-premium-v2.png");
+                SystemClock.sleep(230L);
+            }
             assertTrue(game.gameState().hero.alive);
         }
     }
