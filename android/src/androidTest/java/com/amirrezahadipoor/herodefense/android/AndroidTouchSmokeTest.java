@@ -302,6 +302,45 @@ public final class AndroidTouchSmokeTest {
     }
 
     @Test
+    public void touchWatchesAndSkipsThePlantingCeremony() {
+        prepareCeremonySave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("ceremony save menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue into the boss 20 reward
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("boss 20 reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
+            tapWorld(surface, 360f + correction[0], 890f + correction[1]); // Choose first card
+            await("planting ceremony", () ->
+                game.screenState() == GameScreenState.CINEMATIC && game.gameState().ceremonyPending
+            );
+            assertEquals(GameState.PLANTING_WAVE + 1, game.gameState().waveNumber);
+            assertFalse(game.gameState().waveActive);
+            SystemClock.sleep(2_600L); // Hero has walked out and is pressing the seed
+            captureScreen("ceremony-plant-premium-v2.png");
+            SystemClock.sleep(1_900L); // Watering can tilted, droplets falling
+            captureScreen("ceremony-water-premium-v2.png");
+
+            tapWorld(surface, 360f + correction[0], 640f + correction[1]); // Any tap skips
+            await("wave 101 begins", () ->
+                game.screenState() == GameScreenState.PLAYING
+                    && game.gameState().secondTreePlanted
+                    && !game.gameState().ceremonyPending
+                    && game.gameState().waveActive
+            );
+            assertEquals(GameState.PLANTING_WAVE + 1, game.gameState().waveNumber);
+            assertTrue(game.gameState().hero.alive);
+            SystemClock.sleep(600L);
+            captureScreen("second-tree-standing-premium-v2.png");
+        }
+    }
+
+    @Test
     public void touchRestartsFromPremiumDefeatSummary() {
         prepareDefeatSave();
         try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
@@ -594,12 +633,25 @@ public final class AndroidTouchSmokeTest {
 
     private static void prepareVictorySave() {
         GameState state = GameState.newRun(884L);
-        state.waveNumber = 100;
+        state.waveNumber = GameState.FINAL_WAVE;
+        state.heroLevel = 96;
+        state.totalKills = 9_840;
+        state.totalKillCoinsEarned = 112_500;
+        state.defeatedBosses = GameState.FINAL_WAVE / 5 - 1;
+        state.secondTreePlanted = true;
+        new BossRewardCardSystem().prepareChoices(state, GameState.FINAL_WAVE / 5);
+        writeSave(state);
+    }
+
+    /** Boss 20 reward is pending on wave 100: choosing it starts the planting ceremony. */
+    private static void prepareCeremonySave() {
+        GameState state = GameState.newRun(886L);
+        state.waveNumber = GameState.PLANTING_WAVE;
         state.heroLevel = 64;
         state.totalKills = 4_120;
         state.totalKillCoinsEarned = 38_500;
-        state.defeatedBosses = 19;
-        new BossRewardCardSystem().prepareChoices(state, 20);
+        state.defeatedBosses = GameState.PLANTING_WAVE / 5 - 1;
+        new BossRewardCardSystem().prepareChoices(state, GameState.PLANTING_WAVE / 5);
         writeSave(state);
     }
 
