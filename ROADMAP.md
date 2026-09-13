@@ -262,11 +262,39 @@ Deepen the coin economy with expensive long-horizon skills, make the Hero a pure
 - [x] Drops now linger 2.6 s on the ground before homing so loot is clearly visible.
 - [x] Rebalance for lifesteal and the new skills: regular HP `20 × 1.037^w`, damage `0.27 × 1.003^(w−1)`; the simulator's coin policy now buys skills, and the baseline, eight extra seeds, and all forced-card scenarios pass the gate (see `docs/BALANCE.md`).
 
+## Phase 18 — Juice, Endless Growth, and the Second Tree
+
+Make every new skill visibly and audibly powerful, show the Hero's growth on screen, and turn Wave 100 from an ending into the planting of a second World Tree that opens Waves 101–200 with uncapped progression.
+
+### 18.1 Combat Feel
+
+- [ ] Floating damage numbers: normal, critical (larger, gold), chain arc (cyan), and stun ("STUN") pop-ups with deterministic positions and pooled rendering.
+- [ ] Dedicated VFX: chain-lightning arc beams between struck foes, multi-shot fan trails, stun sparks orbiting frozen enemies, and a stronger critical impact burst with a short screen shake.
+- [ ] Lift the Phase 16 audio freeze: add CC0 critical, kill, chain-lightning, stun, purchase, and level-up sounds with per-file license records in `docs/AUDIO_LICENSES.md`.
+
+### 18.2 Hero Progression Surfaces
+
+- [ ] Hero EXP bar in the live HUD with level badge and level-up flash.
+- [ ] Level-Up overlay lists stats in the Shop order (Strength, Agility, Luck, Dodge, Health) with matching icons.
+
+### 18.3 Endless Progression
+
+- [ ] Remove stat and skill purchase caps: stats switch to a geometric price curve after level 20 and skills continue past level 10 with diminishing per-level gains; simulator and gate updated.
+- [ ] Anvil tab: Rare and Legendary items can be reforged up to +5 with escalating coin costs, adding +1 to every stat bonus per step; item names show the +N suffix; persisted per item.
+- [ ] Inventory auto-sell toggles for Common, Uncommon, and Rare; ticked tiers are sold the moment they enter the inventory (persisted in settings, never affects equipped items).
+
+### 18.4 The Second World Tree
+
+- [ ] Render and review Hero Walk, Plant, and Water clips plus seed, watering can, and a sapling-to-tree growth sequence through the Blender pipeline.
+- [ ] Wave 100 cinematic: combat pauses, the Hero walks beside the World Tree, plants a seed, waters it, and a second tree grows in place; touch-skippable, save-safe, deterministic.
+- [ ] Waves 101–200 with the second tree standing as a permanent monument; Game Over now shows the monsters destroying every planted tree instead of ending abruptly.
+- [ ] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated.
+
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
 - Keep only push-able files in the workspace; SDKs, Blender, caches, and helpers belong in `/tmp` or CI.
-- Verify every audio license before committing the file.
+- Verify every audio license before committing the file (audio unfrozen in Phase 18; CC0 only).
 - Review every Blender-rendered batch before accepting it.
 - Treat the visual style guide as non-negotiable.
 - Use touch/tap/drag everywhere, including automated tests; no keyboard or mouse-only paths.
