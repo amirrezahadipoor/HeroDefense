@@ -142,17 +142,17 @@ def validate_candidate_payload(
 
 def validate_asset_contract(asset: dict, key: str) -> None:
     if key == "arena_backdrop":
-        width, height = 360, 640
+        width, height = 720, 1280
         expected = {
             "key": key,
             "family": "environment",
             "frameClass": "arena",
-            "frameSize": 360,
+            "frameSize": 720,
             "frameWidth": width,
             "frameHeight": height,
             "sheetWidth": width,
             "sheetHeight": height,
-            "modelRevision": "forest-sanctuary-backdrop-v2",
+            "modelRevision": "forest-sanctuary-backdrop-v3",
             "compositionProfile": "portrait-clear-lane-v2",
             "depthBands": 5,
             "visualQuality": "premium-v2",
@@ -161,17 +161,17 @@ def validate_asset_contract(asset: dict, key: str) -> None:
         minimum_parts, minimum_materials = 45, 8
     elif key.startswith("ground_tile_"):
         variant = int(key[-1])
-        width = height = 192
+        width = height = 384
         expected = {
             "key": key,
             "family": "environment",
             "frameClass": "environment",
-            "frameSize": 192,
+            "frameSize": 384,
             "frameWidth": width,
             "frameHeight": height,
             "sheetWidth": width,
             "sheetHeight": height,
-            "modelRevision": "arena-ground-premium-v2",
+            "modelRevision": "arena-ground-premium-v3",
             "groundIdentity": GROUND_IDENTITIES[variant],
             "variant": variant,
             "visualQuality": "premium-v2",
@@ -180,12 +180,12 @@ def validate_asset_contract(asset: dict, key: str) -> None:
         minimum_parts, minimum_materials = 20, 6
     else:
         variant = int(key[-1])
-        width = height = 192
+        width = height = 384
         expected = {
             "key": key,
             "family": "environment",
             "frameClass": "environment",
-            "frameSize": 192,
+            "frameSize": 384,
             "frameWidth": width,
             "frameHeight": height,
             "sheetWidth": width,

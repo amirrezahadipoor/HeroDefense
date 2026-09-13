@@ -551,15 +551,15 @@ def build_arena_backdrop() -> BuiltModel:
     center = Vector(CAMERA_TARGET) + view * 7.0
     facing = rotation.to_euler()
 
-    void = MATERIALS.get("arena_void", "#10221F")
-    deep = MATERIALS.get("arena_deep_forest", "#16312B")
-    middle = MATERIALS.get("arena_middle_forest", "#1D3A31")
-    ground = MATERIALS.get("arena_ground_haze", "#29483A")
-    path = MATERIALS.get("arena_path_haze", "#345443")
-    bark = MATERIALS.get("arena_distant_bark", "#26312A")
-    canopy = MATERIALS.get("arena_distant_canopy", "#17382D")
-    canopy_light = MATERIALS.get("arena_distant_leaf", "#24503C")
-    rune = MATERIALS.get("arena_distant_rune", "#3F6E59")
+    void = MATERIALS.get("arena_void", "#16302B")
+    deep = MATERIALS.get("arena_deep_forest", "#1E423A")
+    middle = MATERIALS.get("arena_middle_forest", "#274E42")
+    ground = MATERIALS.get("arena_ground_haze", "#36604D")
+    path = MATERIALS.get("arena_path_haze", "#436E57")
+    bark = MATERIALS.get("arena_distant_bark", "#2F3E35")
+    canopy = MATERIALS.get("arena_distant_canopy", "#20493B")
+    canopy_light = MATERIALS.get("arena_distant_leaf", "#31684E")
+    rune = MATERIALS.get("arena_distant_rune", "#4F8A70")
     objects = []
 
     def point(x: float, y: float, toward_camera: float = 0.0) -> tuple[float, float, float]:
@@ -642,7 +642,7 @@ def build_arena_backdrop() -> BuiltModel:
 
     return BuiltModel(None, objects, {
         "backdrop": "layered-heartwood-arena",
-        "modelRevision": "forest-sanctuary-backdrop-v2",
+        "modelRevision": "forest-sanctuary-backdrop-v3",
         "compositionProfile": "portrait-clear-lane-v2",
         "depthBands": 5,
         "clearLaneFraction": 0.55,
@@ -655,11 +655,11 @@ def build_ground_tile(variant: int = 0) -> BuiltModel:
     """Build one overlapping premium ground patch with broad, noncompetitive detail."""
     if variant not in range(3):
         raise ValueError(f"Unknown ground tile variant: {variant}")
-    soil_deep = MATERIALS.get("ground_soil_deep", "#1A2D27")
-    soil = MATERIALS.get("ground_soil", "#2B4437")
-    soil_light = MATERIALS.get("ground_soil_light", "#3B5745")
-    stone = MATERIALS.get("ground_stone", "#53605D")
-    moss = MATERIALS.get("ground_moss", "#426C48")
+    soil_deep = MATERIALS.get("ground_soil_deep", "#233B32")
+    soil = MATERIALS.get("ground_soil", "#365544")
+    soil_light = MATERIALS.get("ground_soil_light", "#4A6B55")
+    stone = MATERIALS.get("ground_stone", "#66756F")
+    moss = MATERIALS.get("ground_moss", "#4F7F56")
     root = MATERIALS.get("ground_root", "#60432F")
     objects = [
         add_cone("ground_patch_base", (0.0, 0.0, -0.10), 2.25, 2.17, 0.18,
@@ -719,7 +719,7 @@ def build_ground_tile(variant: int = 0) -> BuiltModel:
         "tileable": False,
         "overlapProfile": "staggered-soft-edge-v2",
         "groundIdentity": identities[variant],
-        "modelRevision": "arena-ground-premium-v2",
+        "modelRevision": "arena-ground-premium-v3",
         "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
         "visualQuality": "premium-v2",
     })

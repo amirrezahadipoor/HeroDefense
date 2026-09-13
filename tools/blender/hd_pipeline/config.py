@@ -33,14 +33,14 @@ FRAME_SIZE = {
     "boss": 256,
     "item": 96,
     "tree": 256,
-    "environment": 192,
+    "environment": 384,
     # The portrait backdrop retains frameSize for manifest compatibility while its
     # explicit frameWidth/frameHeight contract is defined below.
-    "arena": 360,
+    "arena": 720,
 }
 FRAME_DIMENSIONS = {
     **{key: (size, size) for key, size in FRAME_SIZE.items()},
-    "arena": (360, 640),
+    "arena": (720, 1280),
 }
 
 CLIPS: dict[str, int] = {
