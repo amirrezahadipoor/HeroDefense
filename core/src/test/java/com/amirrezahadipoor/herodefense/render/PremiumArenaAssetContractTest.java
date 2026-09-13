@@ -174,14 +174,13 @@ final class PremiumArenaAssetContractTest {
             "core/src/main/java/com/amirrezahadipoor/herodefense/render/ArenaEnvironmentRenderer.java"
         ));
         assertTrue(source.contains("generated/environment/arena_backdrop.png"));
-        assertTrue(source.indexOf("batch.draw(\n            backdrop")
+        assertTrue(source.indexOf("ScreenEdges.drawCover(batch, backdrop)")
             < source.indexOf("drawGround(batch)"));
         assertTrue(source.contains("private static final float[][] GROUND_PLACEMENTS"));
         assertTrue(source.contains("private static final float[][] CRYSTAL_PLACEMENTS"));
         assertTrue(source.contains("for (float[] placement : GROUND_PLACEMENTS)"));
         assertTrue(source.contains("for (float[] placement : CRYSTAL_PLACEMENTS)"));
-        assertTrue(source.contains("WorldLayout.REFERENCE_WIDTH"));
-        assertTrue(source.contains("WorldLayout.REFERENCE_HEIGHT"));
+        assertTrue(source.contains("WorldLayout.WORLD_TREE_X"));
         assertFalse(source.contains("for (int row = 0; row < 8; row++)"));
     }
 

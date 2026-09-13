@@ -43,13 +43,13 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         if (victory) {
-            shapes.setColor(0.010f, 0.030f, 0.020f, 0.90f * reveal);
-            shapes.rect(0f, 0f, 720f, 1280f);
+            shapes.setColor(0.035f, 0.085f, 0.060f, 0.86f * reveal);
+            shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
             shapes.setColor(0.24f, 0.19f, 0.05f, 0.42f * reveal);
             shapes.rect(0f, 1010f, 720f, 270f);
         } else {
-            shapes.setColor(0.012f, 0.008f, 0.008f, 0.94f * reveal);
-            shapes.rect(0f, 0f, 720f, 1280f);
+            shapes.setColor(0.060f, 0.030f, 0.030f, 0.90f * reveal);
+            shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
             shapes.setColor(0.16f, 0.05f, 0.04f, 0.42f * reveal);
             shapes.rect(0f, 1010f, 720f, 270f);
         }

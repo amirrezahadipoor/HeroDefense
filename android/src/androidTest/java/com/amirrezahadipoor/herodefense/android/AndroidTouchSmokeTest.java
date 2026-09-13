@@ -429,18 +429,14 @@ public final class AndroidTouchSmokeTest {
         }
     }
 
+    /** Mirrors the ExtendViewport: width pinned to 720, extra height split above and below. */
     private static float[] worldPoint(View surface, float worldX, float worldY) {
-        float scale = Math.min(
-            surface.getWidth() / WORLD_WIDTH,
-            surface.getHeight() / WORLD_HEIGHT
-        );
-        float viewportWidth = WORLD_WIDTH * scale;
-        float viewportHeight = WORLD_HEIGHT * scale;
-        float left = (surface.getWidth() - viewportWidth) * 0.5f;
-        float top = (surface.getHeight() - viewportHeight) * 0.5f;
+        float scale = surface.getWidth() / WORLD_WIDTH;
+        float visibleWorldHeight = surface.getHeight() / scale;
+        float bottomWorld = (WORLD_HEIGHT - visibleWorldHeight) * 0.5f;
         return new float[] {
-            left + worldX * scale,
-            top + (WORLD_HEIGHT - worldY) * scale
+            worldX * scale,
+            (visibleWorldHeight - (worldY - bottomWorld)) * scale
         };
     }
 
@@ -467,11 +463,32 @@ public final class AndroidTouchSmokeTest {
         throw new AssertionError("Timed out waiting for " + label);
     }
 
+    /** Mean luma of the captured frame must clear the premium-v3 floor; no more OLED-black UI. */
+    private static final float MIN_MEAN_LUMA = 34f;
+
+    private static void assertReadableBrightness(Bitmap screenshot, String name) {
+        long total = 0L;
+        int samples = 0;
+        for (int y = 0; y < screenshot.getHeight(); y += 12) {
+            for (int x = 0; x < screenshot.getWidth(); x += 12) {
+                int pixel = screenshot.getPixel(x, y);
+                int r = (pixel >> 16) & 0xFF;
+                int g = (pixel >> 8) & 0xFF;
+                int b = pixel & 0xFF;
+                total += Math.round(0.2126f * r + 0.7152f * g + 0.0722f * b);
+                samples++;
+            }
+        }
+        float mean = samples == 0 ? 0f : (float) total / samples;
+        assertTrue(name + " mean luma " + mean + " below " + MIN_MEAN_LUMA, mean >= MIN_MEAN_LUMA);
+    }
+
     private static void captureScreen(String name) {
         Bitmap screenshot = InstrumentationRegistry.getInstrumentation()
             .getUiAutomation()
             .takeScreenshot();
         assertNotNull(screenshot);
+        if (!name.startsWith("vfx-")) assertReadableBrightness(screenshot, name);
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         File directory = new File(context.getExternalMediaDirs()[0], "additional_test_output");
         assertTrue(directory.isDirectory() || directory.mkdirs());

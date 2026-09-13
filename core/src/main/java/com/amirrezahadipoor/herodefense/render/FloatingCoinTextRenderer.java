@@ -9,12 +9,7 @@ import com.amirrezahadipoor.herodefense.polish.FloatingCoinTextSystem;
 
 /** High-contrast golden "$ +N" feedback that rises above the Hero after kills. */
 public final class FloatingCoinTextRenderer implements AutoCloseable {
-    private final BitmapFont font = new BitmapFont();
     private final GlyphLayout layout = new GlyphLayout();
-
-    public FloatingCoinTextRenderer() {
-        font.getData().setScale(1.45f);
-    }
 
     public void draw(
         SpriteBatch batch,
@@ -22,6 +17,7 @@ public final class FloatingCoinTextRenderer implements AutoCloseable {
         FloatingCoinTextSystem system
     ) {
         if (system.labels().isEmpty()) return;
+        BitmapFont font = GameFonts.shared().font(GameFonts.Role.HEADING);
         batch.setProjectionMatrix(projection);
         batch.begin();
         for (FloatingCoinText label : system.labels()) {
@@ -30,8 +26,8 @@ public final class FloatingCoinTextRenderer implements AutoCloseable {
             float x = label.x - layout.width * 0.5f;
             float alpha = Math.min(1f, label.lifeRatio() * 1.8f);
             font.setColor(0.04f, 0.075f, 0.09f, alpha * 0.88f);
-            font.draw(batch, text, x + 3f, label.y - 3f);
-            font.setColor(1f, 0.79f, 0.22f, alpha);
+            font.draw(batch, text, x + 2f, label.y - 3f);
+            font.setColor(1f, 0.82f, 0.30f, alpha);
             font.draw(batch, text, x, label.y);
         }
         batch.end();
@@ -43,6 +39,6 @@ public final class FloatingCoinTextRenderer implements AutoCloseable {
 
     @Override
     public void close() {
-        font.dispose();
+        // Shared font owned by GameFonts.
     }
 }

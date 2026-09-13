@@ -79,9 +79,7 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
         float runTimeSeconds,
         float presentationDeltaSeconds
     ) {
-        batch.draw(
-            backdrop, 0f, 0f, WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT
-        );
+        ScreenEdges.drawCover(batch, backdrop);
         drawGround(batch);
         drawCrystals(batch);
         drawWorldTree(batch, state, runTimeSeconds, presentationDeltaSeconds);
@@ -91,7 +89,7 @@ public final class ArenaEnvironmentRenderer implements AutoCloseable {
         float originalColor = batch.getPackedColor();
         for (float[] placement : GROUND_PLACEMENTS) {
             float shade = placement[5];
-            batch.setColor(shade * 0.92f, shade, shade * 0.95f, 0.92f);
+            batch.setColor(shade * 0.96f, shade, shade * 0.97f, 0.96f);
             int variant = Math.round(placement[4]);
             batch.draw(
                 ground[variant], placement[0], placement[1], placement[2], placement[3]

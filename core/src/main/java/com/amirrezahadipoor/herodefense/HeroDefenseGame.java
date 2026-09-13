@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amirrezahadipoor.herodefense.audio.AudioCue;
 import com.amirrezahadipoor.herodefense.audio.GameAudioManager;
@@ -61,6 +61,9 @@ import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.polish.TouchFeedbackSystem;
 import com.amirrezahadipoor.herodefense.render.ArenaEnvironmentRenderer;
 import com.amirrezahadipoor.herodefense.render.CombatEntityRenderer;
+import com.amirrezahadipoor.herodefense.render.DisplayMetrics;
+import com.amirrezahadipoor.herodefense.render.GameFonts;
+import com.amirrezahadipoor.herodefense.render.ScreenEdges;
 import com.amirrezahadipoor.herodefense.render.EquipmentSpriteRenderer;
 import com.amirrezahadipoor.herodefense.render.FloatingCoinTextRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
@@ -145,6 +148,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private volatile float lastTouchWorldX = Float.NaN;
     private volatile float lastTouchWorldY = Float.NaN;
     private OrthographicCamera camera;
+    private DisplayMetrics displayMetrics;
     private Viewport viewport;
     private float simulationSeconds;
     private float ambientSeconds;
@@ -196,8 +200,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         continueAvailable = loadedRun.isPresent() && canContinue(gameState);
         new StarterLoadoutSystem().provisionOnce(gameState);
         camera = new OrthographicCamera();
-        viewport = new FitViewport(WorldLayout.REFERENCE_WIDTH, WorldLayout.REFERENCE_HEIGHT, camera);
-        viewport.apply(true);
+        // Width is pinned to 720; tall panels reveal more arena instead of black bars.
+        viewport = new ExtendViewport(
+            WorldLayout.REFERENCE_WIDTH,
+            DisplayMetrics.MIN_WORLD_HEIGHT,
+            WorldLayout.REFERENCE_WIDTH,
+            DisplayMetrics.MAX_WORLD_HEIGHT,
+            camera
+        );
+        applyDisplayMetrics(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
         spriteBatch = new SpriteBatch();
         arenaEnvironmentRenderer = new ArenaEnvironmentRenderer();
         combatEntityRenderer = new CombatEntityRenderer();
@@ -223,7 +234,26 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        applyDisplayMetrics(width, height);
+    }
+
+    private void applyDisplayMetrics(int width, int height) {
+        displayMetrics = new DisplayMetrics(width, height, Gdx.graphics.getDensity());
+        viewport.update(width, height, false);
+        // Keep the 1280-unit design area centred; overflow is split above and below it.
+        camera.position.set(
+            WorldLayout.REFERENCE_WIDTH * 0.5f,
+            WorldLayout.REFERENCE_HEIGHT * 0.5f,
+            0f
+        );
+        camera.update();
+        GameFonts.shared().rebuild(displayMetrics);
+        ScreenEdges.update(displayMetrics);
+    }
+
+    /** Current panel mapping, exposed for instrumentation tests. */
+    public DisplayMetrics displayMetrics() {
+        return displayMetrics;
     }
 
     @Override
@@ -328,6 +358,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         saveNow();
+        if (GameFonts.hasShared()) GameFonts.shared().close();
         if (audioManager != null) {
             audioManager.close();
         }
@@ -753,17 +784,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private void drawCurrentState(float presentationDeltaSeconds) {
         float tint = switch (flow.state()) {
-            case MENU -> 0.07f;
-            case SETTINGS -> 0.065f;
-            case PLAYING -> 0.11f;
-            case PAUSED -> 0.055f;
-            case LEVEL_UP -> 0.13f;
-            case CARD_CHOICE -> 0.15f;
-            case INVENTORY -> 0.10f;
-            case SHOP -> 0.10f;
-            case GAME_OVER -> 0.035f;
+            case MENU -> 0.14f;
+            case SETTINGS -> 0.13f;
+            case PLAYING -> 0.20f;
+            case PAUSED -> 0.11f;
+            case LEVEL_UP -> 0.22f;
+            case CARD_CHOICE -> 0.24f;
+            case INVENTORY -> 0.18f;
+            case SHOP -> 0.18f;
+            case GAME_OVER -> 0.08f;
         };
-        Gdx.gl.glClearColor(tint * 0.5f, tint, tint * 0.72f, 1f);
+        Gdx.gl.glClearColor(tint * 0.55f, tint, tint * 0.78f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (flow.state() != GameScreenState.MENU && flow.state() != GameScreenState.SETTINGS) {

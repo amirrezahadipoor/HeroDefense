@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -34,15 +32,10 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     private static final Color MUTED = Color.valueOf("777D76");
 
     private final ShapeRenderer shapes = new ShapeRenderer();
-    private final BitmapFont font = new BitmapFont();
-    private final GlyphLayout textLayout = new GlyphLayout();
+    private final OverlayText text = new OverlayText();
     private final Map<String, Texture> icons = new HashMap<>();
 
     public InventoryOverlayRenderer() {
-        font.getRegion().getTexture().setFilter(
-            Texture.TextureFilter.Linear,
-            Texture.TextureFilter.Linear
-        );
     }
 
     public void drawInventory(
@@ -56,8 +49,8 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         Set<String> visibleIcons = new HashSet<>();
         Item selected = controller.selectedItem(state);
         beginShapes(projection);
-        shapes.setColor(0.006f, 0.022f, 0.021f, 0.975f);
-        shapes.rect(0f, 0f, 720f, 1280f);
+        shapes.setColor(0.040f, 0.090f, 0.080f, 0.97f);
+        shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
         shapes.setColor(0.04f, 0.13f, 0.11f, 0.82f);
         shapes.rect(0f, 1160f, 720f, 120f);
         shapes.end();
@@ -371,21 +364,15 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     }
 
     private void drawCentered(
-        SpriteBatch batch, String text, float centerX, float y, float scale, Color color
+        SpriteBatch batch, String label, float centerX, float y, float scale, Color color
     ) {
-        font.getData().setScale(scale);
-        textLayout.setText(font, text);
-        drawText(batch, text, centerX - textLayout.width * 0.5f, y, scale, color);
+        text.drawCentered(batch, label, centerX, y, scale, color);
     }
 
     private void drawText(
-        SpriteBatch batch, String text, float x, float y, float scale, Color color
+        SpriteBatch batch, String label, float x, float y, float scale, Color color
     ) {
-        font.getData().setScale(scale);
-        font.setColor(0.003f, 0.010f, 0.009f, color.a);
-        font.draw(batch, text, x + 1.5f, y - 2f);
-        font.setColor(color);
-        font.draw(batch, text, x, y);
+        text.draw(batch, label, x, y, scale, color);
     }
 
     static String comparisonLabel(float difference, boolean compared) {
@@ -432,7 +419,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     public void close() {
         for (Texture icon : icons.values()) icon.dispose();
         icons.clear();
-        font.dispose();
+        text.close();
         shapes.dispose();
     }
 }

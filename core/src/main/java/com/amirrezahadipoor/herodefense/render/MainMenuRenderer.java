@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -28,15 +26,10 @@ public final class MainMenuRenderer implements AutoCloseable {
     private static final Color SUBTLE = Color.valueOf("B8C4AF");
 
     private final ShapeRenderer shapes = new ShapeRenderer();
-    private final BitmapFont font = new BitmapFont();
-    private final GlyphLayout layout = new GlyphLayout();
+    private final OverlayText text = new OverlayText();
     private Texture backdrop;
 
     public MainMenuRenderer() {
-        font.getRegion().getTexture().setFilter(
-            Texture.TextureFilter.Linear,
-            Texture.TextureFilter.Linear
-        );
     }
 
     public void draw(
@@ -49,8 +42,8 @@ public final class MainMenuRenderer implements AutoCloseable {
     ) {
         batch.setProjectionMatrix(projection);
         batch.begin();
-        batch.setColor(0.62f, 0.72f, 0.68f, 1f);
-        batch.draw(backdrop(), 0f, 0f, 720f, 1280f);
+        batch.setColor(0.82f, 0.90f, 0.86f, 1f);
+        ScreenEdges.drawCover(batch, backdrop());
         batch.setColor(Color.WHITE);
         batch.end();
 
@@ -58,13 +51,13 @@ public final class MainMenuRenderer implements AutoCloseable {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapes.setProjectionMatrix(projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.008f, 0.030f, 0.027f, 0.60f);
-        shapes.rect(0f, 0f, 720f, 1280f);
-        shapes.setColor(0.006f, 0.022f, 0.021f, 0.48f);
-        shapes.rect(0f, 0f, 54f, 1280f);
-        shapes.rect(666f, 0f, 54f, 1280f);
-        shapes.setColor(0.025f, 0.090f, 0.072f, 0.45f);
-        shapes.rect(0f, 0f, 720f, 220f);
+        shapes.setColor(0.030f, 0.075f, 0.066f, 0.48f);
+        shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
+        shapes.setColor(0.020f, 0.055f, 0.050f, 0.42f);
+        shapes.rect(0f, ScreenEdges.bottom(), 54f, ScreenEdges.height());
+        shapes.rect(666f, ScreenEdges.bottom(), 54f, ScreenEdges.height());
+        shapes.setColor(0.05f, 0.15f, 0.12f, 0.45f);
+        shapes.rect(0f, ScreenEdges.bottom(), 720f, 220f - ScreenEdges.bottom());
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -149,21 +142,15 @@ public final class MainMenuRenderer implements AutoCloseable {
     }
 
     private void drawShadowedCentered(
-        SpriteBatch batch, String text, float centerX, float baselineY, float scale, Color color
+        SpriteBatch batch, String label, float centerX, float y, float scale, Color color
     ) {
-        font.getData().setScale(scale);
-        layout.setText(font, text);
-        drawShadowed(batch, text, centerX - layout.width * 0.5f, baselineY, scale, color);
+        text.drawCentered(batch, label, centerX, y, scale, color);
     }
 
     private void drawShadowed(
-        SpriteBatch batch, String text, float x, float y, float scale, Color color
+        SpriteBatch batch, String label, float x, float y, float scale, Color color
     ) {
-        font.getData().setScale(scale);
-        font.setColor(0.005f, 0.012f, 0.010f, 0.92f);
-        font.draw(batch, text, x + 2f, y - 3f);
-        font.setColor(color);
-        font.draw(batch, text, x, y);
+        text.draw(batch, label, x, y, scale, color);
     }
 
     private Texture backdrop() {
@@ -185,7 +172,7 @@ public final class MainMenuRenderer implements AutoCloseable {
     @Override
     public void close() {
         if (backdrop != null) backdrop.dispose();
-        font.dispose();
+        text.close();
         shapes.dispose();
     }
 }

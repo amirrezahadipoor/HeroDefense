@@ -37,7 +37,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
     private static final float ATTACK_CLIP_SECONDS = 8f / FRAME_RATE;
     public static final float DROP_TARGET_X = HudTouchLayout.INVENTORY_X
         + HudTouchLayout.UTILITY_BUTTON_WIDTH * 0.5f;
-    public static final float DROP_TARGET_Y = HudTouchLayout.UTILITY_BUTTON_Y
+    public static final float DROP_TARGET_Y = HudTouchLayout.DESIGN_UTILITY_BUTTON_Y
         + HudTouchLayout.UTILITY_BUTTON_HEIGHT * 0.5f;
     private static final float DROP_HOMING_ARC_HEIGHT = 86f;
     static final int PROJECTILE_TRAIL_STEPS = 3;
