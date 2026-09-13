@@ -46,6 +46,8 @@ Premium-v2 is a substantial quality upgrade, not a change to noisy realism. Ever
 - Maintain a clear three-level hierarchy: screen title, primary value/action, supporting metadata.
 - Every interactive target is at least 96×96 reference units, has visible pressed/disabled/selected states, and keeps text/icon content inside a 12-unit safe inset.
 - Inventory and Shop cards use consistent rarity edge treatment, aligned numeric columns, concise comparison language, and no decorative layer behind critical stats.
+- Reusable control chrome uses the reviewed `button`, `panel`, and `slot` nine-patch families. Every family has four construction-specific states: normal uses a warm priority edge, pressed visibly insets the face, selected completes the gold corners with paired leaf tabs, and disabled removes saturation/priority rather than relying on opacity alone.
+- Semantic control icons use one coherent Heartwood medallion language and remain recognizable in grayscale. Disabled icons receive restrained runtime tinting; state meaning must never depend on glyph recoloring alone.
 - The live HUD may frame information but may not hide combat lanes, rewards, Hero attacks, or the World Tree silhouette.
 
 ### 0.6 Premium VFX restraint
@@ -90,6 +92,8 @@ Budgets count **triangles after modifiers** at render time.
 | Ground tile | 350 | 600 |
 | Arena prop | 700 | 2,200 |
 | Arena backdrop | 1,500 | 3,000 |
+| UI control icon | 350 | 1,200 |
+| UI nine-patch frame | 180 | 600 |
 | Inventory icon-only mesh | 300 | 1,200 |
 
 Use flat shading. Bevels are permitted only where they improve the silhouette, normally one segment. Hidden faces should be removed from final procedural meshes when practical.
@@ -195,7 +199,8 @@ Character armatures use these stable bone names:
 | Hero / regular enemy | 192×192 PNG | 4 px extrusion |
 | Boss | 256×256 PNG | 6 px extrusion |
 | World Tree | 256×256 PNG | 6 px extrusion |
-| Equipment / potion icon | 96×96 PNG | 4 px extrusion |
+| Equipment / potion / UI control icon | 96×96 PNG | 4 px extrusion |
+| Reusable UI nine-patch frame | 96×96 PNG | 24 px fixed inset per edge |
 | Ground tile / prop | 192×192 PNG | 4 px extrusion |
 | Arena backdrop | 360×640 PNG | full-bleed opaque edge |
 

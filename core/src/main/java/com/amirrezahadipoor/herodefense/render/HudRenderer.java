@@ -25,7 +25,11 @@ public final class HudRenderer implements AutoCloseable {
     }
 
     public void draw(
-        SpriteBatch batch, Matrix4 projection, GameState state, UiIconRenderer icons
+        SpriteBatch batch,
+        Matrix4 projection,
+        GameState state,
+        UiIconRenderer icons,
+        UiFrameRenderer frames
     ) {
         float healthRatio = state.hero.maxHealth <= 0f
             ? 0f
@@ -42,23 +46,53 @@ public final class HudRenderer implements AutoCloseable {
         shapes.rect(HP_X, HP_Y, HP_WIDTH, HP_HEIGHT);
         shapes.setColor(0.20f, 0.66f, 0.38f, 1f);
         shapes.rect(HP_X, HP_Y, HP_WIDTH * healthRatio, HP_HEIGHT);
-        button(HudTouchLayout.SPEED_X, HudTouchLayout.BUTTON_Y);
-        button(HudTouchLayout.PAUSE_X, HudTouchLayout.BUTTON_Y);
-        utilityButton(HudTouchLayout.INVENTORY_X);
-        utilityButton(HudTouchLayout.SHOP_X);
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         batch.setProjectionMatrix(projection);
         batch.begin();
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            HudTouchLayout.SPEED_X, HudTouchLayout.BUTTON_Y,
+            HudTouchLayout.BUTTON_WIDTH, HudTouchLayout.BUTTON_HEIGHT, true, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            HudTouchLayout.PAUSE_X, HudTouchLayout.BUTTON_Y,
+            HudTouchLayout.BUTTON_WIDTH, HudTouchLayout.BUTTON_HEIGHT, true, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            HudTouchLayout.INVENTORY_X, HudTouchLayout.UTILITY_BUTTON_Y,
+            HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT,
+            true, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            HudTouchLayout.SHOP_X, HudTouchLayout.UTILITY_BUTTON_Y,
+            HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT,
+            true, false
+        );
         font.setColor(Color.valueOf("F3E4BC"));
         icons.draw(batch, "health", 35f, 1194f, 36f);
         icons.draw(batch, "wave", 35f, 1081f, 52f);
         icons.draw(batch, "coin", 215f, 1081f, 52f);
-        icons.draw(batch, "speed", 438f, 1080f, 54f);
-        icons.draw(batch, "pause", 603f, 1080f, 54f);
-        icons.draw(batch, "inventory", 207f, 46f, 58f);
-        icons.draw(batch, "shop", 387f, 46f, 58f);
+        icons.draw(batch, "speed", 438f, 1080f, 54f, frames.resolve(
+            true, false, HudTouchLayout.SPEED_X, HudTouchLayout.BUTTON_Y,
+            HudTouchLayout.BUTTON_WIDTH, HudTouchLayout.BUTTON_HEIGHT
+        ));
+        icons.draw(batch, "pause", 603f, 1080f, 54f, frames.resolve(
+            true, false, HudTouchLayout.PAUSE_X, HudTouchLayout.BUTTON_Y,
+            HudTouchLayout.BUTTON_WIDTH, HudTouchLayout.BUTTON_HEIGHT
+        ));
+        icons.draw(batch, "inventory", 207f, 46f, 58f, frames.resolve(
+            true, false, HudTouchLayout.INVENTORY_X, HudTouchLayout.UTILITY_BUTTON_Y,
+            HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT
+        ));
+        icons.draw(batch, "shop", 387f, 46f, 58f, frames.resolve(
+            true, false, HudTouchLayout.SHOP_X, HudTouchLayout.UTILITY_BUTTON_Y,
+            HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT
+        ));
         font.draw(batch, "HP " + Math.round(state.hero.health) + "/" + Math.round(state.hero.maxHealth), 80f, 1223f);
         font.draw(batch, state.waveNumber + "/" + GameState.FINAL_WAVE, 92f, 1128f);
         font.draw(batch, "$ " + Math.max(0, state.coins), 272f, 1128f);
@@ -68,30 +102,6 @@ public final class HudRenderer implements AutoCloseable {
         batch.end();
     }
 
-    private void button(float x, float y) {
-        shapes.setColor(0.10f, 0.20f, 0.19f, 1f);
-        shapes.rect(x, y, HudTouchLayout.BUTTON_WIDTH, HudTouchLayout.BUTTON_HEIGHT);
-        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-        shapes.rect(x, y + HudTouchLayout.BUTTON_HEIGHT - 5f, HudTouchLayout.BUTTON_WIDTH, 5f);
-    }
-
-    private void utilityButton(float x) {
-        shapes.setColor(0.08f, 0.18f, 0.17f, 0.96f);
-        shapes.rect(
-            x,
-            HudTouchLayout.UTILITY_BUTTON_Y,
-            HudTouchLayout.UTILITY_BUTTON_WIDTH,
-            HudTouchLayout.UTILITY_BUTTON_HEIGHT
-        );
-        shapes.setColor(0.84f, 0.68f, 0.30f, 1f);
-        shapes.rect(
-            x,
-            HudTouchLayout.UTILITY_BUTTON_Y
-                + HudTouchLayout.UTILITY_BUTTON_HEIGHT - 5f,
-            HudTouchLayout.UTILITY_BUTTON_WIDTH,
-            5f
-        );
-    }
 
     @Override
     public void close() {

@@ -43,8 +43,10 @@ from hd_pipeline.environment import (  # noqa: E402
     build_arena_backdrop,
     build_crystal_prop,
     build_ground_tile,
+    UI_FRAME_KEYS,
     UI_ICON_KEYS,
     build_potion_icon,
+    build_ui_frame,
     build_ui_icon,
     build_world_tree,
     author_world_tree_actions,
@@ -567,6 +569,13 @@ def render_environment(output: Path, only: set[str]) -> list[dict]:
 
 def render_ui(output: Path, only: set[str]) -> list[dict]:
     entries = []
+    for key in UI_FRAME_KEYS:
+        if not only or key in only:
+            entries.append(render_static_model(
+                key, "ui", "item",
+                lambda value=key: build_ui_frame(value), output,
+                {"assetKind": "uiFrame", "frameKey": key},
+            ))
     for key in UI_ICON_KEYS:
         if not only or key in only:
             entries.append(render_static_model(
@@ -658,6 +667,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
             build_crystal_prop(int(payload["variant"]))
         elif asset_kind == "potion":
             build_potion_icon(int(payload["tier"]))
+        elif asset_kind == "uiFrame":
+            build_ui_frame(payload["frameKey"])
         elif asset_kind == "ui":
             build_ui_icon(payload["iconKey"])
         else:
