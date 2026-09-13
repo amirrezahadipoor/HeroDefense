@@ -958,8 +958,9 @@ def build_thorn_matriarch() -> BuiltModel:
             fan_z = 0.86 + fan * 0.17
             fan_x = (0.90 + fan * 0.08) * sign
             fan_leaf = add_leaf(f"matriarch cage leaf {side} {fan}", (fan_x, -0.12, fan_z), (0.20, 0.06, 0.28), leaf, rotation=(0.0, 0.0, (0.48 - fan * 0.18) * sign))
-            parts.append(_tag(fan_leaf, hand_bone if fan == 0 else fore_bone))
-            _boss_spike(parts, f"matriarch cage thorn {side} {fan}", ((1.02 + fan * 0.08) * sign, -0.17, fan_z + 0.11), 0.055, 0.38, thorn, hand_bone if fan == 0 else fore_bone, (0.12, 0.42 * sign, 0.52 * sign))
+            cage_socket = f"ring_socket.{side}"
+            parts.append(_tag(fan_leaf, cage_socket))
+            _boss_spike(parts, f"matriarch cage thorn {side} {fan}", ((1.02 + fan * 0.08) * sign, -0.17, fan_z + 0.11), 0.055, 0.38, thorn, cage_socket, (0.12, 0.42 * sign, 0.52 * sign))
 
     # Flower-mask head and radial crown establish a unique boss portrait silhouette.
     _boss_rock(parts, "matriarch seed mask", (0.0, -0.04, 1.97), (0.29, 0.23, 0.31), bark_dark, "head")
@@ -1127,10 +1128,10 @@ def build_void_knight() -> BuiltModel:
     # Plate hierarchy: dark under-shell, overlapping chest facets, and a bright trim key.
     _boss_rock(parts, "void knight underbody", (0.0, 0.04, 1.22), (0.46, 0.30, 0.63), armor_dark, "spine")
     chest = add_cube("void knight breastplate", (0.0, -0.16, 1.47), (0.76, 0.30, 0.61), armor, rotation=(0.03, 0.0, 0.0))
-    parts.append(_tag(chest, "armor_socket"))
+    parts.append(_tag(chest, "chest"))
     for index, (x, z, rot) in enumerate(((-0.21, 1.51, -0.12), (0.21, 1.51, 0.12), (-0.16, 1.25, 0.08), (0.16, 1.25, -0.08))):
         plate_piece = add_cube(f"void knight chest facet {index}", (x, -0.34, z), (0.32, 0.10, 0.27), armor_dark if index > 1 else edge, rotation=(0.0, rot, rot))
-        parts.append(_tag(plate_piece, "armor_socket"))
+        parts.append(_tag(plate_piece, "chest"))
     core = add_ico_sphere("void knight abyss core", (0.0, -0.43, 1.45), (0.13, 0.06, 0.17), void, subdivisions=2, rotation=(0.0, 0.0, math.radians(45)))
     core_seed = add_ico_sphere("void knight abyss seed", (0.0, -0.49, 1.45), (0.055, 0.035, 0.075), void_hot, subdivisions=2)
     parts.extend((_tag(core, "armor_socket"), _tag(core_seed, "armor_socket")))
@@ -1181,9 +1182,7 @@ def build_void_knight() -> BuiltModel:
     crest = add_cube("void knight helm crest", (0.0, 0.02, 2.36), (0.12, 0.22, 0.42), gold, rotation=(0.0, 0.0, 0.0))
     parts.append(_tag(crest, "helmet_socket"))
     for side, sign in (("L", -1), ("R", 1)):
-        _boss_spike(parts, f"void knight crown horn {side}", (0.26 * sign, 0.0, 2.32), 0.095, 0.62, armor_dark, "helmet_socket", (0.0, -0.52 * sign, 0.28 * sign))
-        horn_tip = add_ico_sphere(f"void knight horn tip {side}", (0.48 * sign, -0.02, 2.50), (0.08, 0.07, 0.11), void, subdivisions=2)
-        parts.append(_tag(horn_tip, "helmet_socket"))
+        _boss_spike(parts, f"void knight crown horn {side}", (0.26 * sign, 0.0, 2.32), 0.095, 0.62, armor, "helmet_socket", (0.0, -0.52 * sign, 0.28 * sign))
 
     # Split torn cape sits behind the armour and streams clearly during the charge.
     for index, (x, z, sx, sz, rot) in enumerate(((-0.23, 1.30, 0.38, 0.78, -0.12), (0.23, 1.28, 0.40, 0.82, 0.14), (-0.47, 1.18, 0.27, 0.60, -0.25), (0.47, 1.14, 0.25, 0.56, 0.28))):
