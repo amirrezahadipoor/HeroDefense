@@ -242,6 +242,26 @@ The goal is a substantially more polished, eye-catching commercial-mobile presen
 - [x] Upgrade Pause, Settings, Level-Up, Reward Card, Game Over, and Victory surfaces to the same coherent premium-v2 standard. (Accepted evidence: [`FLOW_SURFACES_PREMIUM_V2_REVIEW.md`](docs/art_reviews/FLOW_SURFACES_PREMIUM_V2_REVIEW.md))
 - [x] Upgrade projectiles, impacts, critical hits, enemy deaths, Boss entrances/deaths, item collection, coins, World Tree damage, and ambient arena VFX with restrained visual layering.
 
+## Phase 17 — Skill Shop, Archer-Only Arsenal, and Lifesteal-Aware Rebalance
+
+Deepen the coin economy with expensive long-horizon skills, make the Hero a pure archer, let loot be seen before it is collected, and retune enemy growth so lifesteal-fuelled builds still feel pressure.
+
+### 17.1 Purchasable Skills
+
+- [x] Add a `SKILLS` tab to the Shop with five coin-only skills, each upgradable ten times on a geometric price curve (`SkillId`, `SkillEffects`, `SkillShopSystem`; levels persist in `GameState.skillLevels`).
+- [x] Chain Lightning: arcs a share of arrow damage to the nearest foes within 210 px, with more targets at higher levels.
+- [x] Multi Shot: fires up to three extra reduced-damage arrows per volley, spread across other foes in range.
+- [x] Stunning Arrows: chance per hit to freeze movement, melee, and boss specials (bosses resist 50%).
+- [x] Critical Mastery: critical chance doubles and the multiplier climbs from 1.75× to 2.5× by level 10.
+- [x] Eagle Range: +22 px bow reach per level over the 420 px base.
+- [ ] Render, review, and promote five `ui_skill_*` medallion icons through the Blender `skill-icons` batch.
+
+### 17.2 Arsenal, Loot Visibility, and Balance
+
+- [x] Retire the four melee weapons and replace them with Yew Shortbow, Thornwood Bow, Verdant Recurve, and Golemsbane Warbow, borrowing reviewed same-tier bow art (`EquipmentDefinition.artId`) until dedicated art is rendered.
+- [x] Drops now linger 2.6 s on the ground before homing so loot is clearly visible.
+- [x] Rebalance for lifesteal and the new skills: regular HP `20 × 1.037^w`, damage `0.27 × 1.003^(w−1)`; the simulator's coin policy now buys skills, and the baseline, eight extra seeds, and all forced-card scenarios pass the gate (see `docs/BALANCE.md`).
+
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.

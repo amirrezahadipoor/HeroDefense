@@ -7,10 +7,10 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 /** Central wave-number coefficients; renderer-independent for later simulations. */
 public final class DifficultyCurve {
     public static final float BASE_ENEMY_HEALTH = 20f;
-    public static final float ENEMY_HEALTH_GROWTH = 1.035f;
+    public static final float ENEMY_HEALTH_GROWTH = 1.037f;
     public static final float BASE_ENEMY_DAMAGE = 0.27f;
     public static final float ENEMY_TYPE_REFERENCE_DAMAGE = 5f;
-    public static final float ENEMY_DAMAGE_GROWTH = 1.002f;
+    public static final float ENEMY_DAMAGE_GROWTH = 1.003f;
     public static final float BOSS_HEALTH_MULTIPLIER = 15f;
     public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;

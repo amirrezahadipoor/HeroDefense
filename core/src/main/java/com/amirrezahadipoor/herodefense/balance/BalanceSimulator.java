@@ -33,6 +33,8 @@ import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
+import com.amirrezahadipoor.herodefense.skills.SkillId;
+import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -67,6 +69,7 @@ public final class BalanceSimulator {
     private final InventoryEquipmentSystem equipment = new InventoryEquipmentSystem(stats);
     private final BossRewardCardSystem rewardCards = new BossRewardCardSystem();
     private final StatShopSystem shop = new StatShopSystem();
+    private final SkillShopSystem skillShop = new SkillShopSystem();
     private final WaveLifecycleSystem waves = new WaveLifecycleSystem(
         new EnemyWaveSpawner(new EnemyFactory()),
         new BossWaveSpawner(new BossFactory()),
@@ -174,18 +177,37 @@ public final class BalanceSimulator {
         }
     }
 
+    /**
+     * Greedy coin policy shared by every simulated run: always buy the cheapest next stat
+     * or skill level that is affordable, which approximates a thrifty player who keeps
+     * both tabs of the shop moving instead of hoarding.
+     */
     private void buyBalancedShopUpgrades(GameState state) {
-        for (int purchase = 0; purchase < BALANCED_STATS.length * StatShopSystem.MAX_PURCHASES_PER_STAT; purchase++) {
-            HeroStat selected = null;
-            int fewest = Integer.MAX_VALUE;
+        int budget = BALANCED_STATS.length * StatShopSystem.MAX_PURCHASES_PER_STAT
+            + SkillId.values().length * SkillId.MAX_LEVEL;
+        for (int purchase = 0; purchase < budget; purchase++) {
+            HeroStat selectedStat = null;
+            SkillId selectedSkill = null;
+            int cheapest = Integer.MAX_VALUE;
             for (HeroStat candidate : BALANCED_STATS) {
-                int levels = shop.purchasedLevels(state, candidate);
-                if (levels < fewest && state.coins >= shop.price(state, candidate)) {
-                    selected = candidate;
-                    fewest = levels;
+                int price = shop.price(state, candidate);
+                if (price < cheapest && state.coins >= price) {
+                    selectedStat = candidate;
+                    cheapest = price;
                 }
             }
-            if (selected == null || !shop.purchase(state, selected)) return;
+            for (SkillId candidate : SkillId.values()) {
+                int price = skillShop.price(state, candidate);
+                if (price < cheapest && state.coins >= price) {
+                    selectedSkill = candidate;
+                    selectedStat = null;
+                    cheapest = price;
+                }
+            }
+            boolean bought = selectedSkill != null
+                ? skillShop.purchase(state, selectedSkill)
+                : selectedStat != null && shop.purchase(state, selectedStat);
+            if (!bought) return;
         }
     }
 

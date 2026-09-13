@@ -6,9 +6,9 @@ These coefficients are centralized in renderer-independent Java so the Phase 14 
 
 For wave `w` clamped to 1–100:
 
-- The required starting candidate was `20 × 1.045^w`; deterministic simulation tuned the shipped baseline to `20 × 1.035^w` to remove late-run clear-time and incoming-damage spikes.
-- Shipped HP checkpoints: Wave 1 `20.70`, Wave 25 `47.26`, Wave 50 `111.70`, Wave 75 `263.97`, and Wave 100 `623.83`.
-- Baseline damage: `0.27 × 1.002^(w−1)`, reaching `0.3291` at Wave 100 before archetype scaling.
+- The required starting candidate was `20 × 1.045^w`; Phase 14 simulation tuned it to `1.035`, and the Phase 17 lifesteal-and-skills rebalance raised it to the shipped `20 × 1.037^w` (Wave 100 enemies carry 21% more HP than before).
+- Shipped HP checkpoints: Wave 1 `20.74`, Wave 25 `49.60`, Wave 50 `123.02`, Wave 75 `305.10`, and Wave 100 `756.67`.
+- Baseline damage: `0.27 × 1.003^(w−1)`, reaching `0.3632` at Wave 100 before archetype scaling (Phase 17 raised growth from `1.002`).
 - A regular hit is capped at 28% of the max HP of a reference Hero who invests one of every five earned points in Health.
 - Archetype HP multipliers, relative to the 20-HP Rootling: Rootling `1.00`, Stonekin `1.70`, Gloom Wolf `0.85`, Fungal Brute `2.30`.
 - Archetype damage multipliers, relative to the authored 5-damage Rootling: Rootling `1.00`, Stonekin `1.40`, Gloom Wolf `1.20`, Fungal Brute `2.00`.
@@ -42,7 +42,7 @@ The relative targets express intended contemporary-run impact. Every authored it
 
 ## Critical hits
 
-- Every Hero projectile has a deterministic `5%` critical chance and deals `1.75×` damage on success.
+- Every Hero projectile has a deterministic `5%` critical chance and deals `1.75×` damage on success; Critical Mastery raises both (see Skill shop).
 - A confirmed critical impact freezes only combat simulation for `45 ms`; UI and rendering continue.
 
 ## Direct stat shop
@@ -52,6 +52,17 @@ The relative targets express intended contemporary-run impact. Every authored it
 - The shop is entered and operated exclusively through touch targets from the paused run.
 - For boss index `b` (1–20), the boss grants `50 + 20b` coins while a stat's contemporary purchase level `b−1` costs `base + 20(b−1)`. The reward alone therefore buys one upgrade in every case and is no more than 1.40× its price.
 - Equipment resale is supplemental rather than the primary income source: Common `12`, Uncommon `30`, Rare `75`, and Legendary `180` coins.
+
+## Skill shop (Phase 17)
+
+Five coin-only skills, each with ten levels. Level `n` (0-based) costs `round5(base × 1.32^n)`; bases are Chain Lightning `260`, Multi Shot `300`, Stunning Arrows `220`, Critical Mastery `240`, Eagle Range `180`, so maxing one skill costs roughly 6–10k coins and all five ≈ 38k: a genuine late-run sink rather than an early spike.
+
+- Chain Lightning: `10% + 5%/level` chance per primary hit to arc `55%` of the arrow's damage to the nearest `1 + (level−1)/3` foes within `210 px`. Secondary (Multi Shot) arrows never chain.
+- Multi Shot: `+0.30` extra arrows per level (fractional part rolled), capped at 4, each at `70%` damage and spread across other foes in range.
+- Stunning Arrows: `2%/level` chance to stun for `0.5 s + 0.05 s/level`; bosses take half duration. Stunned foes neither move, swing, nor cast specials.
+- Critical Mastery: crit chance `5% + 0.5%/level` (10% at max), multiplier `1.75 + 0.075/level` (2.5× at max).
+- Eagle Range: `+22 px/level` on the 420 px bow.
+- Lifesteal (reward card, +2%/pick) also heals from chain arcs, which is why the Phase 17 enemy curve was raised.
 
 ## Kill rewards
 
@@ -83,7 +94,7 @@ The card regression runs all eight card identities as the forced choice at every
 
 ## Renderer-independent simulation gate
 
-`BalanceSimulator` advances the real movement, attacks, projectiles, enemy and boss behavior, progression, drops, potions, equipment, shop, reward-card, and wave-lifecycle systems at 30 Hz. Its balanced automated policy distributes points and shop purchases across all five stats, equips upgrades, sells spare gear, and chooses rewards by a fixed survival/power priority. The fixed baseline seed emits one CSV row per wave with HP, gross incoming damage, DPS-to-enemy-HP ratio, clear time, and timeout state.
+`BalanceSimulator` advances the real movement, attacks, projectiles, enemy and boss behavior, progression, drops, potions, equipment, shop, reward-card, and wave-lifecycle systems at 30 Hz. Its balanced automated policy distributes talent points across all five stats, always buys the cheapest affordable stat or skill level in the shop, equips upgrades, sells spare gear, and chooses rewards by a fixed survival/power priority. The fixed baseline seed emits one CSV row per wave with HP, gross incoming damage, DPS-to-enemy-HP ratio, clear time, and timeout state.
 
 The deterministic regression gate requires all of the following:
 
@@ -92,6 +103,6 @@ The deterministic regression gate requires all of the following:
 - No single wave may exceed 35% gross damage or 120 seconds to clear.
 - Every metric must be finite and no wave may hit the simulator's timeout.
 
-After enemy and economy tuning, baseline seed `0x4845524F444546` completed 100/100 waves with `7.365432%` average gross damage, `19.6691%` maximum single-wave damage, `34.0728 s` average clear time, and `60.499 s` maximum clear time. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
+After the Phase 17 rebalance, baseline seed `0x4845524F444546` and eight further seeds all completed 100/100 waves; across those nine runs the average gross damage was `9.3%`, the worst single wave `28.4%`, and the longest clear `68.2 s`. Every forced-card scenario (all cards at all 19 bosses) also stays under the 35% / 120 s spikes (worst `29.6%`, `71.2 s`). Candidates `1.038–1.040` HP growth were rejected: they pushed single-wave damage past 35% under the forced Dodge/Lifesteal card scenarios. This automated gate is reproducible balance evidence; the remaining multi-seed and manual checkpoints still have to validate resource starvation and subjective play feel.
 
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.
