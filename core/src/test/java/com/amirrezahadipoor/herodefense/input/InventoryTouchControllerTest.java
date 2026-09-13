@@ -52,6 +52,35 @@ final class InventoryTouchControllerTest {
     }
 
     @Test
+    void equipUnequipAndSellFeedbackIsSpecificAndExpiresInRealTime() {
+        GameState state = GameState.newRun(72L);
+        Item bow = EquipmentCatalog.byId("moonwood_longbow").createItem();
+        state.inventory.add(bow);
+        controller.open();
+        controller.tap(state, 200f, 600f);
+        controller.tap(state, 180f, 130f);
+        assertEquals(InventoryTouchController.Action.EQUIPPED, controller.feedbackAction());
+        assertEquals("EQUIPPED  |  " + bow.name, controller.feedbackMessage());
+
+        controller.tap(state, 180f, 940f);
+        assertEquals(InventoryTouchController.Action.UNEQUIPPED, controller.feedbackAction());
+        assertEquals("RETURNED TO BAG  |  " + bow.name, controller.feedbackMessage());
+
+        controller.tap(state, 200f, 600f);
+        controller.tap(state, 500f, 130f);
+        assertEquals(InventoryTouchController.Action.SOLD, controller.feedbackAction());
+        assertEquals("SOLD  |  +$ " + bow.sellPrice + "  |  " + bow.name,
+            controller.feedbackMessage());
+        assertEquals(1f, controller.feedbackAlpha());
+        controller.update(1.1f);
+        assertTrue(controller.feedbackAlpha() > 0f);
+        controller.update(0.2f);
+        assertEquals(InventoryTouchController.Action.NONE, controller.feedbackAction());
+        assertEquals(null, controller.feedbackMessage());
+        assertEquals(0f, controller.feedbackAlpha());
+    }
+
+    @Test
     void dragScrollsRowsAndCloseUsesATapTarget() {
         GameState state = GameState.newRun(71L);
         for (int index = 0; index < 8; index++) {

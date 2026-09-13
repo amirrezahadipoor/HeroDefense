@@ -17,11 +17,16 @@ public final class InventoryTouchController {
     }
 
     private static final float ROW_DRAG_THRESHOLD = 55f;
+    private static final float FEEDBACK_DURATION_SECONDS = 1.25f;
     private final InventoryEquipmentSystem equipmentSystem;
     private volatile boolean open;
     private int selectedIndex = -1;
     private int firstVisibleIndex;
     private float accumulatedDrag;
+    private Action feedbackAction = Action.NONE;
+    private String feedbackItemName;
+    private int feedbackCoinDelta;
+    private float feedbackRemainingSeconds;
 
     public InventoryTouchController(InventoryEquipmentSystem equipmentSystem) {
         this.equipmentSystem = equipmentSystem;
@@ -32,6 +37,7 @@ public final class InventoryTouchController {
         selectedIndex = -1;
         firstVisibleIndex = 0;
         accumulatedDrag = 0f;
+        clearFeedback();
     }
 
     public boolean isOpen() {
@@ -46,6 +52,32 @@ public final class InventoryTouchController {
         return firstVisibleIndex;
     }
 
+    public void update(float realDeltaSeconds) {
+        if (realDeltaSeconds <= 0f || feedbackRemainingSeconds <= 0f) return;
+        feedbackRemainingSeconds = Math.max(0f, feedbackRemainingSeconds - realDeltaSeconds);
+        if (feedbackRemainingSeconds == 0f) clearFeedback();
+    }
+
+    public String feedbackMessage() {
+        if (feedbackRemainingSeconds <= 0f || feedbackAction == Action.NONE) return null;
+        String name = feedbackItemName == null ? "Item" : feedbackItemName;
+        return switch (feedbackAction) {
+            case EQUIPPED -> "EQUIPPED  |  " + name;
+            case UNEQUIPPED -> "RETURNED TO BAG  |  " + name;
+            case SOLD -> "SOLD  |  +$ " + feedbackCoinDelta + "  |  " + name;
+            default -> null;
+        };
+    }
+
+    public Action feedbackAction() {
+        return feedbackRemainingSeconds > 0f ? feedbackAction : Action.NONE;
+    }
+
+    public float feedbackAlpha() {
+        if (feedbackRemainingSeconds <= 0f) return 0f;
+        return Math.min(1f, feedbackRemainingSeconds / 0.20f);
+    }
+
     public Action tap(GameState state, float x, float y) {
         if (!open || state == null) return Action.NONE;
         if (InventoryTouchLayout.closeAt(x, y)) {
@@ -57,7 +89,9 @@ public final class InventoryTouchController {
         if (slot != null) {
             Item removed = equipmentSystem.unequip(state, slot);
             clampAfterMutation(state);
-            return removed == null ? Action.NONE : Action.UNEQUIPPED;
+            if (removed == null) return Action.NONE;
+            showFeedback(Action.UNEQUIPPED, removed.name, 0);
+            return Action.UNEQUIPPED;
         }
 
         int visibleRow = InventoryTouchLayout.visibleInventoryRowAt(x, y);
@@ -73,6 +107,7 @@ public final class InventoryTouchController {
         if (InventoryTouchLayout.equipAt(x, y)) {
             Item selected = selectedItem(state);
             if (selected != null && equipmentSystem.equip(state, selected)) {
+                showFeedback(Action.EQUIPPED, selected.name, 0);
                 selectedIndex = -1;
                 clampAfterMutation(state);
                 return Action.EQUIPPED;
@@ -82,7 +117,8 @@ public final class InventoryTouchController {
 
         if (InventoryTouchLayout.sellAt(x, y)) {
             Item selected = selectedItem(state);
-            if (equipmentSystem.sell(state, selected)) {
+            if (selected != null && equipmentSystem.sell(state, selected)) {
+                showFeedback(Action.SOLD, selected.name, selected.sellPrice);
                 selectedIndex = -1;
                 clampAfterMutation(state);
                 return Action.SOLD;
@@ -109,6 +145,20 @@ public final class InventoryTouchController {
             return null;
         }
         return state.inventory.get(selectedIndex);
+    }
+
+    private void showFeedback(Action action, String itemName, int coinDelta) {
+        feedbackAction = action;
+        feedbackItemName = itemName;
+        feedbackCoinDelta = Math.max(0, coinDelta);
+        feedbackRemainingSeconds = FEEDBACK_DURATION_SECONDS;
+    }
+
+    private void clearFeedback() {
+        feedbackAction = Action.NONE;
+        feedbackItemName = null;
+        feedbackCoinDelta = 0;
+        feedbackRemainingSeconds = 0f;
     }
 
     private void clampAfterMutation(GameState state) {

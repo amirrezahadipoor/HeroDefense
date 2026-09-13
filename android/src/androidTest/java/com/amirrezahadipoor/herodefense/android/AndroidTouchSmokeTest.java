@@ -19,6 +19,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.amirrezahadipoor.herodefense.GameScreenState;
 import com.amirrezahadipoor.herodefense.HeroDefenseGame;
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.GameStateCodec;
@@ -115,6 +116,41 @@ public final class AndroidTouchSmokeTest {
                 "com.amirrezahadipoor.herodefense.debug",
                 InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName()
             );
+        }
+    }
+
+    @Test
+    public void touchSelectsComparesAndSellsFromPremiumInventory() {
+        prepareInventoryShowcaseSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("inventory showcase menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 570f); // Continue prepared run
+            await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 570f);
+            await("showcase run", () -> game.screenState() == GameScreenState.PLAYING);
+
+            tapWorld(surface, 270f + correction[0], 76f + correction[1]);
+            await("premium inventory", () ->
+                game.screenState() == GameScreenState.INVENTORY && game.inventoryOpen()
+            );
+            tapWorld(surface, 200f + correction[0], 600f + correction[1]);
+            await("inventory row selection", () -> game.inventorySelectedIndex() == 0);
+            SystemClock.sleep(1_000L);
+            captureScreen("inventory-details-premium-v2.png");
+
+            int coinsBefore = game.gameState().coins;
+            tapWorld(surface, 525f + correction[0], 135f + correction[1]);
+            await("visible sell confirmation", () -> game.inventoryFeedbackMessage() != null);
+            assertTrue(game.gameState().coins > coinsBefore);
+            SystemClock.sleep(100L);
+            captureScreen("inventory-sell-feedback-premium-v2.png");
+            tapWorld(surface, 620f + correction[0], 1_160f + correction[1]);
+            await("inventory showcase closes", () -> game.screenState() == GameScreenState.PLAYING);
         }
     }
 
@@ -268,6 +304,26 @@ public final class AndroidTouchSmokeTest {
     private static void clearRunSave() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertTrue(context.getSharedPreferences(SAVE_NAME, Context.MODE_PRIVATE).edit().clear().commit());
+    }
+
+    private static void prepareInventoryShowcaseSave() {
+        GameState state = GameState.newRun(881L);
+        for (String id : new String[] {
+            "crown_of_first_leaves",
+            "crystalbark_plate",
+            "verdant_glaive",
+            "boots_of_three_winds",
+            "sapphire_luck_ring"
+        }) {
+            state.inventory.add(EquipmentCatalog.byId(id).createItem());
+        }
+        String json = new GameStateCodec().encode(state);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertTrue(context.getSharedPreferences(SAVE_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .putString("run.primary", json)
+            .commit());
     }
 
     private static void prepareRewardCardSave() {

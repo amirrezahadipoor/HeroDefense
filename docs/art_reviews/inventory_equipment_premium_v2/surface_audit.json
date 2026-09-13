@@ -1,0 +1,64 @@
+{
+  "archiveSha256": "49cfd4ab3dda976824f929fe2eb6d3cea262455c42185a00aa8a69deaeb51ed5",
+  "artifact": 10317873133,
+  "batch": "inventory-equipment-premium-v2",
+  "coverage": {
+    "actions": [
+      "SELECT",
+      "EQUIP",
+      "REPLACE",
+      "UNEQUIP",
+      "SELL"
+    ],
+    "comparisonStates": [
+      "NEW",
+      "UP",
+      "DOWN",
+      "SAME"
+    ],
+    "equipmentSlots": 6,
+    "feedback": [
+      "EQUIPPED",
+      "RETURNED TO BAG",
+      "SOLD + COINS"
+    ],
+    "rarities": [
+      "COMMON",
+      "UNCOMMON",
+      "RARE",
+      "LEGENDARY"
+    ],
+    "visibleInventoryRows": 4
+  },
+  "decision": "accepted",
+  "device": {
+    "apiLevel": 35,
+    "orientation": "portrait",
+    "profile": "pixel_3a",
+    "touchOnly": true
+  },
+  "files": {
+    "inventory_details_emulator.png": {
+      "bytes": 282232,
+      "height": 2220,
+      "sha256": "b1da5fc40c364b3baa47457b39f2715acc38612a09fc9ce931837d91ce556657",
+      "width": 1080
+    },
+    "inventory_equipment_contact_sheet.png": {
+      "bytes": 122238,
+      "height": 930,
+      "sha256": "3167ca7aa57a82d2f8801c60ebfe56b041e57902933e09481c4f07c6fb7c2e85",
+      "width": 1120
+    },
+    "inventory_sell_feedback_emulator.png": {
+      "bytes": 285935,
+      "height": 2220,
+      "sha256": "c850678e2c14c881910a4678fd9a0a1daf453f758a5cab34903d29604d072e09",
+      "width": 1080
+    }
+  },
+  "schemaVersion": 1,
+  "sourceCommit": "4d7521353908cd6a54b8565e95b37d2fe3285561",
+  "workflowJob": 103726423231,
+  "workflowRun": 34758288876
+}
