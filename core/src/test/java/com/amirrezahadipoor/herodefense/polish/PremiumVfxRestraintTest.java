@@ -30,7 +30,7 @@ final class PremiumVfxRestraintTest {
     void criticalAndBossEventsExceedOnlyThroughDocumentedMultipliers() {
         ParticleSystem particles = new ParticleSystem();
         particles.emitHit(0f, 0f, true);
-        assertEquals(1, count(particles, ParticleType.CRITICAL_RING));
+        assertEquals(2, count(particles, ParticleType.CRITICAL_RING));
         assertTrue(count(particles, ParticleType.HIT)
             <= Math.round(VfxBudget.NORMAL_HIT_MAX_MOTES * VfxBudget.CRITICAL_MULTIPLIER));
 
@@ -44,6 +44,39 @@ final class PremiumVfxRestraintTest {
         particles.emitBossDeath(0f, 0f);
         assertEquals(1, count(particles, ParticleType.BOSS_SHOCKWAVE));
         assertEquals(1, count(particles, ParticleType.DEATH_RING));
+    }
+
+    @Test
+    void skillEffectsStayCheaperThanANormalHitAndExpire() {
+        ParticleSystem particles = new ParticleSystem();
+        particles.emitChainArc(0f, 0f, 120f, 40f);
+        assertEquals(1, count(particles, ParticleType.CHAIN_BEAM));
+        assertEquals(1, count(particles, ParticleType.CHAIN_FLASH));
+        assertTrue(count(particles, ParticleType.HIT) <= VfxBudget.CHAIN_ARC_MAX_MOTES);
+        assertTrue(particles.particles().size() <= 1 + VfxBudget.NORMAL_HIT_MAX_MOTES);
+        Particle beam = particles.particles().get(0);
+        assertEquals(120f, beam.endX);
+        assertEquals(40f, beam.endY);
+        for (Particle particle : particles.particles()) {
+            assertTrue(particle.lifetimeSeconds <= VfxBudget.NORMAL_HIT_MAX_LIFETIME_SECONDS);
+        }
+
+        particles.clear();
+        particles.emitStunSparks(0f, 0f, 5f);
+        assertEquals(VfxBudget.STUN_SPARKS, count(particles, ParticleType.STUN_SPARK));
+        for (Particle particle : particles.particles()) {
+            assertTrue(particle.lifetimeSeconds <= 1.6f, "stun sparks are capped");
+        }
+        particles.update(1.7f);
+        assertTrue(particles.particles().isEmpty());
+
+        particles.clear();
+        particles.emitHit(0f, 0f, true);
+        assertEquals(2, count(particles, ParticleType.CRITICAL_RING));
+        assertEquals(VfxBudget.CRITICAL_SPARKS, count(particles, ParticleType.CRITICAL_SPARK));
+        assertTrue(ParticleType.CHAIN_BEAM.isBeam());
+        assertFalse(ParticleType.CHAIN_BEAM.isRing());
+        assertTrue(Math.abs(ParticleRendererContract.beamJitter(1f, 3)) <= 1f);
     }
 
     @Test

@@ -14,4 +14,8 @@ public final class ParticleRendererContract {
     public static float moteScale(ParticleType type, float lifeRatio) {
         return ParticleRenderer.moteScale(type, lifeRatio);
     }
+
+    public static float beamJitter(float phase, int index) {
+        return ParticleRenderer.beamJitter(phase, index);
+    }
 }

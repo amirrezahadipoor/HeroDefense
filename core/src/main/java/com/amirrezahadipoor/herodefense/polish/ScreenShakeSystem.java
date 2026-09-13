@@ -10,6 +10,11 @@ public final class ScreenShakeSystem {
         trigger(0.14f, 6f);
     }
 
+    /** Short sharp kick on a critical arrow; weaker than taking a hit so it never annoys. */
+    public void triggerCriticalHit() {
+        trigger(0.10f, 4f);
+    }
+
     public void triggerBossKill() {
         trigger(0.34f, 14f);
     }

@@ -353,7 +353,7 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(420L); // Arrival shockwaves are mid-expansion
             captureScreen("vfx-boss-entrance-premium-v2.png");
             SystemClock.sleep(1_300L);
-            for (int frame = 0; frame < 4; frame++) { // Burst so trails and impacts are caught in flight
+            for (int frame = 0; frame < 6; frame++) { // Burst so trails and impacts are caught in flight
                 captureScreen("vfx-combat-" + frame + "-premium-v2.png");
                 SystemClock.sleep(230L);
             }
@@ -366,6 +366,11 @@ public final class AndroidTouchSmokeTest {
         state.waveNumber = 5;
         state.heroLevel = 4;
         state.waveActive = false; // Continue starts the wave, so the entrance plays organically
+        // Maxed Phase 17 skills so the combat burst shows arcs, volleys, stuns, and damage numbers.
+        for (com.amirrezahadipoor.herodefense.skills.SkillId skill
+            : com.amirrezahadipoor.herodefense.skills.SkillId.values()) {
+            state.skillLevels.put(skill.saveKey(), com.amirrezahadipoor.herodefense.skills.SkillId.MAX_LEVEL);
+        }
         writeSave(state);
     }
 

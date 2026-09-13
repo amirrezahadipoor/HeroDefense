@@ -19,6 +19,7 @@ import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
+import com.amirrezahadipoor.herodefense.gameplay.CombatEvent;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAttackUpdateResult;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
@@ -745,13 +746,22 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         int bossesBeforeAttack = livingBossCount(gameState);
         float enemyHealthBeforeAttack = totalEnemyHealth(gameState);
         HeroAttackUpdateResult attackEvents = heroAutoAttackSystem.update(gameState, simulationDelta);
-        if (attackEvents.hasImpact()) {
-            particleSystem.emitHit(
-                attackEvents.impactX(), attackEvents.impactY(), attackEvents.criticalHits() > 0
-            );
-        }
         floatingDamageTextSystem.emitAll(attackEvents.events());
-        if (attackEvents.criticalHits() > 0) hitStopSystem.triggerCriticalHit();
+        // Every arrow in a Multi Shot volley bursts where it lands (events carry y + 40 for text).
+        for (CombatEvent event : attackEvents.events()) {
+            switch (event.kind()) {
+                case HIT -> particleSystem.emitHit(event.x(), event.y() - 40f, false);
+                case CRITICAL_HIT -> particleSystem.emitHit(event.x(), event.y() - 40f, true);
+                case CHAIN_ARC -> particleSystem.emitChainArc(
+                    event.fromX(), event.fromY(), event.x(), event.y());
+                case STUN -> particleSystem.emitStunSparks(event.x(), event.y() - 30f, event.amount());
+                default -> { }
+            }
+        }
+        if (attackEvents.criticalHits() > 0) {
+            hitStopSystem.triggerCriticalHit();
+            screenShakeSystem.triggerCriticalHit();
+        }
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
             audioManager.play(AudioCue.HIT);
         }
@@ -856,7 +866,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             equipmentSpriteRenderer.draw(spriteBatch, gameState, heroFrame, simulationSeconds);
             combatEntityRenderer.drawEffects(spriteBatch, gameState, simulationSeconds);
             spriteBatch.end();
-            particleRenderer.draw(camera.combined, particleSystem);
+            particleRenderer.draw(camera.combined, particleSystem, simulationSeconds);
             floatingDamageTextRenderer.draw(
                 spriteBatch, camera.combined, floatingDamageTextSystem
             );

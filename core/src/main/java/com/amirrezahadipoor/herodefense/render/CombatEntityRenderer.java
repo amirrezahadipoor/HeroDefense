@@ -131,10 +131,12 @@ public final class CombatEntityRenderer implements AutoCloseable {
                 float alpha = projectileTrailAlpha(step);
                 if (projectile.critical) {
                     batch.setColor(0.35f, 0.92f, 0.96f, alpha);
+                } else if (projectile.secondary) {
+                    batch.setColor(0.62f, 0.86f, 0.58f, alpha * 0.9f);
                 } else {
                     batch.setColor(0.93f, 0.71f, 0.25f, alpha);
                 }
-                float size = 5f - step;
+                float size = (projectile.secondary ? 6f : 5f) - step;
                 batch.draw(
                     pixel,
                     projectile.x - nx * back - size * 0.5f,
@@ -145,6 +147,8 @@ public final class CombatEntityRenderer implements AutoCloseable {
             }
             if (projectile.critical) {
                 batch.setColor(0.35f, 0.92f, 0.96f, 1f);
+            } else if (projectile.secondary) {
+                batch.setColor(0.72f, 0.90f, 0.62f, 1f);
             } else {
                 batch.setColor(0.93f, 0.71f, 0.25f, 1f);
             }
