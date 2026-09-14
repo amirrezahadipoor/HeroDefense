@@ -27,7 +27,7 @@ public final class HeroAutoAttackSystem {
     public static final float CRITICAL_CHANCE = SkillEffects.BASE_CRITICAL_CHANCE;
     public static final float CRITICAL_DAMAGE_MULTIPLIER = SkillEffects.BASE_CRITICAL_MULTIPLIER;
     private static final int MAX_SHOTS_PER_UPDATE = 4;
-    private static final int MAX_EXTRA_ARROWS = 4;
+    private static final int MAX_EXTRA_ARROWS = 6;
 
     /** Presentation events are capped so a maxed Multi Shot volley cannot flood a frame. */
     public static final int MAX_EVENTS_PER_UPDATE = 48;
@@ -81,7 +81,8 @@ public final class HeroAutoAttackSystem {
 
     /** Bow reach including purchased Eagle Range levels. */
     public static float attackRange(GameState state) {
-        return ATTACK_RANGE + SkillEffects.bonusRange(SkillEffects.level(state, SkillId.LONG_RANGE));
+        return ATTACK_RANGE + SkillEffects.bonusRange(SkillEffects.level(state, SkillId.LONG_RANGE))
+            + SkillEffects.farstriderRangeBonus(state);
     }
 
     public Enemy findNearestTarget(GameState state, float x, float y, float range) {
@@ -131,7 +132,8 @@ public final class HeroAutoAttackSystem {
         launch(state, hero, target, false);
 
         float extra = SkillEffects.extraArrows(SkillEffects.level(state, SkillId.MULTI_SHOT))
-            + AffixEffects.extraArrowsBonus(state);
+            + AffixEffects.extraArrowsBonus(state)
+            + SkillEffects.hornetExtraArrows(state);
         int extraArrows = (int) extra;
         if (state.nextCombatRandomFloat() < extra - extraArrows) extraArrows++;
         extraArrows = Math.min(MAX_EXTRA_ARROWS, extraArrows);
@@ -153,16 +155,19 @@ public final class HeroAutoAttackSystem {
         );
         int mastery = SkillEffects.level(state, SkillId.CRITICAL_MASTERY);
         projectile.critical = state.nextCombatRandomFloat()
-            < SkillEffects.criticalChance(mastery) + AffixEffects.critChanceBonus(state);
+            < SkillEffects.criticalChance(mastery) + AffixEffects.critChanceBonus(state)
+                + SkillEffects.keenEyeChanceBonus(state);
         projectile.secondary = secondary;
+        float distance = (float) Math.sqrt(hero.distanceSquaredTo(target.x, target.y));
         projectile.damage = statCalculator.damage(state)
             * (1f + effectValue(state, BossRewardCardSystem.GENERAL_POWER_KEY))
             * (projectile.critical
                 ? SkillEffects.criticalMultiplier(mastery) + AffixEffects.critDamageBonus(state)
+                    + SkillEffects.executionerMultiplierBonus(state)
                 : 1f)
-            * (secondary ? SkillEffects.MULTI_SHOT_DAMAGE_SHARE : 1f)
+            * (secondary ? SkillEffects.secondaryArrowShare(state) : 1f)
+            * SkillEffects.deadeyeMultiplier(state, distance)
             * (target instanceof Boss ? AffixEffects.bossDamageMultiplier(state) : 1f);
-        float distance = (float) Math.sqrt(hero.distanceSquaredTo(target.x, target.y));
         projectile.remainingLifetimeSeconds = distance / PROJECTILE_SPEED + 0.25f;
         setVelocityToward(projectile, target);
         state.projectiles.add(projectile);
@@ -217,6 +222,7 @@ public final class HeroAutoAttackSystem {
                 float healthBefore = target.health;
                 target.receiveDamage(
                     projectile.damage * MythicEffects.crownMarkDamageMultiplier(target)
+                        * SkillEffects.starfallVictimMultiplier(state, target)
                 );
                 hits++;
                 impactX = target.x;
@@ -237,7 +243,8 @@ public final class HeroAutoAttackSystem {
                 if (stunLevel > 0 && target.alive
                     && state.nextCombatRandomFloat() < SkillEffects.stunChance(stunLevel)
                         + AffixEffects.stunChanceBonus(state)) {
-                    float duration = SkillEffects.stunDuration(stunLevel);
+                    float duration = SkillEffects.stunDuration(stunLevel)
+                        + SkillEffects.deepRootsDurationBonus(state);
                     if (target instanceof Boss) duration *= SkillEffects.BOSS_STUN_RESISTANCE;
                     target.stunRemainingSeconds = Math.max(target.stunRemainingSeconds, duration);
                     stuns++;
@@ -276,14 +283,32 @@ public final class HeroAutoAttackSystem {
     private int chainLightning(GameState state, Enemy struck, float arrowDamage, int level) {
         collectTargetsByDistance(state, struck.x, struck.y, SkillEffects.CHAIN_RADIUS, struck);
         int arcs = Math.min(
-            SkillEffects.chainTargets(level) + EquipmentSetBonus.chainTargetsBonus(state),
+            SkillEffects.chainTargets(level) + EquipmentSetBonus.chainTargetsBonus(state)
+                + SkillEffects.stormChainTargetsBonus(state),
             scratchTargets.size()
         );
         float arcDamage = arrowDamage * SkillEffects.CHAIN_DAMAGE_SHARE;
+        float vampiricShare = SkillEffects.vampiricHealShare(state);
+        boolean stormStuns = SkillEffects.stormChainStuns(state);
         for (int index = 0; index < arcs; index++) {
             Enemy victim = scratchTargets.get(index);
-            victim.receiveDamage(arcDamage * MythicEffects.crownMarkDamageMultiplier(victim));
+            float healthBefore = victim.health;
+            victim.receiveDamage(arcDamage * MythicEffects.crownMarkDamageMultiplier(victim)
+                * SkillEffects.starfallVictimMultiplier(state, victim));
+            float dealt = Math.max(0f, healthBefore - victim.health);
+            if (vampiricShare > 0f && dealt > 0f && state.hero.alive) {
+                state.hero.health = Math.min(
+                    state.hero.maxHealth, state.hero.health + dealt * vampiricShare
+                );
+            }
             emit(CombatEvent.arc(struck.x, struck.y + 40f, victim.x, victim.y + 40f, arcDamage));
+            if (stormStuns && victim.alive
+                && state.nextCombatRandomFloat() < SkillEffects.STORM_STUN_CHANCE) {
+                float duration = SkillEffects.STORM_STUN_SECONDS;
+                if (victim instanceof Boss) duration *= SkillEffects.BOSS_STUN_RESISTANCE;
+                victim.stunRemainingSeconds = Math.max(victim.stunRemainingSeconds, duration);
+                emit(CombatEvent.stun(victim.x, victim.y + 70f, duration));
+            }
             if (MythicEffects.hasSunfall(state) && victim.alive) {
                 float duration = MythicEffects.SUNFALL_STUN_SECONDS;
                 if (victim instanceof Boss) duration *= SkillEffects.BOSS_STUN_RESISTANCE;

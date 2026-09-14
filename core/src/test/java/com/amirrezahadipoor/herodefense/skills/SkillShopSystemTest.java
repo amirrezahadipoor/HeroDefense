@@ -52,7 +52,7 @@ final class SkillShopSystemTest {
     }
 
     @Test
-    void insufficientCoinsIsRefusedAndEndlessLevelsAreAllowed() {
+    void insufficientCoinsIsRefusedAndCoreLevelsCapAtTen() {
         GameState state = GameState.newRun(2L);
         state.coins = 0;
         assertFalse(shop.purchase(state, SkillId.STUN_CHANCE));
@@ -61,13 +61,72 @@ final class SkillShopSystemTest {
 
         state.skillLevels.put(SkillId.STUN_CHANCE.saveKey(), SkillId.CORE_LEVELS);
         state.coins = 1_000_000;
-        assertTrue(shop.purchase(state, SkillId.STUN_CHANCE));
-        assertEquals(SkillShopSystem.PurchaseResult.PURCHASED, shop.feedbackResult());
-        assertEquals(SkillId.CORE_LEVELS + 1, shop.level(state, SkillId.STUN_CHANCE));
-        assertTrue(state.coins < 1_000_000);
+        assertFalse(shop.purchase(state, SkillId.STUN_CHANCE));
+        assertEquals(SkillShopSystem.PurchaseResult.MAXED, shop.feedbackResult());
+        assertTrue(shop.feedbackMessage().startsWith("MAXED"));
+        assertEquals(SkillId.CORE_LEVELS, shop.level(state, SkillId.STUN_CHANCE));
+        assertEquals(Integer.MAX_VALUE, shop.price(state, SkillId.STUN_CHANCE));
 
         shop.update(10f);
         assertNull(shop.feedbackMessage());
+    }
+
+    @Test
+    void evolutionForkCostsTheRetiredLevelElevenPriceAndLocksAfterOneChoice() {
+        GameState state = GameState.newRun(4L);
+        state.skillLevels.put(SkillId.CHAIN_LIGHTNING.saveKey(), SkillId.CORE_LEVELS);
+        int expected = SkillShopSystem.priceForLevel(SkillId.CHAIN_LIGHTNING, SkillId.CORE_LEVELS);
+        assertEquals(expected, shop.evolutionPrice(state, SkillId.CHAIN_LIGHTNING));
+
+        state.coins = expected - 1;
+        assertFalse(shop.purchaseEvolution(
+            state, SkillId.CHAIN_LIGHTNING, SkillEvolution.STORM_CHAIN
+        ));
+        assertEquals(SkillShopSystem.PurchaseResult.INSUFFICIENT_COINS, shop.feedbackResult());
+
+        state.coins = expected;
+        assertTrue(shop.purchaseEvolution(
+            state, SkillId.CHAIN_LIGHTNING, SkillEvolution.STORM_CHAIN
+        ));
+        assertEquals(0, state.coins);
+        assertEquals(SkillEvolution.STORM_CHAIN,
+            SkillEffects.evolution(state, SkillId.CHAIN_LIGHTNING));
+        assertEquals(SkillShopSystem.PurchaseResult.EVOLVED, shop.feedbackResult());
+        assertTrue(shop.feedbackMessage().startsWith("EVOLVED"));
+
+        state.coins = 1_000_000;
+        assertFalse(shop.purchaseEvolution(
+            state, SkillId.CHAIN_LIGHTNING, SkillEvolution.VAMPIRIC_CHAIN
+        ));
+        assertEquals(SkillEvolution.STORM_CHAIN,
+            SkillEffects.evolution(state, SkillId.CHAIN_LIGHTNING));
+        assertEquals(Integer.MAX_VALUE, shop.evolutionPrice(state, SkillId.CHAIN_LIGHTNING));
+        assertEquals(Integer.MAX_VALUE, shop.price(state, SkillId.CHAIN_LIGHTNING));
+    }
+
+    @Test
+    void evolutionRejectsWrongSkillUnderleveledAndOldEndlessSavesEvolve() {
+        GameState state = GameState.newRun(5L);
+        state.coins = 1_000_000;
+        state.skillLevels.put(SkillId.CHAIN_LIGHTNING.saveKey(), SkillId.CORE_LEVELS);
+        assertFalse(shop.purchaseEvolution(
+            state, SkillId.CHAIN_LIGHTNING, SkillEvolution.HORNET_VOLLEY
+        ));
+        assertFalse(shop.purchaseEvolution(state, SkillId.MULTI_SHOT, null));
+        assertFalse(shop.purchaseEvolution(
+            state, SkillId.MULTI_SHOT, SkillEvolution.HORNET_VOLLEY
+        ));
+        assertEquals(
+            Integer.MAX_VALUE, shop.evolutionPrice(state, SkillId.MULTI_SHOT)
+        );
+
+        // Old endless saves (level 12) open the same fork instead of stranding.
+        state.skillLevels.put(SkillId.MULTI_SHOT.saveKey(), SkillId.CORE_LEVELS + 2);
+        assertTrue(shop.purchaseEvolution(
+            state, SkillId.MULTI_SHOT, SkillEvolution.HORNET_VOLLEY
+        ));
+        assertEquals(SkillEvolution.HORNET_VOLLEY,
+            SkillEffects.evolution(state, SkillId.MULTI_SHOT));
     }
 
     @Test

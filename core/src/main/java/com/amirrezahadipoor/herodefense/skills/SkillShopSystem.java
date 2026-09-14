@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.skills;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Locale;
  * Prices grow geometrically so the last levels are genuine late-run goals.
  */
 public final class SkillShopSystem {
-    public enum PurchaseResult { NONE, PURCHASED, INSUFFICIENT_COINS, MAXED }
+    public enum PurchaseResult { NONE, PURCHASED, INSUFFICIENT_COINS, MAXED, EVOLVED }
 
     public static final float PRICE_GROWTH = 1.32f;
     private static final float FEEDBACK_DURATION_SECONDS = 1.25f;
@@ -26,7 +27,26 @@ public final class SkillShopSystem {
 
     public int price(GameState state, SkillId skill) {
         if (state == null || skill == null) return Integer.MAX_VALUE;
+        if (level(state, skill) >= SkillId.CORE_LEVELS
+            || SkillEffects.evolution(state, skill) != null) {
+            return Integer.MAX_VALUE;
+        }
         int base = priceForLevel(skill, level(state, skill));
+        float mult = TrialEffects.shopPriceMultiplier(state.activeTrials);
+        return mult == 1f ? base : (int) Math.round(base * mult / 5.0) * 5;
+    }
+
+    /**
+     * Price of the level-10 Evolution fork: exactly what level 11 would have
+     * cost on the retired endless curve. Only defined at the fork.
+     */
+    public int evolutionPrice(GameState state, SkillId skill) {
+        if (state == null || skill == null
+            || level(state, skill) < SkillId.CORE_LEVELS
+            || SkillEffects.evolution(state, skill) != null) {
+            return Integer.MAX_VALUE;
+        }
+        int base = priceForLevel(skill, SkillId.CORE_LEVELS);
         float mult = TrialEffects.shopPriceMultiplier(state.activeTrials);
         return mult == 1f ? base : (int) Math.round(base * mult / 5.0) * 5;
     }
@@ -76,6 +96,8 @@ public final class SkillShopSystem {
         return switch (feedbackResult) {
             case PURCHASED -> "LEARNED  |  " + name + " +1  |  -$ " + feedbackCoins;
             case INSUFFICIENT_COINS -> "NEED $ " + feedbackCoins + " MORE  |  " + name;
+            case MAXED -> "MAXED  |  " + name;
+            case EVOLVED -> "EVOLVED  |  " + name + "  |  -$ " + feedbackCoins;
             default -> null;
         };
     }
@@ -88,6 +110,10 @@ public final class SkillShopSystem {
     public boolean purchase(GameState state, SkillId skill) {
         if (state == null || state.hero == null || skill == null) return false;
         int current = level(state, skill);
+        if (current >= SkillId.CORE_LEVELS || SkillEffects.evolution(state, skill) != null) {
+            showFeedback(PurchaseResult.MAXED, skill, 0);
+            return false;
+        }
         int price = price(state, skill);
         if (state.coins < price) {
             showFeedback(PurchaseResult.INSUFFICIENT_COINS, skill, price - state.coins);
@@ -96,6 +122,26 @@ public final class SkillShopSystem {
         state.coins -= price;
         state.skillLevels.put(skill.saveKey(), current + 1);
         showFeedback(PurchaseResult.PURCHASED, skill, price);
+        return true;
+    }
+
+    /**
+     * Buys one Evolution at the level-10 fork: one-time per skill per run, open
+     * to any skill at or past level 10 (old endless saves included).
+     */
+    public boolean purchaseEvolution(GameState state, SkillId skill, SkillEvolution evolution) {
+        if (state == null || state.hero == null || skill == null || evolution == null) return false;
+        if (evolution.skill() != skill || level(state, skill) < SkillId.CORE_LEVELS) return false;
+        if (SkillEffects.evolution(state, skill) != null) return false;
+        int price = evolutionPrice(state, skill);
+        if (state.coins < price) {
+            showFeedback(PurchaseResult.INSUFFICIENT_COINS, skill, price - state.coins);
+            return false;
+        }
+        state.coins -= price;
+        if (state.skillEvolutions == null) state.skillEvolutions = new LinkedHashMap<>();
+        state.skillEvolutions.put(skill.saveKey(), evolution.id());
+        showFeedback(PurchaseResult.EVOLVED, skill, price);
         return true;
     }
 

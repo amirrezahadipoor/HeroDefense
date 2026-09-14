@@ -5,6 +5,7 @@ import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.polish.VfxBudget;
+import com.amirrezahadipoor.herodefense.skills.SkillEffects;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,7 +55,8 @@ public final class HeroUltimateSystem {
             }
         }
         for (Enemy foe : foes) {
-            foe.receiveDamage(damage * MythicEffects.crownMarkDamageMultiplier(foe));
+            foe.receiveDamage(damage * MythicEffects.crownMarkDamageMultiplier(foe)
+                * SkillEffects.starfallVictimMultiplier(state, foe));
         }
         foes.sort(Comparator.comparingDouble(
             foe -> distanceSquared(state.hero.x, state.hero.y, foe.x, foe.y)

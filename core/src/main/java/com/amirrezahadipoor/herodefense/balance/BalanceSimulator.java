@@ -34,6 +34,7 @@ import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
+import com.amirrezahadipoor.herodefense.skills.SkillEvolution;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 import com.amirrezahadipoor.herodefense.trials.TrialId;
@@ -277,6 +278,7 @@ public final class BalanceSimulator {
         for (int purchase = 0; purchase < budget; purchase++) {
             HeroStat selectedStat = null;
             SkillId selectedSkill = null;
+            SkillId selectedEvolution = null;
             int cheapest = Integer.MAX_VALUE;
             for (HeroStat candidate : BALANCED_STATS) {
                 int price = shop.price(state, candidate);
@@ -290,14 +292,29 @@ public final class BalanceSimulator {
                 if (price < cheapest && state.coins >= price) {
                     selectedSkill = candidate;
                     selectedStat = null;
+                    selectedEvolution = null;
                     cheapest = price;
                 }
+                int evolutionPrice = skillShop.evolutionPrice(state, candidate);
+                if (evolutionPrice < cheapest && state.coins >= evolutionPrice) {
+                    selectedEvolution = candidate;
+                    selectedSkill = null;
+                    selectedStat = null;
+                    cheapest = evolutionPrice;
+                }
             }
-            boolean bought = selectedSkill != null
-                ? skillShop.purchase(state, selectedSkill)
-                : selectedStat != null && shop.purchase(state, selectedStat);
+            boolean bought;
+            if (selectedEvolution != null) {
+                bought = skillShop.purchaseEvolution(
+                    state, selectedEvolution, SkillEvolution.simPick(selectedEvolution)
+                );
+            } else if (selectedSkill != null) {
+                bought = skillShop.purchase(state, selectedSkill);
+            } else {
+                bought = selectedStat != null && shop.purchase(state, selectedStat);
+            }
             if (!bought) return;
-            if (selectedSkill != null) {
+            if (selectedSkill != null || selectedEvolution != null) {
                 ledger.skillSpend += cheapest;
                 ledger.skillLevels++;
             } else {

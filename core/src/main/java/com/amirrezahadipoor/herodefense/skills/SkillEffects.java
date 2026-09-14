@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.skills;
 
+import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 
 /**
@@ -119,4 +120,101 @@ public final class SkillEffects {
         return 1f + criticalChance(level) * (criticalMultiplier(level) - 1f);
     }
 
+    // Phase 24.2 Evolution bonuses. Every helper returns its neutral value when the
+    // Evolution is absent, so un-evolved combat reads exactly the core curves above.
+
+    /** The chosen Evolution for a skill, or null when the fork is still open. */
+    public static SkillEvolution evolution(GameState state, SkillId skill) {
+        if (state == null || skill == null || state.skillEvolutions == null) return null;
+        SkillEvolution evolution = SkillEvolution.parse(state.skillEvolutions.get(skill.saveKey()));
+        return evolution != null && evolution.skill() == skill ? evolution : null;
+    }
+
+    /** Storm Chain: extra arc targets beyond the core curve. */
+    public static final int STORM_EXTRA_TARGETS = 2;
+    /** Storm Chain: per-arc stun chance and duration (bosses resist as usual). */
+    public static final float STORM_STUN_CHANCE = 0.20f;
+    public static final float STORM_STUN_SECONDS = 1.0f;
+
+    public static int stormChainTargetsBonus(GameState state) {
+        return evolution(state, SkillId.CHAIN_LIGHTNING) == SkillEvolution.STORM_CHAIN
+            ? STORM_EXTRA_TARGETS : 0;
+    }
+
+    public static boolean stormChainStuns(GameState state) {
+        return evolution(state, SkillId.CHAIN_LIGHTNING) == SkillEvolution.STORM_CHAIN;
+    }
+
+    /** Vampiric Chain: share of arc damage dealt returned as healing. */
+    public static final float VAMPIRIC_HEAL_SHARE = 0.30f;
+
+    public static float vampiricHealShare(GameState state) {
+        return evolution(state, SkillId.CHAIN_LIGHTNING) == SkillEvolution.VAMPIRIC_CHAIN
+            ? VAMPIRIC_HEAL_SHARE : 0f;
+    }
+
+    /** Hornet Volley: extra arrows per volley beyond the core curve. */
+    public static final float HORNET_EXTRA_ARROWS = 2f;
+
+    public static float hornetExtraArrows(GameState state) {
+        return evolution(state, SkillId.MULTI_SHOT) == SkillEvolution.HORNET_VOLLEY
+            ? HORNET_EXTRA_ARROWS : 0f;
+    }
+
+    /** Damage share of secondary arrows: full with True Flight, 70% otherwise. */
+    public static float secondaryArrowShare(GameState state) {
+        return evolution(state, SkillId.MULTI_SHOT) == SkillEvolution.TRUE_FLIGHT
+            ? 1f : MULTI_SHOT_DAMAGE_SHARE;
+    }
+
+    /** Deep Roots: bonus stun duration in seconds. */
+    public static final float DEEP_ROOTS_DURATION_BONUS = 1.2f;
+
+    public static float deepRootsDurationBonus(GameState state) {
+        return evolution(state, SkillId.STUN_CHANCE) == SkillEvolution.DEEP_ROOTS
+            ? DEEP_ROOTS_DURATION_BONUS : 0f;
+    }
+
+    /** Starfall: damage multiplier for already-stunned victims. */
+    public static final float STARFALL_VICTIM_BONUS = 0.25f;
+
+    public static float starfallVictimMultiplier(GameState state, Enemy enemy) {
+        return evolution(state, SkillId.STUN_CHANCE) == SkillEvolution.STARFALL
+                && enemy != null && enemy.stunRemainingSeconds > 0f
+            ? 1f + STARFALL_VICTIM_BONUS : 1f;
+    }
+
+    /** Executioner: bonus critical multiplier. */
+    public static final float EXECUTIONER_MULTIPLIER_BONUS = 0.5f;
+
+    public static float executionerMultiplierBonus(GameState state) {
+        return evolution(state, SkillId.CRITICAL_MASTERY) == SkillEvolution.EXECUTIONER
+            ? EXECUTIONER_MULTIPLIER_BONUS : 0f;
+    }
+
+    /** Keen Eye: bonus critical chance. */
+    public static final float KEEN_EYE_CHANCE_BONUS = 0.10f;
+
+    public static float keenEyeChanceBonus(GameState state) {
+        return evolution(state, SkillId.CRITICAL_MASTERY) == SkillEvolution.KEEN_EYE
+            ? KEEN_EYE_CHANCE_BONUS : 0f;
+    }
+
+    /** Farstrider: bonus bow range. */
+    public static final float FARSTRIDER_RANGE_BONUS = 150f;
+
+    public static float farstriderRangeBonus(GameState state) {
+        return evolution(state, SkillId.LONG_RANGE) == SkillEvolution.FARSTRIDER
+            ? FARSTRIDER_RANGE_BONUS : 0f;
+    }
+
+    /** Deadeye: bonus damage past this hero-to-target distance. */
+    public static final float DEADEYE_DISTANCE = 350f;
+    public static final float DEADEYE_BONUS = 0.25f;
+
+    public static float deadeyeMultiplier(GameState state, float distance) {
+        return evolution(state, SkillId.LONG_RANGE) == SkillEvolution.DEADEYE
+                && Float.isFinite(distance) && distance > DEADEYE_DISTANCE
+            ? 1f + DEADEYE_BONUS : 1f;
+    }
 }
