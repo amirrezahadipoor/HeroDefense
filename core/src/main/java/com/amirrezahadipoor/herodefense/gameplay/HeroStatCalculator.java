@@ -4,6 +4,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.model.HeroStats;
 import com.amirrezahadipoor.herodefense.model.Item;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Combines permanent Hero points with stat bonuses from all six equipped items. */
 public final class HeroStatCalculator {
@@ -22,12 +23,15 @@ public final class HeroStatCalculator {
     }
 
     public float damage(GameState state) {
-        return HeroStats.BASE_DAMAGE + points(state, HeroStat.STRENGTH) * HeroStats.DAMAGE_PER_STRENGTH;
+        return (HeroStats.BASE_DAMAGE
+            + points(state, HeroStat.STRENGTH) * HeroStats.DAMAGE_PER_STRENGTH)
+            * TrialEffects.heroDamageMultiplier(state.activeTrials);
     }
 
     public float attackIntervalSeconds(GameState state) {
-        float attacksPerSecond = HeroStats.BASE_ATTACKS_PER_SECOND
-            + points(state, HeroStat.AGILITY) * HeroStats.ATTACK_SPEED_PER_AGILITY;
+        float attacksPerSecond = (HeroStats.BASE_ATTACKS_PER_SECOND
+            + points(state, HeroStat.AGILITY) * HeroStats.ATTACK_SPEED_PER_AGILITY)
+            * TrialEffects.heroAttackSpeedMultiplier(state.activeTrials);
         return 1f / attacksPerSecond;
     }
 
@@ -42,12 +46,14 @@ public final class HeroStatCalculator {
         return Math.min(
             HeroStats.MAX_DODGE_CHANCE,
             points(state, HeroStat.DODGE) * HeroStats.DODGE_CHANCE_PER_POINT
+                + TrialEffects.dodgeChanceBonus(state.activeTrials)
         );
     }
 
     public float maxHealth(GameState state) {
-        return HeroStats.BASE_MAX_HEALTH
-            + points(state, HeroStat.HEALTH) * HeroStats.MAX_HEALTH_PER_POINT;
+        return (HeroStats.BASE_MAX_HEALTH
+            + points(state, HeroStat.HEALTH) * HeroStats.MAX_HEALTH_PER_POINT)
+            * TrialEffects.heroMaxHealthMultiplier(state.activeTrials);
     }
 
     private static int basePoints(GameState state, HeroStat stat) {

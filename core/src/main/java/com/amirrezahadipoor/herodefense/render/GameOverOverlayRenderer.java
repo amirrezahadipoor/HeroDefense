@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Premium end-of-run surface with distinct defeat and victory treatments and a framed restart. */
 public final class GameOverOverlayRenderer implements AutoCloseable {
@@ -127,7 +128,8 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         float ascOffset = MainMenuRenderer.pressedOffset(ascendState);
         icons.draw(batch, "general_power", 152f, GameOverTouchLayout.ASCEND_Y + 20f + ascOffset, 56f,
             ascendState);
-        int heartwoodPreview = GameState.calculateHeartwoodReward(state.peakWaveReached, state.ascensionTier, !state.heroDiedThisRun);
+        int heartwoodPreview = Math.round(GameState.calculateHeartwoodReward(state.peakWaveReached, state.ascensionTier, !state.heroDiedThisRun)
+            * TrialEffects.heartwoodMultiplier(state.activeTrials));
         text.draw(batch, "ASCEND  |  +" + heartwoodPreview + " HEARTWOOD", 228f,
             GameOverTouchLayout.ASCEND_Y + 60f + ascOffset, 1.0f,
             interactive ? OverlayText.GOLD : OverlayText.MUTED, reveal);

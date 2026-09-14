@@ -8,6 +8,7 @@ import com.amirrezahadipoor.herodefense.model.Projectile;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,7 +179,8 @@ public final class HeroAutoAttackSystem {
         int stuns = 0;
         int chainLevel = SkillEffects.level(state, SkillId.CHAIN_LIGHTNING);
         int stunLevel = SkillEffects.level(state, SkillId.STUN_CHANCE);
-        float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY);
+        float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY)
+            + TrialEffects.lifestealBonus(state.activeTrials);
         float impactX = Float.NaN;
         float impactY = Float.NaN;
         events.clear();

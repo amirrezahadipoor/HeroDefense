@@ -2,6 +2,7 @@ package com.amirrezahadipoor.herodefense.rewards;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Hero;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +87,8 @@ public final class BossRewardCardSystem {
             case HEALTH -> {
                 float previousMax = hero.maxHealth;
                 hero.stats.health += statPoints;
-                hero.maxHealth = hero.stats.maxHealth();
+                hero.maxHealth = hero.stats.maxHealth()
+                    * TrialEffects.heroMaxHealthMultiplier(state.activeTrials);
                 hero.health = Math.min(hero.maxHealth, hero.health + hero.maxHealth - previousMax);
             }
             case GENERAL_POWER -> addEffect(

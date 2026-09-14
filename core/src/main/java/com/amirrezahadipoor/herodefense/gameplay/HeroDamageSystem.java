@@ -2,6 +2,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.IncomingHitResult;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Routes every positive enemy hit through one persisted Dodge roll. */
 public final class HeroDamageSystem {
@@ -21,7 +22,7 @@ public final class HeroDamageSystem {
         }
         float dodgeRoll = state.nextCombatRandomFloat();
         return state.hero.receiveIncomingHit(
-            damage,
+            damage * TrialEffects.damageTakenMultiplier(state.activeTrials),
             dodgeRoll,
             statCalculator.dodgeChance(state)
         );

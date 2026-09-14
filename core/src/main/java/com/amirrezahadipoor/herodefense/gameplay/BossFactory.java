@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.BossType;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Creates a boss with its authored identity and milestone-wave multipliers. */
 public final class BossFactory {
@@ -34,6 +35,10 @@ public final class BossFactory {
         boss.attackIntervalSeconds = type.attackIntervalSeconds();
         boss.spawnLane = spawnLane;
         difficultyCurve.applyToBoss(boss, bossNumber * 5, state.ascensionTier);
+        float healthMult = TrialEffects.bossHealthMultiplier(state.activeTrials);
+        boss.health *= healthMult;
+        boss.maxHealth *= healthMult;
+        boss.damage *= TrialEffects.bossDamageMultiplier(state.activeTrials);
         return boss;
     }
 }

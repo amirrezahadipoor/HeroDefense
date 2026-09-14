@@ -4,6 +4,7 @@ import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Grants coins and XP exactly once for every regular or boss kill. */
 public final class KillRewardSystem {
@@ -37,7 +38,8 @@ public final class KillRewardSystem {
         }
         if (kills == 0) return KillRewardResult.NONE;
 
-        float incomeMultiplier = 1f + effectValue(state, BossRewardCardSystem.COIN_INCOME_KEY);
+        float incomeMultiplier = (1f + effectValue(state, BossRewardCardSystem.COIN_INCOME_KEY))
+            * TrialEffects.coinIncomeMultiplier(state.activeTrials);
         int coins = Math.max(0, Math.round(baseCoins * incomeMultiplier));
         state.coins = saturatedAdd(state.coins, coins);
         state.totalKills = saturatedAdd(state.totalKills, kills);

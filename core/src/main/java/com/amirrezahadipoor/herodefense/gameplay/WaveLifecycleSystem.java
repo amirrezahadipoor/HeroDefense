@@ -2,6 +2,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Starts a wave and immediately rolls a cleared wave into the next one. */
 public final class WaveLifecycleSystem {
@@ -42,7 +43,11 @@ public final class WaveLifecycleSystem {
             regularSpawner.spawnRegularEnemies(
                 state,
                 state.waveNumber,
-                regularSpawner.regularCountForWave(state.waveNumber)
+                Math.min(
+                    EnemyWaveSpawner.MAX_REGULAR_ENEMIES,
+                    regularSpawner.regularCountForWave(state.waveNumber)
+                        + TrialEffects.extraEnemiesPerWave(state.activeTrials)
+                )
             );
         }
         state.waveActive = true;

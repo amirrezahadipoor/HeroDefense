@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.ascension;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.Map;
 
@@ -94,7 +95,8 @@ public final class RootNetworkSystem {
                 }
             }
         }
-        state.hero.maxHealth = state.hero.stats.maxHealth() + extraMax;
+        state.hero.maxHealth = (state.hero.stats.maxHealth() + extraMax)
+            * TrialEffects.heroMaxHealthMultiplier(state.activeTrials);
         state.hero.health = state.hero.maxHealth;
         state.worldTreeMaxHealth = 1000f + extraMax * 0.5f;
         state.worldTreeHealth = state.worldTreeMaxHealth;

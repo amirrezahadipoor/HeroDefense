@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.skills;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.Locale;
 
@@ -25,7 +26,9 @@ public final class SkillShopSystem {
 
     public int price(GameState state, SkillId skill) {
         if (state == null || skill == null) return Integer.MAX_VALUE;
-        return priceForLevel(skill, level(state, skill));
+        int base = priceForLevel(skill, level(state, skill));
+        float mult = TrialEffects.shopPriceMultiplier(state.activeTrials);
+        return mult == 1f ? base : (int) Math.round(base * mult / 5.0) * 5;
     }
 
     /** Prices never exceed this, so very deep endless levels stay representable and legible. */

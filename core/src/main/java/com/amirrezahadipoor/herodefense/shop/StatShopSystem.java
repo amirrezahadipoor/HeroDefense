@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.shop;
 import com.amirrezahadipoor.herodefense.gameplay.HeroStatCalculator;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Coin-only permanent stat upgrades; no platform billing or real-money path exists. */
 public final class StatShopSystem {
@@ -28,7 +29,9 @@ public final class StatShopSystem {
 
     public int price(GameState state, HeroStat stat) {
         if (state == null || stat == null) return Integer.MAX_VALUE;
-        return priceForLevel(stat, purchasedLevels(state, stat));
+        int base = priceForLevel(stat, purchasedLevels(state, stat));
+        float mult = TrialEffects.shopPriceMultiplier(state.activeTrials);
+        return mult == 1f ? base : (int) Math.round(base * mult / 5.0) * 5;
     }
 
     /** Linear through the core levels, then geometric with no level cap. */

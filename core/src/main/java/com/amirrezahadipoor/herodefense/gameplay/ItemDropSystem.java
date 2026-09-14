@@ -7,6 +7,7 @@ import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.ItemTier;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -63,8 +64,16 @@ public final class ItemDropSystem {
         ItemTier tier = tierForRoll(
             state.nextCombatRandomFloat(),
             statCalculator.dropChanceMultiplier(state)
+                * TrialEffects.itemDropChanceMultiplier(state.activeTrials)
         );
-        if (tier == null) return 0;
+        boolean crowned = enemy instanceof Boss
+            && TrialEffects.bossAlwaysDropsRarePlus(state.activeTrials);
+        if (tier == null) {
+            if (!crowned) return 0;
+            tier = ItemTier.RARE;
+        } else if (crowned && tier.ordinal() < ItemTier.RARE.ordinal()) {
+            tier = ItemTier.RARE;
+        }
 
         List<EquipmentDefinition> choices = byTier.get(tier);
         int index = Math.min(

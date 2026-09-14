@@ -4,6 +4,7 @@ import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** Rolls an approximately eight-percent, wave-weighted potion reward per defeat. */
 public final class PotionDropSystem {
@@ -44,6 +45,7 @@ public final class PotionDropSystem {
         if (enemy == null || enemy.alive || enemy.potionDropRolled) return 0;
         enemy.potionDropRolled = true;
         if (enemy.silentWatcher) return 0;
+        if (!TrialEffects.potionsDrop(state.activeTrials)) return 0;
         if (!isDrop(state.nextCombatRandomFloat())) return 0;
         PotionTier tier = tierForRoll(state.waveNumber, state.nextCombatRandomFloat());
         DropEntity drop = new DropEntity(

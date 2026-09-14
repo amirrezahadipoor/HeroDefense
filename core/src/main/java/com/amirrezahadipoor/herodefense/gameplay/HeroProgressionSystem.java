@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Hero;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 /** XP, level-cap, and one-point touch talent allocation rules. */
 public final class HeroProgressionSystem {
@@ -21,12 +22,16 @@ public final class HeroProgressionSystem {
         return late == 0 ? base : (int) Math.min(Integer.MAX_VALUE / 4, base * Math.pow(LATE_LEVEL_GROWTH, late));
     }
 
-    /** Returns the number of levels gained. Each level awards exactly one point. */
+    /** Returns the number of levels gained. Each level awards one point, plus trial bonuses. */
     public int grantExperience(GameState state, int experience) {
         if (state == null || experience <= 0 || state.heroLevel >= LEVEL_CAP) {
             return 0;
         }
-        long available = (long) state.heroExperience + experience;
+        int scaled = Math.max(1, Math.round(
+            experience * TrialEffects.experienceMultiplier(state.activeTrials)
+        ));
+        int pointsPerLevel = 1 + TrialEffects.bonusTalentPointsPerLevel(state.activeTrials);
+        long available = (long) state.heroExperience + scaled;
         int levelsGained = 0;
         while (state.heroLevel < LEVEL_CAP) {
             int required = experienceRequiredForNextLevel(state.heroLevel);
@@ -35,7 +40,7 @@ public final class HeroProgressionSystem {
             }
             available -= required;
             state.heroLevel++;
-            state.unspentTalentPoints++;
+            state.unspentTalentPoints += pointsPerLevel;
             levelsGained++;
         }
         state.heroExperience = state.heroLevel == LEVEL_CAP
@@ -57,7 +62,8 @@ public final class HeroProgressionSystem {
             case DODGE -> hero.stats.dodge++;
             case HEALTH -> hero.stats.health++;
         }
-        hero.maxHealth = hero.stats.maxHealth();
+        hero.maxHealth = hero.stats.maxHealth()
+            * TrialEffects.heroMaxHealthMultiplier(state.activeTrials);
         if (stat == HeroStat.HEALTH) {
             hero.health = Math.min(hero.maxHealth, hero.health + hero.maxHealth - previousMaxHealth);
         }

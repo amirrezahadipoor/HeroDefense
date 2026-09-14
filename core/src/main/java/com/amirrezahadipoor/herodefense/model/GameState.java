@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.model;
 
 import com.amirrezahadipoor.herodefense.WorldLayout;
+import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -355,7 +356,8 @@ public final class GameState {
 
     public int ascendAndAwardHeartwood() {
         boolean flawless = !heroDiedThisRun;
-        int earned = calculateHeartwoodReward(peakWaveReached, ascensionTier, flawless);
+        int earned = Math.round(calculateHeartwoodReward(peakWaveReached, ascensionTier, flawless)
+            * TrialEffects.heartwoodMultiplier(activeTrials));
         heartwood += earned;
         ascensionTier++;
         totalAscensionsCompleted++;
@@ -378,7 +380,8 @@ public final class GameState {
             Float bonus = item.statBonuses.get(HeroStat.HEALTH.name());
             if (bonus != null && bonus > 0f) bonusPoints += Math.round(bonus);
         }
-        hero.maxHealth = hero.stats.maxHealth() + bonusPoints * HeroStats.MAX_HEALTH_PER_POINT;
+        hero.maxHealth = (hero.stats.maxHealth() + bonusPoints * HeroStats.MAX_HEALTH_PER_POINT)
+            * TrialEffects.heroMaxHealthMultiplier(activeTrials);
         hero.health = Math.max(0f, Math.min(hero.maxHealth, hero.health));
     }
 
