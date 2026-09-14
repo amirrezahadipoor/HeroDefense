@@ -30,6 +30,9 @@ public final class KillRewardSystem {
                 kills++;
                 baseCoins += bossCoinReward(boss.bossNumber);
                 experience += 100 + boss.bossNumber * 30;
+                if (state.firstBossKills != null && boss.bossType != null) {
+                    state.firstBossKills.put(boss.bossType, true);
+                }
             }
         }
         if (kills == 0) return KillRewardResult.NONE;

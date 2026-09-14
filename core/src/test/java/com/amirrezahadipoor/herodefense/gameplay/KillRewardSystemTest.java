@@ -50,6 +50,18 @@ final class KillRewardSystemTest {
         assertEquals(Math.round(baseCoins * 1.5f), boostedCoins);
     }
 
+    @Test
+    void bossClaimRecordsItsIdentityForFirstKillTracking() {
+        GameState state = GameState.newRun(24L);
+        Boss boss = new BossFactory().create(state, BossType.EMBER_WYRM, 0f, 0f, 3, 0);
+        boss.receiveDamage(Float.MAX_VALUE);
+        state.aliveBosses.add(boss);
+
+        assertEquals(1, rewards.processDefeatedEnemies(state).kills());
+        assertTrue(Boolean.TRUE.equals(state.firstBossKills.get("EMBER_WYRM")));
+        assertEquals(1, state.firstBossKills.size());
+    }
+
     private static GameState defeatedRootling(long seed) {
         GameState state = GameState.newRun(seed);
         Enemy enemy = new EnemyFactory().create(state, EnemyType.ROOTLING, 0f, 0f, 0);

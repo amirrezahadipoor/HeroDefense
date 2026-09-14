@@ -98,6 +98,7 @@ import com.amirrezahadipoor.herodefense.render.RootNetworkOverlayRenderer;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
+import com.amirrezahadipoor.herodefense.story.CodexSystem;
 
 import java.util.Optional;
 
@@ -130,6 +131,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private SaplingTreeRenderer saplingTreeRenderer;
     private final PlantingCeremony plantingCeremony = new PlantingCeremony();
     private final OpeningCinematic openingCinematic = new OpeningCinematic();
+    private final CodexSystem codexSystem = new CodexSystem();
     private OpeningCinematicRenderer openingCinematicRenderer;
     private static final float WATER_DROP_INTERVAL_SECONDS = 0.07f;
     private float waterDropAccumulator;
@@ -1000,6 +1002,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (itemDrops > 0) audioManager.play(AudioCue.ITEM_DROP);
         potionDropSystem.processDefeatedEnemies(gameState);
         KillRewardResult killRewards = killRewardSystem.processDefeatedEnemies(gameState);
+        for (Boss boss : gameState.aliveBosses) {
+            if (boss != null && !boss.alive && boss.killRewardsGranted) {
+                codexSystem.unlockForBossKill(gameState, boss.bossType);
+            }
+        }
+        codexSystem.unlockForWaveReached(gameState);
         if (killRewards.coins() > 0) {
             floatingCoinTextSystem.emit(
                 gameState.hero.x,
