@@ -43,6 +43,7 @@ public final class PotionDropSystem {
     private int rollOnce(GameState state, Enemy enemy) {
         if (enemy == null || enemy.alive || enemy.potionDropRolled) return 0;
         enemy.potionDropRolled = true;
+        if (enemy.silentWatcher) return 0;
         if (!isDrop(state.nextCombatRandomFloat())) return 0;
         PotionTier tier = tierForRoll(state.waveNumber, state.nextCombatRandomFloat());
         DropEntity drop = new DropEntity(

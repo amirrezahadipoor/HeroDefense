@@ -33,7 +33,7 @@ public final class EnemyMovementSystem {
             moveTowardHero(enemy, state.hero.x, state.hero.y, deltaSeconds);
             return;
         }
-        if (enemy == null || !enemy.alive || !enemy.active) {
+        if (enemy == null || !enemy.alive || !enemy.active || enemy.silentWatcher) {
             return;
         }
         float targetX = WorldLayout.WORLD_TREE_X;
@@ -59,7 +59,7 @@ public final class EnemyMovementSystem {
     }
 
     private static void moveTowardHero(Enemy enemy, float heroX, float heroY, float deltaSeconds) {
-        if (enemy == null || !enemy.alive || !enemy.active) {
+        if (enemy == null || !enemy.alive || !enemy.active || enemy.silentWatcher) {
             return;
         }
         if (enemy.stunRemainingSeconds > 0f) {

@@ -49,7 +49,8 @@ public final class KillRewardSystem {
     private static boolean claim(Enemy enemy) {
         if (enemy == null || enemy.alive || enemy.killRewardsGranted) return false;
         enemy.killRewardsGranted = true;
-        return true;
+        // Silent watchers are scenery: claim them so they never pay out, but count no kill.
+        return !enemy.silentWatcher;
     }
 
     public static int bossCoinReward(int bossNumber) {

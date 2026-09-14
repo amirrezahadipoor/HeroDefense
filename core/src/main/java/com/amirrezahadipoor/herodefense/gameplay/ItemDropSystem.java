@@ -59,6 +59,7 @@ public final class ItemDropSystem {
     private int rollOnce(GameState state, Enemy enemy) {
         if (enemy == null || enemy.alive || enemy.itemDropRolled) return 0;
         enemy.itemDropRolled = true;
+        if (enemy.silentWatcher) return 0;
         ItemTier tier = tierForRoll(
             state.nextCombatRandomFloat(),
             statCalculator.dropChanceMultiplier(state)

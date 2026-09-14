@@ -62,6 +62,26 @@ final class KillRewardSystemTest {
         assertEquals(1, state.firstBossKills.size());
     }
 
+    @Test
+    void silentWatcherDefeatGrantsNoCoinsXpOrKillCount() {
+        GameState state = GameState.newRun(24L);
+        int coinsBefore = state.coins;
+        int xpBefore = state.heroExperience;
+        Enemy watcher = new EnemyFactory().create(state, EnemyType.ROOTLING, 0f, 0f, 0);
+        watcher.silentWatcher = true;
+        watcher.receiveDamage(Float.MAX_VALUE);
+        state.aliveEnemies.add(watcher);
+
+        KillRewardResult result = rewards.processDefeatedEnemies(state);
+
+        assertEquals(0, result.kills());
+        assertEquals(0, result.coins());
+        assertEquals(0, result.experience());
+        assertEquals(coinsBefore, state.coins);
+        assertEquals(xpBefore, state.heroExperience);
+        assertEquals(0, state.totalKills);
+    }
+
     private static GameState defeatedRootling(long seed) {
         GameState state = GameState.newRun(seed);
         Enemy enemy = new EnemyFactory().create(state, EnemyType.ROOTLING, 0f, 0f, 0);

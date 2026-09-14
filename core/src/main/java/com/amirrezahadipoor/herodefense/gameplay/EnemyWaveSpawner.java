@@ -12,6 +12,13 @@ public final class EnemyWaveSpawner {
     public static final int MAX_REGULAR_ENEMIES = 24;
     private static final float SIDE_JITTER = 180f;
     private static final float SOUTH_JITTER = 250f;
+    /** One in fifty Rootling spawns stands silent at the tree line ("The Quiet Ones"). */
+    static final int SILENT_WATCHER_ONE_IN = 50;
+    /** Tree-line box where Silent Rootling watchers stand and never leave. */
+    static final float TREE_LINE_MIN_X = 90f;
+    static final float TREE_LINE_MAX_X = 630f;
+    static final float TREE_LINE_MIN_Y = 800f;
+    static final float TREE_LINE_MAX_Y = 860f;
 
     private final EnemyFactory factory;
 
@@ -55,6 +62,13 @@ public final class EnemyWaveSpawner {
             Enemy enemy = factory.createForWave(
                 state, type, x, y, lane.id(), waveNumber
             );
+            if (type == EnemyType.ROOTLING && isSilentWatcher(state.runSeed, waveNumber, index)) {
+                enemy.silentWatcher = true;
+                enemy.x = TREE_LINE_MIN_X + watcherUnit(state.runSeed, waveNumber, index, 1L)
+                    * (TREE_LINE_MAX_X - TREE_LINE_MIN_X);
+                enemy.y = TREE_LINE_MIN_Y + watcherUnit(state.runSeed, waveNumber, index, 2L)
+                    * (TREE_LINE_MAX_Y - TREE_LINE_MIN_Y);
+            }
             state.aliveEnemies.add(enemy);
         }
     }
@@ -67,5 +81,25 @@ public final class EnemyWaveSpawner {
         value *= 0x94D049BB133111EBL;
         value ^= value >>> 31;
         return ((value >>> 40) / 8_388_607.5f) - 1f;
+    }
+
+    private static boolean isSilentWatcher(long seed, int wave, int index) {
+        return Math.floorMod(
+            watcherMix(seed, wave, index, 0xC2B280737A5763D5L), SILENT_WATCHER_ONE_IN
+        ) == 0;
+    }
+
+    private static float watcherUnit(long seed, int wave, int index, long salt) {
+        return (watcherMix(seed, wave, index, 0x165667B19E3779F9L + salt) >>> 40) / 16_777_216f;
+    }
+
+    private static long watcherMix(long seed, int wave, int index, long salt) {
+        long value = seed + salt * (wave * 131L + index * 17L + 1L);
+        value ^= value >>> 30;
+        value *= 0xBF58476D1CE4E5B9L;
+        value ^= value >>> 27;
+        value *= 0x94D049BB133111EBL;
+        value ^= value >>> 31;
+        return value;
     }
 }

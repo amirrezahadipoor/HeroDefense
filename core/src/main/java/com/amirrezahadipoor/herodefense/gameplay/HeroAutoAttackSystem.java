@@ -98,7 +98,7 @@ public final class HeroAutoAttackSystem {
     }
 
     private static float validDistanceSquared(Enemy enemy, float x, float y) {
-        if (enemy == null || !enemy.alive || !enemy.active) {
+        if (enemy == null || !enemy.alive || !enemy.active || enemy.silentWatcher) {
             return Float.POSITIVE_INFINITY;
         }
         return enemy.distanceSquaredTo(x, y);

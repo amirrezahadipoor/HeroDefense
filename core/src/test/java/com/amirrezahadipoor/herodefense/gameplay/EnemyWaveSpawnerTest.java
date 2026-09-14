@@ -1,10 +1,12 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.WorldLayout;
 import com.amirrezahadipoor.herodefense.model.Enemy;
+import com.amirrezahadipoor.herodefense.model.EnemyType;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.SpawnLane;
 import java.util.HashSet;
@@ -44,6 +46,45 @@ final class EnemyWaveSpawnerTest {
         for (int index = 0; index < 8; index++) {
             assertEquals(first.aliveEnemies.get(index).x, second.aliveEnemies.get(index).x);
             assertEquals(first.aliveEnemies.get(index).y, second.aliveEnemies.get(index).y);
+        }
+    }
+
+    @Test
+    void aboutTwoPercentOfRootlingsStandSilentAtTheTreeLine() {
+        GameState state = GameState.newRun(77L);
+        int rootlings = 0;
+        int silent = 0;
+        for (int wave = 1; wave <= GameState.FINAL_WAVE; wave++) {
+            state.aliveEnemies.clear();
+            spawner.spawnRegularEnemies(state, wave, spawner.regularCountForWave(wave));
+            for (Enemy enemy : state.aliveEnemies) {
+                if (enemy.type() != EnemyType.ROOTLING) {
+                    assertFalse(enemy.silentWatcher);
+                    continue;
+                }
+                rootlings++;
+                if (!enemy.silentWatcher) continue;
+                silent++;
+                assertTrue(enemy.x >= 90f && enemy.x <= 630f);
+                assertTrue(enemy.y >= 800f && enemy.y <= 860f);
+                assertTrue(enemy.distanceSquaredTo(state.hero.x, state.hero.y) > 100f * 100f);
+            }
+        }
+        float rate = (float) silent / rootlings;
+        assertTrue(rate > 0.005f && rate < 0.04f, "silent rate " + rate + " over " + rootlings);
+    }
+
+    @Test
+    void silentWatchersAreDeterministicForTheSameSeed() {
+        GameState first = GameState.newRun(4242L);
+        GameState second = GameState.newRun(4242L);
+        spawner.spawnRegularEnemies(first, 40, 20);
+        spawner.spawnRegularEnemies(second, 40, 20);
+        for (int index = 0; index < 20; index++) {
+            assertEquals(
+                first.aliveEnemies.get(index).silentWatcher,
+                second.aliveEnemies.get(index).silentWatcher
+            );
         }
     }
 }

@@ -140,7 +140,7 @@ public final class GameState {
     public int livingEnemyCount() {
         int count = 0;
         for (Enemy enemy : aliveEnemies) {
-            if (enemy != null && enemy.alive) {
+            if (enemy != null && enemy.alive && !enemy.silentWatcher) {
                 count++;
             }
         }

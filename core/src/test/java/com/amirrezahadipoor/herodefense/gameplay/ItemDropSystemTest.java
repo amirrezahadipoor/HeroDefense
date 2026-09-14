@@ -65,4 +65,17 @@ final class ItemDropSystemTest {
         assertEquals(1, state.inventory.size());
         assertEquals(0, state.drops.size());
     }
+
+    @Test
+    void silentWatcherDefeatRollsNoItemDrop() {
+        GameState state = GameState.newRun(92L);
+        state.hero.stats.luck = 200; // Would guarantee a drop for a real foe.
+        Enemy watcher = new EnemyFactory().create(state, EnemyType.ROOTLING, 1f, 2f, 0);
+        watcher.silentWatcher = true;
+        watcher.receiveDamage(Float.MAX_VALUE);
+        state.aliveEnemies.add(watcher);
+
+        assertEquals(0, drops.processDefeatedEnemies(state));
+        assertEquals(0, state.drops.size());
+    }
 }

@@ -59,7 +59,8 @@ public final class EnemyMeleeAttackSystem {
     }
 
     private void attackIfInRange(GameState state, Enemy enemy, float deltaSeconds) {
-        if (enemy == null || !enemy.alive || !enemy.active || !state.hero.alive) {
+        if (enemy == null || !enemy.alive || !enemy.active || !state.hero.alive
+            || enemy.silentWatcher) {
             return;
         }
         float range = Math.max(0f, enemy.attackRange);

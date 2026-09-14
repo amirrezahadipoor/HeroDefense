@@ -52,4 +52,21 @@ final class EnemyMovementSystemTest {
         assertEquals(EnemyMovementSystem.TREE_SIEGE_STOP_DISTANCE, rightToSapling, 0.001f);
         assertEquals(0f, right.stunRemainingSeconds);
     }
+
+    @Test
+    void silentWatcherNeverMovesEvenDuringTheTreeSiege() {
+        GameState state = GameState.newRun(41L);
+        Enemy watcher = factory.create(state, EnemyType.ROOTLING, 200f, 820f, 0);
+        watcher.silentWatcher = true;
+        state.aliveEnemies.add(watcher);
+
+        movement.update(state, 10f);
+        assertEquals(200f, watcher.x);
+        assertEquals(820f, watcher.y);
+
+        state.hero.alive = false;
+        movement.update(state, 100f);
+        assertEquals(200f, watcher.x);
+        assertEquals(820f, watcher.y);
+    }
 }

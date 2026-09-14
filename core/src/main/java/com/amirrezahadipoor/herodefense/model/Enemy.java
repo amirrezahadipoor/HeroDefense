@@ -18,6 +18,11 @@ public class Enemy extends ArenaEntity {
     public boolean alive = true;
     /** Seconds this enemy is frozen by a stunning arrow; it neither moves nor swings. */
     public float stunRemainingSeconds;
+    /**
+     * Silent Rootling watcher (Codex entry 5, "The Quiet Ones"): stands at the tree line and
+     * never moves, attacks, or pays out; targeting, wave-clear counts, and drops all skip it.
+     */
+    public boolean silentWatcher;
 
     public Enemy() {
         super();

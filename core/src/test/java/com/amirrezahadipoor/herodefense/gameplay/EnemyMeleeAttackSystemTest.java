@@ -63,4 +63,18 @@ final class EnemyMeleeAttackSystemTest {
         assertTrue(attacks.update(state, 0f));
         assertEquals(0f, state.worldTreeHealth);
     }
+
+    @Test
+    void silentWatcherInMeleeRangeNeverStrikesTheHero() {
+        GameState state = GameState.newRun(33L);
+        Enemy watcher = factory.create(
+            state, EnemyType.ROOTLING, state.hero.x, state.hero.y, 0
+        );
+        watcher.silentWatcher = true;
+        state.aliveEnemies.add(watcher);
+
+        assertFalse(attacks.update(state, 5f));
+        assertEquals(100f, state.hero.health);
+        assertEquals(0f, watcher.attackCooldownSeconds);
+    }
 }

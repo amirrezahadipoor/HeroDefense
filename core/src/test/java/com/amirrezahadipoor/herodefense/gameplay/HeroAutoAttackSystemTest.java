@@ -171,6 +171,23 @@ final class HeroAutoAttackSystemTest {
         assertEquals(0.5f, struck.stunRemainingSeconds, 1e-5f);
     }
 
+    @Test
+    void silentWatcherIsNeverTargetedEvenPointBlank() {
+        GameState state = GameState.newRun(24L);
+        Enemy watcher = enemy(state, 10f, 0f);
+        watcher.silentWatcher = true;
+        Enemy foe = enemy(state, 200f, 0f);
+        state.aliveEnemies.add(watcher);
+        state.aliveEnemies.add(foe);
+
+        system.update(state, 0f);
+        assertEquals(foe.id, state.hero.currentTargetId);
+
+        state.aliveEnemies.remove(foe);
+        system.update(state, 0f);
+        assertEquals(-1L, state.hero.currentTargetId);
+    }
+
     private static Enemy enemy(GameState state, float offsetX, float offsetY) {
         Enemy enemy = new Enemy(
             state.allocateEntityId(),

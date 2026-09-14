@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.Enemy;
+import com.amirrezahadipoor.herodefense.model.EnemyType;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import org.junit.jupiter.api.Test;
@@ -112,5 +113,23 @@ final class WaveLifecycleSystemTest {
         assertEquals(WaveCompletion.BOSS_REWARD, lifecycle.updateAfterCombat(state));
         assertEquals(25f, state.fastestWaveClearSeconds);
         assertEquals(0f, state.waveElapsedSeconds);
+    }
+
+    @Test
+    void waveClearsAroundALoneSilentWatcherAndDespawnsIt() {
+        GameState state = GameState.newRun(104L);
+        state.waveNumber = 6;
+        assertTrue(lifecycle.startCurrentWave(state));
+        Enemy watcher = new EnemyFactory().create(state, EnemyType.ROOTLING, 200f, 820f, 0);
+        watcher.silentWatcher = true;
+        state.aliveEnemies.add(watcher);
+        long watcherId = watcher.id;
+        for (Enemy enemy : state.aliveEnemies) {
+            if (!enemy.silentWatcher) enemy.receiveDamage(Float.MAX_VALUE);
+        }
+
+        assertEquals(WaveCompletion.NEXT_WAVE, lifecycle.updateAfterCombat(state));
+        assertEquals(7, state.waveNumber);
+        for (Enemy enemy : state.aliveEnemies) assertFalse(enemy.id == watcherId);
     }
 }

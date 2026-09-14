@@ -423,7 +423,7 @@ public final class BalanceSimulator {
     private static float totalLivingEnemyHealth(GameState state) {
         float result = 0f;
         for (Enemy enemy : state.aliveEnemies) {
-            if (enemy != null && enemy.alive) result += enemy.health;
+            if (enemy != null && enemy.alive && !enemy.silentWatcher) result += enemy.health;
         }
         for (Boss boss : state.aliveBosses) {
             if (boss != null && boss.alive) result += boss.health;

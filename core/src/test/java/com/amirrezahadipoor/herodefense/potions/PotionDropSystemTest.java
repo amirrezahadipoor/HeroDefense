@@ -58,6 +58,18 @@ final class PotionDropSystemTest {
         assertEquals(1, state.healthPotions.stream().mapToInt(Integer::intValue).sum());
     }
 
+    @Test
+    void silentWatcherDefeatRollsNoPotionDrop() {
+        GameState state = stateWhoseNextRollDrops();
+        Enemy watcher = new EnemyFactory().create(state, EnemyType.ROOTLING, 4f, 5f, 0);
+        watcher.silentWatcher = true;
+        watcher.receiveDamage(Float.MAX_VALUE);
+        state.aliveEnemies.add(watcher);
+
+        assertEquals(0, drops.processDefeatedEnemies(state));
+        assertEquals(0, state.drops.size());
+    }
+
     private GameState stateWhoseNextRollDrops() {
         for (long seed = 0; seed < 10_000; seed++) {
             GameState state = GameState.newRun(seed);
