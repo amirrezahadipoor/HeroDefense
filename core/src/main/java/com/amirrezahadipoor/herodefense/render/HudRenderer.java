@@ -172,7 +172,10 @@ public final class HudRenderer implements AutoCloseable {
         icons.draw(batch, "health", 28f, 1194f + up, 50f);
         drawShadowed(batch, "LV " + state.heroLevel, 102f, 1199f + up, 0.52f,
             flash > 0f ? EXP_FLASH : EXP);
-        text.drawRightAligned(batch, experienceLabel(state), 671f, 1199f + up, 0.46f, SUBTLE);
+        text.drawRightAligned(batch, experienceLabel(state), 580f, 1199f + up, 0.46f, SUBTLE);
+        if (state.ascensionTier > 0) {
+            drawShadowed(batch, "T" + state.ascensionTier, 620f, 1199f + up, 0.58f, GOLD);
+        }
         drawShadowed(batch, "HEALTH", 102f, 1244f + up, 0.68f, GOLD);
         drawShadowedCentered(
             batch,

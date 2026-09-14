@@ -38,7 +38,33 @@ public final class MainMenuRenderer implements AutoCloseable {
         boolean continueAvailable,
         int coins,
         UiIconRenderer icons,
+        UiFrameRenderer frames,
+        com.amirrezahadipoor.herodefense.model.GameState state
+    ) {
+        draw(batch, projection, continueAvailable, coins, icons, frames, state != null ? state.ascensionTier : 0, state != null ? state.peakWaveReached : 0, state != null ? state.heartwood : 0);
+    }
+
+    public void draw(
+        SpriteBatch batch,
+        Matrix4 projection,
+        boolean continueAvailable,
+        int coins,
+        UiIconRenderer icons,
         UiFrameRenderer frames
+    ) {
+        draw(batch, projection, continueAvailable, coins, icons, frames, 0, 0, 0);
+    }
+
+    private void draw(
+        SpriteBatch batch,
+        Matrix4 projection,
+        boolean continueAvailable,
+        int coins,
+        UiIconRenderer icons,
+        UiFrameRenderer frames,
+        int ascensionTier,
+        int peakWave,
+        int heartwood
     ) {
         batch.setProjectionMatrix(projection);
         batch.begin();
@@ -62,15 +88,19 @@ public final class MainMenuRenderer implements AutoCloseable {
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         UiFrameRenderer.State newGameState = frames.resolve(
-            true, false, MainMenuTouchLayout.BUTTON_X, 690f,
+            true, false, MainMenuTouchLayout.BUTTON_X, 720f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
         UiFrameRenderer.State continueState = frames.resolve(
-            continueAvailable, false, MainMenuTouchLayout.BUTTON_X, 500f,
+            continueAvailable, false, MainMenuTouchLayout.BUTTON_X, 560f,
+            MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
+        );
+        UiFrameRenderer.State rootState = frames.resolve(
+            true, false, MainMenuTouchLayout.BUTTON_X, 400f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
         UiFrameRenderer.State settingsState = frames.resolve(
-            true, false, MainMenuTouchLayout.BUTTON_X, 310f,
+            true, false, MainMenuTouchLayout.BUTTON_X, 240f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
 
@@ -85,9 +115,10 @@ public final class MainMenuRenderer implements AutoCloseable {
             COIN_PANEL_X, COIN_PANEL_Y, COIN_PANEL_WIDTH, COIN_PANEL_HEIGHT,
             true, false
         );
-        drawButton(batch, frames, 690f, true);
-        drawButton(batch, frames, 500f, continueAvailable);
-        drawButton(batch, frames, 310f, true);
+        drawButton(batch, frames, 720f, true);
+        drawButton(batch, frames, 560f, continueAvailable);
+        drawButton(batch, frames, 400f, true);
+        drawButton(batch, frames, 240f, true);
 
         icons.draw(batch, "coin", 508f, 1201f, 46f);
         drawShadowedCentered(batch, coinTotalLabel(coins), 611f, 1232f, 1.05f, GOLD);
@@ -100,17 +131,24 @@ public final class MainMenuRenderer implements AutoCloseable {
 
         drawMenuAction(
             batch, icons, "new_game", "NEW GAME", "Begin a fresh defense",
-            690f, newGameState, true
+            720f, newGameState, true
+        );
+        String continueSubtitle = continueAvailable
+            ? ("Tier " + ascensionTier + " | Peak " + peakWave + " | " + heartwood + " HW")
+            : "Return to the active wave";
+        drawMenuAction(
+            batch, icons, "continue", "CONTINUE", continueSubtitle,
+            560f, continueState, continueAvailable
         );
         drawMenuAction(
-            batch, icons, "continue", "CONTINUE", "Return to the active wave",
-            500f, continueState, continueAvailable
+            batch, icons, "general_power", "ROOT NETWORK", heartwood + " Heartwood | Permanent growth",
+            400f, rootState, true
         );
         drawMenuAction(
             batch, icons, "settings", "SETTINGS", "Comfort, music, and effects",
-            310f, settingsState, true
+            240f, settingsState, true
         );
-        drawShadowedCentered(batch, "200 WAVES  |  ONE LAST TREE", 360f, 174f, 0.84f, SUBTLE);
+        drawShadowedCentered(batch, "200 WAVES  |  ONE LAST TREE  |  ASCEND FOREVER  |  T" + ascensionTier, 360f, 140f, 0.74f, SUBTLE);
         batch.end();
     }
 

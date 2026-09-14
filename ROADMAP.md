@@ -356,15 +356,15 @@ The single biggest lever for total playtime: turn the existing 1–200 wave arc 
 
 ### 20.2 The Root Network (permanent talent web)
 
-- [ ] Build a Root Network screen that renders the already-modeled World Tree full-screen (reuse `SaplingTreeRenderer`/World Tree art — no new models) with 20–30 selectable root-node overlays laid along the trunk and branches.
-- [ ] Each node costs Heartwood and grants a small permanent bonus applied at the start of every future run (starting Strength/Health, starting coin, an extra starting talent point, an extra inventory slot, a small Focus-fill bonus). Define values in a new `RootNetworkCatalog`, mirroring `EquipmentDefinition`'s data-table pattern.
-- [ ] Root nodes are one-time purchases that never reset on Ascension; reuse the existing sapling-growth frame sequence to represent lit (purchased) vs. unlit (locked) nodes, so the tree visibly fills in as the player invests — no new art batch required.
-- [ ] Add `RootNetworkTouchLayout`/`RootNetworkTouchController` following the existing Shop/Skill pattern; open it from the Main Menu and from the Game Over/Ascend screen.
+- [x] Build a Root Network screen that renders the already-modeled World Tree full-screen (reuse `SaplingTreeRenderer`/World Tree art — no new models) with 20–30 selectable root-node overlays laid along the trunk and branches.
+- [x] Each node costs Heartwood and grants a small permanent bonus applied at the start of every future run (starting Strength/Health, starting coin, an extra starting talent point, an extra inventory slot, a small Focus-fill bonus). Define values in a new `RootNetworkCatalog`, mirroring `EquipmentDefinition`'s data-table pattern.
+- [x] Root nodes are one-time purchases that never reset on Ascension; reuse the existing sapling-growth frame sequence to represent lit (purchased) vs. unlit (locked) nodes, so the tree visibly fills in as the player invests — no new art batch required.
+- [x] Add `RootNetworkTouchLayout`/`RootNetworkTouchController` following the existing Shop/Skill pattern; open it from the Main Menu and from the Game Over/Ascend screen.
 
 ### 20.3 Ascension-Aware Progression Feel
 
-- [ ] Show the current Ascension tier as a small badge next to the wave counter in `HudRenderer`, and on the Game Over/Victory summary.
-- [ ] Update the Main Menu's Continue tile to show Ascension tier + peak wave, so a five-minute session always opens on a legible sense of long-term progress.
+- [x] Show the current Ascension tier as a small badge next to the wave counter in `HudRenderer`, and on the Game Over/Victory summary.
+- [x] Update the Main Menu's Continue tile to show Ascension tier + peak wave, so a five-minute session always opens on a legible sense of long-term progress.
 
 ## Phase 21 — Story Codex & Branching Epilogues
 
