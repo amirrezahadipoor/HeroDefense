@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 final class GameFlowControllerTest {
     @Test
     void exposesEveryRequiredStateAndStartsAtMenu() {
-        assertEquals(10, GameScreenState.values().length);
+        assertEquals(11, GameScreenState.values().length);
         assertEquals(GameScreenState.MENU, new GameFlowController().state());
     }
 
