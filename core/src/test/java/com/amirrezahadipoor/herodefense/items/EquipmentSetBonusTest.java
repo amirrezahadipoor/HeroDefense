@@ -79,6 +79,21 @@ final class EquipmentSetBonusTest {
         assertEquals(1.05f, EquipmentSetBonus.maxHealthMultiplier(state), 1e-6f);
     }
 
+    @Test
+    void statusLineAlwaysNamesBothSetsWithLiveCounts() {
+        GameState state = GameState.newRun(2304L);
+        assertEquals(
+            "SETS: Verdant Covenant 0/4 | Bastion Oath 0/4",
+            EquipmentSetBonus.statusLine(state)
+        );
+        equipById(state, "WEAPON", "verdant_recurve");
+        equipById(state, "HELMET", "fern_guard");
+        assertEquals(
+            "SETS: Verdant Covenant 2/4 | Bastion Oath 0/4",
+            EquipmentSetBonus.statusLine(state)
+        );
+    }
+
     private static void equipById(GameState state, String slot, String id) {
         state.equippedItems.put(slot, EquipmentCatalog.byId(id).createItem());
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.gameplay.ItemForgeSystem;
+import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchController;
 import com.amirrezahadipoor.herodefense.input.InventoryTouchLayout;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
@@ -223,6 +224,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         drawCentered(batch, "SELL", sellCenterX, 158f + sellOffset, 0.86f, hasSelection ? GOLD : MUTED);
         drawCentered(batch, selected == null ? "--" : "$ " + selected.sellPrice,
             sellCenterX, 118f + sellOffset, 0.70f, hasSelection ? IVORY : MUTED);
+        drawText(batch, EquipmentSetBonus.statusLine(state), 40f, 208f, 0.62f, IVORY);
         String feedback = controller.feedbackMessage();
         if (feedback != null) {
             Color feedbackColor = new Color(GOLD);

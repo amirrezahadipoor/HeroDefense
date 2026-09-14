@@ -66,6 +66,21 @@ public final class EquipmentSetBonus {
         return counts;
     }
 
+    /**
+     * One-line Inventory status, e.g. "SETS: Verdant Covenant 2/4 | Bastion Oath 0/4".
+     * Always lists every set so players learn the hunts exist.
+     */
+    public static String statusLine(GameState state) {
+        Map<String, Integer> counts = equippedCounts(state);
+        StringBuilder line = new StringBuilder("SETS:");
+        for (SetBonus set : ALL) {
+            line.append(' ').append(set.displayName()).append(' ')
+                .append(counts.getOrDefault(set.setId(), 0)).append('/').append(set.pieces());
+            if (set != ALL.get(ALL.size() - 1)) line.append(" |");
+        }
+        return line.toString();
+    }
+
     /** Set ids with all four pieces equipped. */
     public static List<String> completedSets(GameState state) {
         List<String> completed = new ArrayList<>();
