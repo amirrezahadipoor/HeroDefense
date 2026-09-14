@@ -20,10 +20,13 @@ public final class TrialEffects {
         return has(trials, TrialId.SWIFT_HOLLOW) ? 1.25f : 1f;
     }
 
-    /** Coin income; Swift Hollow pays more, Famished Earth pays less. */
+    /** Coin income; Swift Hollow and Miser's Pact pay more, Famished Earth pays less. */
     public static float coinIncomeMultiplier(Collection<String> trials) {
         float mult = 1f;
         if (has(trials, TrialId.SWIFT_HOLLOW)) {
+            mult *= 1.3f;
+        }
+        if (has(trials, TrialId.MISERS_PACT)) {
             mult *= 1.3f;
         }
         if (has(trials, TrialId.FAMISHED_EARTH)) {
@@ -37,9 +40,12 @@ public final class TrialEffects {
         return !has(trials, TrialId.DRY_VEINS);
     }
 
-    /** Bonus talent points per level; Dry Veins grants one more. */
-    public static int bonusTalentPointsPerLevel(Collection<String> trials) {
-        return has(trials, TrialId.DRY_VEINS) ? 1 : 0;
+    /**
+     * Bonus talent points for reaching the level; Dry Veins grants one more every fourth
+     * level, roughly +25% talent income instead of a run-trivializing double.
+     */
+    public static int bonusTalentPointsForLevel(Collection<String> trials, int level) {
+        return has(trials, TrialId.DRY_VEINS) && level % 4 == 0 ? 1 : 0;
     }
 
     /** Boss damage; Heavy Crowns makes crowns hit harder. */
@@ -56,7 +62,7 @@ public final class TrialEffects {
     public static float heroMaxHealthMultiplier(Collection<String> trials) {
         float mult = 1f;
         if (has(trials, TrialId.THIN_BLOOD)) {
-            mult *= 0.75f;
+            mult *= 0.8f;
         }
         if (has(trials, TrialId.HOLLOW_CALLING)) {
             mult *= 1.15f;
@@ -68,7 +74,7 @@ public final class TrialEffects {
     public static float heroDamageMultiplier(Collection<String> trials) {
         float mult = 1f;
         if (has(trials, TrialId.THIN_BLOOD)) {
-            mult *= 1.25f;
+            mult *= 1.2f;
         }
         if (has(trials, TrialId.GLASS_ARROWS)) {
             mult *= 0.8f;
@@ -93,12 +99,12 @@ public final class TrialEffects {
 
     /** Enemy health; Stone Skin hardens every hide. */
     public static float enemyHealthMultiplier(Collection<String> trials) {
-        return has(trials, TrialId.STONE_SKIN) ? 1.3f : 1f;
+        return has(trials, TrialId.STONE_SKIN) ? 1.2f : 1f;
     }
 
-    /** Item drop chance; Stone Skin cracks open richer spoils. */
+    /** Item drop chance; Stone Skin cracks open double spoils. */
     public static float itemDropChanceMultiplier(Collection<String> trials) {
-        return has(trials, TrialId.STONE_SKIN) ? 1.5f : 1f;
+        return has(trials, TrialId.STONE_SKIN) ? 2f : 1f;
     }
 
     /** Boss health; Boss Bounty fattens every crown. */
@@ -116,11 +122,6 @@ public final class TrialEffects {
         return has(trials, TrialId.MISERS_PACT) ? 1.3f : 1f;
     }
 
-    /** Starting coins; Miser's Pact opens the purse first. */
-    public static int startingCoinsBonus(Collection<String> trials) {
-        return has(trials, TrialId.MISERS_PACT) ? 200 : 0;
-    }
-
     /** Dodge chance bonus; Famished Earth teaches hunger-dodges. */
     public static float dodgeChanceBonus(Collection<String> trials) {
         return has(trials, TrialId.FAMISHED_EARTH) ? 0.10f : 0f;
@@ -128,12 +129,12 @@ public final class TrialEffects {
 
     /** Damage the hero takes; Blood Price makes every wound deeper. */
     public static float damageTakenMultiplier(Collection<String> trials) {
-        return has(trials, TrialId.BLOOD_PRICE) ? 1.2f : 1f;
+        return has(trials, TrialId.BLOOD_PRICE) ? 1.15f : 1f;
     }
 
     /** Lifesteal bonus; Blood Price pays wounds back in blood. */
     public static float lifestealBonus(Collection<String> trials) {
-        return has(trials, TrialId.BLOOD_PRICE) ? 0.04f : 0f;
+        return has(trials, TrialId.BLOOD_PRICE) ? 0.03f : 0f;
     }
 
     /** Enemy damage; Hollow Calling lends the horde its voice. */

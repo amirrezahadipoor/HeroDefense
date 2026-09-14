@@ -401,11 +401,11 @@ A genuine strategic decision before each run that changes *how* it is played, no
 - [x] Before every new run — New Game and every Ascension — show 4 Trial cards and let the player pick exactly 2, reusing `RewardCardOverlayRenderer`'s existing card-choice presentation.
 - [x] Define roughly 12 Trials as paired risk/reward modifiers active for that run only, for example: enemies move faster in exchange for more coin income; no potions drop in exchange for extra talent points; bosses hit harder in exchange for a guaranteed Rare+ card every boss; Elites appear twice as often in exchange for bonus Heartwood at Ascension.
 - [x] Persist the two active Trials in `GameState` for the run's duration and show them as small, permanent icons on the live HUD, so their effect is never a mid-run surprise.
-- [ ] Feed the active Trial pair into `BalanceSimulator` as an additional scenario axis (Phase 26.1) so no combination of Trials breaks the difficulty gate.
+- [x] Feed the active Trial pair into `BalanceSimulator` as an additional scenario axis (Phase 26.1) so no combination of Trials breaks the difficulty gate.
 
 ### 22.2 Curiosity Hooks
 
-- [ ] Keep two Trials locked until specific Codex or Ascension conditions are met, so the drafting pool itself is something to discover, not a static menu seen in full on day one.
+- [x] Keep two Trials locked until specific Codex or Ascension conditions are met, so the drafting pool itself is something to discover, not a static menu seen in full on day one.
 
 ## Phase 23 — Itemization Depth: Affixes, Sets, and the Mythic Tier
 

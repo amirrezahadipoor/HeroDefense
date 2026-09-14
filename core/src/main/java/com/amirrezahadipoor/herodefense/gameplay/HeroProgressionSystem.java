@@ -30,7 +30,6 @@ public final class HeroProgressionSystem {
         int scaled = Math.max(1, Math.round(
             experience * TrialEffects.experienceMultiplier(state.activeTrials)
         ));
-        int pointsPerLevel = 1 + TrialEffects.bonusTalentPointsPerLevel(state.activeTrials);
         long available = (long) state.heroExperience + scaled;
         int levelsGained = 0;
         while (state.heroLevel < LEVEL_CAP) {
@@ -40,7 +39,8 @@ public final class HeroProgressionSystem {
             }
             available -= required;
             state.heroLevel++;
-            state.unspentTalentPoints += pointsPerLevel;
+            state.unspentTalentPoints += 1
+                + TrialEffects.bonusTalentPointsForLevel(state.activeTrials, state.heroLevel);
             levelsGained++;
         }
         state.heroExperience = state.heroLevel == LEVEL_CAP

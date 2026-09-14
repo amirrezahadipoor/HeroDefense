@@ -36,6 +36,7 @@ import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
+import com.amirrezahadipoor.herodefense.trials.TrialId;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -82,11 +83,27 @@ public final class BalanceSimulator {
     );
 
     public BalanceReport run(long seed) {
-        return run(seed, null, 0, 0);
+        return run(seed, null, 0, 0, List.of());
     }
 
     public BalanceReport runWithAscensionTier(long seed, int ascensionTier) {
-        return run(seed, null, 0, Math.max(0, ascensionTier));
+        return run(seed, null, 0, Math.max(0, ascensionTier), List.of());
+    }
+
+    /** Binds a single trial for the whole run; isolates one trial's pressure delta. */
+    public BalanceReport runWithTrial(long seed, TrialId trial) {
+        if (trial == null) {
+            throw new IllegalArgumentException("A trial is required");
+        }
+        return run(seed, null, 0, 0, List.of(trial.name()));
+    }
+
+    /** Binds one drafted trial pair for the whole run; the Phase 22.1 scenario axis. */
+    public BalanceReport runWithTrials(long seed, TrialId first, TrialId second) {
+        if (first == null || second == null || first == second) {
+            throw new IllegalArgumentException("Two distinct trials are required");
+        }
+        return run(seed, null, 0, 0, List.of(first.name(), second.name()));
     }
 
     /** Forces one legal card effect into a selected boss offer for comparative simulations. */
@@ -95,7 +112,7 @@ public final class BalanceSimulator {
         if (card == null || bossNumber < 1 || bossNumber > lastBoss) {
             throw new IllegalArgumentException("Forced card and boss number 1.." + lastBoss + " are required");
         }
-        return run(seed, card, bossNumber, 0);
+        return run(seed, card, bossNumber, 0, List.of());
     }
 
     public BalanceReport runWithForcedCardAndTier(long seed, RewardCardId card, int bossNumber, int ascensionTier) {
@@ -103,11 +120,19 @@ public final class BalanceSimulator {
         if (card == null || bossNumber < 1 || bossNumber > lastBoss) {
             throw new IllegalArgumentException("Forced card and boss number 1.." + lastBoss + " are required");
         }
-        return run(seed, card, bossNumber, Math.max(0, ascensionTier));
+        return run(seed, card, bossNumber, Math.max(0, ascensionTier), List.of());
     }
 
-    private BalanceReport run(long seed, RewardCardId forcedCard, int forcedBossNumber, int ascensionTier) {
+    private BalanceReport run(
+        long seed,
+        RewardCardId forcedCard,
+        int forcedBossNumber,
+        int ascensionTier,
+        List<String> trials
+    ) {
         GameState state = GameState.newRun(seed);
+        state.activeTrials.clear();
+        state.activeTrials.addAll(trials);
         state.ascensionTier = ascensionTier;
         if (ascensionTier > 0) {
             applyRootBonusesForTier(state, ascensionTier);

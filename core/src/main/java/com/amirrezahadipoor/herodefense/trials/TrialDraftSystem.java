@@ -1,7 +1,6 @@
 package com.amirrezahadipoor.herodefense.trials;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +20,8 @@ public final class TrialDraftSystem {
         if (state == null) {
             return;
         }
-        List<TrialId> pool = new ArrayList<>(List.of(TrialId.values()));
+        TrialLockConditions.refreshUnlockRecord(state);
+        List<TrialId> pool = TrialLockConditions.unlockedPool(state);
         Collections.shuffle(pool, new Random(state.runSeed ^ OFFER_SALT));
         state.pendingTrialOffer.clear();
         state.trialDraftPicks.clear();

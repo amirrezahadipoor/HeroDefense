@@ -15,7 +15,6 @@ import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
-import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.BossType;
 import com.amirrezahadipoor.herodefense.model.Enemy;
@@ -57,8 +56,8 @@ final class TrialWiringTest {
             runWith(2L, TrialId.STONE_SKIN, TrialId.HOLLOW_CALLING),
             EnemyType.FUNGAL_BRUTE, 0f, 0f, 0, 10
         );
-        assertEquals(plain.maxHealth * 1.3f, tried.maxHealth, 0.01f);
-        assertEquals(plain.health * 1.3f, tried.health, 0.01f);
+        assertEquals(plain.maxHealth * 1.2f, tried.maxHealth, 0.01f);
+        assertEquals(plain.health * 1.2f, tried.health, 0.01f);
         assertEquals(plain.damage * 1.2f, tried.damage, 0.01f);
     }
 
@@ -121,14 +120,20 @@ final class TrialWiringTest {
         assertEquals(1, plain.unspentTalentPoints);
         GameState veined = runWith(6L, TrialId.DRY_VEINS);
         assertEquals(1, progression.grantExperience(veined, firstLevelXp));
+        assertEquals(1, veined.unspentTalentPoints);
+        int secondLevelXp = progression.experienceRequiredForNextLevel(veined.heroLevel);
+        assertEquals(1, progression.grantExperience(veined, secondLevelXp));
         assertEquals(2, veined.unspentTalentPoints);
+        int thirdLevelXp = progression.experienceRequiredForNextLevel(veined.heroLevel);
+        assertEquals(1, progression.grantExperience(veined, thirdLevelXp));
+        assertEquals(4, veined.unspentTalentPoints);
     }
 
     @Test
     void thinBloodAndHollowCallingReshapeHeroHealth() {
         HeroStatCalculator stats = new HeroStatCalculator();
         assertEquals(100f, stats.maxHealth(runWith(7L)), 0f);
-        assertEquals(75f, stats.maxHealth(runWith(7L, TrialId.THIN_BLOOD)), 0.001f);
+        assertEquals(80f, stats.maxHealth(runWith(7L, TrialId.THIN_BLOOD)), 0.001f);
         assertEquals(115f, stats.maxHealth(runWith(7L, TrialId.HOLLOW_CALLING)), 0.001f);
     }
 
@@ -146,7 +151,7 @@ final class TrialWiringTest {
     }
 
     @Test
-    void misersPactRaisesPricesButOpensThePurse() {
+    void misersPactRaisesPricesButFillsThePurse() {
         StatShopSystem statShop = new StatShopSystem();
         GameState plain = runWith(9L);
         GameState miser = runWith(9L, TrialId.MISERS_PACT);
@@ -159,8 +164,13 @@ final class TrialWiringTest {
         assertEquals((int) Math.round(baseSkill * 1.3 / 5.0) * 5,
             skillShop.price(miser, SkillId.MULTI_SHOT));
 
-        assertTrue(new StarterLoadoutSystem().provisionOnce(miser));
-        assertEquals(200, miser.coins);
+        KillRewardSystem rewards = new KillRewardSystem(new HeroProgressionSystem());
+        GameState plainKill = defeatedRootling(9L);
+        GameState miserKill = defeatedRootling(9L);
+        miserKill.activeTrials.add(TrialId.MISERS_PACT.name());
+        int baseCoins = rewards.processDefeatedEnemies(plainKill).coins();
+        int miserCoins = rewards.processDefeatedEnemies(miserKill).coins();
+        assertEquals(Math.round(baseCoins * 1.3f), miserCoins);
     }
 
     @Test
@@ -169,7 +179,7 @@ final class TrialWiringTest {
         GameState blood = runWith(10L, TrialId.BLOOD_PRICE);
         blood.hero.health = 100f;
         damage.applyIncomingHit(blood, 10f);
-        assertEquals(88f, blood.hero.health, 0.001f);
+        assertEquals(88.5f, blood.hero.health, 0.001f);
 
         HeroAutoAttackSystem attacks = new HeroAutoAttackSystem();
         GameState hunter = runWith(11L, TrialId.BLOOD_PRICE);

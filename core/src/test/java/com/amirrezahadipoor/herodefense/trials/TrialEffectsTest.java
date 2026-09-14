@@ -23,7 +23,7 @@ final class TrialEffectsTest {
         assertEquals(1f, TrialEffects.enemySpeedMultiplier(null));
         assertEquals(1f, TrialEffects.coinIncomeMultiplier(Collections.emptyList()));
         assertTrue(TrialEffects.potionsDrop(null));
-        assertEquals(0, TrialEffects.bonusTalentPointsPerLevel(Collections.emptyList()));
+        assertEquals(0, TrialEffects.bonusTalentPointsForLevel(Collections.emptyList(), 2));
         assertEquals(1f, TrialEffects.bossDamageMultiplier(null));
         assertFalse(TrialEffects.bossAlwaysDropsRarePlus(null));
         assertEquals(1f, TrialEffects.heroMaxHealthMultiplier(Collections.emptyList()));
@@ -36,7 +36,6 @@ final class TrialEffectsTest {
         assertEquals(1f, TrialEffects.bossHealthMultiplier(null));
         assertEquals(1f, TrialEffects.heartwoodMultiplier(null));
         assertEquals(1f, TrialEffects.shopPriceMultiplier(null));
-        assertEquals(0, TrialEffects.startingCoinsBonus(null));
         assertEquals(0f, TrialEffects.dodgeChanceBonus(null));
         assertEquals(1f, TrialEffects.damageTakenMultiplier(null));
         assertEquals(0f, TrialEffects.lifestealBonus(null));
@@ -51,15 +50,16 @@ final class TrialEffectsTest {
 
         List<String> dry = trials(TrialId.DRY_VEINS);
         assertFalse(TrialEffects.potionsDrop(dry));
-        assertEquals(1, TrialEffects.bonusTalentPointsPerLevel(dry));
+        assertEquals(1, TrialEffects.bonusTalentPointsForLevel(dry, 4));
+        assertEquals(0, TrialEffects.bonusTalentPointsForLevel(dry, 5));
 
         List<String> crowns = trials(TrialId.HEAVY_CROWNS);
         assertEquals(1.3f, TrialEffects.bossDamageMultiplier(crowns));
         assertTrue(TrialEffects.bossAlwaysDropsRarePlus(crowns));
 
         List<String> thin = trials(TrialId.THIN_BLOOD);
-        assertEquals(0.75f, TrialEffects.heroMaxHealthMultiplier(thin));
-        assertEquals(1.25f, TrialEffects.heroDamageMultiplier(thin));
+        assertEquals(0.8f, TrialEffects.heroMaxHealthMultiplier(thin));
+        assertEquals(1.2f, TrialEffects.heroDamageMultiplier(thin));
 
         List<String> glass = trials(TrialId.GLASS_ARROWS);
         assertEquals(0.8f, TrialEffects.heroDamageMultiplier(glass));
@@ -70,8 +70,8 @@ final class TrialEffectsTest {
         assertEquals(1.25f, TrialEffects.experienceMultiplier(tide));
 
         List<String> stone = trials(TrialId.STONE_SKIN);
-        assertEquals(1.3f, TrialEffects.enemyHealthMultiplier(stone));
-        assertEquals(1.5f, TrialEffects.itemDropChanceMultiplier(stone));
+        assertEquals(1.2f, TrialEffects.enemyHealthMultiplier(stone));
+        assertEquals(2f, TrialEffects.itemDropChanceMultiplier(stone));
 
         List<String> bounty = trials(TrialId.BOSS_BOUNTY);
         assertEquals(1.3f, TrialEffects.bossHealthMultiplier(bounty));
@@ -79,15 +79,15 @@ final class TrialEffectsTest {
 
         List<String> miser = trials(TrialId.MISERS_PACT);
         assertEquals(1.3f, TrialEffects.shopPriceMultiplier(miser));
-        assertEquals(200, TrialEffects.startingCoinsBonus(miser));
+        assertEquals(1.3f, TrialEffects.coinIncomeMultiplier(miser));
 
         List<String> famished = trials(TrialId.FAMISHED_EARTH);
         assertEquals(0.7f, TrialEffects.coinIncomeMultiplier(famished));
         assertEquals(0.10f, TrialEffects.dodgeChanceBonus(famished));
 
         List<String> blood = trials(TrialId.BLOOD_PRICE);
-        assertEquals(1.2f, TrialEffects.damageTakenMultiplier(blood));
-        assertEquals(0.04f, TrialEffects.lifestealBonus(blood));
+        assertEquals(1.15f, TrialEffects.damageTakenMultiplier(blood));
+        assertEquals(0.03f, TrialEffects.lifestealBonus(blood));
 
         List<String> calling = trials(TrialId.HOLLOW_CALLING);
         assertEquals(1.2f, TrialEffects.enemyDamageMultiplier(calling));
@@ -99,6 +99,6 @@ final class TrialEffectsTest {
         List<String> pair = trials(TrialId.SWIFT_HOLLOW, TrialId.FAMISHED_EARTH);
         assertEquals(1.3f * 0.7f, TrialEffects.coinIncomeMultiplier(pair), 0.0001f);
         List<String> blood = trials(TrialId.THIN_BLOOD, TrialId.HOLLOW_CALLING);
-        assertEquals(0.75f * 1.15f, TrialEffects.heroMaxHealthMultiplier(blood), 0.0001f);
+        assertEquals(0.8f * 1.15f, TrialEffects.heroMaxHealthMultiplier(blood), 0.0001f);
     }
 }

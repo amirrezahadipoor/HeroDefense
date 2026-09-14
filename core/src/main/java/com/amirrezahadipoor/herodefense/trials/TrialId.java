@@ -10,13 +10,13 @@ public enum TrialId {
         "Swift Hollow", "Enemies move 25% faster", "+30% coin income", "speed"
     ),
     DRY_VEINS(
-        "Dry Veins", "Potions never drop", "+1 talent point per level", "close"
+        "Dry Veins", "Potions never drop", "+1 talent point every 4 levels", "close"
     ),
     HEAVY_CROWNS(
         "Heavy Crowns", "Bosses deal 30% more damage", "Every boss drops a Rare+ item", "general_power"
     ),
     THIN_BLOOD(
-        "Thin Blood", "Hero has 25% less max health", "Hero deals 25% more damage", "strength"
+        "Thin Blood", "Hero has 20% less max health", "Hero deals 20% more damage", "strength"
     ),
     GLASS_ARROWS(
         "Glass Arrows", "Hero deals 20% less damage", "Hero attacks 25% faster", "agility"
@@ -25,19 +25,19 @@ public enum TrialId {
         "Iron Tide", "+3 enemies every wave", "+25% experience", "wave"
     ),
     STONE_SKIN(
-        "Stone Skin", "Enemies have 30% more health", "+50% item drop chance", "inventory"
+        "Stone Skin", "Enemies have 20% more health", "Double item drops", "inventory"
     ),
     BOSS_BOUNTY(
         "Boss Bounty", "Bosses have 30% more health", "+30% Heartwood at Ascension", "coin"
     ),
     MISERS_PACT(
-        "Miser's Pact", "Shop prices up 30%", "Begin the run with 200 coins", "shop"
+        "Miser's Pact", "Shop prices up 30%", "+30% coin income", "shop"
     ),
     FAMISHED_EARTH(
         "Famished Earth", "-30% coin income", "+10% dodge chance", "dodge"
     ),
     BLOOD_PRICE(
-        "Blood Price", "Hero takes 20% more damage", "+4% lifesteal", "lifesteal"
+        "Blood Price", "Hero takes 15% more damage", "+3% lifesteal", "lifesteal"
     ),
     HOLLOW_CALLING(
         "Hollow Calling", "Enemies deal 20% more damage", "Hero has 15% more max health", "health"
@@ -69,6 +69,15 @@ public enum TrialId {
 
     public String iconKey() {
         return iconKey;
+    }
+
+    /** How this trial unlocks; blank for the ten trials open from the first run. */
+    public String lockHint() {
+        return switch (this) {
+            case HEAVY_CROWNS -> "Unlock 10 Codex entries";
+            case BOSS_BOUNTY -> "Ascend for the first time";
+            default -> "";
+        };
     }
 
     /** Null-safe lookup; unknown or corrupt names resolve to null instead of throwing. */
