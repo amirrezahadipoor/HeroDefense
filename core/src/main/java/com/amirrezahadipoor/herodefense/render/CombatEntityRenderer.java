@@ -12,6 +12,7 @@ import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
+import com.amirrezahadipoor.herodefense.gameplay.FocusSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.model.BossType;
 import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
@@ -44,6 +45,9 @@ public final class CombatEntityRenderer implements AutoCloseable {
     private static final float DROP_HOMING_ARC_HEIGHT = 86f;
     static final int PROJECTILE_TRAIL_STEPS = 3;
     static final int MAX_PROGRESSION_STEP = 10;
+    static final int FOCUS_RING_SEGMENTS = 36;
+    static final float FOCUS_RING_RADIUS = 108f;
+    static final float FOCUS_RING_CENTER_Y_OFFSET = 73f;
     private static final Set<String> BOSS_ASSET_KEYS = bossAssetKeys();
 
     private final Map<String, EntityClips> clipsByKey = new LinkedHashMap<>();
@@ -71,6 +75,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
     }
 
     public void drawEffects(SpriteBatch batch, GameState state, float runTimeSeconds) {
+        drawFocusRing(batch, state);
         drawProjectiles(batch, state);
         drawDrops(batch, state, runTimeSeconds);
         batch.setColor(1f, 1f, 1f, 1f);
@@ -182,6 +187,44 @@ public final class CombatEntityRenderer implements AutoCloseable {
             );
             batch.setColor(1f, 1f, 1f, 0.85f);
             batch.draw(pixel, projectile.x + nx * 6f - 2f, projectile.y + ny * 6f - 2f, 4f, 4f);
+        }
+        batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    /** Lit ring segments for a 0..1 Focus ratio; degenerate ratios light none. */
+    static int focusRingLitSegments(float ratio) {
+        if (!Float.isFinite(ratio) || ratio <= 0f) return 0;
+        if (ratio >= 1f) return FOCUS_RING_SEGMENTS;
+        return Math.round(ratio * FOCUS_RING_SEGMENTS);
+    }
+
+    /**
+     * Focus meter as a pixel ring around the Hero: a dim full track, a gold
+     * lit arc for the charge, burning white once the Ultimate is ready.
+     */
+    private void drawFocusRing(SpriteBatch batch, GameState state) {
+        if (state == null || state.hero == null || !state.hero.alive) return;
+        float ratio = FocusSystem.ratio(state);
+        int lit = focusRingLitSegments(ratio);
+        boolean full = lit >= FOCUS_RING_SEGMENTS;
+        float centerX = state.hero.x;
+        float centerY = state.hero.y + FOCUS_RING_CENTER_Y_OFFSET;
+        for (int index = 0; index < FOCUS_RING_SEGMENTS; index++) {
+            double angle = index * Math.PI * 2.0 / FOCUS_RING_SEGMENTS - Math.PI * 0.5;
+            float x = centerX + (float) Math.cos(angle) * FOCUS_RING_RADIUS;
+            float y = centerY + (float) Math.sin(angle) * FOCUS_RING_RADIUS;
+            if (index < lit) {
+                if (full) {
+                    batch.setColor(1f, 0.98f, 0.90f, 0.95f);
+                } else {
+                    batch.setColor(0.93f, 0.76f, 0.32f, 0.9f);
+                }
+                float size = full ? 7f : 6f;
+                batch.draw(pixel, x - size * 0.5f, y - size * 0.5f, size, size);
+            } else {
+                batch.setColor(0.30f, 0.26f, 0.20f, 0.55f);
+                batch.draw(pixel, x - 2f, y - 2f, 4f, 4f);
+            }
         }
         batch.setColor(1f, 1f, 1f, 1f);
     }

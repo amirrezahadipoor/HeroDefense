@@ -264,6 +264,7 @@ public final class HeroAutoAttackSystem {
             }
         }
         state.projectiles.removeIf(projectile -> projectile == null || !projectile.active);
+        FocusSystem.addHits(state, hits, criticalHits, chainArcs);
         return new ImpactCounts(hits, criticalHits, impactX, impactY, chainArcs, stuns);
     }
 

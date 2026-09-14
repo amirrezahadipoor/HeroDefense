@@ -435,7 +435,7 @@ Answers the "auto-attack only, no agency" gap directly with one meaningful tap-t
 
 ### 24.1 Focus Meter
 
-- [ ] Add a `Focus` resource that fills from landed hits, shown as a ring around the Hero using the same HUD-bar rendering approach already built for the EXP bar.
+- [x] Add a `Focus` resource that fills from landed hits, shown as a ring around the Hero using the same HUD-bar rendering approach already built for the EXP bar.
 - [ ] At full Focus, show a glowing tap target; tapping it unleashes the Hero's Ultimate — a screen-wide effect assembled from existing VFX systems (chain-beam fan, an enlarged critical burst, a stronger screen shake at a higher, rate-limited budget) — and drains Focus to zero.
 - [ ] Scale Ultimate strength and Focus-fill rate with Hero level and any equipped Mythic passives, so building toward a strong Ultimate is itself a stat-allocation decision, not a fixed script.
 
