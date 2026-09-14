@@ -194,4 +194,13 @@ spikes). The gate covers a naked 9-seed matrix (36 runs), every forced card at b
 20 (32 runs), and power/damage/horde trial pairs on 3-seed medians (36 runs); the
 full 66-pair and 312-scenario matrices stay tier-0.
 
+### Phase 26.1b result (Elite damage accounting)
+
+No main-code change: the Elite-affix-aware accounting path already exists — the
+spawner marks Elites inside simulated runs, and Elite melee, blightburst blasts, and
+weeping rot all land inside the gross-damage HP-delta window. `EliteDamageAccountingTest`
+locks the inclusion: the baseline run spawns all 23 Elite waves, every one lands
+pressured damage (1.74–24.14%), and Elite waves contribute +0.62pp to the reported
+10.14% run average.
+
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.
