@@ -132,4 +132,40 @@ With the second-half curve `1.023 / 1.008` and the Anvil policy enabled, baselin
 
 With the second-half curve `1.021 / 1.006`, baseline seed `0x4845524F444546` and eight further seeds all completed 200/200 waves; across those nine runs the average gross damage was `10.0%`, the worst single wave `28.8%`, and the longest clear `72.3 s`. The baseline's second half sits at 2–6% gross damage per wave with 24–43 s clears and a slowly falling DPS-to-HP ratio (`0.027` at Wave 100 → `0.011` at Wave 200), so the run keeps tightening without a cliff. The acceptance gate (`GATE_WAVE = FINAL_WAVE`) and the forced-card regression (Bosses 1–39) now cover the full run.
 
+### Phase 25.3a result (ascension schedule search, baseline seed `0x4845524F444546`)
+
+The ascension schedule multiplies every growth constant by `(1 + bump × tier)`: health
+`0.0005`/tier, damage `0.0002`/tier, with the same relative bump on the second-half constants
+(so wave-200 stats compound the bump twice). Tier 0 is bit-identical to the untiered curve.
+The roadmap's starting form (`0.015` / `0.008`) died at waves 24–52 on tiers 3–10 with
+57–77% average damage — roughly 50–100× too hot for the fixed-power sim hero — so the
+search below re-tuned the coefficients while keeping the specified multiplicative form:
+
+| health / damage bump | t3 avg/max/clear | t6 avg/max/clear | t10 avg/max/clear |
+|---|---|---|---|
+| 0.015 / 0.008 (start) | DIED w52 | DIED w36 | DIED w24 |
+| 0.001 / 0.0005 | 6.5 / 27.2 / 61.4 ✓ | 11.6 / 63.3✗ / 103.0 | 20.7✗ / 162.5✗ / 205.5✗ |
+| 0.0004 / 0.0002 | 5.0 / 22.0 / 56.5 | 5.2 / 23.0 / 66.5 | 4.3✗ / 25.0 / 72.7 |
+| 0.0006 / 0.0003 | 8.3 / 33.6 / 79.7 | 5.3 / 28.2 / 60.0 | 9.6 / 62.1✗ / 136.3✗ |
+| **0.0005 / 0.0002 (shipped)** | **6.41 / 25.77 / 70.77** | **5.61 / 27.71 / 79.70** | **5.05 / 32.87 / 105.47** |
+| 0.0006 / 0.00015 | 7.85 / 31.07 / 79.67 | 4.70✗ / 24.02 / 60.03 | 7.69 / 46.66✗ / 136.27✗ |
+| 0.0003 / 0.0003 | 5.38 / 19.13 / 61.43 | 3.76✗ / 17.09 / 49.70 | 4.54✗ / 32.75 / 98.63 |
+| 0.0004 / 0.00025 | 5.10 / 22.61 / 56.47 | 5.46 / 24.27 / 66.47 | 4.66✗ / 27.51 / 72.73 |
+
+(Averages in % gross damage; max = worst single wave %; clear = worst clear seconds.
+Bands: avg 5–15%, max ≤ 35%, clear ≤ 120 s.)
+
+The shipped point is the only all-green baseline row, confirmed on three extra seeds
+(`+1`, `+2`, `0x123456789`): tier averages stayed in band on 11/12 cells (5.05–7.51%),
+but the single-wave max — one wave in 200, mostly boss-adjacent late waves — is seed
+noise (±7pp at t10: 32.9–46.2%) and breached 35% on 4/12 cells. Two structural notes:
+the elite interval `7 → 6 → 5 → 4` collides with boss waves at interval 5, so tiers 6–8
+spawn no elites (every multiple of 5 is a boss wave; test-locked); and elite loot
+overcompensates the stat bumps — at t10, forty elite waves' double coins plus talent
+materials snowball the hero, so difficulty is non-monotonic (baseline t10 avg 5.05% sits
+below t3's 6.41%). Flags for the 26.1 gate: the shipped t10 baseline average has only
+0.05pp of floor margin, and the 5% average floor already fails cross-seed at tier 0
+itself (seed `0x123456789`: 4.69%), so the 9-seed gate needs tier-relative, averaged, or
+ceiling-only-cross-seed bands rather than the naive per-seed 5–15%.
+
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

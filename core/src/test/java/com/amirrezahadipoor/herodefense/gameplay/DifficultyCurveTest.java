@@ -52,6 +52,59 @@ final class DifficultyCurveTest {
     }
 
     @Test
+    void ascensionScheduleIsBitIdenticalAtTierZero() {
+        assertEquals(DifficultyCurve.ENEMY_HEALTH_GROWTH, DifficultyCurve.healthGrowthForTier(0), 0.0f);
+        assertEquals(DifficultyCurve.ENEMY_DAMAGE_GROWTH, DifficultyCurve.damageGrowthForTier(0), 0.0f);
+        assertEquals(
+            DifficultyCurve.SECOND_HALF_HEALTH_GROWTH, DifficultyCurve.secondHalfHealthGrowthForTier(0), 0.0f);
+        assertEquals(
+            DifficultyCurve.SECOND_HALF_DAMAGE_GROWTH, DifficultyCurve.secondHalfDamageGrowthForTier(0), 0.0f);
+    }
+
+    @Test
+    void ascensionBumpsScaleMultiplicativelyAndMonotonically() {
+        assertEquals(
+            DifficultyCurve.ENEMY_HEALTH_GROWTH * (1f + DifficultyCurve.ASCENSION_HEALTH_BUMP_PER_TIER * 10),
+            DifficultyCurve.healthGrowthForTier(10),
+            0.000001f
+        );
+        assertEquals(
+            DifficultyCurve.ENEMY_DAMAGE_GROWTH * (1f + DifficultyCurve.ASCENSION_DAMAGE_BUMP_PER_TIER * 10),
+            DifficultyCurve.damageGrowthForTier(10),
+            0.000001f
+        );
+        int[] tiers = {0, 1, 3, 6, 10};
+        for (int i = 1; i < tiers.length; i++) {
+            assertTrue(DifficultyCurve.healthGrowthForTier(tiers[i])
+                > DifficultyCurve.healthGrowthForTier(tiers[i - 1]));
+            assertTrue(DifficultyCurve.damageGrowthForTier(tiers[i])
+                > DifficultyCurve.damageGrowthForTier(tiers[i - 1]));
+        }
+        assertEquals(
+            DifficultyCurve.healthGrowthForTier(0), DifficultyCurve.healthGrowthForTier(-4), 0.0f);
+        assertEquals(
+            DifficultyCurve.damageGrowthForTier(0), DifficultyCurve.damageGrowthForTier(-4), 0.0f);
+    }
+
+    @Test
+    void secondHalfKeepsTheSameRelativeBump() {
+        for (int tier : new int[] {1, 3, 6, 10}) {
+            assertEquals(
+                DifficultyCurve.healthGrowthForTier(tier) / DifficultyCurve.healthGrowthForTier(0),
+                DifficultyCurve.secondHalfHealthGrowthForTier(tier)
+                    / DifficultyCurve.secondHalfHealthGrowthForTier(0),
+                0.000001f
+            );
+            assertEquals(
+                DifficultyCurve.damageGrowthForTier(tier) / DifficultyCurve.damageGrowthForTier(0),
+                DifficultyCurve.secondHalfDamageGrowthForTier(tier)
+                    / DifficultyCurve.secondHalfDamageGrowthForTier(0),
+                0.000001f
+            );
+        }
+    }
+
+    @Test
     void waveSpawnerAppliesCurrentWaveStats() {
         GameState state = GameState.newRun(77L);
         EnemyWaveSpawner spawner = new EnemyWaveSpawner(new EnemyFactory());

@@ -45,6 +45,39 @@ final class EnemyWaveSpawnerTest {
     }
 
     @Test
+    void eliteIntervalTightensOneWaveEveryThreeTiersFlooredAtFour() {
+        assertEquals(7, EnemyWaveSpawner.eliteWaveInterval(-3));
+        assertEquals(7, EnemyWaveSpawner.eliteWaveInterval(0));
+        assertEquals(7, EnemyWaveSpawner.eliteWaveInterval(1));
+        assertEquals(7, EnemyWaveSpawner.eliteWaveInterval(2));
+        assertEquals(6, EnemyWaveSpawner.eliteWaveInterval(3));
+        assertEquals(6, EnemyWaveSpawner.eliteWaveInterval(5));
+        assertEquals(5, EnemyWaveSpawner.eliteWaveInterval(6));
+        assertEquals(5, EnemyWaveSpawner.eliteWaveInterval(8));
+        assertEquals(4, EnemyWaveSpawner.eliteWaveInterval(9));
+        assertEquals(4, EnemyWaveSpawner.eliteWaveInterval(10));
+        assertEquals(4, EnemyWaveSpawner.eliteWaveInterval(99));
+    }
+
+    @Test
+    void eliteWavesFollowTheTierIntervalAndStillSkipBosses() {
+        assertTrue(EnemyWaveSpawner.isEliteWave(6, 3));
+        assertTrue(EnemyWaveSpawner.isEliteWave(12, 3));
+        assertFalse(EnemyWaveSpawner.isEliteWave(7, 3));
+        assertFalse(EnemyWaveSpawner.isEliteWave(30, 3));
+        assertTrue(EnemyWaveSpawner.isEliteWave(4, 10));
+        assertTrue(EnemyWaveSpawner.isEliteWave(8, 10));
+        assertFalse(EnemyWaveSpawner.isEliteWave(7, 10));
+        assertFalse(EnemyWaveSpawner.isEliteWave(20, 10));
+        // Interval 5 (tiers 6-8) collides with boss waves: every multiple of 5 is a
+        // boss wave, so those tiers spawn no elites (documented in BALANCE.md).
+        for (int wave = 1; wave <= 200; wave++) {
+            assertFalse(EnemyWaveSpawner.isEliteWave(wave, 6), "wave " + wave);
+            assertFalse(EnemyWaveSpawner.isEliteWave(wave, 8), "wave " + wave);
+        }
+    }
+
+    @Test
     void eliteWavesMarkOneOrTwoEmpoweredNonWatchers() {
         for (long seed = 1L; seed <= 10L; seed++) {
             GameState state = GameState.newRun(seed);

@@ -41,9 +41,9 @@ public final class EnemyWaveSpawner {
         );
     }
 
-    /** Elite cadence; Phase 25.3 tightens the interval as ascension tiers rise. */
+    /** Elite cadence tightens one wave every three tiers, floored at every 4th wave. */
     public static int eliteWaveInterval(int ascensionTier) {
-        return 7;
+        return Math.max(4, 7 - Math.max(0, ascensionTier) / 3);
     }
 
     public static boolean isEliteWave(int waveNumber, int ascensionTier) {

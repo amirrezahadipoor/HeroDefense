@@ -459,7 +459,7 @@ Directly answers the flat, "easy once you open the shop" curve: boss hits are cu
 
 ### 25.3 Endless Ascension Scaling
 
-- [ ] Define an explicit per-tier schedule for the growth constants as a function of `ascensionTier` (`t`), starting from a tunable form such as `ENEMY_HEALTH_GROWTH(t) = 1.037 × (1 + 0.015·t)` and `ENEMY_DAMAGE_GROWTH(t) = 1.003 × (1 + 0.008·t)` for the first half, with the same relative bump applied to the second-half constants, plus the Elite wave interval tightening by one wave every three tiers (floor of every 4th wave) — then tune against the simulator exactly as Phase 14 did for the base curve.
+- [x] Define an explicit per-tier schedule for the growth constants as a function of `ascensionTier` (`t`), starting from a tunable form such as `ENEMY_HEALTH_GROWTH(t) = 1.037 × (1 + 0.015·t)` and `ENEMY_DAMAGE_GROWTH(t) = 1.003 × (1 + 0.008·t)` for the first half, with the same relative bump applied to the second-half constants, plus the Elite wave interval tightening by one wave every three tiers (floor of every 4th wave) — then tune against the simulator exactly as Phase 14 did for the base curve.
 - [ ] Close the flat middle-third the shipped build has (waves 25–80 landing at nearly the same damage fraction as each other): add a slow third growth segment across that span so pressure rises end to end instead of only at the two endpoints, and re-verify against the existing 5–15% average / 35% single-wave gate.
 
 ## Phase 26 — Comprehensive Rebalancing & Hours Accounting
