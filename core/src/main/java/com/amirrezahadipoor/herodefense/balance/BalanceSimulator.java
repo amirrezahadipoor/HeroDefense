@@ -116,6 +116,14 @@ public final class BalanceSimulator {
         return run(seed, null, 0, 0, List.of(first.name(), second.name()));
     }
 
+    /** Binds one drafted trial pair for a whole ascension-tier run; the 26.1a gate axis. */
+    public BalanceReport runWithTrialsAndTier(long seed, TrialId first, TrialId second, int ascensionTier) {
+        if (first == null || second == null || first == second) {
+            throw new IllegalArgumentException("Two distinct trials are required");
+        }
+        return run(seed, null, 0, Math.max(0, ascensionTier), List.of(first.name(), second.name()));
+    }
+
     /** Forces one legal card effect into a selected boss offer for comparative simulations. */
     public BalanceReport runWithForcedCard(long seed, RewardCardId card, int bossNumber) {
         int lastBoss = GameState.FINAL_WAVE / 5;

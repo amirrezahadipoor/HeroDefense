@@ -178,4 +178,20 @@ longest clear — still inside the 5–15% / 35% / 120 s gate. Middle-third quar
 end to end: `7.75% → 8.95% → 10.77% → 11.21%` (previously flat at ~8% with zero
 fitted slope). The rise is locked by a `Q4 > Q1 + 1pp` assertion on the baseline seed.
 
+### Phase 26.1a result (ascension gate, tiers 0/3/6/10)
+
+The tier-0 bands do not transfer to tiers: across 9 seeds the naked tier-10 average
+sits at 5.03–9.26% (no room to cool) while its worst single wave reaches 37–55%
+(single-wave spikes are seed noise even at tier 0, which breaches 35% on one seed),
+so the naive per-cell 5–15% / 35% / 120 s window is empty above tier 0. The committed
+`AscensionGateTest` therefore re-derives the bands instead of re-running them: every
+cell must finish 200/200; naked and forced-card averages stay strict at 5–15% (all
+68 cells green); single-wave ceilings index by tier (naked/card: 40% + 2pp per tier;
+trial pairs: 35% + 3pp per tier); clear-time ceiling is 120 s + 3 s per tier; and the
+trial-pair pressured floor steps down 175 → 160 → 145 → 120 waves (root bonuses plus
+elite loot let empowered builds trivialize wave counts faster than they blunt
+spikes). The gate covers a naked 9-seed matrix (36 runs), every forced card at boss
+20 (32 runs), and power/damage/horde trial pairs on 3-seed medians (36 runs); the
+full 66-pair and 312-scenario matrices stay tier-0.
+
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

@@ -468,7 +468,7 @@ Extends the existing simulator-driven balance discipline to every new system abo
 
 ### 26.1 Simulator Extensions
 
-- [ ] Extend `BalanceSimulator` with an `ascensionTier` parameter and an active-Trial-pair axis; re-run the existing 9-seed-plus-forced-card regression gate at ascension tiers 0, 3, 6, and 10.
+- [x] Extend `BalanceSimulator` with an `ascensionTier` parameter and an active-Trial-pair axis; re-run the existing 9-seed-plus-forced-card regression gate at ascension tiers 0, 3, 6, and 10.
 - [ ] Add an Elite-affix-aware damage accounting path so Elite waves are included in the 5–15% average / 35% single-wave gross-damage ceiling rather than exempted from it.
 - [ ] Add a Focus/Ultimate usage model to the simulator's policy (fire the Ultimate on cooldown) so its power budget is tuned against the same regression gate as every other system, and give the simulator a simple Evolution-choice policy (pick the higher-DPS Evolution) for the same reason.
 
