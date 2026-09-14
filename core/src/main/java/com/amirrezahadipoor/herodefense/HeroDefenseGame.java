@@ -49,6 +49,7 @@ import com.amirrezahadipoor.herodefense.input.SettingsTouchLayout;
 import com.amirrezahadipoor.herodefense.input.SimulationSpeedTouchController;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.input.TouchInputController;
+import com.amirrezahadipoor.herodefense.input.TrialDraftTouchController;
 import com.amirrezahadipoor.herodefense.items.StarterLoadoutSystem;
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
@@ -90,6 +91,7 @@ import com.amirrezahadipoor.herodefense.render.RewardCardOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.SettingsOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.StatShopOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.TouchFeedbackRenderer;
+import com.amirrezahadipoor.herodefense.render.TrialDraftOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.UiFrameRenderer;
 import com.amirrezahadipoor.herodefense.render.UiIconRenderer;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
@@ -108,6 +110,7 @@ import com.amirrezahadipoor.herodefense.story.CodexSystem;
 import com.amirrezahadipoor.herodefense.story.ReflectionLines;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
 import com.amirrezahadipoor.herodefense.story.WhisperLines;
+import com.amirrezahadipoor.herodefense.trials.TrialDraftSystem;
 
 import java.util.Optional;
 
@@ -171,6 +174,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private PotionDropSystem potionDropSystem;
     private RewardCardOverlayRenderer rewardCardOverlayRenderer;
     private RewardCardTouchController rewardCardTouchController;
+    private TrialDraftSystem trialDraftSystem;
+    private TrialDraftOverlayRenderer trialDraftOverlayRenderer;
+    private TrialDraftTouchController trialDraftTouchController;
     private SettingsOverlayRenderer settingsOverlayRenderer;
     private ScreenShakeSystem screenShakeSystem;
     private SettingsTouchController settingsTouchController;
@@ -215,6 +221,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         EnemyWaveSpawner enemyWaveSpawner = new EnemyWaveSpawner(new EnemyFactory());
         bossRewardCardSystem = new BossRewardCardSystem();
         rewardCardTouchController = new RewardCardTouchController(bossRewardCardSystem);
+        trialDraftSystem = new TrialDraftSystem();
+        trialDraftTouchController = new TrialDraftTouchController(trialDraftSystem);
         waveLifecycleSystem = new WaveLifecycleSystem(
             enemyWaveSpawner,
             new BossWaveSpawner(new BossFactory()),
@@ -283,6 +291,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleRenderer = new ParticleRenderer();
         pauseOverlayRenderer = new PauseOverlayRenderer();
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
+        trialDraftOverlayRenderer = new TrialDraftOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
         rootNetworkOverlayRenderer = new RootNetworkOverlayRenderer();
@@ -508,6 +517,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (rewardCardOverlayRenderer != null) {
             rewardCardOverlayRenderer.close();
         }
+        if (trialDraftOverlayRenderer != null) {
+            trialDraftOverlayRenderer.close();
+        }
         if (settingsOverlayRenderer != null) {
             settingsOverlayRenderer.close();
         }
@@ -602,7 +614,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (!isTap) {
                     return true;
                 }
-                boolean cardChoiceTap = flow.state() == GameScreenState.CARD_CHOICE;
+                boolean cardChoiceTap = flow.state() == GameScreenState.CARD_CHOICE
+                    || flow.state() == GameScreenState.TRIAL_DRAFT;
                 if (!cardChoiceTap) {
                     touchFeedbackSystem.triggerTap(worldX, worldY);
                     hapticFeedback.tap();
@@ -650,6 +663,23 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     } else {
                         touchFeedbackSystem.triggerTap(worldX, worldY);
                         hapticFeedback.tap();
+                    }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.TRIAL_DRAFT) {
+                    int picksBefore = gameState.trialDraftPicks.size();
+                    if (trialDraftTouchController.tap(gameState, worldX, worldY)) {
+                        touchFeedbackSystem.triggerCardSelection(worldX, worldY);
+                        hapticFeedback.cardSelection();
+                        flow.transitionTo(GameScreenState.CINEMATIC);
+                        beginOpening();
+                        saveNow();
+                    } else {
+                        touchFeedbackSystem.triggerTap(worldX, worldY);
+                        hapticFeedback.tap();
+                        if (gameState.trialDraftPicks.size() > picksBefore) {
+                            saveNow();
+                        }
                     }
                     return true;
                 }
@@ -836,9 +866,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.clear();
         floatingCoinTextSystem.clear();
         floatingDamageTextSystem.clear();
-        flow.transitionTo(GameScreenState.PLAYING);
-        flow.transitionTo(GameScreenState.CINEMATIC);
-        beginOpening();
+        trialDraftSystem.prepareOffer(gameState);
+        flow.transitionTo(GameScreenState.TRIAL_DRAFT);
         saveNow();
     }
 
@@ -857,9 +886,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.clear();
         floatingCoinTextSystem.clear();
         floatingDamageTextSystem.clear();
-        flow.transitionTo(GameScreenState.PLAYING);
-        flow.transitionTo(GameScreenState.CINEMATIC);
-        beginOpening();
+        trialDraftSystem.prepareOffer(gameState);
+        flow.transitionTo(GameScreenState.TRIAL_DRAFT);
         saveNow();
     }
 
@@ -879,16 +907,18 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.clear();
         floatingCoinTextSystem.clear();
         floatingDamageTextSystem.clear();
-        flow.transitionTo(GameScreenState.PLAYING);
-        flow.transitionTo(GameScreenState.CINEMATIC);
-        beginOpening();
+        trialDraftSystem.prepareOffer(gameState);
+        flow.transitionTo(GameScreenState.TRIAL_DRAFT);
         saveNow();
     }
 
     private void continueRun() {
         if (!continueAvailable || !canContinue(gameState)) return;
         flow.transitionTo(GameScreenState.PLAYING);
-        if (gameState.awaitingBossReward) {
+        if (gameState.draftPending()) {
+            // A save closed mid-draft replays the draft from its persisted offer and picks.
+            flow.transitionTo(GameScreenState.TRIAL_DRAFT);
+        } else if (gameState.awaitingBossReward) {
             flow.transitionTo(GameScreenState.CARD_CHOICE);
         } else if (gameState.ceremonyPending) {
             // A save closed mid-ceremony replays it from the start; it is deterministic.
@@ -1214,6 +1244,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             case PAUSED -> 0.11f;
             case LEVEL_UP -> 0.22f;
             case CARD_CHOICE -> 0.24f;
+            case TRIAL_DRAFT -> 0.23f;
             case CINEMATIC -> 0.21f;
             case INVENTORY -> 0.18f;
             case SHOP -> 0.18f;
@@ -1329,6 +1360,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             );
         } else if (flow.state() == GameScreenState.CARD_CHOICE) {
             rewardCardOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
+            );
+        } else if (flow.state() == GameScreenState.TRIAL_DRAFT) {
+            trialDraftOverlayRenderer.draw(
                 spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.SHOP) {

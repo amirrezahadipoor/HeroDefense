@@ -14,5 +14,7 @@ public enum GameScreenState {
     SHOP,
     ROOT_NETWORK,
     CODEX,
-    GAME_OVER
+    GAME_OVER,
+    /** Pre-run Convergence Trial draft: four cards offered, exactly two picked. */
+    TRIAL_DRAFT
 }

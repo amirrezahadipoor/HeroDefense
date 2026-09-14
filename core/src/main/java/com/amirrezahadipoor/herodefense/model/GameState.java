@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.model;
 
 import com.amirrezahadipoor.herodefense.WorldLayout;
+import com.amirrezahadipoor.herodefense.trials.TrialDraftSystem;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
 import java.util.ArrayList;
@@ -75,6 +76,10 @@ public final class GameState {
     public Map<String, String> skillEvolutions = new LinkedHashMap<>();
     public List<String> activeTrials = new ArrayList<>();
     public Map<String, Boolean> trialUnlocked = new LinkedHashMap<>();
+    /** The four drafted trial names currently offered; cleared once the draft completes. */
+    public List<String> pendingTrialOffer = new ArrayList<>();
+    /** Trial names picked so far in the open draft; cleared once the draft completes. */
+    public List<String> trialDraftPicks = new ArrayList<>();
 
     // Run stats for secret codex entries
     public boolean bareHandedEligible = true;
@@ -251,6 +256,8 @@ public final class GameState {
         if (skillEvolutions == null) skillEvolutions = new LinkedHashMap<>();
         if (activeTrials == null) activeTrials = new ArrayList<>();
         if (trialUnlocked == null) trialUnlocked = new LinkedHashMap<>();
+        if (pendingTrialOffer == null) pendingTrialOffer = new ArrayList<>();
+        if (trialDraftPicks == null) trialDraftPicks = new ArrayList<>();
         rootNodesPurchased.values().removeIf(v -> v == null);
         codexUnlocked.values().removeIf(v -> v == null);
         firstBossKills.values().removeIf(v -> v == null);
@@ -259,6 +266,8 @@ public final class GameState {
         skillEvolutions.values().removeIf(v -> v == null);
         trialUnlocked.values().removeIf(v -> v == null);
         activeTrials.removeIf(t -> t == null);
+        pendingTrialOffer.removeIf(t -> t == null);
+        trialDraftPicks.removeIf(t -> t == null);
         eliteKillCounts.replaceAll((k, v) -> v == null ? 0 : Math.max(0, v));
     }
 
@@ -349,9 +358,17 @@ public final class GameState {
         this.pendingRewardCards = fresh.pendingRewardCards;
         this.healthPotions = fresh.healthPotions;
         this.activeTrials = fresh.activeTrials;
+        this.pendingTrialOffer = fresh.pendingTrialOffer;
+        this.trialDraftPicks = fresh.trialDraftPicks;
         this.skillEvolutions = fresh.skillEvolutions;
         this.nextEntityId = 2L;
         validateAndRepair();
+    }
+
+    /** A trial offer is open and the run's pair is not yet bound. */
+    public boolean draftPending() {
+        return pendingTrialOffer != null && !pendingTrialOffer.isEmpty()
+            && (activeTrials == null || activeTrials.size() < TrialDraftSystem.PICK_COUNT);
     }
 
     public int ascendAndAwardHeartwood() {

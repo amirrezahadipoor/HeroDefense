@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 final class GameFlowControllerTest {
     @Test
     void exposesEveryRequiredStateAndStartsAtMenu() {
-        assertEquals(12, GameScreenState.values().length);
+        assertEquals(13, GameScreenState.values().length);
         assertEquals(GameScreenState.MENU, new GameFlowController().state());
     }
 
@@ -60,6 +60,23 @@ final class GameFlowControllerTest {
     void rejectsInvalidMenuToGameOverTransition() {
         GameFlowController flow = new GameFlowController();
         assertThrows(IllegalStateException.class, () -> flow.transitionTo(GameScreenState.GAME_OVER));
+    }
+
+    @Test
+    void trialDraftOpensEveryRunAndLeadsOnlyIntoTheOpening() {
+        GameFlowController fromMenu = new GameFlowController();
+        fromMenu.transitionTo(GameScreenState.TRIAL_DRAFT);
+        assertFalse(fromMenu.simulationRunning());
+        assertFalse(fromMenu.canTransitionTo(GameScreenState.PLAYING));
+        assertFalse(fromMenu.canTransitionTo(GameScreenState.MENU));
+        fromMenu.transitionTo(GameScreenState.CINEMATIC);
+        assertEquals(GameScreenState.CINEMATIC, fromMenu.state());
+
+        GameFlowController fromGameOver = new GameFlowController();
+        fromGameOver.transitionTo(GameScreenState.PLAYING);
+        fromGameOver.transitionTo(GameScreenState.GAME_OVER);
+        fromGameOver.transitionTo(GameScreenState.TRIAL_DRAFT);
+        assertEquals(GameScreenState.TRIAL_DRAFT, fromGameOver.state());
     }
 
     @Test

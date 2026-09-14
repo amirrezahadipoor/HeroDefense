@@ -61,7 +61,7 @@ public final class GameFlowController {
         Map<GameScreenState, EnumSet<GameScreenState>> transitions = new EnumMap<>(GameScreenState.class);
         transitions.put(GameScreenState.MENU, EnumSet.of(
             GameScreenState.SETTINGS, GameScreenState.PLAYING, GameScreenState.SHOP,
-            GameScreenState.ROOT_NETWORK, GameScreenState.CODEX
+            GameScreenState.ROOT_NETWORK, GameScreenState.CODEX, GameScreenState.TRIAL_DRAFT
         ));
         transitions.put(GameScreenState.SETTINGS, EnumSet.of(GameScreenState.MENU));
         transitions.put(GameScreenState.PLAYING, EnumSet.of(
@@ -73,7 +73,9 @@ public final class GameFlowController {
             GameScreenState.SHOP,
             GameScreenState.ROOT_NETWORK,
             GameScreenState.GAME_OVER,
-            GameScreenState.MENU
+            GameScreenState.MENU,
+            // Continue routing only: a save closed mid-draft replays the draft.
+            GameScreenState.TRIAL_DRAFT
         ));
         transitions.put(GameScreenState.PAUSED, EnumSet.of(
             GameScreenState.PLAYING,
@@ -101,8 +103,10 @@ public final class GameFlowController {
             GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.PAUSED
         ));
         transitions.put(GameScreenState.GAME_OVER, EnumSet.of(
-            GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.ROOT_NETWORK
+            GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.ROOT_NETWORK,
+            GameScreenState.TRIAL_DRAFT
         ));
+        transitions.put(GameScreenState.TRIAL_DRAFT, EnumSet.of(GameScreenState.CINEMATIC));
         return transitions;
     }
 }
