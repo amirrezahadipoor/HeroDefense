@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.model.Boss;
@@ -16,6 +17,7 @@ final class BossSpecialAttackSystemTest {
     void golemGroundSlamDealsOneHeavyHit() {
         Scenario scenario = scenario(BossType.ANCIENT_GOLEM, 0f);
         specials.update(scenario.state, 0f);
+        detonate(scenario);
         assertEquals(984f, scenario.state.hero.health);
         assertEquals(1, scenario.boss.specialUseCount);
     }
@@ -24,6 +26,9 @@ final class BossSpecialAttackSystemTest {
     void matriarchThornCageDamagesAndDelaysHeroAttack() {
         Scenario scenario = scenario(BossType.THORN_MATRIARCH, 0f);
         specials.update(scenario.state, 0f);
+        assertEquals(1_000f, scenario.state.hero.health);
+        assertEquals(2f, scenario.state.hero.attackCooldownSeconds);
+        detonate(scenario);
         assertEquals(995f, scenario.state.hero.health);
         assertEquals(2f, scenario.state.hero.attackCooldownSeconds);
     }
@@ -33,6 +38,7 @@ final class BossSpecialAttackSystemTest {
         Scenario scenario = scenario(BossType.EMBER_WYRM, 0f);
         long before = scenario.state.combatRandomState;
         specials.update(scenario.state, 0f);
+        detonate(scenario);
         assertEquals(989f, scenario.state.hero.health);
         assertTrue(before != scenario.state.combatRandomState);
     }
@@ -41,11 +47,79 @@ final class BossSpecialAttackSystemTest {
     void knightVoidChargeClosesDistanceBeforeStriking() {
         Scenario scenario = scenario(BossType.VOID_KNIGHT, 300f);
         specials.update(scenario.state, 0f);
+        detonate(scenario);
         float distance = (float) Math.sqrt(scenario.boss.distanceSquaredTo(
             scenario.state.hero.x, scenario.state.hero.y
         ));
         assertEquals(scenario.boss.attackRange, distance, 0.001f);
         assertEquals(987.5f, scenario.state.hero.health);
+    }
+
+    @Test
+    void triggerStartsATelegraphAndDamageLandsOnlyWhenItEnds() {
+        Scenario scenario = scenario(BossType.ANCIENT_GOLEM, 0f);
+        specials.update(scenario.state, 0f);
+        assertEquals(1_000f, scenario.state.hero.health);
+        assertTrue(scenario.boss.specialPending);
+        assertEquals(BossSpecialAttackSystem.TELEGRAPH_SECONDS,
+            scenario.boss.specialAnimationSeconds, 1e-6f);
+        assertEquals(0, scenario.boss.specialUseCount);
+        assertTrue(scenario.boss.specialCooldownSeconds <= 0f);
+        detonate(scenario);
+        assertEquals(984f, scenario.state.hero.health);
+        assertFalse(scenario.boss.specialPending);
+        assertEquals(0f, scenario.boss.specialAnimationSeconds, 1e-6f);
+        assertEquals(1, scenario.boss.specialUseCount);
+        assertTrue(scenario.boss.specialCooldownSeconds > 0f);
+    }
+
+    @Test
+    void stunFreezesTheTelegraphInsteadOfCancelingIt() {
+        Scenario scenario = scenario(BossType.ANCIENT_GOLEM, 0f);
+        specials.update(scenario.state, 0f);
+        scenario.boss.stunRemainingSeconds = 10f;
+        specials.update(scenario.state, BossSpecialAttackSystem.TELEGRAPH_SECONDS);
+        assertEquals(1_000f, scenario.state.hero.health);
+        assertTrue(scenario.boss.specialPending);
+        assertEquals(BossSpecialAttackSystem.TELEGRAPH_SECONDS,
+            scenario.boss.specialAnimationSeconds, 1e-6f);
+        scenario.boss.stunRemainingSeconds = 0f;
+        detonate(scenario);
+        assertEquals(984f, scenario.state.hero.health);
+    }
+
+    @Test
+    void dodgeDiceRollAtTriggerSoDetonationSpendsNoRandomness() {
+        Scenario oneRoll = scenario(BossType.ANCIENT_GOLEM, 0f);
+        long before = oneRoll.state.combatRandomState;
+        specials.update(oneRoll.state, 0f);
+        assertTrue(before != oneRoll.state.combatRandomState);
+        long atDetonation = oneRoll.state.combatRandomState;
+        detonate(oneRoll);
+        assertEquals(atDetonation, oneRoll.state.combatRandomState);
+
+        Scenario wyrm = scenario(BossType.EMBER_WYRM, 0f);
+        long wyrmBefore = wyrm.state.combatRandomState;
+        specials.update(wyrm.state, 0f);
+        long wyrmTrigger = wyrm.state.combatRandomState;
+        assertTrue(wyrmBefore != wyrmTrigger);
+        detonate(wyrm);
+        assertEquals(wyrmTrigger, wyrm.state.combatRandomState);
+    }
+
+    @Test
+    void knightDashesAtTriggerWhileDamageWaitsForDetonation() {
+        Scenario scenario = scenario(BossType.VOID_KNIGHT, 300f);
+        specials.update(scenario.state, 0f);
+        float distance = (float) Math.sqrt(scenario.boss.distanceSquaredTo(
+            scenario.state.hero.x, scenario.state.hero.y
+        ));
+        assertEquals(scenario.boss.attackRange, distance, 0.001f);
+        assertEquals(1_000f, scenario.state.hero.health);
+    }
+
+    private void detonate(Scenario scenario) {
+        specials.update(scenario.state, BossSpecialAttackSystem.TELEGRAPH_SECONDS);
     }
 
     private Scenario scenario(BossType type, float xOffset) {

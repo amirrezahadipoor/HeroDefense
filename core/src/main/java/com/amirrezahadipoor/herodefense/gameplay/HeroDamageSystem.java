@@ -21,7 +21,17 @@ public final class HeroDamageSystem {
         if (state == null || state.hero == null || !state.hero.alive || damage <= 0f) {
             return IncomingHitResult.IGNORED;
         }
-        float dodgeRoll = state.nextCombatRandomFloat();
+        return applyIncomingHitWithRoll(state, damage, state.nextCombatRandomFloat());
+    }
+
+    /**
+     * Applies a hit with a pre-rolled dodge die (telegraphed boss specials roll at
+     * trigger time so the combat stream never shifts, then land at detonation).
+     */
+    public IncomingHitResult applyIncomingHitWithRoll(GameState state, float damage, float dodgeRoll) {
+        if (state == null || state.hero == null || !state.hero.alive || damage <= 0f) {
+            return IncomingHitResult.IGNORED;
+        }
         IncomingHitResult result = state.hero.receiveIncomingHit(
             damage * TrialEffects.damageTakenMultiplier(state.activeTrials),
             dodgeRoll,

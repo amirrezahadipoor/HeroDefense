@@ -450,17 +450,17 @@ Directly answers the flat, "easy once you open the shop" curve: boss hits are cu
 
 ### 25.1 Boss Telegraphs
 
-- [ ] Move `BossSpecialAttackSystem`'s damage application from the start of the attack to the end of `specialAnimationSeconds`, and draw a readable, boss-color-matched ground warning for that whole window, so potion timing and positioning near a special actually matter.
+- [x] Move `BossSpecialAttackSystem`'s damage application from the start of the attack to the end of `specialAnimationSeconds`, and draw a readable, boss-color-matched ground warning for that whole window, so potion timing and positioning near a special actually matter.
 
 ### 25.2 Elite Affixes
 
-- [ ] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one affix from the fixed pool `blightburst` (explodes on death) / `rootward_ward` (periodically shields) / `weeping_rot` (damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave. Each Elite kill shows one `docs/STORY_CONTENT.md` §4 fragment overlay for its affix, alternating I/II by that affix's persisted kill count (deterministic); counts live in `eliteKillCounts`.
-- [ ] Guarantee at least a Rare-tier drop from every Elite kill; the first kill of each affix unlocks Codex entry 13/14/15 respectively (Blightburst → 13, Rootward Ward → 14, Weeping Rot → 15) — tying the hardest optional fights directly to the story hook.
+- [x] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one affix from the fixed pool `blightburst` (explodes on death) / `rootward_ward` (periodically shields) / `weeping_rot` (damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave. Each Elite kill shows one `docs/STORY_CONTENT.md` §4 fragment overlay for its affix, alternating I/II by that affix's persisted kill count (deterministic); counts live in `eliteKillCounts`.
+- [x] Guarantee at least a Rare-tier drop from every Elite kill; the first kill of each affix unlocks Codex entry 13/14/15 respectively (Blightburst → 13, Rootward Ward → 14, Weeping Rot → 15) — tying the hardest optional fights directly to the story hook.
 
 ### 25.3 Endless Ascension Scaling
 
-- [ ] Define an explicit per-tier schedule for the growth constants as a function of `ascensionTier` (`t`), starting from a tunable form such as `ENEMY_HEALTH_GROWTH(t) = 1.037 × (1 + 0.015·t)` and `ENEMY_DAMAGE_GROWTH(t) = 1.003 × (1 + 0.008·t)` for the first half, with the same relative bump applied to the second-half constants, plus the Elite wave interval tightening by one wave every three tiers (floor of every 4th wave) — then tune against the simulator exactly as Phase 14 did for the base curve.
-- [ ] Close the flat middle-third the shipped build has (waves 25–80 landing at nearly the same damage fraction as each other): add a slow third growth segment across that span so pressure rises end to end instead of only at the two endpoints, and re-verify against the existing 5–15% average / 35% single-wave gate.
+- [x] Define an explicit per-tier schedule for the growth constants as a function of `ascensionTier` (`t`), starting from a tunable form such as `ENEMY_HEALTH_GROWTH(t) = 1.037 × (1 + 0.015·t)` and `ENEMY_DAMAGE_GROWTH(t) = 1.003 × (1 + 0.008·t)` for the first half, with the same relative bump applied to the second-half constants, plus the Elite wave interval tightening by one wave every three tiers (floor of every 4th wave) — then tune against the simulator exactly as Phase 14 did for the base curve.
+- [x] Close the flat middle-third the shipped build has (waves 25–80 landing at nearly the same damage fraction as each other): add a slow third growth segment across that span so pressure rises end to end instead of only at the two endpoints, and re-verify against the existing 5–15% average / 35% single-wave gate.
 
 ## Phase 26 — Comprehensive Rebalancing & Hours Accounting
 
@@ -468,18 +468,18 @@ Extends the existing simulator-driven balance discipline to every new system abo
 
 ### 26.1 Simulator Extensions
 
-- [ ] Extend `BalanceSimulator` with an `ascensionTier` parameter and an active-Trial-pair axis; re-run the existing 9-seed-plus-forced-card regression gate at ascension tiers 0, 3, 6, and 10.
-- [ ] Add an Elite-affix-aware damage accounting path so Elite waves are included in the 5–15% average / 35% single-wave gross-damage ceiling rather than exempted from it.
-- [ ] Add a Focus/Ultimate usage model to the simulator's policy (fire the Ultimate on cooldown) so its power budget is tuned against the same regression gate as every other system, and give the simulator a simple Evolution-choice policy (pick the higher-DPS Evolution) for the same reason.
+- [x] Extend `BalanceSimulator` with an `ascensionTier` parameter and an active-Trial-pair axis; re-run the existing 9-seed-plus-forced-card regression gate at ascension tiers 0, 3, 6, and 10.
+- [x] Add an Elite-affix-aware damage accounting path so Elite waves are included in the 5–15% average / 35% single-wave gross-damage ceiling rather than exempted from it.
+- [x] Add a Focus/Ultimate usage model to the simulator's policy (fire the Ultimate on cooldown) so its power budget is tuned against the same regression gate as every other system, and give the simulator a simple Evolution-choice policy (pick the higher-DPS Evolution) for the same reason.
 
 ### 26.2 Manual Balance Guidance
 
-- [ ] Repeat the Phase 14.6-style manual checkpoints at Ascension tiers 0, 5, and 10, recording felt difficulty rather than only the automated gate's numbers.
-- [ ] Record a target session model in `docs/BALANCE.md`: how long one Wave 1–200 run takes at a defined "engaged, shopping, no idle time" pace, and require every ascension tier's run to land within roughly ±20% of that time even as it gets harder — so added challenge comes from build precision, not from quietly padding wave count.
+- [x] Repeat the Phase 14.6-style manual checkpoints at Ascension tiers 0, 5, and 10, recording felt difficulty rather than only the automated gate's numbers.
+- [x] Record a target session model in `docs/BALANCE.md`: how long one Wave 1–200 run takes at a defined "engaged, shopping, no idle time" pace, and require every ascension tier's run to land within roughly ±20% of that time even as it gets harder — so added challenge comes from build precision, not from quietly padding wave count.
 
 ### 26.3 The Hours Table
 
-- [ ] Add a table (`docs/BALANCE.md` or a new `docs/PROGRESSION_HOURS.md`) deriving expected total playtime from the shipped numbers: one full Wave 1–200 clear, Root Network node cost versus Heartwood income per ascension, the number of ascensions needed to exhaust the Root Network, Codex completion pace across the unlock triggers in Phase 21.1, and Mythic-item collection pace — so the 50-hour target is an equation the team can re-check after every later balance pass, not a one-time estimate.
+- [x] Add a table (`docs/BALANCE.md` or a new `docs/PROGRESSION_HOURS.md`) deriving expected total playtime from the shipped numbers: one full Wave 1–200 clear, Root Network node cost versus Heartwood income per ascension, the number of ascensions needed to exhaust the Root Network, Codex completion pace across the unlock triggers in Phase 21.1, and Mythic-item collection pace — so the 50-hour target is an equation the team can re-check after every later balance pass, not a one-time estimate.
 
 ## Standing Rules (additions)
 

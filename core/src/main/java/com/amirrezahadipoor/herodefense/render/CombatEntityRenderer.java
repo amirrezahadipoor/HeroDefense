@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
 import com.amirrezahadipoor.herodefense.model.Boss;
+import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
 import com.amirrezahadipoor.herodefense.gameplay.FocusSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
@@ -45,6 +46,11 @@ public final class CombatEntityRenderer implements AutoCloseable {
     private static final float DROP_HOMING_ARC_HEIGHT = 86f;
     static final int PROJECTILE_TRAIL_STEPS = 3;
     static final int MAX_PROGRESSION_STEP = 10;
+    static final int TELEGRAPH_SEGMENTS = 28;
+    static final float TELEGRAPH_RADIUS = 95f;
+    static final float TELEGRAPH_STACK_STEP = 12f;
+    static final float TELEGRAPH_SQUASH = 0.42f;
+    static final float TELEGRAPH_GROUND_Y_OFFSET = -20f;
     static final int FOCUS_RING_SEGMENTS = 36;
     static final float FOCUS_RING_RADIUS = 108f;
     static final float FOCUS_RING_CENTER_Y_OFFSET = 73f;
@@ -75,6 +81,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
     }
 
     public void drawEffects(SpriteBatch batch, GameState state, float runTimeSeconds) {
+        drawTelegraphWarnings(batch, state, runTimeSeconds);
         drawFocusRing(batch, state);
         drawProjectiles(batch, state);
         drawDrops(batch, state, runTimeSeconds);
@@ -202,6 +209,44 @@ public final class CombatEntityRenderer implements AutoCloseable {
      * Focus meter as a pixel ring around the Hero: a dim full track, a gold
      * lit arc for the charge, burning white once the Ultimate is ready.
      */
+    /**
+     * Ground warning under the Hero for every telegraphed boss special, in the
+     * boss's identity color; stacked rings keep simultaneous specials readable.
+     */
+    private void drawTelegraphWarnings(SpriteBatch batch, GameState state, float runTimeSeconds) {
+        if (state == null || state.hero == null || !state.hero.alive || state.aliveBosses == null) {
+            return;
+        }
+        int stack = 0;
+        for (Boss boss : state.aliveBosses) {
+            if (boss == null || !boss.alive || !boss.specialPending) continue;
+            BossType type = boss.bossDefinition();
+            float fraction =
+                boss.specialAnimationSeconds / BossSpecialAttackSystem.TELEGRAPH_SECONDS;
+            float radius = TELEGRAPH_RADIUS + stack * TELEGRAPH_STACK_STEP;
+            float centerX = state.hero.x;
+            float centerY = state.hero.y + TELEGRAPH_GROUND_Y_OFFSET;
+            batch.setColor(
+                type.telegraphRed(), type.telegraphGreen(), type.telegraphBlue(),
+                telegraphAlpha(runTimeSeconds, fraction));
+            for (int index = 0; index < TELEGRAPH_SEGMENTS; index++) {
+                double angle = index * Math.PI * 2.0 / TELEGRAPH_SEGMENTS;
+                float x = centerX + (float) Math.cos(angle) * radius;
+                float y = centerY + (float) Math.sin(angle) * radius * TELEGRAPH_SQUASH;
+                batch.draw(pixel, x - 3f, y - 3f, 6f, 6f);
+            }
+            stack++;
+        }
+        batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    /** Warning pulse: brightens and quickens as the telegraph runs out. */
+    static float telegraphAlpha(float runTimeSeconds, float fractionRemaining) {
+        float urgency = MathUtils.clamp(1f - fractionRemaining, 0f, 1f);
+        float wave = (float) Math.sin(runTimeSeconds * (6f + 14f * urgency));
+        return MathUtils.clamp(0.55f + 0.35f * wave + 0.1f * urgency, 0.15f, 0.95f);
+    }
+
     private void drawFocusRing(SpriteBatch batch, GameState state) {
         if (state == null || state.hero == null || !state.hero.alive) return;
         float ratio = FocusSystem.ratio(state);

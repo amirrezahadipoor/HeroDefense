@@ -6,6 +6,11 @@ public final class Boss extends Enemy {
     public String uniqueAttack = "GROUND_SLAM";
     public float specialCooldownSeconds;
     public float specialAnimationSeconds;
+    /** A telegraph is counting down; the special lands when it reaches zero. */
+    public boolean specialPending;
+    /** Trigger-time dodge dice for the pending special; the wyrm spends both. */
+    public float specialPendingRollA;
+    public float specialPendingRollB;
     /** Presentation-only flag so a loaded save never replays the arrival shockwave. */
     public boolean entrancePresented;
     public int specialUseCount;

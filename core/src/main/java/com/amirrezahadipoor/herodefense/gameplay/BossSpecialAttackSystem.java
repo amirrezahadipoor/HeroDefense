@@ -6,6 +6,8 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 
 /** Executes four mechanically distinct boss specials, all through Dodge-aware damage. */
 public final class BossSpecialAttackSystem {
+    /** Warning window between a special's trigger and its damage landing. */
+    public static final float TELEGRAPH_SECONDS = 0.5f;
     private final HeroDamageSystem heroDamageSystem;
 
     public BossSpecialAttackSystem(HeroDamageSystem heroDamageSystem) {
@@ -21,35 +23,57 @@ public final class BossSpecialAttackSystem {
                 continue;
             }
             boss.specialCooldownSeconds -= deltaSeconds;
-            float triggerRange = triggerRange(boss.bossDefinition());
-            if (boss.specialCooldownSeconds <= 0f
-                && !boss.stunned()
-                && boss.distanceSquaredTo(state.hero.x, state.hero.y) <= triggerRange * triggerRange) {
-                execute(state, boss);
-                boss.specialCooldownSeconds += cooldown(boss.bossDefinition());
-                boss.specialUseCount++;
-                boss.specialAnimationSeconds = 0.5f;
+            if (boss.specialPending) {
+                if (!boss.stunned()) {
+                    boss.specialAnimationSeconds -= deltaSeconds;
+                    if (boss.specialAnimationSeconds <= 0f) {
+                        boss.specialAnimationSeconds = 0f;
+                        boss.specialPending = false;
+                        execute(state, boss);
+                        boss.specialCooldownSeconds += cooldown(boss.bossDefinition());
+                        boss.specialUseCount++;
+                    }
+                }
             } else {
                 boss.specialAnimationSeconds = Math.max(0f, boss.specialAnimationSeconds - deltaSeconds);
+                float triggerRange = triggerRange(boss.bossDefinition());
+                if (boss.specialCooldownSeconds <= 0f
+                    && !boss.stunned()
+                    && boss.distanceSquaredTo(state.hero.x, state.hero.y)
+                        <= triggerRange * triggerRange) {
+                    BossType type = boss.bossDefinition();
+                    boss.specialPendingRollA = state.nextCombatRandomFloat();
+                    if (type == BossType.EMBER_WYRM) {
+                        boss.specialPendingRollB = state.nextCombatRandomFloat();
+                    }
+                    if (type == BossType.THORN_MATRIARCH) {
+                        state.hero.attackCooldownSeconds = Math.max(
+                            state.hero.attackCooldownSeconds, 2f);
+                    }
+                    if (type == BossType.VOID_KNIGHT) {
+                        chargeToMeleeRange(state, boss);
+                    }
+                    boss.specialPending = true;
+                    boss.specialAnimationSeconds = TELEGRAPH_SECONDS;
+                }
             }
         }
     }
 
     private void execute(GameState state, Boss boss) {
         switch (boss.bossDefinition()) {
-            case ANCIENT_GOLEM -> heroDamageSystem.applyIncomingHit(state, boss.damage * 1.6f);
-            case THORN_MATRIARCH -> {
-                heroDamageSystem.applyIncomingHit(state, boss.damage * 0.5f);
-                state.hero.attackCooldownSeconds = Math.max(state.hero.attackCooldownSeconds, 2f);
-            }
+            case ANCIENT_GOLEM -> heroDamageSystem.applyIncomingHitWithRoll(
+                state, boss.damage * 1.6f, boss.specialPendingRollA);
+            case THORN_MATRIARCH -> heroDamageSystem.applyIncomingHitWithRoll(
+                state, boss.damage * 0.5f, boss.specialPendingRollA);
             case EMBER_WYRM -> {
-                heroDamageSystem.applyIncomingHit(state, boss.damage * 0.55f);
-                heroDamageSystem.applyIncomingHit(state, boss.damage * 0.55f);
+                heroDamageSystem.applyIncomingHitWithRoll(
+                    state, boss.damage * 0.55f, boss.specialPendingRollA);
+                heroDamageSystem.applyIncomingHitWithRoll(
+                    state, boss.damage * 0.55f, boss.specialPendingRollB);
             }
-            case VOID_KNIGHT -> {
-                chargeToMeleeRange(state, boss);
-                heroDamageSystem.applyIncomingHit(state, boss.damage * 1.25f);
-            }
+            case VOID_KNIGHT -> heroDamageSystem.applyIncomingHitWithRoll(
+                state, boss.damage * 1.25f, boss.specialPendingRollA);
         }
     }
 
