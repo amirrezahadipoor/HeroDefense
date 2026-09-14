@@ -28,10 +28,16 @@ public final class IdleWhisperRenderer implements AutoCloseable {
     private final OverlayText text = new OverlayText();
 
     public void draw(SpriteBatch batch, Matrix4 projection, String line, float elapsedSeconds) {
+        draw(batch, projection, line, alphaFor(elapsedSeconds), false);
+    }
+
+    /** Same veil-and-lines treatment with an explicit alpha; treeVoice tints leaf-green. */
+    public void draw(
+        SpriteBatch batch, Matrix4 projection, String line, float alpha, boolean treeVoice
+    ) {
         if (line == null) {
             return;
         }
-        float alpha = alphaFor(elapsedSeconds);
         if (alpha <= 0.001f) {
             return;
         }
@@ -45,9 +51,10 @@ public final class IdleWhisperRenderer implements AutoCloseable {
         List<String> rows = CodexOverlayRenderer.wrapLines(line, this::lineWidth, MAX_LINE_WIDTH);
         batch.setProjectionMatrix(projection);
         batch.begin();
+        Color voice = treeVoice ? OverlayText.POSITIVE : Color.WHITE;
         float y = LINE_Y;
         for (String row : rows) {
-            text.drawCentered(batch, row, 360f, y, LINE_SCALE, Color.WHITE, alpha);
+            text.drawCentered(batch, row, 360f, y, LINE_SCALE, voice, alpha);
             y -= LINE_STRIDE;
         }
         batch.end();

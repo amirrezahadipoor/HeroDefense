@@ -33,6 +33,8 @@ public final class PlantingCeremony {
     /** Seed becomes visible at this fraction of the plant clip (the press frames). */
     public static final float SEED_PLANTED_AT = 0.55f;
     private static final float MAX_STEP_SECONDS = 0.10f;
+    private static final float LINE_FADE_IN_SECONDS = 0.3f;
+    private static final float LINE_FADE_OUT_SECONDS = 0.4f;
 
     /** Where the Hero stands while planting: just left of the sapling, a step forward. */
     public static final float STAND_X = WorldLayout.SECOND_TREE_X - 78f;
@@ -113,6 +115,34 @@ public final class PlantingCeremony {
             default -> 1f;
         };
         return Math.max(0f, Math.min(1f, phaseSeconds() / duration));
+    }
+
+    /** Opacity of the spoken beat: quick fade in, hold, quick fade out within its phase. */
+    public float lineAlpha() {
+        switch (phase()) {
+            case WALK_OUT:
+            case PLANT:
+            case WATER:
+            case GROW:
+            case WALK_BACK:
+                float duration = phaseDuration();
+                float t = phaseSeconds();
+                return Math.max(0f, Math.min(1f, Math.min(
+                    t / LINE_FADE_IN_SECONDS, (duration - t) / LINE_FADE_OUT_SECONDS)));
+            default:
+                return 0f;
+        }
+    }
+
+    private float phaseDuration() {
+        return switch (phase()) {
+            case WALK_OUT -> WALK_OUT_SECONDS;
+            case PLANT -> PLANT_SECONDS;
+            case WATER -> WATER_SECONDS;
+            case GROW -> GROW_SECONDS;
+            case WALK_BACK -> WALK_BACK_SECONDS;
+            default -> 1f;
+        };
     }
 
     public float heroX() {

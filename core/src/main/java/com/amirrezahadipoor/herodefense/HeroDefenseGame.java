@@ -103,6 +103,7 @@ import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 import com.amirrezahadipoor.herodefense.story.BossTitleCards;
+import com.amirrezahadipoor.herodefense.story.CeremonyLines;
 import com.amirrezahadipoor.herodefense.story.CodexSystem;
 import com.amirrezahadipoor.herodefense.story.ReflectionLines;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
@@ -1278,6 +1279,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             camera.update();
             if (opening) {
                 openingCinematicRenderer.draw(spriteBatch, camera.combined, openingCinematic);
+            } else if (plantingCeremony.isActive()) {
+                String beat = CeremonyLines.lineFor(plantingCeremony.phase());
+                if (beat != null) {
+                    idleWhisperRenderer.draw(
+                        spriteBatch,
+                        camera.combined,
+                        beat,
+                        plantingCeremony.lineAlpha(),
+                        CeremonyLines.isTreeVoice(plantingCeremony.phase())
+                    );
+                }
             }
         }
         boolean openingActive = flow.state() == GameScreenState.CINEMATIC && openingCinematic.isActive();

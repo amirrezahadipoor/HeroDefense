@@ -390,7 +390,7 @@ Give the world a memory. Reuses the three-beat cinematic text system already bui
 
 - [x] First-encounter boss title cards (§2.1): shown once ever per boss identity (new persisted `firstBossEncounters`, never reset on Ascension), as a brief white-text overlay when that identity's wave starts; rotation and combat otherwise unchanged.
 - [x] Reflection lines (§2.2/§2.4): one brief white-text overlay at the start of waves 25/50/75/125/150/175, silent and skippable on tap exactly like the opening beats. Title cards only ever occur at waves 5/10/15/20 (first rotation), so the two never coincide — the title card wins if both ever do.
-- [ ] Wave 100 ceremony lines (§2.3): five lines synced one-to-one to the `PlantingCeremony` phases (walk → plant → water → growth → return); line 4 renders in the Tree's leaf-green tint, the rest white; skippable with the ceremony.
+- [x] Wave 100 ceremony lines (§2.3): five lines synced one-to-one to the `PlantingCeremony` phases (walk → plant → water → growth → return); line 4 renders in the Tree's leaf-green tint, the rest white; skippable with the ceremony.
 
 ## Phase 22 — Convergence Trials (pre-run drafting)
 

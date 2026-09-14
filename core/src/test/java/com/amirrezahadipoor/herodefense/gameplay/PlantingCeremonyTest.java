@@ -88,6 +88,22 @@ final class PlantingCeremonyTest {
         assertFalse(ceremony.update(Float.NaN));
     }
 
+    @Test
+    void spokenBeatsFadeInAndOutWithinEachPhase() {
+        PlantingCeremony ceremony = new PlantingCeremony();
+        assertEquals(0f, ceremony.lineAlpha());
+        ceremony.begin();
+        assertEquals(0f, ceremony.lineAlpha());
+        advance(ceremony, 0.8f);
+        assertEquals(1f, ceremony.lineAlpha(), 0.001f);
+        advance(ceremony, PlantingCeremony.WALK_OUT_SECONDS - 0.8f + 0.05f);
+        assertEquals(PlantingCeremony.Phase.PLANT, ceremony.phase());
+        assertTrue(ceremony.lineAlpha() < 1f);
+        advance(ceremony, PlantingCeremony.TOTAL_SECONDS);
+        assertEquals(PlantingCeremony.Phase.DONE, ceremony.phase());
+        assertEquals(0f, ceremony.lineAlpha());
+    }
+
     private static void advance(PlantingCeremony ceremony, float seconds) {
         float remaining = seconds;
         while (remaining > 0f) {
