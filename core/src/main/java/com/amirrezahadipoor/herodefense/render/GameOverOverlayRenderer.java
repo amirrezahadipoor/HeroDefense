@@ -8,20 +8,26 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.story.Epilogue;
 
 /** Premium end-of-run surface with distinct defeat and victory treatments and a framed restart. */
 public final class GameOverOverlayRenderer implements AutoCloseable {
     static final float DESTRUCTION_REVEAL_DELAY_SECONDS = 0.82f;
     static final float REVEAL_FADE_SECONDS = 0.28f;
     static final float TITLE_PANEL_X = 60f;
-    static final float TITLE_PANEL_Y = 1010f;
+    static final float TITLE_PANEL_Y = 830f;
     static final float TITLE_PANEL_WIDTH = 600f;
-    static final float TITLE_PANEL_HEIGHT = 190f;
+    static final float TITLE_PANEL_HEIGHT = 370f;
     static final float SUMMARY_PANEL_X = 60f;
-    static final float SUMMARY_PANEL_Y = 440f;
+    static final float SUMMARY_PANEL_Y = 400f;
     static final float SUMMARY_PANEL_WIDTH = 600f;
-    static final float SUMMARY_PANEL_HEIGHT = 520f;
+    static final float SUMMARY_PANEL_HEIGHT = 390f;
     static final int SUMMARY_ROWS = 5;
+    static final float EPILOGUE_FIRST_LINE_Y = 1122f;
+    static final float EPILOGUE_LINE_STRIDE = 30f;
+    static final float EPILOGUE_STANZA_GAP = 12f;
+    static final float EPILOGUE_SCALE = 0.72f;
+    static final float EPILOGUE_MAX_WIDTH = 540f;
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -46,12 +52,12 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             shapes.setColor(0.065f, 0.140f, 0.105f, 0.84f * reveal);
             shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
             shapes.setColor(0.24f, 0.19f, 0.05f, 0.42f * reveal);
-            shapes.rect(0f, 1010f, 720f, 270f);
+            shapes.rect(0f, 830f, 720f, 450f);
         } else {
             shapes.setColor(0.110f, 0.055f, 0.055f, 0.88f * reveal);
             shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
             shapes.setColor(0.16f, 0.05f, 0.04f, 0.42f * reveal);
-            shapes.rect(0f, 1010f, 720f, 270f);
+            shapes.rect(0f, 830f, 720f, 450f);
         }
         shapes.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -96,11 +102,9 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         Color titleColor = victory ? OverlayText.GOLD : OverlayText.NEGATIVE;
         text.drawCentered(batch, victory ? "RUN COMPLETE" : "DEFEAT", 360f, 1168f, 0.78f,
             titleColor, reveal);
-        text.drawCentered(batch, title(victory), 360f, 1118f, 1.74f, titleColor, reveal);
-        text.drawCentered(batch, subtitle(victory, state.waveNumber), 360f, 1060f, 0.74f,
-            OverlayText.SUBTLE, reveal);
+        drawEpilogue(batch, state, victory, reveal);
 
-        text.drawCentered(batch, "RUN SUMMARY", 360f, 918f, 0.82f, OverlayText.GOLD, reveal);
+        text.drawCentered(batch, "RUN SUMMARY", 360f, 762f, 0.82f, OverlayText.GOLD, reveal);
         drawRow(batch, icons, 0, "wave", "Wave reached",
             state.waveNumber + " / " + GameState.FINAL_WAVE, reveal);
         drawRow(batch, icons, 1, "health", "Hero level", Integer.toString(state.heroLevel), reveal);
@@ -159,16 +163,36 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
     }
 
     static float summaryRowY(int row) {
-        return 848f - row * 78f;
+        return 726f - row * 62f;
     }
 
-    static String title(boolean victory) {
-        return victory ? "WORLD TREE SAVED" : "WORLD TREE FALLEN";
+    private void drawEpilogue(
+        SpriteBatch batch, GameState state, boolean victory, float reveal
+    ) {
+        Epilogue epilogue = Epilogue.select(state);
+        float y = EPILOGUE_FIRST_LINE_Y;
+        for (String beat : epilogue.lines()) {
+            for (String line : CodexOverlayRenderer.wrapLines(
+                beat, this::epilogueWidth, EPILOGUE_MAX_WIDTH)) {
+                text.drawCentered(batch, line, 360f, y, EPILOGUE_SCALE, OverlayText.IVORY, reveal);
+                y -= EPILOGUE_LINE_STRIDE;
+            }
+        }
+        if (victory) {
+            y -= EPILOGUE_STANZA_GAP;
+            for (String beat : Epilogue.TRANSITION) {
+                for (String line : CodexOverlayRenderer.wrapLines(
+                    beat, this::epilogueWidth, EPILOGUE_MAX_WIDTH)) {
+                    text.drawCentered(
+                        batch, line, 360f, y, EPILOGUE_SCALE, OverlayText.GOLD, reveal);
+                    y -= EPILOGUE_LINE_STRIDE;
+                }
+            }
+        }
     }
 
-    static String subtitle(boolean victory, int waveNumber) {
-        if (victory) return "All " + GameState.FINAL_WAVE + " waves held. Two trees stand where one once did.";
-        return "The Hero fell on wave " + Math.max(1, waveNumber) + ". The sanctuary is lost.";
+    private double epilogueWidth(String line) {
+        return text.width(line, EPILOGUE_SCALE);
     }
 
     static float revealProgress(float presentationSeconds, boolean runComplete) {

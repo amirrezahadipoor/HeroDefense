@@ -15,6 +15,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import com.amirrezahadipoor.herodefense.rewards.RewardPowerBudget;
+import com.amirrezahadipoor.herodefense.story.Epilogue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -111,9 +112,13 @@ final class PremiumFlowSurfacesPresentationTest {
 
     @Test
     void endOfRunDistinguishesVictoryFromDefeatAndKeepsRevealTiming() {
-        assertNotEquals(GameOverOverlayRenderer.title(true), GameOverOverlayRenderer.title(false));
-        assertTrue(GameOverOverlayRenderer.subtitle(false, 37).contains("wave 37"));
-        assertTrue(GameOverOverlayRenderer.subtitle(true, 200).contains("200 waves"));
+        GameState victory = GameState.newRun(70L);
+        victory.runComplete = true;
+        assertEquals(Epilogue.A, Epilogue.select(victory));
+        GameState defeat = GameState.newRun(71L);
+        defeat.waveNumber = 37;
+        assertEquals(Epilogue.C, Epilogue.select(defeat));
+        assertNotEquals(Epilogue.select(victory).lines(), Epilogue.select(defeat).lines());
         assertEquals(0f, GameOverOverlayRenderer.revealProgress(0.5f, false));
         assertTrue(GameOverOverlayRenderer.isInteractive(0f, true));
         float lastRow = GameOverOverlayRenderer.summaryRowY(GameOverOverlayRenderer.SUMMARY_ROWS - 1);
