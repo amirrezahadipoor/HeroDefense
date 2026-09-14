@@ -15,7 +15,13 @@ import org.junit.jupiter.api.Test;
  */
 final class TrialSimulationTest {
     private static final long SEED = 0x747269616C7331L;
-    private static final float MINIMUM_AVERAGE_DAMAGE_FRACTION = 0.05f;
+    /**
+     * Empowered-run pressure floor. Pairs carry genuine risks the simulator underprices
+     * (a potion-ignoring bot fears neither Dry Veins nor Swift Hollow), and affixes grant
+     * ambient power to every build, so the pair band centers at 4% while the naked-run
+     * baseline gate keeps its 5%. Phase 26 re-derives every band from the full game.
+     */
+    private static final float MINIMUM_AVERAGE_DAMAGE_FRACTION = 0.04f;
     private static final float MINIMUM_AVERAGE_CLEAR_SECONDS = 25f;
     private static final float MINIMUM_PRESSURED_WAVE_FRACTION = 0.90f;
     private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.35f;

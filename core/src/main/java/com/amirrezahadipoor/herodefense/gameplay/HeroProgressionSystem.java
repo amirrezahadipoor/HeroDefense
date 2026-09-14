@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
+import com.amirrezahadipoor.herodefense.items.AffixEffects;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Hero;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
@@ -29,6 +30,7 @@ public final class HeroProgressionSystem {
         }
         int scaled = Math.max(1, Math.round(
             experience * TrialEffects.experienceMultiplier(state.activeTrials)
+                * AffixEffects.experienceMultiplier(state)
         ));
         long available = (long) state.heroExperience + scaled;
         int levelsGained = 0;

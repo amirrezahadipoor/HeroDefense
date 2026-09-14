@@ -29,6 +29,8 @@ public final class GameState {
     public long runSeed;
     /** Persisted xorshift state keeps combat rolls deterministic across save/load. */
     public long combatRandomState;
+    /** Independent xorshift stream for affix rolls, so loot identity never perturbs combat. */
+    public long affixRandomState;
     public int waveNumber = 1;
     public int coins;
     public int heroLevel = 1;
@@ -120,6 +122,7 @@ public final class GameState {
         GameState state = new GameState();
         state.runSeed = seed;
         state.combatRandomState = initialRandomState(seed);
+        state.affixRandomState = initialRandomState(seed ^ 0xAFF1CE2D192ED03L);
         state.validateAndRepair();
         return state;
     }
@@ -138,6 +141,19 @@ public final class GameState {
         value ^= value >>> 7;
         value ^= value << 17;
         combatRandomState = value;
+        return (value >>> 40) / 16_777_216f;
+    }
+
+    /** Returns a deterministic uniform affix roll in [0, 1) on the affix stream. */
+    public float nextAffixRandomFloat() {
+        long value = affixRandomState;
+        if (value == 0L) {
+            value = initialRandomState(runSeed ^ 0xAFF1CE2D192ED03L);
+        }
+        value ^= value << 13;
+        value ^= value >>> 7;
+        value ^= value << 17;
+        affixRandomState = value;
         return (value >>> 40) / 16_777_216f;
     }
 
@@ -180,6 +196,9 @@ public final class GameState {
         simulationSpeed = simulationSpeed == 2f || simulationSpeed == 3f ? simulationSpeed : 1f;
         if (combatRandomState == 0L) {
             combatRandomState = initialRandomState(runSeed);
+        }
+        if (affixRandomState == 0L) {
+            affixRandomState = initialRandomState(runSeed ^ 0xAFF1CE2D192ED03L);
         }
         if (hero == null) {
             hero = new Hero(1L, ARENA_CENTER_X, ARENA_CENTER_Y);
@@ -317,6 +336,7 @@ public final class GameState {
         // Copy fresh into this
         this.runSeed = fresh.runSeed;
         this.combatRandomState = fresh.combatRandomState;
+        this.affixRandomState = fresh.affixRandomState;
         this.waveNumber = 1;
         this.coins = 0;
         this.heroLevel = 1;

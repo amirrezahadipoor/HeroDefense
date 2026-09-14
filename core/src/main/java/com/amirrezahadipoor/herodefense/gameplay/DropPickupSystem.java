@@ -2,6 +2,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
+import com.amirrezahadipoor.herodefense.items.AffixEffects;
 import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
 import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -55,6 +56,7 @@ public final class DropPickupSystem {
                 EquipmentDefinition definition = EquipmentCatalog.byId(drop.itemId);
                 if (definition != null) {
                     Item item = definition.createItem();
+                    item.affixId = AffixEffects.rollForDrop(state, definition.tier());
                     if (settings != null && settings.autoSells(ItemTier.parse(item.tier))
                         && item.sellPrice > 0) {
                         long coins = (long) state.coins + item.sellPrice;

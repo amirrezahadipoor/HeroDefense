@@ -413,7 +413,7 @@ Give players build decisions worth thinking about without redrawing the 40-item 
 
 ### 23.1 Affixes
 
-- [ ] Roll one random minor affix (from roughly 15 possibilities — extra crit chance, extra lifesteal, extra coin-on-kill, and similar) onto every Rare and Legendary drop, stored as `Item.affixId` alongside its existing tier bonus. Common and Uncommon stay affix-free so early loot decisions stay simple.
+- [x] Roll one random minor affix (from roughly 15 possibilities — extra crit chance, extra lifesteal, extra coin-on-kill, and similar) onto every Rare and Legendary drop, stored as `Item.affixId` alongside its existing tier bonus. Common and Uncommon stay affix-free so early loot decisions stay simple.
 - [ ] Show the affix line distinctly in `InventoryItemDetails`, below the tier's base stat bonuses.
 - [ ] Extend `ItemForgeSystem` so an Anvil reforge has a small, forge-level-scaling chance to reroll an item's affix instead of adding a stat step — a second late-game coin sink with its own gambling hook.
 

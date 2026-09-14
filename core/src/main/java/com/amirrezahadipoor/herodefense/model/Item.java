@@ -14,6 +14,8 @@ public final class Item {
     public int sellPrice;
     /** Anvil reforge steps applied (0..ItemForgeSystem.MAX_UPGRADE); shown as a +N suffix. */
     public int upgradeLevel;
+    /** Random minor affix id, or "" when the item carries none. */
+    public String affixId = "";
     public Map<String, Float> statBonuses = new LinkedHashMap<>();
 
     public Item() {

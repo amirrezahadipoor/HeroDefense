@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.potions;
 
+import com.amirrezahadipoor.herodefense.items.AffixEffects;
 import com.amirrezahadipoor.herodefense.model.GameState;
 
 /** Stores and consumes six potion counts using percentage-of-max-health healing. */
@@ -21,7 +22,8 @@ public final class HealthPotionSystem {
         if (available <= 0) return false;
 
         state.healthPotions.set(index, available - 1);
-        float healing = state.hero.maxHealth * tier.maxHealthFraction();
+        float healing = state.hero.maxHealth * tier.maxHealthFraction()
+            * AffixEffects.potionPowerMultiplier(state);
         state.hero.health = Math.min(state.hero.maxHealth, state.hero.health + healing);
         return true;
     }

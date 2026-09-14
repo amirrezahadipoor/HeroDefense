@@ -6,6 +6,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Hero;
 import com.amirrezahadipoor.herodefense.model.Projectile;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
+import com.amirrezahadipoor.herodefense.items.AffixEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
@@ -123,7 +124,8 @@ public final class HeroAutoAttackSystem {
         hero.beginAttackAnimation();
         launch(state, hero, target, false);
 
-        float extra = SkillEffects.extraArrows(SkillEffects.level(state, SkillId.MULTI_SHOT));
+        float extra = SkillEffects.extraArrows(SkillEffects.level(state, SkillId.MULTI_SHOT))
+            + AffixEffects.extraArrowsBonus(state);
         int extraArrows = (int) extra;
         if (state.nextCombatRandomFloat() < extra - extraArrows) extraArrows++;
         extraArrows = Math.min(MAX_EXTRA_ARROWS, extraArrows);
@@ -144,12 +146,16 @@ public final class HeroAutoAttackSystem {
             state.allocateEntityId(), hero.id, target.id, hero.x, hero.y
         );
         int mastery = SkillEffects.level(state, SkillId.CRITICAL_MASTERY);
-        projectile.critical = state.nextCombatRandomFloat() < SkillEffects.criticalChance(mastery);
+        projectile.critical = state.nextCombatRandomFloat()
+            < SkillEffects.criticalChance(mastery) + AffixEffects.critChanceBonus(state);
         projectile.secondary = secondary;
         projectile.damage = statCalculator.damage(state)
             * (1f + effectValue(state, BossRewardCardSystem.GENERAL_POWER_KEY))
-            * (projectile.critical ? SkillEffects.criticalMultiplier(mastery) : 1f)
-            * (secondary ? SkillEffects.MULTI_SHOT_DAMAGE_SHARE : 1f);
+            * (projectile.critical
+                ? SkillEffects.criticalMultiplier(mastery) + AffixEffects.critDamageBonus(state)
+                : 1f)
+            * (secondary ? SkillEffects.MULTI_SHOT_DAMAGE_SHARE : 1f)
+            * (target instanceof Boss ? AffixEffects.bossDamageMultiplier(state) : 1f);
         float distance = (float) Math.sqrt(hero.distanceSquaredTo(target.x, target.y));
         projectile.remainingLifetimeSeconds = distance / PROJECTILE_SPEED + 0.25f;
         setVelocityToward(projectile, target);
@@ -180,7 +186,8 @@ public final class HeroAutoAttackSystem {
         int chainLevel = SkillEffects.level(state, SkillId.CHAIN_LIGHTNING);
         int stunLevel = SkillEffects.level(state, SkillId.STUN_CHANCE);
         float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY)
-            + TrialEffects.lifestealBonus(state.activeTrials);
+            + TrialEffects.lifestealBonus(state.activeTrials)
+            + AffixEffects.lifestealBonus(state);
         float impactX = Float.NaN;
         float impactY = Float.NaN;
         events.clear();
@@ -210,7 +217,8 @@ public final class HeroAutoAttackSystem {
                 emit(CombatEvent.hit(target.x, target.y + 40f, projectile.damage,
                     projectile.critical, projectile.secondary));
                 if (stunLevel > 0 && target.alive
-                    && state.nextCombatRandomFloat() < SkillEffects.stunChance(stunLevel)) {
+                    && state.nextCombatRandomFloat() < SkillEffects.stunChance(stunLevel)
+                        + AffixEffects.stunChanceBonus(state)) {
                     float duration = SkillEffects.stunDuration(stunLevel);
                     if (target instanceof Boss) duration *= SkillEffects.BOSS_STUN_RESISTANCE;
                     target.stunRemainingSeconds = Math.max(target.stunRemainingSeconds, duration);
@@ -218,7 +226,8 @@ public final class HeroAutoAttackSystem {
                     emit(CombatEvent.stun(target.x, target.y + 70f, duration));
                 }
                 if (chainLevel > 0 && !projectile.secondary
-                    && state.nextCombatRandomFloat() < SkillEffects.chainChance(chainLevel)) {
+                    && state.nextCombatRandomFloat() < SkillEffects.chainChance(chainLevel)
+                        + AffixEffects.chainChanceBonus(state)) {
                     int arcs = chainLightning(state, target, projectile.damage, chainLevel);
                     chainArcs += arcs;
                     damageDealt += arcs * projectile.damage * SkillEffects.CHAIN_DAMAGE_SHARE;
