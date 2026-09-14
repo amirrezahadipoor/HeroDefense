@@ -368,19 +368,29 @@ The single biggest lever for total playtime: turn the existing 1–200 wave arc 
 
 ## Phase 21 — Story Codex & Branching Epilogues
 
-Give the world a memory. Reuses the three-beat cinematic text system already built for `OpeningCinematic`; this phase is almost entirely writing plus one new read-only screen.
+Give the world a memory. Reuses the three-beat cinematic text system already built for `OpeningCinematic`; this phase is almost entirely writing plus one new read-only screen. Verbatim text source for the whole phase is `docs/STORY_CONTENT.md` — see the wiring map in the Appendix; when this file and that doc disagree on wording, the doc wins and this file gets corrected.
 
 ### 21.1 The Grove Codex
 
-- [ ] Add a `LoreEntry` catalog — pure text plus an unlock condition — of roughly 30 short entries (2–4 sentences each) telling the story of the World Tree, the Hero, and the four enemy archetypes (Rootling, Stonekin, Gloom Wolf, Fungal Brute) from the forest's own perspective.
-- [ ] Unlock entries progressively and by different triggers: some by wave milestone, some on a boss's first kill, several only from defeating an Elite-affixed enemy (Phase 25.2), a few only after completing an Ascension — so the Codex fills in from several kinds of play, not just time.
-- [ ] Add a Codex screen, reachable from the Main Menu and from Pause, listing locked entries as silhouettes and unlocked entries in full, in the same card layout style as Inventory.
+- [ ] Add a `LoreEntry` catalog with exactly the 30 entries of `docs/STORY_CONTENT.md` §5, verbatim, in the Tree's voice: 1–8 wave milestones, 9–12 boss first kills, 13–15 Elite kills, 16–20 Ascensions, 21–30 secrets. Entry ids `codex_01`–`codex_30`; locked entries render as silhouettes.
+- [ ] Unlock entries progressively and by different triggers: 1–8 on first reaching waves 1/10/20/30/40/60/80/100; 9–12 on first kill of each boss identity (`firstBossKills`); 13–15 on first Elite kill of each affix (Phase 25.2); 16–20 on completing Ascensions 1/2/3/5/10; secrets 21–30 per the thresholds below — so the Codex fills in from several kinds of play, not just time.
+- [ ] Secret-entry thresholds (all persisted in `GameState`, each checked at its trigger point): 21 Bare-Handed = reach wave 50 with `shopStatsBoughtThisRun == 0`; 22 A Full Set = first 4-piece set equipped (unlock check lands with Phase 23.2); 23 Mastery = any skill first reaches level 10; 24 Reforged = any item first reaches +5; 25 Six Mythics = own all 6 Mythics at once (lands with Phase 23.3); 26 No Potions = reach wave 101 with `noPotionRun` still true; 27 The Long Pause = resume after a single pause ≥ 300 s real time (`longestPauseSeconds`); 28 Every Elite = all three Elite affixes killed ≥ 1 (lands with Phase 25.2); 29 Fastest Fall = any single wave cleared in ≤ 10 s simulated combat time (new per-wave timer); 30 Two Hundred, Once More = reach wave 200 with persisted `wave200ReachedCount` already ≥ 1.
+- [ ] Render each `docs/STORY_CONTENT.md` §3 boss bio as the second paragraph of its Codex entry 9–12 detail view (Tree-voice text first, bio second), unlocked together with the entry — no new art.
+- [ ] Add a Codex screen (`GameScreenState.CODEX`), reachable from the Main Menu and from Pause, listing locked entries as silhouettes and unlocked entries in full, in the same card layout style as Inventory; Tree-voice body text renders leaf-green, never white.
+- [ ] (Optional §8) Silent Rootling: a rare (~2% of Rootling spawns, deterministic) harmless variant that stands at the tree line and never moves or attacks; purely visual, worth no XP/coins/drops, despawns at wave end.
+- [ ] (Optional §8) Idle whisper: when Resume follows a single pause ≥ 300 s real time, show one still-unused Tree-voice whisper line once (reuse the reflection overlay; each whisper at most one sentence) before combat continues.
 
 ### 21.2 Evolving Opening & Branching Endings
 
-- [ ] Extend `OpeningCinematic`'s three-beat line set to vary with `ascensionTier` — Ascension 0 keeps the shipped lines; Ascension 1+ has the Hero and Tree acknowledge the repeated cycle, so a returning player is narratively addressed, not just mechanically reset to Wave 1.
-- [ ] Replace the single Victory/Game Over text with 3–4 short branching epilogues chosen by run outcome (a flawless ascension with no Hero death, a clear that came down to the wire, a Game Over before Wave 50, a Game Over after Wave 150), reusing `GameOverOverlayRenderer`.
-- [ ] Wire the opening-line and epilogue selection into the same deterministic save/replay path already covering the opening (`OpeningReplayTest`) so Continue never replays the wrong variant.
+- [ ] Extend `OpeningCinematic`'s three-beat line set to vary with `ascensionTier` per `docs/STORY_CONTENT.md` §1 verbatim — tier 0 keeps the shipped lines, tier 1 and tier 2 have their own sets, tier 3+ reuses one set as-is — so a returning player is narratively addressed, not just mechanically reset to Wave 1.
+- [ ] Replace the single Victory/Game Over text with the 5 branching epilogues of `docs/STORY_CONTENT.md` §6 verbatim (A Flawless / B Hard-Fought / C Early Fall / D Middle Fall / E Late Fall), reusing `GameOverOverlayRenderer`: A = Wave 200 cleared with no Hero death AND `potionsUsedThisRun < 3` AND finishing HP ≥ 30% max; B = Wave 200 cleared otherwise (Hero death always ends the run, so the doc's "died and revived" clause can never occur — B is the threshold path); C = Game Over wave < 50; D = 50–149; E = 150+ (a Wave-200 death is E). On wins only (A/B), the two tier-independent §2.5 transition lines follow the epilogue, before the Ascend prompt; losses show the epilogue alone.
+- [ ] Wire the opening-line and epilogue selection (persisted epilogue id + tier snapshot) into the same deterministic save/replay path already covering the opening (`OpeningReplayTest`) so Continue never replays the wrong variant.
+
+### 21.3 Mid-Run Story Beats (`docs/STORY_CONTENT.md` §2, verbatim)
+
+- [ ] First-encounter boss title cards (§2.1): shown once ever per boss identity (new persisted `firstBossEncounters`, never reset on Ascension), as a brief white-text overlay when that identity's wave starts; rotation and combat otherwise unchanged.
+- [ ] Reflection lines (§2.2/§2.4): one brief white-text overlay at the start of waves 25/50/75/125/150/175, silent and skippable on tap exactly like the opening beats. Title cards only ever occur at waves 5/10/15/20 (first rotation), so the two never coincide — the title card wins if both ever do.
+- [ ] Wave 100 ceremony lines (§2.3): five lines synced one-to-one to the `PlantingCeremony` phases (walk → plant → water → growth → return); line 4 renders in the Tree's leaf-green tint, the rest white; skippable with the ceremony.
 
 ## Phase 22 — Convergence Trials (pre-run drafting)
 
@@ -414,7 +424,7 @@ Give players build decisions worth thinking about without redrawing the 40-item 
 
 ### 23.3 Mythic Tier & Escalating Presentation
 
-- [ ] Add a fifth tier, Mythic, above Legendary: exactly one per equipment slot (6 total), each carrying a build-defining unique passive instead of raw stats — Chain Lightning also applies Stun, auto-potions also grant a few seconds of bonus lifesteal, a critical hit refunds part of the shot's cooldown, and similar.
+- [ ] Add a fifth tier, Mythic, above Legendary: exactly one per equipment slot (6 total), each carrying a build-defining unique passive instead of raw stats — Chain Lightning also applies Stun, auto-potions also grant a few seconds of bonus lifesteal, a critical hit refunds part of the shot's cooldown, and similar. Mythic ids, fixed now so Phase 21.1 secret #25 has a stable target: `sunfall_last_arrow` (Weapon), `crown_hollow_eye` (Helmet), `bark_first_root` (Armor), `windrunner_last_steps` (Boots), `verdant_oath` + `emberless_core` (Rings); each shows its `docs/STORY_CONTENT.md` §7 flavor line in `InventoryItemDetails` under the passive.
 - [ ] Make the Mythic drop rate near-zero from regular kills, but guaranteed once per Ascension tier on that tier's Wave 200 clear — the first Mythic becomes a memorable milestone rather than another slot-machine spin.
 - [ ] Render Mythic items by reusing the existing Legendary mesh/material variants with one new, distinct particle-glow tier in `RarityGlowRenderer`/`VisualRarity` — a shader/color change, not a new Blender batch.
 - [ ] Let the Hero's arrow trail and bow glow escalate visually with Anvil forge level and Ascension tier (color/intensity ramps already available to the existing glow and trail renderers), so raw progression is readable on screen without any new geometry.
@@ -444,8 +454,8 @@ Directly answers the flat, "easy once you open the shop" curve: boss hits are cu
 
 ### 25.2 Elite Affixes
 
-- [ ] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one random affix from a small pool (explodes on death, periodically shields, leaves a damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave.
-- [ ] Guarantee at least a Rare-tier drop from every Elite kill, and make Elites the primary source of the Phase 21.1 lore entries that are gated behind them — tying the hardest optional fights directly to the story hook.
+- [ ] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one affix from the fixed pool `blightburst` (explodes on death) / `rootward_ward` (periodically shields) / `weeping_rot` (damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave. Each Elite kill shows one `docs/STORY_CONTENT.md` §4 fragment overlay for its affix, alternating I/II by that affix's persisted kill count (deterministic); counts live in `eliteKillCounts`.
+- [ ] Guarantee at least a Rare-tier drop from every Elite kill; the first kill of each affix unlocks Codex entry 13/14/15 respectively (Blightburst → 13, Rootward Ward → 14, Weeping Rot → 15) — tying the hardest optional fights directly to the story hook.
 
 ### 25.3 Endless Ascension Scaling
 
@@ -502,11 +512,27 @@ Long before the first wave, something did not grow here — it fell here. The Ho
 - Wave 100 Planting Ceremony 5 lines synced to timeline
 - Wave 200 Ascension transition 2 lines
 
-(See full story content document for exact wording — to be wired in Phase 21.2)
+(Exact wording: `docs/STORY_CONTENT.md` §2 — wired by the Phase 21.2 epilogue item for §2.5 and the Phase 21.3 items for §2.1–§2.4.)
 
 ### 3-8. Codex, Epilogues, Mythic Flavor
 
-30 Codex entries, 5 epilogues (Flawless/Hard-Fought/Early/Middle/Late Fall), 6 Mythic flavor passives, Elite Whispering Wounds fragments — full text in `docs/STORY_CONTENT.md` (to be added).
+30 Codex entries, 5 epilogues (Flawless/Hard-Fought/Early/Middle/Late Fall), 6 Mythic flavor passives, Elite Whispering Wounds fragments — full text in `docs/STORY_CONTENT.md` (shipped).
+
+### Story Wiring Map (which roadmap item owns each story section — nothing unowned, nothing twice)
+
+| Story section | Owning roadmap item |
+|---|---|
+| §1 Opening by tier | 21.2 opening item |
+| §2.1 Boss title cards | 21.3 title-card item |
+| §2.2 + §2.4 Reflections | 21.3 reflection item |
+| §2.3 Ceremony lines | 21.3 ceremony item |
+| §2.5 Ascension transition | 21.2 epilogue item (wins only) |
+| §3 Boss bios | 21.1 bio item (2nd paragraph of entries 9–12) |
+| §4 Elite fragments | 25.2 Elite item |
+| §5 Codex 1–30 | 21.1 catalog/unlock/screen items |
+| §6 Epilogues A–E | 21.2 epilogue item |
+| §7 Mythic flavor | 23.3 Mythic item |
+| §8 Optionals | 21.1 optional items (Silent Rootling, Idle whisper) |
 
 ## Standing Rules (final)
 
