@@ -104,6 +104,7 @@ import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 import com.amirrezahadipoor.herodefense.story.BossTitleCards;
 import com.amirrezahadipoor.herodefense.story.CodexSystem;
+import com.amirrezahadipoor.herodefense.story.ReflectionLines;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
 import com.amirrezahadipoor.herodefense.story.WhisperLines;
 
@@ -904,6 +905,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 audioManager.play(AudioCue.BOSS_ENTRANCE);
                 presentBossEntrance(gameState);
             }
+            presentWaveReflection();
         }
     }
 
@@ -952,6 +954,18 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             storyBeatLine = titleCard;
             storyBeatSeconds = 0f;
             saveNow();
+        }
+    }
+
+    /** Shows the reflection line for a freshly started wave, unless a beat already shows. */
+    private void presentWaveReflection() {
+        if (storyBeatLine != null || !gameState.waveActive) {
+            return;
+        }
+        String reflection = ReflectionLines.lineForWave(gameState.waveNumber);
+        if (reflection != null) {
+            storyBeatLine = reflection;
+            storyBeatSeconds = 0f;
         }
     }
 
@@ -1166,6 +1180,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 audioManager.play(AudioCue.BOSS_ENTRANCE);
                 presentBossEntrance(gameState);
             }
+            presentWaveReflection();
             if (waveCompletion != WaveCompletion.NO_CHANGE) {
                 if (gameState.waveNumber > gameState.peakWaveReached) {
                     gameState.peakWaveReached = gameState.waveNumber;
