@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.render;
 
+import com.amirrezahadipoor.herodefense.items.AffixId;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
@@ -31,13 +32,15 @@ public final class InventoryItemDetails {
                 ));
             }
         }
+        AffixId affix = AffixId.forName(candidate.affixId);
         return new Details(
             candidate.name,
             candidate.tier,
             slot,
             isEquipped,
             equipped == null ? null : equipped.name,
-            stats
+            stats,
+            affix == null ? null : "AFFIX: " + affix.display()
         );
     }
 
@@ -58,7 +61,8 @@ public final class InventoryItemDetails {
         EquipmentSlot slot,
         boolean equipped,
         String comparedItemName,
-        List<StatComparison> stats
+        List<StatComparison> stats,
+        String affixLine
     ) {
         public Details {
             stats = List.copyOf(stats);

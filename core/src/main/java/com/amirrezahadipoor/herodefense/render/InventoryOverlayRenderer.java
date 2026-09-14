@@ -393,6 +393,10 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
                 comparisonColor(comparison.difference(), compared)
             );
         }
+        if (details.affixLine() != null) {
+            float y = top - 194f - details.stats().size() * 43f - 36f;
+            drawText(batch, details.affixLine(), x, y, 0.62f, FORGE);
+        }
     }
 
     private void drawIcon(

@@ -40,6 +40,17 @@ final class InventoryItemDetailsTest {
         assertNull(InventoryItemDetails.inspect(GameState.newRun(1602L), null));
     }
 
+    @Test
+    void exposesAffixLineOnlyForAffixedItems() {
+        GameState state = GameState.newRun(1603L);
+        Item affixed = EquipmentCatalog.byId("starfall_bow").createItem();
+        affixed.affixId = "CRIT_CHANCE";
+        Item plain = EquipmentCatalog.byId("ashwood_bow").createItem();
+
+        assertEquals("AFFIX: +3% Critical Chance", InventoryItemDetails.inspect(state, affixed).affixLine());
+        assertNull(InventoryItemDetails.inspect(state, plain).affixLine());
+    }
+
     private static void assertComparison(
         StatComparison comparison,
         HeroStat stat,
