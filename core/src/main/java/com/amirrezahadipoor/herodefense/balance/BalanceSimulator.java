@@ -82,7 +82,11 @@ public final class BalanceSimulator {
     );
 
     public BalanceReport run(long seed) {
-        return run(seed, null, 0);
+        return run(seed, null, 0, 0);
+    }
+
+    public BalanceReport runWithAscensionTier(long seed, int ascensionTier) {
+        return run(seed, null, 0, Math.max(0, ascensionTier));
     }
 
     /** Forces one legal card effect into a selected boss offer for comparative simulations. */
@@ -91,13 +95,28 @@ public final class BalanceSimulator {
         if (card == null || bossNumber < 1 || bossNumber > lastBoss) {
             throw new IllegalArgumentException("Forced card and boss number 1.." + lastBoss + " are required");
         }
-        return run(seed, card, bossNumber);
+        return run(seed, card, bossNumber, 0);
     }
 
-    private BalanceReport run(long seed, RewardCardId forcedCard, int forcedBossNumber) {
+    public BalanceReport runWithForcedCardAndTier(long seed, RewardCardId card, int bossNumber, int ascensionTier) {
+        int lastBoss = GameState.FINAL_WAVE / 5;
+        if (card == null || bossNumber < 1 || bossNumber > lastBoss) {
+            throw new IllegalArgumentException("Forced card and boss number 1.." + lastBoss + " are required");
+        }
+        return run(seed, card, bossNumber, Math.max(0, ascensionTier));
+    }
+
+    private BalanceReport run(long seed, RewardCardId forcedCard, int forcedBossNumber, int ascensionTier) {
         GameState state = GameState.newRun(seed);
+        state.ascensionTier = ascensionTier;
+        if (ascensionTier > 0) {
+            applyRootBonusesForTier(state, ascensionTier);
+        }
         ledger.reset();
         new StarterLoadoutSystem().provisionOnce(state);
+        if (ascensionTier > 0) {
+            applyRootBonusesForTier(state, ascensionTier);
+        }
         allocateTalentPoints(state);
         buyBalancedShopUpgrades(state);
         waves.startCurrentWave(state);
@@ -174,6 +193,30 @@ public final class BalanceSimulator {
         }
         return new BalanceReport(samples, state.hero.alive && state.runComplete);
 
+    }
+
+    private static void applyRootBonusesForTier(GameState state, int tier) {
+        if (state == null || state.hero == null) return;
+        // Simulate heartwood spending: tier 3 = first 8 nodes, tier 6 = 16, tier 10 = all
+        int nodesToApply;
+        if (tier >= 10) nodesToApply = 24;
+        else if (tier >= 6) nodesToApply = 16;
+        else if (tier >= 3) nodesToApply = 8;
+        else nodesToApply = tier * 2;
+        // Approximate permanent bonuses from root network without needing full catalog
+        // Each tier gives +1 strength, +1 health, +25 coins, +0.2 talent point average
+        state.hero.stats.strength += tier;
+        state.hero.stats.health += tier * 2;
+        state.hero.stats.agility += tier / 2;
+        state.hero.stats.dodge += tier / 3;
+        state.hero.stats.luck += tier / 3;
+        state.coins += tier * 50;
+        state.unspentTalentPoints += tier / 2;
+        state.hero.maxHealth = state.hero.stats.maxHealth() + tier * 10f;
+        state.hero.health = state.hero.maxHealth;
+        state.worldTreeMaxHealth = 1000f + tier * 5f;
+        state.worldTreeHealth = state.worldTreeMaxHealth;
+        state.focusMax = 100f + tier * 2f;
     }
 
     private void allocateTalentPoints(GameState state) {

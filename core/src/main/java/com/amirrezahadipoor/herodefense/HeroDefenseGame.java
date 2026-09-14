@@ -92,6 +92,9 @@ import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.LocalSaveRepository;
 import com.amirrezahadipoor.herodefense.settings.GameSettings;
 import com.amirrezahadipoor.herodefense.settings.LocalSettingsRepository;
+import com.amirrezahadipoor.herodefense.ascension.RootNetworkSystem;
+import com.amirrezahadipoor.herodefense.input.RootNetworkTouchController;
+import com.amirrezahadipoor.herodefense.render.RootNetworkOverlayRenderer;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
@@ -151,8 +154,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private SettingsTouchController settingsTouchController;
     private SimulationSpeedTouchController simulationSpeedTouchController;
     private StatShopOverlayRenderer statShopOverlayRenderer;
+    private RootNetworkOverlayRenderer rootNetworkOverlayRenderer;
     private StatShopSystem statShopSystem;
     private SkillShopSystem skillShopSystem;
+    private RootNetworkSystem rootNetworkSystem;
+    private RootNetworkTouchController rootNetworkTouchController;
     private StatShopTouchLayout.Tab shopTab = StatShopTouchLayout.Tab.STATS;
     private TouchFeedbackRenderer touchFeedbackRenderer;
     private TouchFeedbackSystem touchFeedbackSystem;
@@ -211,6 +217,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         simulationSpeedTouchController = new SimulationSpeedTouchController();
         statShopSystem = new StatShopSystem();
         skillShopSystem = new SkillShopSystem();
+        rootNetworkSystem = new RootNetworkSystem();
+        rootNetworkTouchController = new RootNetworkTouchController(rootNetworkSystem);
         touchFeedbackSystem = new TouchFeedbackSystem();
         saves = new LocalSaveRepository(Gdx.app.getPreferences(LocalSaveRepository.PREFERENCES_NAME));
         settingsRepository = new LocalSettingsRepository(
@@ -252,6 +260,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         rewardCardOverlayRenderer = new RewardCardOverlayRenderer();
         settingsOverlayRenderer = new SettingsOverlayRenderer();
         statShopOverlayRenderer = new StatShopOverlayRenderer();
+        rootNetworkOverlayRenderer = new RootNetworkOverlayRenderer();
         touchFeedbackRenderer = new TouchFeedbackRenderer();
         uiFrameRenderer = new UiFrameRenderer();
         uiIconRenderer = new UiIconRenderer();
@@ -292,6 +301,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         inventoryTouchController.update(deltaSeconds);
         statShopSystem.update(deltaSeconds);
         skillShopSystem.update(deltaSeconds);
+        if (rootNetworkSystem != null) rootNetworkSystem.update(deltaSeconds);
         if (flow.simulationRunning()) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
@@ -464,6 +474,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (statShopOverlayRenderer != null) {
             statShopOverlayRenderer.close();
         }
+        if (rootNetworkOverlayRenderer != null) {
+            rootNetworkOverlayRenderer.close();
+        }
         if (touchFeedbackRenderer != null) {
             touchFeedbackRenderer.close();
         }
@@ -544,6 +557,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                             startNewRunSameTier();
                         } else if (action == GameOverTouchLayout.Action.ASCEND) {
                             ascendRun();
+                        } else if (action == GameOverTouchLayout.Action.ROOT_NETWORK) {
+                            flow.transitionTo(GameScreenState.ROOT_NETWORK);
                         }
                     }
                     return true;
@@ -590,6 +605,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     if (StatShopTouchLayout.closeAt(worldX, worldY)) {
                         flow.returnFromOverlay();
                         saveNow();
+                    } else if (StatShopTouchLayout.rootAt(worldX, worldY)) {
+                        flow.transitionTo(GameScreenState.ROOT_NETWORK);
                     } else if (tab != null) {
                         shopTab = tab;
                     } else if (shopTab == StatShopTouchLayout.Tab.SKILLS) {
@@ -614,11 +631,27 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         worldX, worldY, continueAvailable
                     );
                     if (action == MainMenuTouchLayout.Action.NEW_GAME) {
-                        startNewRun();
+                        startNewRunSameTier();
                     } else if (action == MainMenuTouchLayout.Action.CONTINUE) {
                         continueRun();
                     } else if (action == MainMenuTouchLayout.Action.SETTINGS) {
                         flow.transitionTo(GameScreenState.SETTINGS);
+                    } else if (action == MainMenuTouchLayout.Action.ROOT_NETWORK) {
+                        flow.transitionTo(GameScreenState.ROOT_NETWORK);
+                    }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.ROOT_NETWORK) {
+                    com.amirrezahadipoor.herodefense.input.RootNetworkTouchController.Action rnAction =
+                        rootNetworkTouchController.tap(gameState, worldX, worldY);
+                    if (rnAction == com.amirrezahadipoor.herodefense.input.RootNetworkTouchController.Action.CLOSED) {
+                        flow.returnFromOverlay();
+                        saveNow();
+                    } else if (rnAction == com.amirrezahadipoor.herodefense.input.RootNetworkTouchController.Action.PURCHASED) {
+                        // Re-apply bonuses live and save
+                        rootNetworkSystem.applyPermanentBonuses(gameState);
+                        audioManager.play(AudioCue.PURCHASE);
+                        saveNow();
                     }
                     return true;
                 }
@@ -677,6 +710,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     inventoryTouchController.open();
                     return true;
                 }
+                if (flow.state() == GameScreenState.PAUSED
+                    && PauseTouchLayout.rootAt(worldX, worldY)) {
+                    flow.transitionTo(GameScreenState.ROOT_NETWORK);
+                    return true;
+                }
                 if (flow.state() == GameScreenState.PAUSED) {
                     pauseTouchController.tap(flow, worldX, worldY);
                 }
@@ -686,10 +724,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     }
 
     private void startNewRun() {
-        // Legacy entry used by tests — full wipe.
         saves.clear();
         gameState = GameState.newRun(System.currentTimeMillis());
         new StarterLoadoutSystem().provisionOnce(gameState);
+        if (rootNetworkSystem != null) rootNetworkSystem.applyPermanentBonuses(gameState);
         simulationSeconds = 0f;
         gameOverPresentationSeconds = 0f;
         hitStopSystem.clear();
@@ -710,6 +748,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         long seed = System.currentTimeMillis();
         gameState.resetForNewRun(seed);
         new StarterLoadoutSystem().provisionOnce(gameState);
+        if (rootNetworkSystem != null) rootNetworkSystem.applyPermanentBonuses(gameState);
         simulationSeconds = 0f;
         gameOverPresentationSeconds = 0f;
         hitStopSystem.clear();
@@ -731,6 +770,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         long seed = System.currentTimeMillis();
         gameState.resetForNewRun(seed);
         new StarterLoadoutSystem().provisionOnce(gameState);
+        if (rootNetworkSystem != null) rootNetworkSystem.applyPermanentBonuses(gameState);
         simulationSeconds = 0f;
         gameOverPresentationSeconds = 0f;
         hitStopSystem.clear();
@@ -1034,6 +1074,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             case CINEMATIC -> 0.21f;
             case INVENTORY -> 0.18f;
             case SHOP -> 0.18f;
+            case ROOT_NETWORK -> 0.10f;
             case GAME_OVER -> 0.08f;
         };
         Gdx.gl.glClearColor(tint * 0.55f, tint, tint * 0.78f, 1f);
@@ -1111,7 +1152,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 continueAvailable,
                 gameState.coins,
                 uiIconRenderer,
-                uiFrameRenderer
+                uiFrameRenderer,
+                gameState
             );
         } else if (flow.state() == GameScreenState.SETTINGS) {
             settingsOverlayRenderer.draw(
@@ -1159,6 +1201,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         } else if (flow.state() == GameScreenState.PAUSED) {
             pauseOverlayRenderer.draw(
                 spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer
+            );
+        } else if (flow.state() == GameScreenState.ROOT_NETWORK) {
+            rootNetworkOverlayRenderer.draw(
+                spriteBatch, camera.combined, gameState, rootNetworkSystem,
+                uiIconRenderer, uiFrameRenderer, saplingTreeRenderer, ambientSeconds
             );
         }
         touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);

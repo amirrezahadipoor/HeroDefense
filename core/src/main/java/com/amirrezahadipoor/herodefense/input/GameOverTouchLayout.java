@@ -1,16 +1,21 @@
 package com.amirrezahadipoor.herodefense.input;
 
-/** Large portrait restart target for the run summary plus ascend. */
+/** Large portrait restart target for the run summary plus ascend + root network. */
 public final class GameOverTouchLayout {
     public static final float RESTART_X = 120f;
-    public static final float RESTART_Y = 210f;
+    public static final float RESTART_Y = 260f;
     public static final float RESTART_WIDTH = 480f;
-    public static final float RESTART_HEIGHT = 96f;
+    public static final float RESTART_HEIGHT = 88f;
 
     public static final float ASCEND_X = 120f;
-    public static final float ASCEND_Y = 100f;
+    public static final float ASCEND_Y = 150f;
     public static final float ASCEND_WIDTH = 480f;
-    public static final float ASCEND_HEIGHT = 96f;
+    public static final float ASCEND_HEIGHT = 88f;
+
+    public static final float ROOT_X = 120f;
+    public static final float ROOT_Y = 40f;
+    public static final float ROOT_WIDTH = 480f;
+    public static final float ROOT_HEIGHT = 88f;
 
     private GameOverTouchLayout() {
     }
@@ -25,9 +30,15 @@ public final class GameOverTouchLayout {
             && y >= ASCEND_Y && y <= ASCEND_Y + ASCEND_HEIGHT;
     }
 
-    public enum Action { NONE, RESTART, ASCEND }
+    public static boolean rootAt(float x, float y) {
+        return x >= ROOT_X && x <= ROOT_X + ROOT_WIDTH
+            && y >= ROOT_Y && y <= ROOT_Y + ROOT_HEIGHT;
+    }
+
+    public enum Action { NONE, RESTART, ASCEND, ROOT_NETWORK }
 
     public static Action actionAt(float x, float y) {
+        if (rootAt(x, y)) return Action.ROOT_NETWORK;
         if (ascendAt(x, y)) return Action.ASCEND;
         if (restartAt(x, y)) return Action.RESTART;
         return Action.NONE;

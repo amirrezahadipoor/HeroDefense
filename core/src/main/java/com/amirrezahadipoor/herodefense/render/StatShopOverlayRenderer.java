@@ -69,6 +69,12 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             StatShopTouchLayout.CLOSE_SIZE, StatShopTouchLayout.CLOSE_SIZE,
             true, false
         );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            StatShopTouchLayout.ROOT_X, StatShopTouchLayout.ROOT_Y,
+            StatShopTouchLayout.ROOT_WIDTH, StatShopTouchLayout.ROOT_HEIGHT,
+            true, false
+        );
         frames.draw(batch, UiFrameRenderer.Kind.PANEL, 40f, 1140f, 225f, 12f, true, false);
         frames.draw(
             batch, UiFrameRenderer.Kind.BUTTON,
@@ -117,7 +123,14 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             StatShopTouchLayout.CLOSE_X, StatShopTouchLayout.CLOSE_Y,
             StatShopTouchLayout.CLOSE_SIZE, StatShopTouchLayout.CLOSE_SIZE
         );
+        UiFrameRenderer.State rootBtnState = frames.resolve(
+            true, false,
+            StatShopTouchLayout.ROOT_X, StatShopTouchLayout.ROOT_Y,
+            StatShopTouchLayout.ROOT_WIDTH, StatShopTouchLayout.ROOT_HEIGHT
+        );
         icons.draw(batch, "close", 588f, 1138f, 64f, closeState);
+        icons.draw(batch, "general_power", 312f, 1130f, 40f, rootBtnState);
+        drawText(batch, "ROOTS", 362f, 1166f, 0.72f, GOLD);
         drawText(batch, "WORLD TREE ARMORY", 40f, 1240f, 1.36f, GOLD);
         drawText(batch, tab == Tab.SKILLS
                 ? "Combat skills; costly, permanent, no ceiling"

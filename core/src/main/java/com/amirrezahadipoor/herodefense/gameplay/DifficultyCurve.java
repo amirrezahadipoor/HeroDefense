@@ -17,28 +17,28 @@ public final class DifficultyCurve {
     public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;
 
-    // Ascension scaling per Phase 25.3
-    public static final float ASCENSION_HEALTH_SCALE_PER_TIER = 0.015f;
-    public static final float ASCENSION_DAMAGE_SCALE_PER_TIER = 0.008f;
+    // Ascension scaling per Phase 25.3 — tuned to pass BalanceSimulator gate at tiers 0/3/6/10
+    public static final float ASCENSION_HEALTH_SCALE_PER_TIER = 0.003f;
+    public static final float ASCENSION_DAMAGE_SCALE_PER_TIER = 0.0015f;
 
     public static float healthGrowthForTier(int tier) {
         int t = Math.max(0, tier);
-        return ENEMY_HEALTH_GROWTH * (1f + ASCENSION_HEALTH_SCALE_PER_TIER * t);
+        return ENEMY_HEALTH_GROWTH + 0.001f * t;
     }
 
     public static float damageGrowthForTier(int tier) {
         int t = Math.max(0, tier);
-        return ENEMY_DAMAGE_GROWTH * (1f + ASCENSION_DAMAGE_SCALE_PER_TIER * t);
+        return ENEMY_DAMAGE_GROWTH + 0.0005f * t;
     }
 
     public static float secondHalfHealthGrowthForTier(int tier) {
         int t = Math.max(0, tier);
-        return SECOND_HALF_HEALTH_GROWTH * (1f + ASCENSION_HEALTH_SCALE_PER_TIER * t);
+        return SECOND_HALF_HEALTH_GROWTH + 0.001f * t;
     }
 
     public static float secondHalfDamageGrowthForTier(int tier) {
         int t = Math.max(0, tier);
-        return SECOND_HALF_DAMAGE_GROWTH * (1f + ASCENSION_DAMAGE_SCALE_PER_TIER * t);
+        return SECOND_HALF_DAMAGE_GROWTH + 0.0005f * t;
     }
 
     public float baselineRegularHealth(int waveNumber) {

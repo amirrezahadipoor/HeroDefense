@@ -54,6 +54,10 @@ public final class PauseOverlayRenderer implements AutoCloseable {
             true, false, PauseTouchLayout.BUTTON_X, PauseTouchLayout.SHOP_Y,
             PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT
         );
+        UiFrameRenderer.State rootState = frames.resolve(
+            true, false, PauseTouchLayout.BUTTON_X, PauseTouchLayout.ROOT_Y,
+            PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT
+        );
 
         batch.setProjectionMatrix(projection);
         batch.begin();
@@ -69,6 +73,11 @@ public final class PauseOverlayRenderer implements AutoCloseable {
         frames.draw(
             batch, UiFrameRenderer.Kind.BUTTON,
             PauseTouchLayout.BUTTON_X, PauseTouchLayout.INVENTORY_Y,
+            PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT, true, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            PauseTouchLayout.BUTTON_X, PauseTouchLayout.ROOT_Y,
             PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT, true, false
         );
         frames.draw(
@@ -94,6 +103,10 @@ public final class PauseOverlayRenderer implements AutoCloseable {
         drawAction(
             batch, icons, "inventory", "INVENTORY", "Equip, compare, and sell gear",
             PauseTouchLayout.INVENTORY_Y, PauseTouchLayout.SECONDARY_HEIGHT, inventoryState
+        );
+        drawAction(
+            batch, icons, "general_power", "ROOT NETWORK", "Spend Heartwood on permanent growth",
+            PauseTouchLayout.ROOT_Y, PauseTouchLayout.SECONDARY_HEIGHT, rootState
         );
         float resumeOffset = MainMenuRenderer.pressedOffset(resumeState);
         icons.draw(batch, "continue", 132f, PauseTouchLayout.RESUME_Y + 62f + resumeOffset, 116f,

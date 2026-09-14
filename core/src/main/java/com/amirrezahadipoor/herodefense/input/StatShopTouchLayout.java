@@ -15,6 +15,10 @@ public final class StatShopTouchLayout {
     public static final float CLOSE_X = 570f;
     public static final float CLOSE_Y = 1120f;
     public static final float CLOSE_SIZE = 100f;
+    public static final float ROOT_X = 300f;
+    public static final float ROOT_Y = 1120f;
+    public static final float ROOT_WIDTH = 250f;
+    public static final float ROOT_HEIGHT = 68f;
     public static final float TAB_Y = 1046f;
     public static final float TAB_HEIGHT = 68f;
     public static final float TAB_STATS_X = 55f;
@@ -63,5 +67,10 @@ public final class StatShopTouchLayout {
     public static boolean closeAt(float x, float y) {
         return x >= CLOSE_X && x <= CLOSE_X + CLOSE_SIZE
             && y >= CLOSE_Y && y <= CLOSE_Y + CLOSE_SIZE;
+    }
+
+    public static boolean rootAt(float x, float y) {
+        return x >= ROOT_X && x <= ROOT_X + ROOT_WIDTH
+            && y >= ROOT_Y && y <= ROOT_Y + ROOT_HEIGHT;
     }
 }

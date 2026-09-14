@@ -67,6 +67,11 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             GameOverTouchLayout.ASCEND_X, GameOverTouchLayout.ASCEND_Y,
             GameOverTouchLayout.ASCEND_WIDTH, GameOverTouchLayout.ASCEND_HEIGHT
         );
+        UiFrameRenderer.State rootState = frames.resolve(
+            interactive, false,
+            GameOverTouchLayout.ROOT_X, GameOverTouchLayout.ROOT_Y,
+            GameOverTouchLayout.ROOT_WIDTH, GameOverTouchLayout.ROOT_HEIGHT
+        );
 
         batch.setProjectionMatrix(projection);
         batch.setColor(1f, 1f, 1f, reveal);
@@ -83,6 +88,10 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             GameOverTouchLayout.ASCEND_X, GameOverTouchLayout.ASCEND_Y,
             GameOverTouchLayout.ASCEND_WIDTH, GameOverTouchLayout.ASCEND_HEIGHT,
             interactive, true);
+        frames.draw(batch, UiFrameRenderer.Kind.BUTTON,
+            GameOverTouchLayout.ROOT_X, GameOverTouchLayout.ROOT_Y,
+            GameOverTouchLayout.ROOT_WIDTH, GameOverTouchLayout.ROOT_HEIGHT,
+            interactive, false);
 
         Color titleColor = victory ? OverlayText.GOLD : OverlayText.NEGATIVE;
         text.drawCentered(batch, victory ? "RUN COMPLETE" : "DEFEAT", 360f, 1168f, 0.78f,
@@ -112,14 +121,23 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             GameOverTouchLayout.RESTART_Y + 34f + offset, 0.62f, OverlayText.SUBTLE, reveal);
 
         float ascOffset = MainMenuRenderer.pressedOffset(ascendState);
-        icons.draw(batch, "general_power", 152f, GameOverTouchLayout.ASCEND_Y + 24f + ascOffset, 64f,
+        icons.draw(batch, "general_power", 152f, GameOverTouchLayout.ASCEND_Y + 20f + ascOffset, 56f,
             ascendState);
         int heartwoodPreview = GameState.calculateHeartwoodReward(state.peakWaveReached, state.ascensionTier, !state.heroDiedThisRun);
         text.draw(batch, "ASCEND  |  +" + heartwoodPreview + " HEARTWOOD", 228f,
-            GameOverTouchLayout.ASCEND_Y + 68f + ascOffset, 1.08f,
+            GameOverTouchLayout.ASCEND_Y + 60f + ascOffset, 1.0f,
             interactive ? OverlayText.GOLD : OverlayText.MUTED, reveal);
         text.draw(batch, "Tier " + state.ascensionTier + " -> " + (state.ascensionTier + 1) + "  |  Harder foes, permanent roots", 228f,
-            GameOverTouchLayout.ASCEND_Y + 34f + ascOffset, 0.62f, OverlayText.SUBTLE, reveal);
+            GameOverTouchLayout.ASCEND_Y + 30f + ascOffset, 0.58f, OverlayText.SUBTLE, reveal);
+
+        float rootOffset = MainMenuRenderer.pressedOffset(rootState);
+        icons.draw(batch, "health", 152f, GameOverTouchLayout.ROOT_Y + 20f + rootOffset, 56f,
+            rootState);
+        text.draw(batch, "ROOT NETWORK  |  " + state.heartwood + " HW", 228f,
+            GameOverTouchLayout.ROOT_Y + 60f + rootOffset, 1.0f,
+            interactive ? OverlayText.IVORY : OverlayText.MUTED, reveal);
+        text.draw(batch, "Spend Heartwood on permanent growth", 228f,
+            GameOverTouchLayout.ROOT_Y + 30f + rootOffset, 0.58f, OverlayText.SUBTLE, reveal);
 
         batch.end();
         batch.setColor(Color.WHITE);

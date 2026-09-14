@@ -12,5 +12,6 @@ public enum GameScreenState {
     CINEMATIC,
     INVENTORY,
     SHOP,
+    ROOT_NETWORK,
     GAME_OVER
 }
