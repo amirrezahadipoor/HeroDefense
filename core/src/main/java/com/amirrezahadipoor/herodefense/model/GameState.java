@@ -9,7 +9,7 @@ import java.util.Map;
 
 /** Complete serializable state for one continuous Hero Defense run. */
 public final class GameState {
-    public static final int CURRENT_SCHEMA_VERSION = 1;
+    public static final int CURRENT_SCHEMA_VERSION = 2;
     public static final int FINAL_WAVE = 200;
     /** Clearing this wave (and its boss reward) triggers the planting ceremony. */
     public static final int PLANTING_WAVE = 100;
