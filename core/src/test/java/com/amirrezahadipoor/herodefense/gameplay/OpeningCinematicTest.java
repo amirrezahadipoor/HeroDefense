@@ -69,6 +69,52 @@ final class OpeningCinematicTest {
         assertFalse(opening.update(0.05f));
     }
 
+    @Test
+    void eachAscensionTierSpeaksItsOwnBeats() {
+        assertTierLines(0, "Can you protect the World Tree?!", "Can you?", "Are you sure?!");
+        assertTierLines(1, "Again, the dark comes.", "Again, I stand.", "This time — further.");
+        assertTierLines(
+            2,
+            "The Hollow remembers me now.",
+            "Good. Let it be afraid.",
+            "Roots first. Then flesh. Then the Tree. Not today."
+        );
+        assertTierLines(
+            3,
+            "Another dawn. Another siege.",
+            "The Tree does not ask twice.",
+            "Neither do I."
+        );
+    }
+
+    @Test
+    void tierThreeAndBeyondReuseOneSet() {
+        String[] tier3 = OpeningCinematic.linesForTier(3);
+        String[] tier9 = OpeningCinematic.linesForTier(9);
+        assertEquals(tier3[0], tier9[0]);
+        assertEquals(tier3[1], tier9[1]);
+        assertEquals(tier3[2], tier9[2]);
+    }
+
+    @Test
+    void defaultBeginKeepsTheShippedTierZeroLines() {
+        OpeningCinematic opening = new OpeningCinematic();
+        opening.begin();
+        advance(opening, OpeningCinematic.ZOOM_IN_SECONDS + 0.1f);
+        assertEquals("Can you protect the World Tree?!", opening.line());
+    }
+
+    private static void assertTierLines(int tier, String one, String two, String three) {
+        OpeningCinematic opening = new OpeningCinematic();
+        opening.begin(tier);
+        advance(opening, OpeningCinematic.ZOOM_IN_SECONDS + 0.1f);
+        assertEquals(one, opening.line());
+        advance(opening, OpeningCinematic.LINE_ONE_SECONDS);
+        assertEquals(two, opening.line());
+        advance(opening, OpeningCinematic.LINE_TWO_SECONDS);
+        assertEquals(three, opening.line());
+    }
+
     private static void advance(OpeningCinematic opening, float seconds) {
         float remaining = seconds;
         while (remaining > 0f) {

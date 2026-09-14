@@ -12,6 +12,18 @@ public final class OpeningCinematic {
     public static final String LINE_ONE = "Can you protect the World Tree?!";
     public static final String LINE_TWO = "Can you?";
     public static final String LINE_THREE = "Are you sure?!";
+    /** Ascension tier 1 opening, verbatim (§1). */
+    public static final String TIER1_LINE_ONE = "Again, the dark comes.";
+    public static final String TIER1_LINE_TWO = "Again, I stand.";
+    public static final String TIER1_LINE_THREE = "This time — further.";
+    /** Ascension tier 2 opening, verbatim (§1). */
+    public static final String TIER2_LINE_ONE = "The Hollow remembers me now.";
+    public static final String TIER2_LINE_TWO = "Good. Let it be afraid.";
+    public static final String TIER2_LINE_THREE = "Roots first. Then flesh. Then the Tree. Not today.";
+    /** Tier 3 and every tier after reuse this one set as-is (§1). */
+    public static final String TIER3_LINE_ONE = "Another dawn. Another siege.";
+    public static final String TIER3_LINE_TWO = "The Tree does not ask twice.";
+    public static final String TIER3_LINE_THREE = "Neither do I.";
 
     public static final float ZOOM_IN_SECONDS = 1.1f;
     public static final float LINE_ONE_SECONDS = 2.2f;
@@ -30,10 +42,31 @@ public final class OpeningCinematic {
 
     private float elapsedSeconds;
     private boolean active;
+    private String[] tierLines = linesForTier(0);
 
     public void begin() {
+        begin(0);
+    }
+
+    /** Starts the opening speaking the line set for {@code ascensionTier}. */
+    public void begin(int ascensionTier) {
+        tierLines = linesForTier(ascensionTier);
         elapsedSeconds = 0f;
         active = true;
+    }
+
+    /** Line set for a tier: 0 shipped, 1 and 2 their own, 3+ one shared set (§1). */
+    public static String[] linesForTier(int ascensionTier) {
+        if (ascensionTier == 1) {
+            return new String[] {TIER1_LINE_ONE, TIER1_LINE_TWO, TIER1_LINE_THREE};
+        }
+        if (ascensionTier == 2) {
+            return new String[] {TIER2_LINE_ONE, TIER2_LINE_TWO, TIER2_LINE_THREE};
+        }
+        if (ascensionTier >= 3) {
+            return new String[] {TIER3_LINE_ONE, TIER3_LINE_TWO, TIER3_LINE_THREE};
+        }
+        return new String[] {LINE_ONE, LINE_TWO, LINE_THREE};
     }
 
     /** Advances presentation time; returns true on the frame the opening completes. */
@@ -136,9 +169,9 @@ public final class OpeningCinematic {
     /** The line currently spoken, or null. */
     public String line() {
         return switch (phase()) {
-            case LINE_ONE -> LINE_ONE;
-            case LINE_TWO -> LINE_TWO;
-            case LINE_THREE -> LINE_THREE;
+            case LINE_ONE -> tierLines[0];
+            case LINE_TWO -> tierLines[1];
+            case LINE_THREE -> tierLines[2];
             default -> null;
         };
     }

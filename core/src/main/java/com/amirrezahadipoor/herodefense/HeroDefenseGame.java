@@ -823,7 +823,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
-        openingCinematic.begin();
+        openingCinematic.begin(gameState.ascensionTier);
         saveNow();
     }
 
@@ -844,7 +844,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
-        openingCinematic.begin();
+        openingCinematic.begin(gameState.ascensionTier);
         saveNow();
     }
 
@@ -866,7 +866,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
-        openingCinematic.begin();
+        openingCinematic.begin(gameState.ascensionTier);
         saveNow();
     }
 
@@ -883,7 +883,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         } else if (!gameState.waveActive && untouchedFirstWave(gameState)) {
             // Killed during the opening: replay it so every new run still starts with the prologue.
             flow.transitionTo(GameScreenState.CINEMATIC);
-            openingCinematic.begin();
+            openingCinematic.begin(gameState.ascensionTier);
         } else if (!gameState.waveActive) {
             int bossesBefore = livingBossCount(gameState);
             waveLifecycleSystem.startCurrentWave(gameState);
