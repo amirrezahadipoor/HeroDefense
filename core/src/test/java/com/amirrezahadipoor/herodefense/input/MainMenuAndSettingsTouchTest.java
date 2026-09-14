@@ -12,23 +12,27 @@ final class MainMenuAndSettingsTouchTest {
     void mainMenuExposesAllThreeActionsAndDisablesMissingContinue() {
         assertEquals(
             MainMenuTouchLayout.Action.NEW_GAME,
-            MainMenuTouchLayout.actionAt(360f, 760f, false)
+            MainMenuTouchLayout.actionAt(360f, 840f, false)
         );
         assertEquals(
             MainMenuTouchLayout.Action.NONE,
-            MainMenuTouchLayout.actionAt(360f, 570f, false)
+            MainMenuTouchLayout.actionAt(360f, 680f, false)
         );
         assertEquals(
             MainMenuTouchLayout.Action.CONTINUE,
-            MainMenuTouchLayout.actionAt(360f, 570f, true)
+            MainMenuTouchLayout.actionAt(360f, 680f, true)
         );
         assertEquals(
             MainMenuTouchLayout.Action.ROOT_NETWORK,
-            MainMenuTouchLayout.actionAt(360f, 460f, false)
+            MainMenuTouchLayout.actionAt(360f, 520f, false)
+        );
+        assertEquals(
+            MainMenuTouchLayout.Action.CODEX,
+            MainMenuTouchLayout.actionAt(360f, 360f, false)
         );
         assertEquals(
             MainMenuTouchLayout.Action.SETTINGS,
-            MainMenuTouchLayout.actionAt(360f, 300f, false)
+            MainMenuTouchLayout.actionAt(360f, 200f, false)
         );
     }
 

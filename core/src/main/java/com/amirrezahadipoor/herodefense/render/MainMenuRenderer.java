@@ -88,19 +88,23 @@ public final class MainMenuRenderer implements AutoCloseable {
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         UiFrameRenderer.State newGameState = frames.resolve(
-            true, false, MainMenuTouchLayout.BUTTON_X, 720f,
+            true, false, MainMenuTouchLayout.BUTTON_X, 780f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
         UiFrameRenderer.State continueState = frames.resolve(
-            continueAvailable, false, MainMenuTouchLayout.BUTTON_X, 560f,
+            continueAvailable, false, MainMenuTouchLayout.BUTTON_X, 620f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
         UiFrameRenderer.State rootState = frames.resolve(
-            true, false, MainMenuTouchLayout.BUTTON_X, 400f,
+            true, false, MainMenuTouchLayout.BUTTON_X, 460f,
+            MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
+        );
+        UiFrameRenderer.State codexState = frames.resolve(
+            true, false, MainMenuTouchLayout.BUTTON_X, 300f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
         UiFrameRenderer.State settingsState = frames.resolve(
-            true, false, MainMenuTouchLayout.BUTTON_X, 240f,
+            true, false, MainMenuTouchLayout.BUTTON_X, 140f,
             MainMenuTouchLayout.BUTTON_WIDTH, MainMenuTouchLayout.BUTTON_HEIGHT
         );
 
@@ -115,10 +119,11 @@ public final class MainMenuRenderer implements AutoCloseable {
             COIN_PANEL_X, COIN_PANEL_Y, COIN_PANEL_WIDTH, COIN_PANEL_HEIGHT,
             true, false
         );
-        drawButton(batch, frames, 720f, true);
-        drawButton(batch, frames, 560f, continueAvailable);
-        drawButton(batch, frames, 400f, true);
-        drawButton(batch, frames, 240f, true);
+        drawButton(batch, frames, 780f, true);
+        drawButton(batch, frames, 620f, continueAvailable);
+        drawButton(batch, frames, 460f, true);
+        drawButton(batch, frames, 300f, true);
+        drawButton(batch, frames, 140f, true);
 
         icons.draw(batch, "coin", 508f, 1201f, 46f);
         drawShadowedCentered(batch, coinTotalLabel(coins), 611f, 1232f, 1.05f, GOLD);
@@ -131,24 +136,28 @@ public final class MainMenuRenderer implements AutoCloseable {
 
         drawMenuAction(
             batch, icons, "new_game", "NEW GAME", "Begin a fresh defense",
-            720f, newGameState, true
+            780f, newGameState, true
         );
         String continueSubtitle = continueAvailable
             ? ("Tier " + ascensionTier + " | Peak " + peakWave + " | " + heartwood + " HW")
             : "Return to the active wave";
         drawMenuAction(
             batch, icons, "continue", "CONTINUE", continueSubtitle,
-            560f, continueState, continueAvailable
+            620f, continueState, continueAvailable
         );
         drawMenuAction(
             batch, icons, "general_power", "ROOT NETWORK", heartwood + " Heartwood | Permanent growth",
-            400f, rootState, true
+            460f, rootState, true
+        );
+        drawMenuAction(
+            batch, icons, "inventory", "GROVE CODEX", "Thirty entries the Tree remembers",
+            300f, codexState, true
         );
         drawMenuAction(
             batch, icons, "settings", "SETTINGS", "Comfort, music, and effects",
-            240f, settingsState, true
+            140f, settingsState, true
         );
-        drawShadowedCentered(batch, "200 WAVES  |  ONE LAST TREE  |  ASCEND FOREVER  |  T" + ascensionTier, 360f, 140f, 0.74f, SUBTLE);
+        drawShadowedCentered(batch, "200 WAVES  |  ONE LAST TREE  |  ASCEND FOREVER  |  T" + ascensionTier, 360f, 80f, 0.74f, SUBTLE);
         batch.end();
     }
 

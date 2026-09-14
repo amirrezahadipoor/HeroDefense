@@ -33,6 +33,7 @@ import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.OpeningCinematic;
 import com.amirrezahadipoor.herodefense.gameplay.PlantingCeremony;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
+import com.amirrezahadipoor.herodefense.input.CodexTouchController;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
 import com.amirrezahadipoor.herodefense.input.GdxHapticFeedback;
 import com.amirrezahadipoor.herodefense.input.HapticFeedback;
@@ -65,6 +66,7 @@ import com.amirrezahadipoor.herodefense.polish.ParticleSystem;
 import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.polish.TouchFeedbackSystem;
 import com.amirrezahadipoor.herodefense.render.ArenaEnvironmentRenderer;
+import com.amirrezahadipoor.herodefense.render.CodexOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.CombatEntityRenderer;
 import com.amirrezahadipoor.herodefense.render.DisplayMetrics;
 import com.amirrezahadipoor.herodefense.render.GameFonts;
@@ -141,6 +143,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private HapticFeedback hapticFeedback;
     private HitStopSystem hitStopSystem;
     private HudRenderer hudRenderer;
+    private CodexTouchController codexTouchController;
+    private CodexOverlayRenderer codexOverlayRenderer;
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
@@ -210,6 +214,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         hapticFeedback = new GdxHapticFeedback();
         hitStopSystem = new HitStopSystem();
         killRewardSystem = new KillRewardSystem(heroProgressionSystem);
+        codexTouchController = new CodexTouchController();
         inventoryTouchController = new InventoryTouchController(new InventoryEquipmentSystem());
         itemDropSystem = new ItemDropSystem();
         floatingCoinTextSystem = new FloatingCoinTextSystem();
@@ -257,6 +262,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         openingCinematicRenderer = new OpeningCinematicRenderer();
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
+        codexOverlayRenderer = new CodexOverlayRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
         levelUpOverlayRenderer = new LevelUpOverlayRenderer();
         mainMenuRenderer = new MainMenuRenderer();
@@ -456,6 +462,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (equipmentSpriteRenderer != null) {
             equipmentSpriteRenderer.close();
         }
+        if (codexOverlayRenderer != null) {
+            codexOverlayRenderer.close();
+        }
         if (inventoryOverlayRenderer != null) {
             inventoryOverlayRenderer.close();
         }
@@ -544,6 +553,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.INVENTORY
                     && inventoryTouchController.isOpen()) {
                     inventoryTouchController.drag(gameState, deltaY);
+                }
+                if (flow.state() == GameScreenState.CODEX
+                    && codexTouchController.isOpen()) {
+                    codexTouchController.drag(gameState, deltaY);
                 }
                 return true;
             }
@@ -665,6 +678,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         flow.transitionTo(GameScreenState.SETTINGS);
                     } else if (action == MainMenuTouchLayout.Action.ROOT_NETWORK) {
                         flow.transitionTo(GameScreenState.ROOT_NETWORK);
+                    } else if (action == MainMenuTouchLayout.Action.CODEX) {
+                        flow.transitionTo(GameScreenState.CODEX);
+                        codexTouchController.open();
                     }
                     return true;
                 }
@@ -727,6 +743,18 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     }
                     return true;
                 }
+                if (flow.state() == GameScreenState.CODEX
+                    && codexTouchController.isOpen()) {
+                    CodexTouchController.Action action = codexTouchController.tap(
+                        gameState, worldX, worldY
+                    );
+                    if (action == CodexTouchController.Action.CLOSED) {
+                        codexTouchController.close();
+                        flow.returnFromOverlay();
+                        saveNow();
+                    }
+                    return true;
+                }
                 if (flow.state() == GameScreenState.PAUSED
                     && PauseTouchLayout.shopAt(worldX, worldY)) {
                     flow.transitionTo(GameScreenState.SHOP);
@@ -741,6 +769,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.PAUSED
                     && PauseTouchLayout.rootAt(worldX, worldY)) {
                     flow.transitionTo(GameScreenState.ROOT_NETWORK);
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PAUSED
+                    && PauseTouchLayout.codexAt(worldX, worldY)) {
+                    flow.transitionTo(GameScreenState.CODEX);
+                    codexTouchController.open();
                     return true;
                 }
                 if (flow.state() == GameScreenState.PAUSED) {
@@ -1110,6 +1144,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             case CINEMATIC -> 0.21f;
             case INVENTORY -> 0.18f;
             case SHOP -> 0.18f;
+            case CODEX -> 0.18f;
             case ROOT_NETWORK -> 0.10f;
             case GAME_OVER -> 0.08f;
         };
@@ -1233,6 +1268,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 uiIconRenderer,
                 uiFrameRenderer,
                 settings
+            );
+        } else if (flow.state() == GameScreenState.CODEX) {
+            codexOverlayRenderer.draw(
+                spriteBatch,
+                camera.combined,
+                gameState,
+                codexTouchController,
+                uiIconRenderer,
+                uiFrameRenderer
             );
         } else if (flow.state() == GameScreenState.PAUSED) {
             pauseOverlayRenderer.draw(

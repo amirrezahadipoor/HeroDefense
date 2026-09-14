@@ -13,5 +13,6 @@ public enum GameScreenState {
     INVENTORY,
     SHOP,
     ROOT_NETWORK,
+    CODEX,
     GAME_OVER
 }

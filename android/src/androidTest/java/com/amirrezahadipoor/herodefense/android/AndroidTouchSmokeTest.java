@@ -55,9 +55,9 @@ public final class AndroidTouchSmokeTest {
             captureScreen("main-menu-premium-v2.png");
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 760f); // New Game
+            tapWorld(surface, 360f, 840f); // New Game
             await("new-game touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 760f);
+            float[] correction = touchCorrection(game, 360f, 840f);
             // Phase 19: every new run opens with the Hero's zoomed-in challenge before Wave 1.
             await("opening cinematic", () -> game.screenState() == GameScreenState.CINEMATIC);
             assertFalse(game.gameState().waveActive);
@@ -141,9 +141,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue prepared run
+            tapWorld(surface, 360f, 680f); // Continue prepared run
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("showcase run", () -> game.screenState() == GameScreenState.PLAYING);
 
             tapWorld(surface, 270f + correction[0], utilityRowY(surface) + correction[1]);
@@ -181,9 +181,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f);
+            tapWorld(surface, 360f, 680f);
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("shop showcase run", () -> game.screenState() == GameScreenState.PLAYING);
             tapWorld(surface, 450f + correction[0], utilityRowY(surface) + correction[1]);
             await("premium shop", () -> game.screenState() == GameScreenState.SHOP);
@@ -218,9 +218,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue
+            tapWorld(surface, 360f, 680f); // Continue
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
             assertEquals(3, game.gameState().pendingRewardCards.size());
             SystemClock.sleep(800L);
@@ -244,9 +244,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 300f); // Settings
+            tapWorld(surface, 360f, 200f); // Settings
             await("settings touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 300f);
+            float[] correction = touchCorrection(game, 360f, 200f);
             await("settings opens", () -> game.screenState() == GameScreenState.SETTINGS);
             tapWorld(surface, 360f + correction[0], 775f + correction[1]); // Sound toggle
             SystemClock.sleep(700L);
@@ -254,6 +254,27 @@ public final class AndroidTouchSmokeTest {
             tapWorld(surface, 360f + correction[0], 775f + correction[1]); // Restore sound
             tapWorld(surface, 620f + correction[0], 1_170f + correction[1]); // Close
             await("settings closes", () -> game.screenState() == GameScreenState.MENU);
+        }
+    }
+
+    @Test
+    public void touchOpensCodexFromMainMenu() {
+        clearRunSave();
+        try (ActivityScenario<AndroidLauncher> scenario = ActivityScenario.launch(AndroidLauncher.class)) {
+            HeroDefenseGame game = gameFrom(scenario);
+            await("libGDX touch input", game::readyForTouch);
+            await("main menu", () -> game.screenState() == GameScreenState.MENU);
+            View surface = gameSurfaceFrom(scenario);
+
+            long touchCount = game.handledTouchUpCount();
+            tapWorld(surface, 360f, 360f); // Grove Codex
+            await("codex touch dispatch", () -> game.handledTouchUpCount() > touchCount);
+            float[] correction = touchCorrection(game, 360f, 360f);
+            await("codex opens", () -> game.screenState() == GameScreenState.CODEX);
+            tapWorld(surface, 360f + correction[0], 973f + correction[1]); // First entry
+            SystemClock.sleep(700L);
+            tapWorld(surface, 620f + correction[0], 1_160f + correction[1]); // Close
+            await("codex closes", () -> game.screenState() == GameScreenState.MENU);
         }
     }
 
@@ -267,9 +288,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue
+            tapWorld(surface, 360f, 680f); // Continue
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("level-up overlay", () -> game.screenState() == GameScreenState.LEVEL_UP);
             assertEquals(2, game.gameState().unspentTalentPoints);
             SystemClock.sleep(800L);
@@ -295,9 +316,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue the final reward choice
+            tapWorld(surface, 360f, 680f); // Continue the final reward choice
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("final reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
             tapWorld(surface, 360f + correction[0], 890f + correction[1]); // Choose first card
             await("victory summary", () ->
@@ -328,9 +349,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue into the boss 20 reward
+            tapWorld(surface, 360f, 680f); // Continue into the boss 20 reward
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("boss 20 reward cards", () -> game.screenState() == GameScreenState.CARD_CHOICE);
             tapWorld(surface, 360f + correction[0], 890f + correction[1]); // Choose first card
             await("planting ceremony", () ->
@@ -367,9 +388,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue the doomed one-HP run
+            tapWorld(surface, 360f, 680f); // Continue the doomed one-HP run
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 570f);
+            float[] correction = touchCorrection(game, 360f, 680f);
             await("doomed wave", () -> game.screenState() == GameScreenState.PLAYING);
             // Phase 18: the Hero's death starts a short tree siege before the sanctuary falls.
             await("hero falls to the first melee hit", 20_000L, () ->
@@ -410,7 +431,7 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 570f); // Continue into the boss wave
+            tapWorld(surface, 360f, 680f); // Continue into the boss wave
             await("continue touch dispatch", () -> game.handledTouchUpCount() > touchCount);
             await("boss wave", () ->
                 game.screenState() == GameScreenState.PLAYING

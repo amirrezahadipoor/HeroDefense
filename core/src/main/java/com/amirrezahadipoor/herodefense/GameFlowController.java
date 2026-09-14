@@ -37,7 +37,7 @@ public final class GameFlowController {
         if (target == GameScreenState.PAUSED) {
             returnState = state == GameScreenState.MENU ? GameScreenState.MENU : GameScreenState.PLAYING;
         } else if (target == GameScreenState.SHOP || target == GameScreenState.INVENTORY
-            || target == GameScreenState.ROOT_NETWORK) {
+            || target == GameScreenState.ROOT_NETWORK || target == GameScreenState.CODEX) {
             returnState = state == GameScreenState.MENU ? GameScreenState.MENU : state;
         }
         state = target;
@@ -47,7 +47,8 @@ public final class GameFlowController {
         if (state != GameScreenState.PAUSED
             && state != GameScreenState.INVENTORY
             && state != GameScreenState.SHOP
-            && state != GameScreenState.ROOT_NETWORK) {
+            && state != GameScreenState.ROOT_NETWORK
+            && state != GameScreenState.CODEX) {
             throw new IllegalStateException("Current state is not a resumable overlay: " + state);
         }
         state = returnState;
@@ -60,7 +61,7 @@ public final class GameFlowController {
         Map<GameScreenState, EnumSet<GameScreenState>> transitions = new EnumMap<>(GameScreenState.class);
         transitions.put(GameScreenState.MENU, EnumSet.of(
             GameScreenState.SETTINGS, GameScreenState.PLAYING, GameScreenState.SHOP,
-            GameScreenState.ROOT_NETWORK
+            GameScreenState.ROOT_NETWORK, GameScreenState.CODEX
         ));
         transitions.put(GameScreenState.SETTINGS, EnumSet.of(GameScreenState.MENU));
         transitions.put(GameScreenState.PLAYING, EnumSet.of(
@@ -79,7 +80,8 @@ public final class GameFlowController {
             GameScreenState.MENU,
             GameScreenState.INVENTORY,
             GameScreenState.SHOP,
-            GameScreenState.ROOT_NETWORK
+            GameScreenState.ROOT_NETWORK,
+            GameScreenState.CODEX
         ));
         transitions.put(GameScreenState.LEVEL_UP, EnumSet.of(GameScreenState.PLAYING, GameScreenState.GAME_OVER));
         transitions.put(GameScreenState.CARD_CHOICE, EnumSet.of(
@@ -94,6 +96,9 @@ public final class GameFlowController {
         ));
         transitions.put(GameScreenState.ROOT_NETWORK, EnumSet.of(
             GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.GAME_OVER, GameScreenState.PAUSED
+        ));
+        transitions.put(GameScreenState.CODEX, EnumSet.of(
+            GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.PAUSED
         ));
         transitions.put(GameScreenState.GAME_OVER, EnumSet.of(
             GameScreenState.MENU, GameScreenState.PLAYING, GameScreenState.ROOT_NETWORK

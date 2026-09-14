@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 final class GameFlowControllerTest {
     @Test
     void exposesEveryRequiredStateAndStartsAtMenu() {
-        assertEquals(11, GameScreenState.values().length);
+        assertEquals(12, GameScreenState.values().length);
         assertEquals(GameScreenState.MENU, new GameFlowController().state());
     }
 
@@ -38,6 +38,22 @@ final class GameFlowControllerTest {
         assertEquals(GameScreenState.PAUSED, flow.state());
         flow.returnFromOverlay();
         assertEquals(GameScreenState.PLAYING, flow.state());
+    }
+
+    @Test
+    void codexOpensFromMenuAndPauseAndReturnsToItsOpener() {
+        GameFlowController fromMenu = new GameFlowController();
+        fromMenu.transitionTo(GameScreenState.CODEX);
+        assertFalse(fromMenu.simulationRunning());
+        fromMenu.returnFromOverlay();
+        assertEquals(GameScreenState.MENU, fromMenu.state());
+
+        GameFlowController fromPause = new GameFlowController();
+        fromPause.transitionTo(GameScreenState.PLAYING);
+        fromPause.transitionTo(GameScreenState.PAUSED);
+        fromPause.transitionTo(GameScreenState.CODEX);
+        fromPause.returnFromOverlay();
+        assertEquals(GameScreenState.PAUSED, fromPause.state());
     }
 
     @Test

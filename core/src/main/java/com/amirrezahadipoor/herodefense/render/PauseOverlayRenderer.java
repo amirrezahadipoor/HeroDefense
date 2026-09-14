@@ -10,7 +10,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 
 import java.util.Locale;
 
-/** Premium pause surface: dimmed live arena, run context, and three framed touch actions. */
+/** Premium pause surface: dimmed live arena, run context, and four framed touch actions. */
 public final class PauseOverlayRenderer implements AutoCloseable {
     static final float TITLE_PANEL_X = 60f;
     static final float TITLE_PANEL_Y = 1096f;
@@ -58,6 +58,10 @@ public final class PauseOverlayRenderer implements AutoCloseable {
             true, false, PauseTouchLayout.BUTTON_X, PauseTouchLayout.ROOT_Y,
             PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT
         );
+        UiFrameRenderer.State codexState = frames.resolve(
+            true, false, PauseTouchLayout.BUTTON_X, PauseTouchLayout.CODEX_Y,
+            PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT
+        );
 
         batch.setProjectionMatrix(projection);
         batch.begin();
@@ -78,6 +82,11 @@ public final class PauseOverlayRenderer implements AutoCloseable {
         frames.draw(
             batch, UiFrameRenderer.Kind.BUTTON,
             PauseTouchLayout.BUTTON_X, PauseTouchLayout.ROOT_Y,
+            PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT, true, false
+        );
+        frames.draw(
+            batch, UiFrameRenderer.Kind.BUTTON,
+            PauseTouchLayout.BUTTON_X, PauseTouchLayout.CODEX_Y,
             PauseTouchLayout.BUTTON_WIDTH, PauseTouchLayout.SECONDARY_HEIGHT, true, false
         );
         frames.draw(
@@ -107,6 +116,10 @@ public final class PauseOverlayRenderer implements AutoCloseable {
         drawAction(
             batch, icons, "general_power", "ROOT NETWORK", "Spend Heartwood on permanent growth",
             PauseTouchLayout.ROOT_Y, PauseTouchLayout.SECONDARY_HEIGHT, rootState
+        );
+        drawAction(
+            batch, icons, "inventory", "GROVE CODEX", "Read what the Tree remembers",
+            PauseTouchLayout.CODEX_Y, PauseTouchLayout.SECONDARY_HEIGHT, codexState
         );
         float resumeOffset = MainMenuRenderer.pressedOffset(resumeState);
         icons.draw(batch, "continue", 132f, PauseTouchLayout.RESUME_Y + 62f + resumeOffset, 116f,

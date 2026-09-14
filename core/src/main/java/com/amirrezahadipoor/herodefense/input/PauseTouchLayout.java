@@ -9,6 +9,7 @@ public final class PauseTouchLayout {
     public static final float ROOT_Y = 560f;
     public static final float INVENTORY_Y = 720f;
     public static final float SHOP_Y = 880f;
+    public static final float CODEX_Y = 90f;
     public static final float SECONDARY_HEIGHT = 130f;
 
     private PauseTouchLayout() {
@@ -24,6 +25,10 @@ public final class PauseTouchLayout {
 
     public static boolean rootAt(float x, float y) {
         return inside(x, y, ROOT_Y, SECONDARY_HEIGHT);
+    }
+
+    public static boolean codexAt(float x, float y) {
+        return inside(x, y, CODEX_Y, SECONDARY_HEIGHT);
     }
 
     public static boolean resumeAt(float x, float y) {
