@@ -6,6 +6,10 @@ public final class Hero extends ArenaEntity {
     public float maxHealth = HeroStats.BASE_MAX_HEALTH;
     public HeroStats stats = new HeroStats();
     public float attackCooldownSeconds;
+    /** Verdant Oath buff: seconds of bonus lifesteal left from the last auto-potion. */
+    public float mythicLifestealRemainingSeconds;
+    /** Landed hits taken this run; Bark of the First Root heals on every tenth. */
+    public int mythicHitsTaken;
     public long currentTargetId = -1L;
     public HeroAnimationState animationState = HeroAnimationState.IDLE;
     public float animationStateSeconds;

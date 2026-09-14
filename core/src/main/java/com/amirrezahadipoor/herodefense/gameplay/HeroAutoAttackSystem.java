@@ -8,6 +8,7 @@ import com.amirrezahadipoor.herodefense.model.Projectile;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.items.AffixEffects;
 import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
+import com.amirrezahadipoor.herodefense.items.MythicEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
@@ -52,6 +53,10 @@ public final class HeroAutoAttackSystem {
 
         Hero hero = state.hero;
         hero.attackCooldownSeconds -= deltaSeconds;
+        if (hero.mythicLifestealRemainingSeconds > 0f) {
+            hero.mythicLifestealRemainingSeconds =
+                Math.max(0f, hero.mythicLifestealRemainingSeconds - deltaSeconds);
+        }
         Enemy target = findNearestTarget(state, hero.x, hero.y, attackRange(state));
         hero.currentTargetId = target == null ? -1L : target.id;
         if (target == null) {
@@ -188,7 +193,8 @@ public final class HeroAutoAttackSystem {
         int stunLevel = SkillEffects.level(state, SkillId.STUN_CHANCE);
         float lifesteal = effectValue(state, BossRewardCardSystem.LIFESTEAL_KEY)
             + TrialEffects.lifestealBonus(state.activeTrials)
-            + AffixEffects.lifestealBonus(state);
+            + AffixEffects.lifestealBonus(state)
+            + MythicEffects.verdantLifestealBonus(state);
         float impactX = Float.NaN;
         float impactY = Float.NaN;
         events.clear();
@@ -209,11 +215,22 @@ public final class HeroAutoAttackSystem {
                 projectile.x = target.x;
                 projectile.y = target.y;
                 float healthBefore = target.health;
-                target.receiveDamage(projectile.damage);
+                target.receiveDamage(
+                    projectile.damage * MythicEffects.crownMarkDamageMultiplier(target)
+                );
                 hits++;
                 impactX = target.x;
                 impactY = target.y;
-                if (projectile.critical) criticalHits++;
+                if (projectile.critical) {
+                    criticalHits++;
+                    if (MythicEffects.hasCrown(state) && target.alive) {
+                        target.markRemainingSeconds = MythicEffects.CROWN_MARK_SECONDS;
+                    }
+                    if (MythicEffects.hasEmberless(state)) {
+                        state.hero.attackCooldownSeconds -= statCalculator.attackIntervalSeconds(state)
+                            * MythicEffects.EMBERLESS_REFUND_FRACTION;
+                    }
+                }
                 float damageDealt = Math.max(0f, healthBefore - target.health);
                 emit(CombatEvent.hit(target.x, target.y + 40f, projectile.damage,
                     projectile.critical, projectile.secondary));
@@ -264,8 +281,13 @@ public final class HeroAutoAttackSystem {
         float arcDamage = arrowDamage * SkillEffects.CHAIN_DAMAGE_SHARE;
         for (int index = 0; index < arcs; index++) {
             Enemy victim = scratchTargets.get(index);
-            victim.receiveDamage(arcDamage);
+            victim.receiveDamage(arcDamage * MythicEffects.crownMarkDamageMultiplier(victim));
             emit(CombatEvent.arc(struck.x, struck.y + 40f, victim.x, victim.y + 40f, arcDamage));
+            if (MythicEffects.hasSunfall(state) && victim.alive) {
+                float duration = MythicEffects.SUNFALL_STUN_SECONDS;
+                if (victim instanceof Boss) duration *= SkillEffects.BOSS_STUN_RESISTANCE;
+                victim.stunRemainingSeconds = Math.max(victim.stunRemainingSeconds, duration);
+            }
         }
         return arcs;
     }

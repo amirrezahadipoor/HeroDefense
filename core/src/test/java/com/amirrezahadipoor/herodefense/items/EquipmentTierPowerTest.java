@@ -12,6 +12,7 @@ final class EquipmentTierPowerTest {
         assertEquals(0.12f, ItemTier.UNCOMMON.relativePower(), 0.0001f);
         assertEquals(0.25f, ItemTier.RARE.relativePower(), 0.0001f);
         assertEquals(0.45f, ItemTier.LEGENDARY.relativePower(), 0.0001f);
+        assertEquals(0.70f, ItemTier.MYTHIC.relativePower(), 0.0001f);
     }
 
     @Test

@@ -5,7 +5,12 @@ public enum ItemTier {
     COMMON(0.05f, 1),
     UNCOMMON(0.12f, 2),
     RARE(0.25f, 4),
-    LEGENDARY(0.45f, 7);
+    LEGENDARY(0.45f, 7),
+    /**
+     * Mythics carry a deliberately small stat budget: the build-defining unique passive
+     * is the power, not raw stats.
+     */
+    MYTHIC(0.70f, 3);
 
     private final float relativePower;
     private final int statPointBudget;

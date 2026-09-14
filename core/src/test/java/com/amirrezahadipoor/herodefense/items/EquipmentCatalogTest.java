@@ -16,19 +16,20 @@ import org.junit.jupiter.api.Test;
 
 final class EquipmentCatalogTest {
     @Test
-    void definesExactlyFortyUniqueItemsAcrossFourRequiredTiers() {
-        assertEquals(40, EquipmentCatalog.all().size());
+    void definesExactlyFortySixUniqueItemsAcrossFiveRequiredTiers() {
+        assertEquals(46, EquipmentCatalog.all().size());
         Set<String> ids = new HashSet<>();
         Map<ItemTier, Integer> counts = new EnumMap<>(ItemTier.class);
         for (EquipmentDefinition item : EquipmentCatalog.all()) {
             ids.add(item.id());
             counts.put(item.tier(), counts.getOrDefault(item.tier(), 0) + 1);
         }
-        assertEquals(40, ids.size());
+        assertEquals(46, ids.size());
         assertEquals(14, counts.get(ItemTier.COMMON));
         assertEquals(12, counts.get(ItemTier.UNCOMMON));
         assertEquals(9, counts.get(ItemTier.RARE));
         assertEquals(5, counts.get(ItemTier.LEGENDARY));
+        assertEquals(6, counts.get(ItemTier.MYTHIC));
     }
 
     @Test
@@ -45,7 +46,7 @@ final class EquipmentCatalogTest {
             assertEquals(item.iconPath(), item.createItem().iconKey);
             assertTrue(item.createItem().sellPrice > 0);
         }
-        assertEquals(40, names.size());
+        assertEquals(46, names.size());
         assertEquals(EnumSet.allOf(EquipmentSlot.class), slots);
         assertNotNull(EquipmentCatalog.byId("worldbranch"));
     }

@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
+import com.amirrezahadipoor.herodefense.items.MythicEffects;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.IncomingHitResult;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
@@ -21,10 +22,14 @@ public final class HeroDamageSystem {
             return IncomingHitResult.IGNORED;
         }
         float dodgeRoll = state.nextCombatRandomFloat();
-        return state.hero.receiveIncomingHit(
+        IncomingHitResult result = state.hero.receiveIncomingHit(
             damage * TrialEffects.damageTakenMultiplier(state.activeTrials),
             dodgeRoll,
             statCalculator.dodgeChance(state)
         );
+        if (result == IncomingHitResult.DAMAGED || result == IncomingHitResult.KILLED) {
+            MythicEffects.onLandedHitTaken(state);
+        }
+        return result;
     }
 }

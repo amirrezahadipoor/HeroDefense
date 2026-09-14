@@ -153,6 +153,23 @@ public final class CodexOverlayRenderer implements AutoCloseable {
         return null;
     }
 
+    /**
+     * Caps wrapped lines for fixed panels, appending "…" to the last kept line when lines
+     * are dropped. Pure and headless-safe.
+     */
+    static List<String> capLines(List<String> lines, int maxLines) {
+        List<String> kept = new ArrayList<>();
+        if (lines == null || maxLines <= 0) return kept;
+        for (int index = 0; index < lines.size() && index < maxLines; index++) {
+            kept.add(lines.get(index));
+        }
+        if (lines.size() > maxLines) {
+            int last = kept.size() - 1;
+            kept.set(last, kept.get(last) + "…");
+        }
+        return kept;
+    }
+
     /** Greedy word wrap; pure and headless-safe for tests via the width function. */
     static List<String> wrapLines(String value, ToDoubleFunction<String> widthOf, float maxWidth) {
         List<String> lines = new ArrayList<>();

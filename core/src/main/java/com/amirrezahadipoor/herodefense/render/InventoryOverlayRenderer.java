@@ -22,6 +22,7 @@ import com.amirrezahadipoor.herodefense.render.InventoryItemDetails.StatComparis
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
     private static final Color NEGATIVE = Color.valueOf("DF6A65");
     private static final Color MUTED = Color.valueOf("777D76");
     private static final Color FORGE = Color.valueOf("E08A4C");
+    private static final Color MYTHIC = Color.valueOf("C77DFF");
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -375,7 +377,12 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             drawText(batch, "REFORGED +" + level + " / +" + ItemForgeSystem.MAX_UPGRADE,
                 x + 150f, top - 73f, 0.56f, level > 0 ? FORGE : SUBTLE);
         }
-        drawText(batch, "STAT COMPARISON", x, top - 151f, 0.64f, GOLD);
+        boolean mythic = details.passiveLine() != null;
+        drawText(batch, mythic ? "MYTHIC PASSIVE" : "STAT COMPARISON", x, top - 151f, 0.64f, GOLD);
+        if (mythic) {
+            drawMythicBody(batch, details, x, top);
+            return;
+        }
         if (details.stats().isEmpty()) {
             drawText(batch, "No stat bonuses", x, top - 194f, 0.68f, MUTED);
             return;
@@ -398,6 +405,32 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
         if (details.affixLine() != null) {
             float y = top - 194f - details.stats().size() * 43f - 36f;
             drawText(batch, details.affixLine(), x, y, 0.62f, FORGE);
+        }
+    }
+
+    /**
+     * Mythics are passive-defined ("instead of raw stats"), so their token stat rows yield
+     * to the passive plus §7 flavor. Eight tight rows (2 passive + 6 flavor) end at
+     * top-362, inside the top-375 panel bottom.
+     */
+    private void drawMythicBody(SpriteBatch batch, Details details, float x, float top) {
+        float maxWidth = InventoryTouchLayout.DETAILS_WIDTH - 52f;
+        List<String> passive = CodexOverlayRenderer.capLines(
+            CodexOverlayRenderer.wrapLines(details.passiveLine(), line -> text.width(line, 0.62f), maxWidth),
+            2
+        );
+        List<String> flavor = CodexOverlayRenderer.capLines(
+            CodexOverlayRenderer.wrapLines(details.flavorLine(), line -> text.width(line, 0.60f), maxWidth),
+            6
+        );
+        float y = top - 194f;
+        for (String line : passive) {
+            drawText(batch, line, x, y, 0.62f, MYTHIC);
+            y -= 24f;
+        }
+        for (String line : flavor) {
+            drawText(batch, line, x, y, 0.60f, SUBTLE);
+            y -= 24f;
         }
     }
 
@@ -478,6 +511,7 @@ public final class InventoryOverlayRenderer implements AutoCloseable {
             case "UNCOMMON" -> Color.valueOf("74C365");
             case "RARE" -> Color.valueOf("6FADEB");
             case "LEGENDARY" -> Color.valueOf("F2B84B");
+            case "MYTHIC" -> Color.valueOf("C77DFF");
             default -> Color.valueOf("E7D8B1");
         };
     }

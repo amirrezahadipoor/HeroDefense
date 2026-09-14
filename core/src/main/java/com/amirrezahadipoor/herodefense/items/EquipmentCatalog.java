@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Immutable runtime roster of 40 equipment variants. The Hero is a pure archer: every weapon
+ * Immutable runtime roster of 46 equipment variants. The Hero is a pure archer: every weapon
  * is a bow. Four bows introduced after the premium-v2 art batch borrow the reviewed atlas and
- * icon of a same-tier bow until their own art is rendered.
+ * icon of a same-tier bow until their own art is rendered, and the six Mythics borrow
+ * same-slot Rare/Legendary art until their own glow tier lands.
  */
 public final class EquipmentCatalog {
     private static final List<EquipmentDefinition> ALL = Collections.unmodifiableList(Arrays.asList(
@@ -56,7 +57,13 @@ public final class EquipmentCatalog {
         item("crown_of_first_leaves", "Crown Of First Leaves", EquipmentSlot.HELMET, ItemTier.LEGENDARY, HeroStat.HEALTH, 5, HeroStat.DODGE, 2),
         item("heartwood_aegis", "Heartwood Aegis", EquipmentSlot.ARMOR, ItemTier.LEGENDARY, HeroStat.HEALTH, 5, HeroStat.STRENGTH, 2),
         item("boots_of_three_winds", "Boots Of Three Winds", EquipmentSlot.BOOTS, ItemTier.LEGENDARY, HeroStat.DODGE, 5, HeroStat.AGILITY, 2),
-        item("eternal_seed", "Eternal Seed", EquipmentSlot.RING_2, ItemTier.LEGENDARY, HeroStat.LUCK, 5, HeroStat.AGILITY, 2)
+        item("eternal_seed", "Eternal Seed", EquipmentSlot.RING_2, ItemTier.LEGENDARY, HeroStat.LUCK, 5, HeroStat.AGILITY, 2),
+        mythic("sunfall_last_arrow", "Sunfall, the Last Arrow", EquipmentSlot.WEAPON, HeroStat.AGILITY, 2, HeroStat.STRENGTH, 1, "worldbranch"),
+        mythic("crown_hollow_eye", "Crown of the Hollow Eye", EquipmentSlot.HELMET, HeroStat.HEALTH, 2, HeroStat.DODGE, 1, "crown_of_first_leaves"),
+        mythic("bark_first_root", "Bark of the First Root", EquipmentSlot.ARMOR, HeroStat.HEALTH, 2, HeroStat.STRENGTH, 1, "heartwood_aegis"),
+        mythic("windrunner_last_steps", "Windrunner's Last Steps", EquipmentSlot.BOOTS, HeroStat.DODGE, 2, HeroStat.AGILITY, 1, "boots_of_three_winds"),
+        mythic("verdant_oath", "Verdant Oath", EquipmentSlot.RING_1, HeroStat.LUCK, 2, HeroStat.STRENGTH, 1, "echo_band"),
+        mythic("emberless_core", "Emberless Core", EquipmentSlot.RING_2, HeroStat.LUCK, 2, HeroStat.AGILITY, 1, "eternal_seed")
     ));
     private static final Map<String, EquipmentDefinition> BY_ID = indexById();
 
@@ -151,6 +158,37 @@ public final class EquipmentCatalog {
             bonuses,
             artId,
             setId
+        );
+    }
+
+    /**
+     * A Mythic: small authored stats (the passive is the power) drawn with a reviewed
+     * Legendary's atlas and icon until the Mythic glow tier lands in Phase 23.3c.
+     */
+    private static EquipmentDefinition mythic(
+        String id,
+        String name,
+        EquipmentSlot slot,
+        HeroStat primary,
+        int primaryAmount,
+        HeroStat secondary,
+        int secondaryAmount,
+        String artId
+    ) {
+        Map<HeroStat, Integer> bonuses = new LinkedHashMap<>();
+        bonuses.put(primary, primaryAmount);
+        if (secondaryAmount > 0) {
+            bonuses.put(secondary, secondaryAmount);
+        }
+        return new EquipmentDefinition(
+            id,
+            name,
+            slot,
+            ItemTier.MYTHIC,
+            "generated/icons/equipment_" + artId + ".png",
+            bonuses,
+            artId,
+            ""
         );
     }
 

@@ -21,10 +21,19 @@ public final class EnemyMovementSystem {
         }
         boolean siege = !state.hero.alive;
         for (Enemy enemy : state.aliveEnemies) {
+            decayMark(enemy, deltaSeconds);
             moveToward(state, enemy, siege, deltaSeconds);
         }
         for (Boss boss : state.aliveBosses) {
+            decayMark(boss, deltaSeconds);
             moveToward(state, boss, siege, deltaSeconds);
+        }
+    }
+
+    /** Crown of the Hollow Eye marks fade whether or not the foe can move. */
+    private static void decayMark(Enemy enemy, float deltaSeconds) {
+        if (enemy != null && enemy.markRemainingSeconds > 0f) {
+            enemy.markRemainingSeconds = Math.max(0f, enemy.markRemainingSeconds - deltaSeconds);
         }
     }
 

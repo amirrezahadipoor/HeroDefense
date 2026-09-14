@@ -204,7 +204,8 @@ final class PremiumAssetContractTest {
             assertTrue(asset.getBoolean("boneAnimated"), key);
             assertEquals(requiredBones, jsonStringSet(asset.get("bones")), key);
             boolean expectedGlow = definition.tier() == ItemTier.RARE
-                || definition.tier() == ItemTier.LEGENDARY;
+                || definition.tier() == ItemTier.LEGENDARY
+                || definition.tier() == ItemTier.MYTHIC;
             assertEquals(expectedGlow, asset.getBoolean("runtimeGlow"), key);
             assertTrue(asset.getInt("triangles") > 0 && asset.getInt("triangles") <= 900, key);
 
@@ -244,10 +245,11 @@ final class PremiumAssetContractTest {
             assertEquals(sha256(resolveInsideGenerated(asset.getString("atlas"))),
                 recorded.getString("atlasSha256"), key);
         }
-        // 40 catalog items draw from 36 reviewed art sets: the four melee weapons were retired
-        // in Phase 17 (the Hero is a pure archer) and their successor bows borrow bow art.
+        // 46 catalog items draw from 36 reviewed art sets: the four melee weapons were retired
+        // in Phase 17 (the Hero is a pure archer) and their successor bows borrow bow art,
+        // and the six Mythics borrow same-slot Rare/Legendary art until their glow tier lands.
         assertEquals(36, expectedKeys.size());
-        assertEquals(40, EquipmentCatalog.all().size());
+        assertEquals(46, EquipmentCatalog.all().size());
         assertEquals(expectedKeys, actualKeys);
         assertTrue(auditedById.keySet().containsAll(expectedKeys.stream()
             .map(key -> key.substring("equipment_".length()))

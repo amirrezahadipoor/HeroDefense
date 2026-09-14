@@ -41,6 +41,26 @@ final class InventoryItemDetailsTest {
     }
 
     @Test
+    void mythicsExposePassiveAndStoryFlavorWhileOrdinaryItemsExposeNeither() {
+        GameState state = GameState.newRun(1604L);
+        Details mythic = InventoryItemDetails.inspect(
+            state, EquipmentCatalog.byId("bark_first_root").createItem()
+        );
+        assertEquals("PASSIVE: Every 10th hit taken heals 20%", mythic.passiveLine());
+        assertEquals(
+            "Cut from the World Tree's own outer bark, back when it "
+                + "could still spare the wood. It remembers how to close a wound.",
+            mythic.flavorLine()
+        );
+
+        Details ordinary = InventoryItemDetails.inspect(
+            state, EquipmentCatalog.byId("starfall_bow").createItem()
+        );
+        assertNull(ordinary.passiveLine());
+        assertNull(ordinary.flavorLine());
+    }
+
+    @Test
     void exposesAffixLineOnlyForAffixedItems() {
         GameState state = GameState.newRun(1603L);
         Item affixed = EquipmentCatalog.byId("starfall_bow").createItem();

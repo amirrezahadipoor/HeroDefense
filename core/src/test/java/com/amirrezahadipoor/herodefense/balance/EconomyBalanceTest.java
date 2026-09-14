@@ -41,7 +41,8 @@ final class EconomyBalanceTest {
             ItemTier.COMMON, 12,
             ItemTier.UNCOMMON, 30,
             ItemTier.RARE, 75,
-            ItemTier.LEGENDARY, 180
+            ItemTier.LEGENDARY, 180,
+            ItemTier.MYTHIC, 400
         );
         for (EquipmentDefinition definition : EquipmentCatalog.all()) {
             assertEquals(

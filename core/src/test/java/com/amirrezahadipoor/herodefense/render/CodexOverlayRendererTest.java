@@ -37,6 +37,20 @@ final class CodexOverlayRendererTest {
     }
 
     @Test
+    void capLinesKeepsShortBodiesAndEllipsizesOverflow() {
+        assertEquals(
+            List.of("one", "two"),
+            CodexOverlayRenderer.capLines(List.of("one", "two"), 3)
+        );
+        assertEquals(
+            List.of("one", "two…"),
+            CodexOverlayRenderer.capLines(List.of("one", "two", "three"), 2)
+        );
+        assertTrue(CodexOverlayRenderer.capLines(null, 2).isEmpty());
+        assertTrue(CodexOverlayRenderer.capLines(List.of("one"), 0).isEmpty());
+    }
+
+    @Test
     void nullTextWrapsToNothing() {
         assertTrue(CodexOverlayRenderer.wrapLines(null, s -> 1.0, 100f).isEmpty());
     }

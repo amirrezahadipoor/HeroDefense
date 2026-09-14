@@ -18,6 +18,8 @@ public class Enemy extends ArenaEntity {
     public boolean alive = true;
     /** Seconds this enemy is frozen by a stunning arrow; it neither moves nor swings. */
     public float stunRemainingSeconds;
+    /** Seconds the Crown of the Hollow Eye's mark lasts; marked foes take +25%. */
+    public float markRemainingSeconds;
     /**
      * Silent Rootling watcher (Codex entry 5, "The Quiet Ones"): stands at the tree line and
      * never moves, attacks, or pays out; targeting, wave-clear counts, and drops all skip it.

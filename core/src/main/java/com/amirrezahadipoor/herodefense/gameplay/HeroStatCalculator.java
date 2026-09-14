@@ -5,6 +5,7 @@ import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.model.HeroStats;
 import com.amirrezahadipoor.herodefense.items.AffixEffects;
 import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
+import com.amirrezahadipoor.herodefense.items.MythicEffects;
 import com.amirrezahadipoor.herodefense.model.Item;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
@@ -37,7 +38,8 @@ public final class HeroStatCalculator {
             + points(state, HeroStat.AGILITY) * HeroStats.ATTACK_SPEED_PER_AGILITY)
             * TrialEffects.heroAttackSpeedMultiplier(state.activeTrials)
             * AffixEffects.attackSpeedMultiplier(state)
-            * EquipmentSetBonus.attackSpeedMultiplier(state);
+            * EquipmentSetBonus.attackSpeedMultiplier(state)
+            * MythicEffects.windrunnerAttackSpeedMultiplier(state);
         return 1f / attacksPerSecond;
     }
 

@@ -11,7 +11,7 @@ public final class GameSettings {
     public boolean autoSellUncommon;
     public boolean autoSellRare;
 
-    /** Legendary items are never auto-sold; the toggle simply does not exist for them. */
+    /** Legendary and Mythic items are never auto-sold; the toggle simply does not exist for them. */
     public boolean autoSells(ItemTier tier) {
         if (tier == null) return false;
         return switch (tier) {
@@ -19,6 +19,7 @@ public final class GameSettings {
             case UNCOMMON -> autoSellUncommon;
             case RARE -> autoSellRare;
             case LEGENDARY -> false;
+            case MYTHIC -> false;
         };
     }
 

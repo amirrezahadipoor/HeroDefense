@@ -106,6 +106,7 @@ public final class EquipmentDefinition {
             case UNCOMMON -> 30;
             case RARE -> 75;
             case LEGENDARY -> 180;
+            case MYTHIC -> 400;
         };
         for (Map.Entry<HeroStat, Integer> bonus : statBonuses.entrySet()) {
             item.statBonuses.put(bonus.getKey().name(), bonus.getValue().floatValue());

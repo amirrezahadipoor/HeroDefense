@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.render;
 
 import com.amirrezahadipoor.herodefense.items.AffixId;
+import com.amirrezahadipoor.herodefense.items.MythicEffects;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
@@ -40,7 +41,9 @@ public final class InventoryItemDetails {
             isEquipped,
             equipped == null ? null : equipped.name,
             stats,
-            affix == null ? null : "AFFIX: " + affix.display()
+            affix == null ? null : "AFFIX: " + affix.display(),
+            MythicEffects.passiveLine(candidate.id),
+            MythicEffects.flavorLine(candidate.id)
         );
     }
 
@@ -62,7 +65,9 @@ public final class InventoryItemDetails {
         boolean equipped,
         String comparedItemName,
         List<StatComparison> stats,
-        String affixLine
+        String affixLine,
+        String passiveLine,
+        String flavorLine
     ) {
         public Details {
             stats = List.copyOf(stats);
