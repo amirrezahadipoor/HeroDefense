@@ -13,6 +13,13 @@ public final class DifficultyCurve {
     public static final float ENEMY_DAMAGE_GROWTH = 1.003f;
     public static final float SECOND_HALF_HEALTH_GROWTH = 1.023f;
     public static final float SECOND_HALF_DAMAGE_GROWTH = 1.008f;
+    // Middle-third segment (Phase 25.3b): waves 25-80 grow slightly hotter than the
+    // base first-half rate so pressure rises end to end instead of plateauing.
+    // Tuned against the 5-15% / 35% / 120 s gate (see docs/BALANCE.md).
+    public static final int MIDDLE_SEGMENT_FIRST_WAVE = 25;
+    public static final int MIDDLE_SEGMENT_LAST_WAVE = 80;
+    public static final float MIDDLE_HEALTH_GROWTH = 1.040f;
+    public static final float MIDDLE_DAMAGE_GROWTH = 1.004f;
     public static final float BOSS_HEALTH_MULTIPLIER = 15f;
     public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;
@@ -38,6 +45,14 @@ public final class DifficultyCurve {
         return SECOND_HALF_DAMAGE_GROWTH * (1f + ASCENSION_DAMAGE_BUMP_PER_TIER * Math.max(0, tier));
     }
 
+    public static float middleHealthGrowthForTier(int tier) {
+        return MIDDLE_HEALTH_GROWTH * (1f + ASCENSION_HEALTH_BUMP_PER_TIER * Math.max(0, tier));
+    }
+
+    public static float middleDamageGrowthForTier(int tier) {
+        return MIDDLE_DAMAGE_GROWTH * (1f + ASCENSION_DAMAGE_BUMP_PER_TIER * Math.max(0, tier));
+    }
+
     public float baselineRegularHealth(int waveNumber) {
         return baselineRegularHealth(waveNumber, 0);
     }
@@ -46,8 +61,13 @@ public final class DifficultyCurve {
         int wave = clampWave(waveNumber);
         int firstHalf = Math.min(wave, GameState.PLANTING_WAVE);
         int secondHalf = Math.max(0, wave - GameState.PLANTING_WAVE);
+        int early = Math.min(firstHalf, MIDDLE_SEGMENT_FIRST_WAVE - 1);
+        int middle = Math.min(
+            Math.max(0, firstHalf - early), MIDDLE_SEGMENT_LAST_WAVE - MIDDLE_SEGMENT_FIRST_WAVE + 1);
+        int late = Math.max(0, firstHalf - early - middle);
         return BASE_ENEMY_HEALTH
-            * (float) Math.pow(healthGrowthForTier(ascensionTier), firstHalf)
+            * (float) Math.pow(healthGrowthForTier(ascensionTier), early + late)
+            * (float) Math.pow(middleHealthGrowthForTier(ascensionTier), middle)
             * (float) Math.pow(secondHalfHealthGrowthForTier(ascensionTier), secondHalf);
     }
 
@@ -67,8 +87,15 @@ public final class DifficultyCurve {
         int wave = clampWave(waveNumber);
         int firstHalf = Math.max(0, Math.min(wave, GameState.PLANTING_WAVE) - 1);
         int secondHalf = Math.max(0, wave - GameState.PLANTING_WAVE);
+        // Damage grows as g^(wave-1): waves 1-24 contribute 23 base-rate units, so
+        // the middle span (waves 25-80) owns damage units 24-79.
+        int early = Math.min(firstHalf, MIDDLE_SEGMENT_FIRST_WAVE - 2);
+        int middle = Math.min(
+            Math.max(0, firstHalf - early), MIDDLE_SEGMENT_LAST_WAVE - MIDDLE_SEGMENT_FIRST_WAVE + 1);
+        int late = Math.max(0, firstHalf - early - middle);
         return BASE_ENEMY_DAMAGE
-            * (float) Math.pow(damageGrowthForTier(ascensionTier), firstHalf)
+            * (float) Math.pow(damageGrowthForTier(ascensionTier), early + late)
+            * (float) Math.pow(middleDamageGrowthForTier(ascensionTier), middle)
             * (float) Math.pow(secondHalfDamageGrowthForTier(ascensionTier), secondHalf);
     }
 

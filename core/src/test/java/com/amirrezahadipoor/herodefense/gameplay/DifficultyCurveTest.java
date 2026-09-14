@@ -105,6 +105,84 @@ final class DifficultyCurveTest {
     }
 
     @Test
+    void wavesBeforeTheMiddleSegmentKeepTheBaseFirstHalfFormula() {
+        assertEquals(
+            DifficultyCurve.BASE_ENEMY_HEALTH * Math.pow(DifficultyCurve.ENEMY_HEALTH_GROWTH, 24),
+            curve.baselineRegularHealth(24),
+            0.001f
+        );
+        assertEquals(
+            DifficultyCurve.BASE_ENEMY_HEALTH * DifficultyCurve.ENEMY_HEALTH_GROWTH,
+            curve.baselineRegularHealth(1),
+            0.0001f
+        );
+        assertEquals(
+            DifficultyCurve.BASE_ENEMY_DAMAGE * Math.pow(DifficultyCurve.ENEMY_DAMAGE_GROWTH, 23),
+            curve.baselineRegularDamage(24),
+            0.000001f
+        );
+        assertEquals(DifficultyCurve.BASE_ENEMY_DAMAGE, curve.baselineRegularDamage(1), 0.0f);
+    }
+
+    @Test
+    void middleSegmentCompoundsItsOwnRateAcrossWavesTwentyFiveToEighty() {
+        assertEquals(
+            Math.pow(DifficultyCurve.MIDDLE_HEALTH_GROWTH, 56),
+            curve.baselineRegularHealth(80) / curve.baselineRegularHealth(24),
+            0.0001f
+        );
+        assertEquals(
+            Math.pow(DifficultyCurve.MIDDLE_DAMAGE_GROWTH, 56),
+            curve.baselineRegularDamage(80) / curve.baselineRegularDamage(24),
+            0.0001f
+        );
+        assertTrue(curve.baselineRegularHealth(25) > curve.baselineRegularHealth(24));
+        assertTrue(curve.baselineRegularHealth(80) > curve.baselineRegularHealth(79));
+        assertTrue(curve.baselineRegularDamage(25) > curve.baselineRegularDamage(24));
+        assertTrue(curve.baselineRegularDamage(80) > curve.baselineRegularDamage(79));
+    }
+
+    @Test
+    void lateFirstHalfResumesTheBaseRateFromTheHotterWaveEightyValue() {
+        assertEquals(
+            Math.pow(DifficultyCurve.ENEMY_HEALTH_GROWTH, 20),
+            curve.baselineRegularHealth(100) / curve.baselineRegularHealth(80),
+            0.0001f
+        );
+        assertEquals(
+            Math.pow(DifficultyCurve.ENEMY_DAMAGE_GROWTH, 20),
+            curve.baselineRegularDamage(100) / curve.baselineRegularDamage(80),
+            0.0001f
+        );
+        assertTrue(curve.baselineRegularHealth(81) > curve.baselineRegularHealth(80));
+        assertTrue(curve.baselineRegularDamage(81) > curve.baselineRegularDamage(80));
+    }
+
+    @Test
+    void middleSegmentTakesTheSameRelativeAscensionBumpAsTheBaseRate() {
+        assertEquals(
+            DifficultyCurve.MIDDLE_HEALTH_GROWTH, DifficultyCurve.middleHealthGrowthForTier(0), 0.0f);
+        assertEquals(
+            DifficultyCurve.MIDDLE_DAMAGE_GROWTH, DifficultyCurve.middleDamageGrowthForTier(0), 0.0f);
+        assertEquals(
+            DifficultyCurve.MIDDLE_HEALTH_GROWTH
+                * (1f + DifficultyCurve.ASCENSION_HEALTH_BUMP_PER_TIER * 10),
+            DifficultyCurve.middleHealthGrowthForTier(10),
+            0.000001f
+        );
+        assertEquals(
+            DifficultyCurve.healthGrowthForTier(6) / DifficultyCurve.healthGrowthForTier(0),
+            DifficultyCurve.middleHealthGrowthForTier(6) / DifficultyCurve.middleHealthGrowthForTier(0),
+            0.000001f
+        );
+        assertEquals(
+            DifficultyCurve.damageGrowthForTier(6) / DifficultyCurve.damageGrowthForTier(0),
+            DifficultyCurve.middleDamageGrowthForTier(6) / DifficultyCurve.middleDamageGrowthForTier(0),
+            0.000001f
+        );
+    }
+
+    @Test
     void waveSpawnerAppliesCurrentWaveStats() {
         GameState state = GameState.newRun(77L);
         EnemyWaveSpawner spawner = new EnemyWaveSpawner(new EnemyFactory());

@@ -37,6 +37,19 @@ final class BalanceSimulatorTest {
                 && averageDamage <= MAXIMUM_AVERAGE_DAMAGE_FRACTION,
             "Average gross damage fraction was " + averageDamage
         );
+        // Phase 25.3b: the middle third rises end to end (first vs last quarter).
+        float earlyMiddle = 0f;
+        float lateMiddle = 0f;
+        for (WaveSample sample : gated) {
+            if (sample.wave() >= 25 && sample.wave() <= 38) earlyMiddle += sample.damageFraction();
+            if (sample.wave() >= 67 && sample.wave() <= 80) lateMiddle += sample.damageFraction();
+        }
+        earlyMiddle /= 14f;
+        lateMiddle /= 14f;
+        assertTrue(
+            lateMiddle > earlyMiddle + 0.01f,
+            "Middle-third quarters were " + earlyMiddle + " -> " + lateMiddle
+        );
         for (WaveSample sample : gated) {
             assertTrue(Float.isFinite(sample.remainingHealth()));
             assertTrue(Float.isFinite(sample.dpsToEnemyHpRatio()));

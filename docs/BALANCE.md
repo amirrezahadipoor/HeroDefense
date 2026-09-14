@@ -168,4 +168,14 @@ below t3's 6.41%). Flags for the 26.1 gate: the shipped t10 baseline average has
 itself (seed `0x123456789`: 4.69%), so the 9-seed gate needs tier-relative, averaged, or
 ceiling-only-cross-seed bands rather than the naive per-seed 5–15%.
 
+### Phase 25.3b result (middle-third segment, baseline seed `0x4845524F444546`)
+
+Waves 25–80 grow at their own slightly hotter first-half rate (`1.040` health /
+`1.004` damage instead of `1.037` / `1.003`); waves 81–100 resume the base rate from
+the hotter wave-80 value, so the second half is rebased but not reshaped. The shipped
+run averages `10.14%` gross damage with a `25.17%` worst wave (178) and an `80.30 s`
+longest clear — still inside the 5–15% / 35% / 120 s gate. Middle-third quarters rise
+end to end: `7.75% → 8.95% → 10.77% → 11.21%` (previously flat at ~8% with zero
+fitted slope). The rise is locked by a `Q4 > Q1 + 1pp` assertion on the baseline seed.
+
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.
