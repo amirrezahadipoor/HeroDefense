@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.gameplay;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
@@ -31,6 +32,21 @@ final class ItemDropSystemTest {
         assertEquals(ItemTier.UNCOMMON, drops.tierForRoll(rareEnd, 1f));
         assertEquals(ItemTier.COMMON, drops.tierForRoll(uncommonEnd, 1f));
         assertNull(drops.tierForRoll(commonEnd, 1f));
+    }
+
+    @Test
+    void elitesAlwaysDropRareOrBetter() {
+        for (long seed = 1L; seed <= 30L; seed++) {
+            GameState state = GameState.newRun(seed);
+            Enemy elite = new Enemy(1L, "ROOTLING", state.hero.x, state.hero.y);
+            elite.alive = false;
+            elite.eliteAffix = "blightburst";
+            state.aliveEnemies.add(elite);
+            assertEquals(1, drops.processDefeatedEnemies(state), "seed " + seed);
+            assertEquals(1, state.drops.size(), "seed " + seed);
+            ItemTier tier = EquipmentCatalog.byId(state.drops.get(0).itemId).tier();
+            assertTrue(tier.ordinal() >= ItemTier.RARE.ordinal(), "seed " + seed + ": " + tier);
+        }
     }
 
     @Test

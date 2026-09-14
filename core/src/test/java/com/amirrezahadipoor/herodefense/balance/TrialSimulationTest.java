@@ -21,14 +21,15 @@ final class TrialSimulationTest {
     private static final long SEED = 0x747269616C7331L;
     private static final long[] SEEDS = {SEED, SEED + 1, SEED + 2};
     /**
-     * Empowered-run pressure floor. Pairs carry genuine risks, and affixes, sets, and
-     * forge levels grant ambient power to every build, so the pair band centers at 4%
-     * while the naked-run baseline gate keeps its 5%. Phase 26 re-derives every band
-     * from the full game.
+     * Empowered-run floors, recentered from 4% / 25s / 90% for the Elite era:
+     * guaranteed Rare+ Elite drops grant ambient power to every empowered build
+     * (measured -8 to -15% pressure, -3 to -5% clear time across both sim gates),
+     * while the naked-run baseline gate keeps its 5%. Phase 26 re-derives every
+     * band from the full game.
      */
-    private static final float MINIMUM_AVERAGE_DAMAGE_FRACTION = 0.04f;
-    private static final float MINIMUM_AVERAGE_CLEAR_SECONDS = 25f;
-    private static final float MINIMUM_PRESSURED_WAVE_FRACTION = 0.90f;
+    private static final float MINIMUM_AVERAGE_DAMAGE_FRACTION = 0.035f;
+    private static final float MINIMUM_AVERAGE_CLEAR_SECONDS = 24f;
+    private static final float MINIMUM_PRESSURED_WAVE_FRACTION = 0.88f;
     private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.35f;
     private static final float MAXIMUM_CLEAR_SECONDS = 120f;
 

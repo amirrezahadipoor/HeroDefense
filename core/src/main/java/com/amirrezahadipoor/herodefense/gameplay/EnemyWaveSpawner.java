@@ -1,10 +1,14 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
 import com.amirrezahadipoor.herodefense.WorldLayout;
+import com.amirrezahadipoor.herodefense.model.EliteAffix;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.EnemyType;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.SpawnLane;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Deterministically distributes each regular wave over three arena edges. */
 public final class EnemyWaveSpawner {
@@ -14,6 +18,10 @@ public final class EnemyWaveSpawner {
     private static final float SOUTH_JITTER = 250f;
     /** One in fifty Rootling spawns stands silent at the tree line ("The Quiet Ones"). */
     static final int SILENT_WATCHER_ONE_IN = 50;
+    /** Elites carry roughly triple health and half-again damage. */
+    public static final float ELITE_HEALTH_MULT = 3f;
+    public static final float ELITE_DAMAGE_MULT = 1.5f;
+    private static final long ELITE_SALT = 0xE11E7AFF1E57A1E5L;
     /** Tree-line box where Silent Rootling watchers stand and never leave. */
     static final float TREE_LINE_MIN_X = 90f;
     static final float TREE_LINE_MAX_X = 630f;
@@ -33,10 +41,22 @@ public final class EnemyWaveSpawner {
         );
     }
 
+    /** Elite cadence; Phase 25.3 tightens the interval as ascension tiers rise. */
+    public static int eliteWaveInterval(int ascensionTier) {
+        return 7;
+    }
+
+    public static boolean isEliteWave(int waveNumber, int ascensionTier) {
+        return waveNumber > 0
+            && waveNumber % eliteWaveInterval(ascensionTier) == 0
+            && waveNumber % 5 != 0;
+    }
+
     public void spawnRegularEnemies(GameState state, int waveNumber, int count) {
         if (state == null || count <= 0) {
             return;
         }
+        int firstIndex = state.aliveEnemies.size();
         EnemyType[] types = EnemyType.values();
         for (int index = 0; index < count; index++) {
             SpawnLane lane = SpawnLane.fromIndex(index);
@@ -70,6 +90,32 @@ public final class EnemyWaveSpawner {
                     * (TREE_LINE_MAX_Y - TREE_LINE_MIN_Y);
             }
             state.aliveEnemies.add(enemy);
+        }
+        if (isEliteWave(waveNumber, state.ascensionTier)) {
+            markElites(state, waveNumber, firstIndex, count);
+        }
+    }
+
+    /** Marks 1-2 non-watcher spawns as Elites with deterministic hash-picked affixes. */
+    private static void markElites(GameState state, int waveNumber, int firstIndex, int count) {
+        List<Integer> candidates = new ArrayList<>();
+        for (int offset = 0; offset < count; offset++) {
+            Enemy enemy = state.aliveEnemies.get(firstIndex + offset);
+            if (enemy != null && !enemy.silentWatcher) candidates.add(firstIndex + offset);
+        }
+        if (candidates.isEmpty()) return;
+        int elites = 1 + Math.floorMod(watcherMix(state.runSeed, waveNumber, 0, ELITE_SALT), 2);
+        for (int pick = 0; pick < elites && !candidates.isEmpty(); pick++) {
+            int slot = Math.floorMod(
+                watcherMix(state.runSeed, waveNumber, 11 + pick, ELITE_SALT), candidates.size());
+            Enemy elite = state.aliveEnemies.get(candidates.remove(slot));
+            EliteAffix affix = EliteAffix.values()[Math.floorMod(
+                watcherMix(state.runSeed, waveNumber, 101 + pick, ELITE_SALT),
+                EliteAffix.values().length)];
+            elite.eliteAffix = affix.id();
+            elite.health *= ELITE_HEALTH_MULT;
+            elite.maxHealth *= ELITE_HEALTH_MULT;
+            elite.damage *= ELITE_DAMAGE_MULT;
         }
     }
 

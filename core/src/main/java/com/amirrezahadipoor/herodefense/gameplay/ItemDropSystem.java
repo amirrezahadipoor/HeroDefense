@@ -72,10 +72,11 @@ public final class ItemDropSystem {
         );
         boolean crowned = enemy instanceof Boss
             && TrialEffects.bossAlwaysDropsRarePlus(state.activeTrials);
+        boolean rareFloor = crowned || enemy.eliteAffix != null;
         if (tier == null) {
-            if (!crowned) return 0;
+            if (!rareFloor) return 0;
             tier = ItemTier.RARE;
-        } else if (crowned && tier.ordinal() < ItemTier.RARE.ordinal()) {
+        } else if (rareFloor && tier.ordinal() < ItemTier.RARE.ordinal()) {
             tier = ItemTier.RARE;
         }
 

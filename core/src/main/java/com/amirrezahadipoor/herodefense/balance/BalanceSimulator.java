@@ -2,6 +2,7 @@ package com.amirrezahadipoor.herodefense.balance;
 
 import com.amirrezahadipoor.herodefense.gameplay.BossFactory;
 import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
+import com.amirrezahadipoor.herodefense.gameplay.EliteAffixSystem;
 import com.amirrezahadipoor.herodefense.gameplay.BossWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.ContinuousWaveRun;
 import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
@@ -63,6 +64,7 @@ public final class BalanceSimulator {
     private final EnemyMovementSystem movement = new EnemyMovementSystem();
     private final HeroAutoAttackSystem heroAttack = new HeroAutoAttackSystem(stats);
     private final BossSpecialAttackSystem bossSpecials = new BossSpecialAttackSystem(heroDamage);
+    private final EliteAffixSystem eliteAffixes = new EliteAffixSystem(heroDamage);
     private final EnemyMeleeAttackSystem melee = new EnemyMeleeAttackSystem(heroDamage);
     private final AutoPotionSystem autoPotion = new AutoPotionSystem(new HealthPotionSystem());
     private final ItemDropSystem itemDrops = new ItemDropSystem(stats);
@@ -182,6 +184,7 @@ public final class BalanceSimulator {
                 float healthBeforeEnemyAttacks = state.hero.health;
                 bossSpecials.update(state, STEP_SECONDS);
                 boolean gameOver = melee.update(state, STEP_SECONDS);
+                eliteAffixes.update(state, STEP_SECONDS);
                 grossDamageTaken += Math.max(0f, healthBeforeEnemyAttacks - state.hero.health);
                 if (!gameOver) autoPotion.update(state);
 

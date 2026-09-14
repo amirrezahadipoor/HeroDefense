@@ -75,6 +75,9 @@ public final class CodexSystem {
                 unlocked.add(entry.id());
             }
         }
+        if (allThreeAffixesKilled(state) && unlock(state, "codex_28")) {
+            unlocked.add("codex_28");
+        }
         return unlocked;
     }
 
@@ -155,6 +158,14 @@ public final class CodexSystem {
             unlocked.add("codex_27");
         }
         return unlocked;
+    }
+
+    /** Secret 28 Every Elite: all three affixes killed at least once. */
+    private static boolean allThreeAffixesKilled(GameState state) {
+        if (state.eliteKillCounts == null) return false;
+        return state.eliteKillCounts.getOrDefault("blightburst", 0) >= 1
+            && state.eliteKillCounts.getOrDefault("rootward_ward", 0) >= 1
+            && state.eliteKillCounts.getOrDefault("weeping_rot", 0) >= 1;
     }
 
     private static boolean anyMaxForged(GameState state) {

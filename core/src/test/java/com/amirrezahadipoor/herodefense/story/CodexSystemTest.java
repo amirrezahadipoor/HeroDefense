@@ -35,6 +35,31 @@ final class CodexSystemTest {
     }
 
     @Test
+    void firstEliteKillOfEachAffixUnlocksItsOwnEntry() {
+        GameState state = GameState.newRun(7L);
+        assertEquals(List.of("codex_13"), codex.unlockForEliteKill(state, "blightburst"));
+        assertTrue(codex.unlockForEliteKill(state, "blightburst").isEmpty());
+        assertEquals(List.of("codex_14"), codex.unlockForEliteKill(state, "rootward_ward"));
+        assertEquals(List.of("codex_15"), codex.unlockForEliteKill(state, "weeping_rot"));
+        assertTrue(codex.unlockForEliteKill(state, null).isEmpty());
+        assertTrue(codex.unlockForEliteKill(state, "unknown_affix").isEmpty());
+    }
+
+    @Test
+    void secretTwentyEightNeedsAllThreeAffixesKilled() {
+        GameState state = GameState.newRun(7L);
+        state.eliteKillCounts.put("blightburst", 2);
+        state.eliteKillCounts.put("rootward_ward", 1);
+        assertEquals(List.of("codex_13"), codex.unlockForEliteKill(state, "blightburst"));
+        assertEquals(List.of("codex_14"), codex.unlockForEliteKill(state, "rootward_ward"));
+        assertFalse(codex.isUnlocked(state, "codex_28"));
+        state.eliteKillCounts.put("weeping_rot", 1);
+        assertEquals(
+            List.of("codex_15", "codex_28"), codex.unlockForEliteKill(state, "weeping_rot"));
+        assertTrue(codex.isUnlocked(state, "codex_28"));
+    }
+
+    @Test
     void bossKillUnlocksOnlyItsOwnIdentityEntry() {
         GameState state = GameState.newRun(7L);
         assertEquals(List.of("codex_11"), codex.unlockForBossKill(state, "EMBER_WYRM"));

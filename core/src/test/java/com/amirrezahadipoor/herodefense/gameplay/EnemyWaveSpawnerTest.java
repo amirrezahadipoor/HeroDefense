@@ -32,6 +32,68 @@ final class EnemyWaveSpawnerTest {
     }
 
     @Test
+    void eliteWavesFallOnEverySeventhNonBossWave() {
+        assertTrue(EnemyWaveSpawner.isEliteWave(7, 0));
+        assertTrue(EnemyWaveSpawner.isEliteWave(14, 0));
+        assertTrue(EnemyWaveSpawner.isEliteWave(196, 0));
+        assertFalse(EnemyWaveSpawner.isEliteWave(6, 0));
+        assertFalse(EnemyWaveSpawner.isEliteWave(8, 0));
+        assertFalse(EnemyWaveSpawner.isEliteWave(5, 0));
+        assertFalse(EnemyWaveSpawner.isEliteWave(35, 0));
+        assertFalse(EnemyWaveSpawner.isEliteWave(70, 0));
+        assertFalse(EnemyWaveSpawner.isEliteWave(0, 0));
+    }
+
+    @Test
+    void eliteWavesMarkOneOrTwoEmpoweredNonWatchers() {
+        for (long seed = 1L; seed <= 10L; seed++) {
+            GameState state = GameState.newRun(seed);
+            spawner.spawnRegularEnemies(state, 7, EnemyWaveSpawner.MAX_REGULAR_ENEMIES);
+            java.util.List<Enemy> elites = new java.util.ArrayList<>();
+            for (Enemy enemy : state.aliveEnemies) {
+                if (enemy.eliteAffix != null) elites.add(enemy);
+            }
+            assertTrue(elites.size() >= 1 && elites.size() <= 2, "seed " + seed);
+            for (Enemy elite : elites) {
+                assertFalse(elite.silentWatcher);
+                assertTrue(com.amirrezahadipoor.herodefense.model.EliteAffix
+                    .fromId(elite.eliteAffix) != null);
+                Enemy regular = null;
+                for (Enemy enemy : state.aliveEnemies) {
+                    if (enemy.eliteAffix == null && !enemy.silentWatcher
+                        && enemy.type() == elite.type()) {
+                        regular = enemy;
+                        break;
+                    }
+                }
+                assertTrue(regular != null, "seed " + seed);
+                assertEquals(regular.maxHealth * EnemyWaveSpawner.ELITE_HEALTH_MULT,
+                    elite.maxHealth, regular.maxHealth * 1e-4f);
+                assertEquals(regular.damage * EnemyWaveSpawner.ELITE_DAMAGE_MULT,
+                    elite.damage, regular.damage * 1e-4f);
+                assertEquals(elite.maxHealth, elite.health);
+            }
+        }
+    }
+
+    @Test
+    void eliteMarkingIsDeterministicPerSeedAndSkipsBossWaves() {
+        GameState first = GameState.newRun(4242L);
+        GameState second = GameState.newRun(4242L);
+        spawner.spawnRegularEnemies(first, 14, 10);
+        spawner.spawnRegularEnemies(second, 14, 10);
+        for (int index = 0; index < 10; index++) {
+            assertEquals(first.aliveEnemies.get(index).eliteAffix,
+                second.aliveEnemies.get(index).eliteAffix);
+        }
+        GameState bossWave = GameState.newRun(4242L);
+        spawner.spawnRegularEnemies(bossWave, 35, 10);
+        for (Enemy enemy : bossWave.aliveEnemies) {
+            assertEquals(null, enemy.eliteAffix);
+        }
+    }
+
+    @Test
     void lateWavePopulationIsCappedToAvoidUnfairMeleeSwarms() {
         assertEquals(EnemyWaveSpawner.MAX_REGULAR_ENEMIES, spawner.regularCountForWave(100));
         assertTrue(spawner.regularCountForWave(25) < EnemyWaveSpawner.MAX_REGULAR_ENEMIES);

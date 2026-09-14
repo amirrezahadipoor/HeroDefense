@@ -15,6 +15,7 @@ import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.BossWaveSpawner;
 import com.amirrezahadipoor.herodefense.gameplay.ContinuousWaveRun;
 import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
+import com.amirrezahadipoor.herodefense.gameplay.EliteAffixSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
@@ -112,6 +113,7 @@ import com.amirrezahadipoor.herodefense.story.BossTitleCards;
 import com.amirrezahadipoor.herodefense.story.CeremonyLines;
 import com.amirrezahadipoor.herodefense.story.CodexSystem;
 import com.amirrezahadipoor.herodefense.story.ReflectionLines;
+import com.amirrezahadipoor.herodefense.story.EliteFragments;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
 import com.amirrezahadipoor.herodefense.story.WhisperLines;
 import com.amirrezahadipoor.herodefense.trials.TrialDraftSystem;
@@ -169,6 +171,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
     private KillRewardSystem killRewardSystem;
+    private EliteAffixSystem eliteAffixSystem;
     private LevelUpOverlayRenderer levelUpOverlayRenderer;
     private MainMenuRenderer mainMenuRenderer;
     private ParticleRenderer particleRenderer;
@@ -219,6 +222,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         autoPotionSystem = new AutoPotionSystem(new HealthPotionSystem());
         HeroDamageSystem heroDamageSystem = new HeroDamageSystem();
         bossSpecialAttackSystem = new BossSpecialAttackSystem(heroDamageSystem);
+        eliteAffixSystem = new EliteAffixSystem(heroDamageSystem);
         dropPickupSystem = new DropPickupSystem();
         enemyMeleeAttackSystem = new EnemyMeleeAttackSystem(heroDamageSystem);
         enemyMovementSystem = new EnemyMovementSystem();
@@ -1013,6 +1017,30 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
     }
 
+    /** Claims Elite kills for counts, codex, secret 28, and their §4 fragment overlay. */
+    private void presentEliteFragments(GameState state) {
+        boolean claimed = false;
+        for (Enemy enemy : state.aliveEnemies) {
+            if (enemy == null || enemy.alive || enemy.eliteAffix == null || enemy.eliteKillClaimed) {
+                continue;
+            }
+            enemy.eliteKillClaimed = true;
+            claimed = true;
+            int count = 1;
+            if (state.eliteKillCounts != null) {
+                count = state.eliteKillCounts.getOrDefault(enemy.eliteAffix, 0) + 1;
+                state.eliteKillCounts.put(enemy.eliteAffix, count);
+            }
+            codexSystem.unlockForEliteKill(state, enemy.eliteAffix);
+            String fragment = EliteFragments.fragmentFor(enemy.eliteAffix, count);
+            if (fragment != null) {
+                storyBeatLine = fragment;
+                storyBeatSeconds = 0f;
+            }
+        }
+        if (claimed) saveNow();
+    }
+
     /** Shows the reflection line for a freshly started wave, unless a beat already shows. */
     private void presentWaveReflection() {
         if (storyBeatLine != null || !gameState.waveActive) {
@@ -1209,6 +1237,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 codexSystem.unlockForBossKill(gameState, boss.bossType);
             }
         }
+        eliteAffixSystem.update(gameState, simulationDelta);
+        presentEliteFragments(gameState);
         codexSystem.unlockForWaveReached(gameState);
         codexSystem.unlockSecretsForProgress(gameState);
         if (killRewards.coins() > 0) {

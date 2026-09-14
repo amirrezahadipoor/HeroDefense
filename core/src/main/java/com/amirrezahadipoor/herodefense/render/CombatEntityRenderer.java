@@ -51,6 +51,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
     static final float TELEGRAPH_STACK_STEP = 12f;
     static final float TELEGRAPH_SQUASH = 0.42f;
     static final float TELEGRAPH_GROUND_Y_OFFSET = -20f;
+    static final float ELITE_DRAW_SCALE = 1.25f;
     static final int FOCUS_RING_SEGMENTS = 36;
     static final float FOCUS_RING_RADIUS = 108f;
     static final float FOCUS_RING_CENTER_Y_OFFSET = 73f;
@@ -100,11 +101,18 @@ public final class CombatEntityRenderer implements AutoCloseable {
         Array<TextureAtlas.AtlasRegion> frames = selectedFrames(clips, enemy);
         int frameIndex = frameIndex(enemy, frames.size, runTimeSeconds);
         float size = boss ? 240f : regularDrawSize(enemy.type());
+        if (!boss && enemy.eliteAffix != null) size *= ELITE_DRAW_SCALE;
         float feetRatio = boss ? BOSS_FEET_RATIO : REGULAR_FEET_RATIO;
         float x = enemy.x - size * 0.5f;
         float y = enemy.y - size * feetRatio;
         if (!enemy.alive) batch.setColor(0.62f, 0.62f, 0.70f, 0.72f);
-        batch.draw(frames.get(frameIndex), x, y, size, size);
+        if (!boss && enemy.eliteAffix != null && enemy.alive) {
+            dropGlowRenderer.draw(
+                batch, frames.get(frameIndex), x, y, size, size,
+                eliteGlow(enemy.eliteAffix), runTimeSeconds);
+        } else {
+            batch.draw(frames.get(frameIndex), x, y, size, size);
+        }
         batch.setColor(1f, 1f, 1f, 1f);
         if (enemy.alive) drawHealthBar(batch, enemy, x, y + size * 0.88f, size);
     }
@@ -238,6 +246,14 @@ public final class CombatEntityRenderer implements AutoCloseable {
             stack++;
         }
         batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    /** Outline color for an Elite affix; regulars and unknowns never glow. */
+    static VisualRarity eliteGlow(String affixId) {
+        if ("blightburst".equals(affixId)) return VisualRarity.ELITE_BLIGHTBURST;
+        if ("rootward_ward".equals(affixId)) return VisualRarity.ELITE_ROOTWARD;
+        if ("weeping_rot".equals(affixId)) return VisualRarity.ELITE_WEEPING;
+        return VisualRarity.COMMON;
     }
 
     /** Warning pulse: brightens and quickens as the telegraph runs out. */

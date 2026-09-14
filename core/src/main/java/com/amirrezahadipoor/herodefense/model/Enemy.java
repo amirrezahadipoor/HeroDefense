@@ -25,6 +25,16 @@ public class Enemy extends ArenaEntity {
      * never moves, attacks, or pays out; targeting, wave-clear counts, and drops all skip it.
      */
     public boolean silentWatcher;
+    /** Elite affix id (blightburst/rootward_ward/weeping_rot); null for regulars. */
+    public String eliteAffix;
+    /** Affix clock driving the rootward shield cycle and weeping trail cadence. */
+    public float affixTimerSeconds;
+    /** Remaining rootward shield time; a shielded elite takes no damage. */
+    public float affixShieldRemainingSeconds;
+    /** The elite's death has been resolved (blight blast, if any, already fired). */
+    public boolean affixResolved;
+    /** The elite kill has been claimed for counts, codex, and its lore fragment. */
+    public boolean eliteKillClaimed;
 
     public Enemy() {
         super();
