@@ -474,7 +474,7 @@ Extends the existing simulator-driven balance discipline to every new system abo
 
 ### 26.2 Manual Balance Guidance
 
-- [ ] Repeat the Phase 14.6-style manual checkpoints at Ascension tiers 0, 5, and 10, recording felt difficulty rather than only the automated gate's numbers.
+- [x] Repeat the Phase 14.6-style manual checkpoints at Ascension tiers 0, 5, and 10, recording felt difficulty rather than only the automated gate's numbers.
 - [ ] Record a target session model in `docs/BALANCE.md`: how long one Wave 1–200 run takes at a defined "engaged, shopping, no idle time" pace, and require every ascension tier's run to land within roughly ±20% of that time even as it gets harder — so added challenge comes from build precision, not from quietly padding wave count.
 
 ### 26.3 The Hours Table

@@ -223,4 +223,41 @@ FAMISHED_EARTH), trial-spot median ceiling to 40% + 4pp per tier (BLOOD_PRICE +
 HOLLOW_CALLING tier-3 median 49.5%). Naked averages hold per-cell strict 5–15% at
 every tier (36 cells: 6.08–10.8%).
 
+## Manual Balance Guidance (Phase 26.2)
+
+### 26.2a manual checkpoints at tiers 0, 5, and 10 (14.6-style)
+
+Protocol (extends the 14.6 wave list `{1, 5, 25, 50, 75, 100}` with `{150, 200}`
+for the endless second half): play each checkpoint wave at tiers 0, 5, and 10 on
+the baseline seed and record felt difficulty — incoming pressure, clear time,
+potion urgency, and any moment that felt unfair rather than hard. No human
+playtest has been run yet (same waiver as 14.6); the table below is the
+simulator's felt-difficulty proxy evidence on the baseline seed, to be confirmed
+or corrected by owner playtests:
+
+| wave | tier 0 dmg / clear | tier 5 dmg / clear | tier 10 dmg / clear |
+|---|---|---|---|
+| 1 | 0.0% / 10 s | 0.0% / 5 s | 0.0% / 3 s |
+| 5 (boss) | 11.9% / 24 s | 0.8% / 9 s | 0.0% / 4 s |
+| 25 (boss) | 2.8% / 16 s | 0.7% / 9 s | 0.0% / 6 s |
+| 50 (boss) | 3.5% / 25 s | 1.7% / 20 s | 1.2% / 18 s |
+| 75 (boss) | 3.2% / 23 s | 3.2% / 25 s | 1.6% / 22 s |
+| 100 (boss) | 5.1% / 28 s | 5.2% / 31 s | 3.2% / 23 s |
+| 150 (boss) | 2.6% / 39 s | 4.8% / 50 s | 2.0% / 39 s |
+| 200 (boss) | 8.5% / 41 s | 10.6% / 54 s | 11.5% / 61 s |
+| run avg / max | 9.91% / 30.0% | 11.84% / 49.0% | 7.35% / 50.0% |
+| close calls (>=25%) | 3 waves | 29 waves | 10 waves |
+| pressured waves | 197 | 174 | 159 |
+| run clear time | 8409 s (2.34 h) | 9746 s (2.71 h) | 7884 s (2.19 h) |
+
+Felt read (sim-derived, pending human confirmation): tier 0 ramps steadily with a
+spicy first boss (11.9% at wave 5 — the wake-up call). Tier 5 is the hottest
+checkpoint (11.84% average, 29 close calls): interval-6 Elite waves with only
+mid-ladder root power make the middle tiers the meat grinder, not the top.
+Tier 10 stomps the early game (0% through wave 25 on root power — expect
+boredom, not fear, before wave 50) and turns knife's-edge late (50% worst wave,
+61 s final boss). Difficulty over tiers is non-monotonic with a mid-ladder peak.
+Note: the tier-5 baseline run bought no Evolution (fork plus fund never aligned
+there); the policy is conditional per-run, locked firing on the tier-0 baseline.
+
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.
