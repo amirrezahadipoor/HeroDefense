@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
+import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
@@ -115,6 +117,10 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             state.defeatedBosses + " / 20", reveal);
         drawRow(batch, icons, 4, "coin", "Kill coins earned",
             MainMenuRenderer.coinTotalLabel(state.totalKillCoinsEarned), reveal);
+        String mythicName = mythicEarnedName(state);
+        if (victory && mythicName != null) {
+            drawRow(batch, icons, 5, null, "Mythic earned", mythicName, reveal);
+        }
 
         float offset = MainMenuRenderer.pressedOffset(restartState);
         icons.draw(batch, "restart", 152f, GameOverTouchLayout.RESTART_Y + 24f + offset, 64f,
@@ -149,6 +155,13 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         batch.setColor(Color.WHITE);
     }
 
+    /** Name of this run's Wave-200 Mythic, or null when none was granted. */
+    static String mythicEarnedName(GameState state) {
+        if (state == null || state.mythicGrantedItemId == null) return null;
+        EquipmentDefinition definition = EquipmentCatalog.byId(state.mythicGrantedItemId);
+        return definition == null ? state.mythicGrantedItemId : definition.name();
+    }
+
     private void drawRow(
         SpriteBatch batch,
         UiIconRenderer icons,
@@ -159,7 +172,7 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
         float alpha
     ) {
         float y = summaryRowY(row);
-        icons.draw(batch, icon, 96f, y - 20f, 56f);
+        if (icon != null) icons.draw(batch, icon, 96f, y - 20f, 56f);
         text.draw(batch, label, 172f, y + 18f, 0.92f, OverlayText.IVORY, alpha);
         text.drawRightAligned(batch, value, 612f, y + 20f, 1.06f, OverlayText.GOLD, alpha);
     }

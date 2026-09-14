@@ -104,6 +104,10 @@ public final class GameState {
     public List<Projectile> projectiles = new ArrayList<>();
     public List<DropEntity> drops = new ArrayList<>();
     public List<Item> inventory = new ArrayList<>();
+    /** Ascension tiers whose guaranteed Wave-200 Mythic was already granted. */
+    public List<Integer> mythicGrantTiers = new ArrayList<>();
+    /** Catalog id of the Mythic granted by this run's Wave-200 clear, if any. */
+    public String mythicGrantedItemId;
     public Map<String, Item> equippedItems = new LinkedHashMap<>();
     public Map<String, Float> permanentEffects = new LinkedHashMap<>();
     public Map<String, Integer> shopUpgradeLevels = new LinkedHashMap<>();
@@ -227,6 +231,7 @@ public final class GameState {
         if (projectiles == null) projectiles = new ArrayList<>();
         if (drops == null) drops = new ArrayList<>();
         if (inventory == null) inventory = new ArrayList<>();
+        if (mythicGrantTiers == null) mythicGrantTiers = new ArrayList<>();
         if (equippedItems == null) equippedItems = new LinkedHashMap<>();
         inventory.removeIf(item -> item == null);
         equippedItems.values().removeIf(item -> item == null);
@@ -315,6 +320,8 @@ public final class GameState {
         Map<String, Boolean> keptEncounters = new LinkedHashMap<>(firstBossEncounters);
         Map<String, Boolean> keptWhispers = new LinkedHashMap<>(usedWhisperIds);
         Map<String, Boolean> keptTrialsUnlocked = new LinkedHashMap<>(trialUnlocked);
+        List<Integer> keptMythicGrants =
+            mythicGrantTiers == null ? new ArrayList<>() : new ArrayList<>(mythicGrantTiers);
         int keptRuns = totalRunsCompleted;
         int keptAscensions = totalAscensionsCompleted;
 
@@ -329,6 +336,7 @@ public final class GameState {
         fresh.firstBossEncounters = keptEncounters;
         fresh.usedWhisperIds = keptWhispers;
         fresh.trialUnlocked = keptTrialsUnlocked;
+        fresh.mythicGrantTiers = keptMythicGrants;
         fresh.totalRunsCompleted = keptRuns;
         fresh.totalAscensionsCompleted = keptAscensions;
         fresh.peakWaveReached = 1;
@@ -383,6 +391,8 @@ public final class GameState {
         this.trialDraftPicks = fresh.trialDraftPicks;
         this.skillEvolutions = fresh.skillEvolutions;
         this.nextEntityId = 2L;
+        this.mythicGrantTiers = fresh.mythicGrantTiers;
+        this.mythicGrantedItemId = null;
         validateAndRepair();
     }
 

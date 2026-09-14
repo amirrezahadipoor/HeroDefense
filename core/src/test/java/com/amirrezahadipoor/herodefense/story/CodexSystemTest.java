@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
 import java.util.List;
@@ -152,6 +153,25 @@ final class CodexSystemTest {
 
         equipById(state, "BOOTS", "windstep_boots");
         assertEquals(List.of("codex_22"), codex.unlockSecretsForEquipment(state));
+        assertTrue(codex.unlockSecretsForEquipment(state).isEmpty());
+    }
+
+    @Test
+    void sixMythicsNeedsAllSixOwnedAtOnce() {
+        GameState state = GameState.newRun(21L);
+        for (String id : List.of(
+            "sunfall_last_arrow",
+            "crown_hollow_eye",
+            "bark_first_root",
+            "windrunner_last_steps",
+            "verdant_oath"
+        )) {
+            state.inventory.add(EquipmentCatalog.byId(id).createItem());
+        }
+        assertTrue(codex.unlockSecretsForEquipment(state).isEmpty());
+
+        equipById(state, "RING_2", "emberless_core");
+        assertEquals(List.of("codex_25"), codex.unlockSecretsForEquipment(state));
         assertTrue(codex.unlockSecretsForEquipment(state).isEmpty());
     }
 

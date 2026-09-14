@@ -653,6 +653,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         hapticFeedback.cardSelection();
                         WaveCompletion result = waveLifecycleSystem.continueAfterBossReward(gameState);
                         if (result == WaveCompletion.RUN_COMPLETED) {
+                            codexSystem.unlockSecretsForEquipment(gameState);
                             flow.transitionTo(GameScreenState.GAME_OVER);
                         } else if (result == WaveCompletion.PLANTING_CEREMONY) {
                             beginPlantingCeremony();
@@ -1183,7 +1184,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (killRewards.levelsGained() > 0) audioManager.play(AudioCue.LEVEL_UP);
         emitPendingPickupParticles(gameState, simulationDelta);
         emitCollectionSparkles(gameState, simulationDelta);
-        dropPickupSystem.update(gameState, simulationDelta, settings);
+        int collectedDrops = dropPickupSystem.update(gameState, simulationDelta, settings);
+        if (collectedDrops > 0) codexSystem.unlockSecretsForEquipment(gameState);
         if (dropPickupSystem.lastAutoSoldItems() > 0) {
             floatingDamageTextSystem.emitCoins(
                 dropPickupSystem.lastAutoSoldCoins(),
@@ -1226,6 +1228,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 beginPlantingCeremony();
             } else if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
                 gameState.runComplete = true;
+                codexSystem.unlockSecretsForEquipment(gameState);
                 if (gameState.waveNumber > gameState.peakWaveReached) {
                     gameState.peakWaveReached = gameState.waveNumber;
                 }

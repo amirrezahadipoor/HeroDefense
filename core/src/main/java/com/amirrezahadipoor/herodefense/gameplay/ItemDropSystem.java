@@ -20,6 +20,8 @@ public final class ItemDropSystem {
     public static final float UNCOMMON_RATE = 0.03f;
     public static final float RARE_RATE = 0.008f;
     public static final float LEGENDARY_RATE = 0.0015f;
+    /** Share of the Legendary band that upgrades to a Mythic (~7.5e-5 per kill). */
+    public static final float MYTHIC_SHARE_OF_LEGENDARY = 0.01f;
 
     private final HeroStatCalculator statCalculator;
     private final Map<ItemTier, List<EquipmentDefinition>> byTier = new EnumMap<>(ItemTier.class);
@@ -47,7 +49,9 @@ public final class ItemDropSystem {
             throw new IllegalArgumentException("Drop roll must be in [0, 1)");
         }
         float multiplier = Math.max(0f, luckMultiplier);
-        float threshold = LEGENDARY_RATE * multiplier;
+        float threshold = LEGENDARY_RATE * multiplier * MYTHIC_SHARE_OF_LEGENDARY;
+        if (roll < threshold) return ItemTier.MYTHIC;
+        threshold = LEGENDARY_RATE * multiplier;
         if (roll < threshold) return ItemTier.LEGENDARY;
         threshold += RARE_RATE * multiplier;
         if (roll < threshold) return ItemTier.RARE;

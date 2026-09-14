@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
+import com.amirrezahadipoor.herodefense.items.MythicEffects;
 import com.amirrezahadipoor.herodefense.model.GameState;
 
 /** Advances the existing GameState through one uninterrupted 200-wave run. */
@@ -13,6 +14,7 @@ public final class ContinuousWaveRun {
         if (state.waveNumber >= GameState.FINAL_WAVE) {
             state.waveNumber = GameState.FINAL_WAVE;
             state.runComplete = true;
+            MythicEffects.grantAscensionMythic(state);
             return WaveCompletion.RUN_COMPLETED;
         }
         boolean ceremony = state.waveNumber == GameState.PLANTING_WAVE && !state.secondTreePlanted;

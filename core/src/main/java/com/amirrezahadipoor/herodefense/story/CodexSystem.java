@@ -1,6 +1,7 @@
 package com.amirrezahadipoor.herodefense.story;
 
 import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
+import com.amirrezahadipoor.herodefense.items.MythicEffects;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
 
@@ -118,6 +119,9 @@ public final class CodexSystem {
         if (state == null) return unlocked;
         if (!EquipmentSetBonus.completedSets(state).isEmpty() && unlock(state, "codex_22")) {
             unlocked.add("codex_22");
+        }
+        if (MythicEffects.ownsAllSix(state) && unlock(state, "codex_25")) {
+            unlocked.add("codex_25");
         }
         return unlocked;
     }

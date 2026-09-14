@@ -26,11 +26,22 @@ final class ItemDropSystemTest {
         float rareEnd = legendaryEnd + ItemDropSystem.RARE_RATE;
         float uncommonEnd = rareEnd + ItemDropSystem.UNCOMMON_RATE;
         float commonEnd = uncommonEnd + ItemDropSystem.COMMON_RATE;
-        assertEquals(ItemTier.LEGENDARY, drops.tierForRoll(0f, 1f));
+        assertEquals(ItemTier.LEGENDARY, drops.tierForRoll(legendaryEnd * 0.5f, 1f));
         assertEquals(ItemTier.RARE, drops.tierForRoll(legendaryEnd, 1f));
         assertEquals(ItemTier.UNCOMMON, drops.tierForRoll(rareEnd, 1f));
         assertEquals(ItemTier.COMMON, drops.tierForRoll(uncommonEnd, 1f));
         assertNull(drops.tierForRoll(commonEnd, 1f));
+    }
+
+    @Test
+    void mythicBandSitsBelowLegendaryAndScalesWithLuck() {
+        assertEquals(0.01f, ItemDropSystem.MYTHIC_SHARE_OF_LEGENDARY);
+        float mythicEnd = ItemDropSystem.LEGENDARY_RATE * ItemDropSystem.MYTHIC_SHARE_OF_LEGENDARY;
+        assertEquals(ItemTier.MYTHIC, drops.tierForRoll(0f, 1f));
+        assertEquals(ItemTier.LEGENDARY, drops.tierForRoll(mythicEnd, 1f));
+        // Luck stretches the mythic edge: Legendary at x1 becomes Mythic at x10.
+        assertEquals(ItemTier.LEGENDARY, drops.tierForRoll(mythicEnd * 5f, 1f));
+        assertEquals(ItemTier.MYTHIC, drops.tierForRoll(mythicEnd * 5f, 10f));
     }
 
     @Test

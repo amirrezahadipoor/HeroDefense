@@ -4,7 +4,10 @@ import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The six Mythic unique passives (Phase 23.3, narrative in {@code docs/STORY_CONTENT.md}
@@ -157,6 +160,56 @@ public final class MythicEffects {
                 + "contained, and finally put to work instead of left to spread.";
             default -> null;
         };
+    }
+
+    /**
+     * Ascension guarantee order: tier N earns GRANT_ORDER[N % 6] on its Wave-200
+     * clear, so the first Mythic is always the most visible one (the bow).
+     */
+    public static final List<String> GRANT_ORDER = List.of(
+        SUNFALL_LAST_ARROW,
+        CROWN_HOLLOW_EYE,
+        BARK_FIRST_ROOT,
+        WINDRUNNER_LAST_STEPS,
+        VERDANT_OATH,
+        EMBERLESS_CORE
+    );
+
+    /**
+     * Grants this Ascension tier's guaranteed Wave-200 Mythic directly to the
+     * inventory. Idempotent per tier: returns null when this tier was served.
+     */
+    public static Item grantAscensionMythic(GameState state) {
+        if (state == null) return null;
+        if (state.mythicGrantTiers == null) state.mythicGrantTiers = new ArrayList<>();
+        int tier = Math.max(0, state.ascensionTier);
+        if (state.mythicGrantTiers.contains(tier)) return null;
+        EquipmentDefinition definition =
+            EquipmentCatalog.byId(GRANT_ORDER.get(tier % GRANT_ORDER.size()));
+        if (definition == null) return null;
+        Item item = definition.createItem();
+        if (state.inventory == null) state.inventory = new ArrayList<>();
+        state.inventory.add(item);
+        state.mythicGrantTiers.add(tier);
+        state.mythicGrantedItemId = item.id;
+        return item;
+    }
+
+    /** True when all six Mythics are owned at once (inventory or equipped). */
+    public static boolean ownsAllSix(GameState state) {
+        if (state == null) return false;
+        Set<String> owned = new HashSet<>();
+        if (state.inventory != null) {
+            for (Item item : state.inventory) {
+                if (item != null && item.id != null) owned.add(item.id);
+            }
+        }
+        if (state.equippedItems != null) {
+            for (Item item : state.equippedItems.values()) {
+                if (item != null && item.id != null) owned.add(item.id);
+            }
+        }
+        return owned.containsAll(ALL_IDS);
     }
 
     private static boolean equipped(GameState state, String itemId) {
