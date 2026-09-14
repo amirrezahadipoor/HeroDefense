@@ -39,6 +39,15 @@ final class SkillEvolutionTest {
     }
 
     @Test
+    void forkShortLabelsStayCompactForTheShopRow() {
+        for (SkillEvolution evolution : SkillEvolution.values()) {
+            assertTrue(evolution.forkShort() != null && !evolution.forkShort().isBlank());
+            assertTrue(evolution.forkShort().length() <= 12,
+                evolution.name() + ": " + evolution.forkShort());
+        }
+    }
+
+    @Test
     void simPicksTheDocumentedHigherDpsOptionPerSkill() {
         assertEquals(
             SkillEvolution.STORM_CHAIN, SkillEvolution.simPick(SkillId.CHAIN_LIGHTNING)
