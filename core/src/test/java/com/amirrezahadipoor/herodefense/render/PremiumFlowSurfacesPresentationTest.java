@@ -31,9 +31,10 @@ final class PremiumFlowSurfacesPresentationTest {
         assertTrue(PauseTouchLayout.BUTTON_WIDTH >= 480f);
         assertTrue(PauseTouchLayout.RESUME_HEIGHT >= 200f);
         assertTrue(PauseTouchLayout.SECONDARY_HEIGHT >= 130f);
-        assertTrue(PauseTouchLayout.resumeAt(360f, 600f));
-        assertTrue(PauseTouchLayout.inventoryAt(360f, 830f));
-        assertTrue(PauseTouchLayout.shopAt(360f, 1_000f));
+        assertTrue(PauseTouchLayout.resumeAt(360f, 400f));
+        assertTrue(PauseTouchLayout.inventoryAt(360f, 780f));
+        assertTrue(PauseTouchLayout.rootAt(360f, 620f));
+        assertTrue(PauseTouchLayout.shopAt(360f, 940f));
         assertFalse(PauseTouchLayout.resumeAt(360f, PauseOverlayRenderer.CONTEXT_PANEL_Y + 40f));
 
         GameState state = GameState.newRun(1L);

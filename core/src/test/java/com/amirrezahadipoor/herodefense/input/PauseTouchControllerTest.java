@@ -20,7 +20,7 @@ final class PauseTouchControllerTest {
         assertEquals(GameScreenState.PAUSED, flow.state());
         assertFalse(flow.simulationRunning());
 
-        assertTrue(touch.tap(flow, 360f, 600f));
+        assertTrue(touch.tap(flow, 360f, 400f));
         assertEquals(GameScreenState.PLAYING, flow.state());
         assertTrue(flow.simulationRunning());
     }

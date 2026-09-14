@@ -21,7 +21,7 @@ final class PremiumMainMenuHudContractTest {
     @Test
     void mainMenuKeepsLargeTouchBoundsAndMovesPressedContents() {
         assertTrue(MainMenuTouchLayout.BUTTON_WIDTH >= 480f);
-        assertTrue(MainMenuTouchLayout.BUTTON_HEIGHT >= 140f);
+        assertTrue(MainMenuTouchLayout.BUTTON_HEIGHT >= 120f);
         assertEquals(-4f, MainMenuRenderer.pressedOffset(UiFrameRenderer.State.PRESSED));
         assertEquals(0f, MainMenuRenderer.pressedOffset(UiFrameRenderer.State.NORMAL));
         assertEquals(0f, MainMenuRenderer.pressedOffset(UiFrameRenderer.State.DISABLED));

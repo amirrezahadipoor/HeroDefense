@@ -5,17 +5,17 @@ public final class GameOverTouchLayout {
     public static final float RESTART_X = 120f;
     public static final float RESTART_Y = 260f;
     public static final float RESTART_WIDTH = 480f;
-    public static final float RESTART_HEIGHT = 88f;
+    public static final float RESTART_HEIGHT = 96f;
 
     public static final float ASCEND_X = 120f;
     public static final float ASCEND_Y = 150f;
     public static final float ASCEND_WIDTH = 480f;
-    public static final float ASCEND_HEIGHT = 88f;
+    public static final float ASCEND_HEIGHT = 96f;
 
     public static final float ROOT_X = 120f;
     public static final float ROOT_Y = 40f;
     public static final float ROOT_WIDTH = 480f;
-    public static final float ROOT_HEIGHT = 88f;
+    public static final float ROOT_HEIGHT = 96f;
 
     private GameOverTouchLayout() {
     }

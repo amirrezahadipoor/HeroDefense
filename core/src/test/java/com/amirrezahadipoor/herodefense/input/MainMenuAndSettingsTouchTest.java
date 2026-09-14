@@ -23,8 +23,12 @@ final class MainMenuAndSettingsTouchTest {
             MainMenuTouchLayout.actionAt(360f, 570f, true)
         );
         assertEquals(
+            MainMenuTouchLayout.Action.ROOT_NETWORK,
+            MainMenuTouchLayout.actionAt(360f, 460f, false)
+        );
+        assertEquals(
             MainMenuTouchLayout.Action.SETTINGS,
-            MainMenuTouchLayout.actionAt(360f, 380f, false)
+            MainMenuTouchLayout.actionAt(360f, 300f, false)
         );
     }
 
