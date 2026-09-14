@@ -322,3 +322,198 @@ Give every new run a short spoken opening, then sweep the game for bugs and roug
 - Review every Blender-rendered batch before accepting it.
 - Treat the visual style guide as non-negotiable.
 - Use touch/tap/drag everywhere, including automated tests; no keyboard or mouse-only paths.
+
+---
+
+# Hero Defense — Roadmap Addendum (Phases 20–26)
+
+Continues directly from `ROADMAP.md` (Phases 0–19, closed 2026-09-13). Same repository, same `Java + libGDX`, `Android only`, `touch only`, `fully offline`, `no IAP` constraints. Same progress rule: complete → verify → commit → push each checklist item separately.
+
+**Scope of this addendum.** The goal is 50+ hours of genuinely engaging play, more strategic depth, more innovation, and a stronger pull on player curiosity — reached by adding *replay depth*, not by padding wave count or writing more boilerplate. Two things are deliberately kept out of this pass: Cafe Bazaar / store-release preparation (already covered by Phases 15 and 19; nothing here changes it) and any instruction to narrate implementation in code comments — keep comments to the existing repo's habit of one short line only where behavior is non-obvious. Every new system below is designed to reuse already-rendered art, already-built UI patterns, and the already-built `BalanceSimulator` rather than requesting new Blender batches — the intent is the broadest possible change for the smallest possible new-asset footprint.
+
+## Core Specs (Additions)
+
+| Item | Value |
+|---|---|
+| Replay structure | **Ascension** (New Game+): full run reset, permanent meta-currency carries over |
+| Meta-currency | **Heartwood**, earned from peak wave + ascension tier at each Ascension |
+| Permanent meta-progression | **Root Network** — a one-time-purchase talent web rendered on the World Tree itself |
+| Pre-run choice | **Convergence Trials** — pick 2 of 4 revealed run modifiers before every run |
+| New item tier | **Mythic** — exactly 6 (one per equipment slot), unique passive instead of raw stats |
+| New combat layer | **Focus meter** → tap-activated Hero Ultimate; **Skill Evolutions** at skill level 10 |
+| New difficulty layer | Boss telegraphs, **Elite**-affixed enemies every 7th regular wave, per-tier Ascension scaling |
+| Save schema | Bumps to version 2 (`ascensionTier`, `heartwood`, root-node state, active Trials, affixes) |
+
+## Phase 20 — Ascension: The Root Network
+
+The single biggest lever for total playtime: turn the existing 1–200 wave arc into the first loop of an indefinitely repeatable structure instead of a one-time finale.
+
+### 20.1 Ascension Loop
+
+- [ ] At Game Over or after clearing Wave 200, offer an **Ascend** action: reset wave, Hero level, coins, inventory, equipped items, and skill levels to a fresh Wave 1 run, but increment a new persistent `GameState.ascensionTier` and award **Heartwood** based on peak wave reached and the ascension tier just completed.
+- [ ] Each ascension tier permanently raises the `DifficultyCurve` growth constants on a defined schedule (exact numbers in Phase 25.3) so a returning player faces a harder version of the same arc rather than requiring new authored content per tier.
+- [ ] Bump `GameStateCodec`'s schema to version 2: add `ascensionTier`, `heartwood`, and root-node ids to the save payload, with a repair path defaulting pre-Ascension saves to tier 0 — this also closes the "save format has no version field" gap noted against the shipped build.
+
+### 20.2 The Root Network (permanent talent web)
+
+- [ ] Build a Root Network screen that renders the already-modeled World Tree full-screen (reuse `SaplingTreeRenderer`/World Tree art — no new models) with 20–30 selectable root-node overlays laid along the trunk and branches.
+- [ ] Each node costs Heartwood and grants a small permanent bonus applied at the start of every future run (starting Strength/Health, starting coin, an extra starting talent point, an extra inventory slot, a small Focus-fill bonus). Define values in a new `RootNetworkCatalog`, mirroring `EquipmentDefinition`'s data-table pattern.
+- [ ] Root nodes are one-time purchases that never reset on Ascension; reuse the existing sapling-growth frame sequence to represent lit (purchased) vs. unlit (locked) nodes, so the tree visibly fills in as the player invests — no new art batch required.
+- [ ] Add `RootNetworkTouchLayout`/`RootNetworkTouchController` following the existing Shop/Skill pattern; open it from the Main Menu and from the Game Over/Ascend screen.
+
+### 20.3 Ascension-Aware Progression Feel
+
+- [ ] Show the current Ascension tier as a small badge next to the wave counter in `HudRenderer`, and on the Game Over/Victory summary.
+- [ ] Update the Main Menu's Continue tile to show Ascension tier + peak wave, so a five-minute session always opens on a legible sense of long-term progress.
+
+## Phase 21 — Story Codex & Branching Epilogues
+
+Give the world a memory. Reuses the three-beat cinematic text system already built for `OpeningCinematic`; this phase is almost entirely writing plus one new read-only screen.
+
+### 21.1 The Grove Codex
+
+- [ ] Add a `LoreEntry` catalog — pure text plus an unlock condition — of roughly 30 short entries (2–4 sentences each) telling the story of the World Tree, the Hero, and the four enemy archetypes (Rootling, Stonekin, Gloom Wolf, Fungal Brute) from the forest's own perspective.
+- [ ] Unlock entries progressively and by different triggers: some by wave milestone, some on a boss's first kill, several only from defeating an Elite-affixed enemy (Phase 25.2), a few only after completing an Ascension — so the Codex fills in from several kinds of play, not just time.
+- [ ] Add a Codex screen, reachable from the Main Menu and from Pause, listing locked entries as silhouettes and unlocked entries in full, in the same card layout style as Inventory.
+
+### 21.2 Evolving Opening & Branching Endings
+
+- [ ] Extend `OpeningCinematic`'s three-beat line set to vary with `ascensionTier` — Ascension 0 keeps the shipped lines; Ascension 1+ has the Hero and Tree acknowledge the repeated cycle, so a returning player is narratively addressed, not just mechanically reset to Wave 1.
+- [ ] Replace the single Victory/Game Over text with 3–4 short branching epilogues chosen by run outcome (a flawless ascension with no Hero death, a clear that came down to the wire, a Game Over before Wave 50, a Game Over after Wave 150), reusing `GameOverOverlayRenderer`.
+- [ ] Wire the opening-line and epilogue selection into the same deterministic save/replay path already covering the opening (`OpeningReplayTest`) so Continue never replays the wrong variant.
+
+## Phase 22 — Convergence Trials (pre-run drafting)
+
+A genuine strategic decision before each run that changes *how* it is played, not just how strong the Hero eventually gets — the "make it a bit more thoughtful" ask.
+
+### 22.1 Trial Cards
+
+- [ ] Before every new run — New Game and every Ascension — show 4 Trial cards and let the player pick exactly 2, reusing `RewardCardOverlayRenderer`'s existing card-choice presentation.
+- [ ] Define roughly 12 Trials as paired risk/reward modifiers active for that run only, for example: enemies move faster in exchange for more coin income; no potions drop in exchange for extra talent points; bosses hit harder in exchange for a guaranteed Rare+ card every boss; Elites appear twice as often in exchange for bonus Heartwood at Ascension.
+- [ ] Persist the two active Trials in `GameState` for the run's duration and show them as small, permanent icons on the live HUD, so their effect is never a mid-run surprise.
+- [ ] Feed the active Trial pair into `BalanceSimulator` as an additional scenario axis (Phase 26.1) so no combination of Trials breaks the difficulty gate.
+
+### 22.2 Curiosity Hooks
+
+- [ ] Keep two Trials locked until specific Codex or Ascension conditions are met, so the drafting pool itself is something to discover, not a static menu seen in full on day one.
+
+## Phase 23 — Itemization Depth: Affixes, Sets, and the Mythic Tier
+
+Give players build decisions worth thinking about without redrawing the 40-item roster.
+
+### 23.1 Affixes
+
+- [ ] Roll one random minor affix (from roughly 15 possibilities — extra crit chance, extra lifesteal, extra coin-on-kill, and similar) onto every Rare and Legendary drop, stored as `Item.affixId` alongside its existing tier bonus. Common and Uncommon stay affix-free so early loot decisions stay simple.
+- [ ] Show the affix line distinctly in `InventoryItemDetails`, below the tier's base stat bonuses.
+- [ ] Extend `ItemForgeSystem` so an Anvil reforge has a small, forge-level-scaling chance to reroll an item's affix instead of adding a stat step — a second late-game coin sink with its own gambling hook.
+
+### 23.2 Set Items
+
+- [ ] Group 8 of the existing 40 items into two 4-piece sets (reusing existing art, e.g. the Verdant Covenant pieces already in the catalog) that grant a bonus at 2 and 4 equipped pieces — for example +5% attack speed at 2, an extra Chain Lightning target at 4 — via a new `EquipmentSetBonus` table keyed off a new `EquipmentDefinition.setId`.
+- [ ] Surface active/partial set status in Inventory ("2/4 Verdant Covenant equipped") so the incentive to hunt down the rest of a set is visible while playing, not just in a wiki.
+
+### 23.3 Mythic Tier & Escalating Presentation
+
+- [ ] Add a fifth tier, Mythic, above Legendary: exactly one per equipment slot (6 total), each carrying a build-defining unique passive instead of raw stats — Chain Lightning also applies Stun, auto-potions also grant a few seconds of bonus lifesteal, a critical hit refunds part of the shot's cooldown, and similar.
+- [ ] Make the Mythic drop rate near-zero from regular kills, but guaranteed once per Ascension tier on that tier's Wave 200 clear — the first Mythic becomes a memorable milestone rather than another slot-machine spin.
+- [ ] Render Mythic items by reusing the existing Legendary mesh/material variants with one new, distinct particle-glow tier in `RarityGlowRenderer`/`VisualRarity` — a shader/color change, not a new Blender batch.
+- [ ] Let the Hero's arrow trail and bow glow escalate visually with Anvil forge level and Ascension tier (color/intensity ramps already available to the existing glow and trail renderers), so raw progression is readable on screen without any new geometry.
+
+## Phase 24 — Active Play: Focus Meter and the Ultimate Ability
+
+Answers the "auto-attack only, no agency" gap directly with one meaningful tap-timed decision per fight, without breaking the fixed-Hero, no-dodge-input design the game is built around.
+
+### 24.1 Focus Meter
+
+- [ ] Add a `Focus` resource that fills from landed hits, shown as a ring around the Hero using the same HUD-bar rendering approach already built for the EXP bar.
+- [ ] At full Focus, show a glowing tap target; tapping it unleashes the Hero's Ultimate — a screen-wide effect assembled from existing VFX systems (chain-beam fan, an enlarged critical burst, a stronger screen shake at a higher, rate-limited budget) — and drains Focus to zero.
+- [ ] Scale Ultimate strength and Focus-fill rate with Hero level and any equipped Mythic passives, so building toward a strong Ultimate is itself a stat-allocation decision, not a fixed script.
+
+### 24.2 Skill Evolutions
+
+- [ ] At `SkillId.CORE_LEVELS` (level 10), let the player choose one of two Evolutions per skill instead of continuing the flat endless curve — Chain Lightning evolves into either "Storm Chain" (always hits 3 targets, chance to stun) or "Vampiric Chain" (arcs heal the Hero for a share of the damage dealt), and similarly for the other four skills.
+- [ ] Make each Evolution a one-time coin-gated choice per skill per run, resetting on Ascension along with the rest of the skill shop, so there is a real build fork rather than one optimal endless-purchase order.
+
+## Phase 25 — Difficulty Overhaul: Telegraphs, Elites, and Endless Ascension Scaling
+
+Directly answers the flat, "easy once you open the shop" curve: boss hits are currently applied before their animation finishes, the middle third of the run barely escalates, and there is nothing beyond Wave 200 to get harder against.
+
+### 25.1 Boss Telegraphs
+
+- [ ] Move `BossSpecialAttackSystem`'s damage application from the start of the attack to the end of `specialAnimationSeconds`, and draw a readable, boss-color-matched ground warning for that whole window, so potion timing and positioning near a special actually matter.
+
+### 25.2 Elite Affixes
+
+- [ ] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one random affix from a small pool (explodes on death, periodically shields, leaves a damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave.
+- [ ] Guarantee at least a Rare-tier drop from every Elite kill, and make Elites the primary source of the Phase 21.1 lore entries that are gated behind them — tying the hardest optional fights directly to the story hook.
+
+### 25.3 Endless Ascension Scaling
+
+- [ ] Define an explicit per-tier schedule for the growth constants as a function of `ascensionTier` (`t`), starting from a tunable form such as `ENEMY_HEALTH_GROWTH(t) = 1.037 × (1 + 0.015·t)` and `ENEMY_DAMAGE_GROWTH(t) = 1.003 × (1 + 0.008·t)` for the first half, with the same relative bump applied to the second-half constants, plus the Elite wave interval tightening by one wave every three tiers (floor of every 4th wave) — then tune against the simulator exactly as Phase 14 did for the base curve.
+- [ ] Close the flat middle-third the shipped build has (waves 25–80 landing at nearly the same damage fraction as each other): add a slow third growth segment across that span so pressure rises end to end instead of only at the two endpoints, and re-verify against the existing 5–15% average / 35% single-wave gate.
+
+## Phase 26 — Comprehensive Rebalancing & Hours Accounting
+
+Extends the existing simulator-driven balance discipline to every new system above, and writes down the arithmetic behind the 50-hour target so it can be checked against the shipped numbers, not just claimed.
+
+### 26.1 Simulator Extensions
+
+- [ ] Extend `BalanceSimulator` with an `ascensionTier` parameter and an active-Trial-pair axis; re-run the existing 9-seed-plus-forced-card regression gate at ascension tiers 0, 3, 6, and 10.
+- [ ] Add an Elite-affix-aware damage accounting path so Elite waves are included in the 5–15% average / 35% single-wave gross-damage ceiling rather than exempted from it.
+- [ ] Add a Focus/Ultimate usage model to the simulator's policy (fire the Ultimate on cooldown) so its power budget is tuned against the same regression gate as every other system, and give the simulator a simple Evolution-choice policy (pick the higher-DPS Evolution) for the same reason.
+
+### 26.2 Manual Balance Guidance
+
+- [ ] Repeat the Phase 14.6-style manual checkpoints at Ascension tiers 0, 5, and 10, recording felt difficulty rather than only the automated gate's numbers.
+- [ ] Record a target session model in `docs/BALANCE.md`: how long one Wave 1–200 run takes at a defined "engaged, shopping, no idle time" pace, and require every ascension tier's run to land within roughly ±20% of that time even as it gets harder — so added challenge comes from build precision, not from quietly padding wave count.
+
+### 26.3 The Hours Table
+
+- [ ] Add a table (`docs/BALANCE.md` or a new `docs/PROGRESSION_HOURS.md`) deriving expected total playtime from the shipped numbers: one full Wave 1–200 clear, Root Network node cost versus Heartwood income per ascension, the number of ascensions needed to exhaust the Root Network, Codex completion pace across the unlock triggers in Phase 21.1, and Mythic-item collection pace — so the 50-hour target is an equation the team can re-check after every later balance pass, not a one-time estimate.
+
+## Standing Rules (additions)
+
+- Every new system above must reuse existing rendered art, shaders, or UI layout patterns unless a checklist item explicitly says otherwise — no new Blender batch is authorized by this addendum.
+- Keep code comments to the existing repository's habit: one short line only where behavior is genuinely non-obvious. Do not narrate implementation step-by-step in comments.
+- Every new numeric system (Ascension scaling, Trials, affixes, Elites, Focus/Ultimate, skill Evolutions) must pass through `BalanceSimulator`'s regression gate before being considered done, exactly like every Phase 14–19 system before it.
+- This addendum does not touch Cafe Bazaar/release packaging; Phases 15 and 19's release state is unchanged.
+
+---
+
+## Appendix — Story Content (Phases 20, 21, 23, 25)
+
+Full narrative text wired to the systems above. Two voices: Hero (white, terse, present-tense) and Tree (leaf-green, reflective, Codex only).
+
+### World Premise
+
+Long before the first wave, something did not grow here — it fell here. The Hollow is that unmaking's name — four bosses are its four ways of touching the world: stone (Golem), root/thorn (Matriarch), fire (Wyrm), shadow (Void Knight). World Tree is the one root never swallowed.
+
+### 1. Opening Cinematics by Ascension Tier
+
+- Tier 0 (shipped): "Can you protect the World Tree?!" / "Can you?" / "Are you sure?!"
+- Tier 1: "Again, the dark comes." / "Again, I stand." / "This time — further."
+- Tier 2: "The Hollow remembers me now." / "Good. Let it be afraid." / "Roots first. Then flesh. Then the Tree. Not today."
+- Tier 3+: "Another dawn. Another siege." / "The Tree does not ask twice." / "Neither do I."
+
+### 2. Mid-Run Story Beats
+
+- Boss first-encounter title cards (once per identity)
+- Reflection lines: Wave 25, 50, 75, 125, 150, 175
+- Wave 100 Planting Ceremony 5 lines synced to timeline
+- Wave 200 Ascension transition 2 lines
+
+(See full story content document for exact wording — to be wired in Phase 21.2)
+
+### 3-8. Codex, Epilogues, Mythic Flavor
+
+30 Codex entries, 5 epilogues (Flawless/Hard-Fought/Early/Middle/Late Fall), 6 Mythic flavor passives, Elite Whispering Wounds fragments — full text in `docs/STORY_CONTENT.md` (to be added).
+
+## Standing Rules (final)
+
+- Complete → verify → update this file → commit → push for every checklist item; never batch items.
+- Keep only push-able files in the workspace; SDKs, Blender, caches, and helpers belong in `/tmp` or CI.
+- Verify every audio license before committing the file (audio unfrozen in Phase 18; CC0 only).
+- Review every Blender-rendered batch before accepting it.
+- Treat the visual style guide as non-negotiable.
+- Use touch/tap/drag everywhere, including automated tests; no keyboard or mouse-only paths.
+
