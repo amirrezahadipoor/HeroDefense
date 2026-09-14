@@ -33,7 +33,7 @@ public final class BossFactory {
         boss.attackRange = type.attackRange();
         boss.attackIntervalSeconds = type.attackIntervalSeconds();
         boss.spawnLane = spawnLane;
-        difficultyCurve.applyToBoss(boss, bossNumber * 5);
+        difficultyCurve.applyToBoss(boss, bossNumber * 5, state.ascensionTier);
         return boss;
     }
 }

@@ -351,7 +351,7 @@ The single biggest lever for total playtime: turn the existing 1–200 wave arc 
 ### 20.1 Ascension Loop
 
 - [x] At Game Over or after clearing Wave 200, offer an **Ascend** action: reset wave, Hero level, coins, inventory, equipped items, and skill levels to a fresh Wave 1 run, but increment a new persistent `GameState.ascensionTier` and award **Heartwood** based on peak wave reached and the ascension tier just completed.
-- [ ] Each ascension tier permanently raises the `DifficultyCurve` growth constants on a defined schedule (exact numbers in Phase 25.3) so a returning player faces a harder version of the same arc rather than requiring new authored content per tier.
+- [x] Each ascension tier permanently raises the `DifficultyCurve` growth constants on a defined schedule (exact numbers in Phase 25.3) so a returning player faces a harder version of the same arc rather than requiring new authored content per tier.
 - [ ] Bump `GameStateCodec`'s schema to version 2: add `ascensionTier`, `heartwood`, and root-node ids to the save payload, with a repair path defaulting pre-Ascension saves to tier 0 — this also closes the "save format has no version field" gap noted against the shipped build.
 
 ### 20.2 The Root Network (permanent talent web)

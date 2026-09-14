@@ -40,7 +40,7 @@ public final class EnemyFactory {
         int waveNumber
     ) {
         Enemy enemy = create(state, type, x, y, spawnLane);
-        difficultyCurve.applyToRegularEnemy(enemy, type, waveNumber);
+        difficultyCurve.applyToRegularEnemy(enemy, type, waveNumber, state.ascensionTier);
         return enemy;
     }
 }
