@@ -102,6 +102,7 @@ import com.amirrezahadipoor.herodefense.render.RootNetworkOverlayRenderer;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
+import com.amirrezahadipoor.herodefense.story.BossTitleCards;
 import com.amirrezahadipoor.herodefense.story.CodexSystem;
 import com.amirrezahadipoor.herodefense.story.Epilogue;
 import com.amirrezahadipoor.herodefense.story.WhisperLines;
@@ -152,6 +153,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     /** Current idle-whisper line, or null when no whisper is showing. */
     private String whisperLine;
     private float whisperSeconds;
+    /** Current mid-run story beat (title card, reflection), or null when none is showing. */
+    private String storyBeatLine;
+    private float storyBeatSeconds;
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
@@ -331,6 +335,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (whisperLine != null && flow.state() == GameScreenState.PLAYING) {
             whisperSeconds += deltaSeconds;
             if (whisperSeconds >= IdleWhisperRenderer.SHOW_SECONDS) whisperLine = null;
+        }
+        if (storyBeatLine != null && flow.state() == GameScreenState.PLAYING) {
+            storyBeatSeconds += deltaSeconds;
+            if (storyBeatSeconds >= IdleWhisperRenderer.SHOW_SECONDS) storyBeatLine = null;
         }
         ambientSeconds += deltaSeconds;
         if (flow.state() == GameScreenState.GAME_OVER) {
@@ -724,6 +732,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     whisperLine = null;
                     return true;
                 }
+                if (flow.state() == GameScreenState.PLAYING && storyBeatLine != null) {
+                    storyBeatLine = null;
+                    return true;
+                }
                 if (flow.state() == GameScreenState.PLAYING
                     && HudTouchLayout.inventoryAt(worldX, worldY)) {
                     flow.transitionTo(GameScreenState.INVENTORY);
@@ -935,6 +947,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             particleSystem.emitBossEntrance(boss.x, boss.y + 10f);
         }
         screenShakeSystem.triggerBossEntrance();
+        String titleCard = BossTitleCards.claimFirstUnencountered(state, state.aliveBosses);
+        if (titleCard != null) {
+            storyBeatLine = titleCard;
+            storyBeatSeconds = 0f;
+            saveNow();
+        }
     }
 
     /** Sparkles where a homing drop lands on the Inventory control, before the drop is removed. */
@@ -1330,6 +1348,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (whisperLine != null && flow.state() == GameScreenState.PLAYING) {
             idleWhisperRenderer.draw(
                 spriteBatch, camera.combined, whisperLine, whisperSeconds
+            );
+        } else if (storyBeatLine != null && flow.state() == GameScreenState.PLAYING) {
+            idleWhisperRenderer.draw(
+                spriteBatch, camera.combined, storyBeatLine, storyBeatSeconds
             );
         }
         touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);

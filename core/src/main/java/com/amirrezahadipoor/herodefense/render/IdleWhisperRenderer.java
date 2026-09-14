@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import java.util.List;
 
 /**
  * Shared single-line story overlay: a dim veil plus one centered white line with a fade
@@ -20,6 +21,8 @@ public final class IdleWhisperRenderer implements AutoCloseable {
     private static final float VEIL_ALPHA = 0.45f;
     static final float LINE_Y = GameState.ARENA_CENTER_Y + 250f;
     static final float LINE_SCALE = 1.6f;
+    static final float LINE_STRIDE = 46f;
+    static final float MAX_LINE_WIDTH = 640f;
 
     private final ShapeRenderer shapes = new ShapeRenderer();
     private final OverlayText text = new OverlayText();
@@ -39,11 +42,20 @@ public final class IdleWhisperRenderer implements AutoCloseable {
         shapes.setColor(0.02f, 0.03f, 0.04f, VEIL_ALPHA * alpha);
         shapes.rect(0f, ScreenEdges.bottom(), 720f, ScreenEdges.height());
         shapes.end();
+        List<String> rows = CodexOverlayRenderer.wrapLines(line, this::lineWidth, MAX_LINE_WIDTH);
         batch.setProjectionMatrix(projection);
         batch.begin();
-        text.drawCentered(batch, line, 360f, LINE_Y, LINE_SCALE, Color.WHITE, alpha);
+        float y = LINE_Y;
+        for (String row : rows) {
+            text.drawCentered(batch, row, 360f, y, LINE_SCALE, Color.WHITE, alpha);
+            y -= LINE_STRIDE;
+        }
         batch.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+    }
+
+    private double lineWidth(String row) {
+        return text.width(row, LINE_SCALE);
     }
 
     /** 0..1 envelope: quick fade in, hold, then fade out over the last fraction of a second. */

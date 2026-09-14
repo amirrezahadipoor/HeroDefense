@@ -106,6 +106,19 @@ final class GameStateTest {
     }
 
     @Test
+    void firstBossEncountersSurviveNewRunsAndNullRepair() {
+        GameState state = GameState.newRun(16L);
+        state.firstBossEncounters.put("ANCIENT_GOLEM", Boolean.TRUE);
+        state.resetForNewRun(17L);
+        assertTrue(Boolean.TRUE.equals(state.firstBossEncounters.get("ANCIENT_GOLEM")));
+
+        GameState broken = new GameState();
+        broken.firstBossEncounters = null;
+        broken.validateAndRepair();
+        assertTrue(broken.firstBossEncounters.isEmpty());
+    }
+
+    @Test
     void repairClampsAnvilLevelsAndDropsNullItems() {
         GameState state = GameState.newRun(11L);
         Item forged = new Item();
