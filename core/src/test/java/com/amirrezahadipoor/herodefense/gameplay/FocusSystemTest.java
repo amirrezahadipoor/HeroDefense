@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,27 @@ final class FocusSystemTest {
         state.focus = Float.NaN;
         assertEquals(0f, FocusSystem.ratio(state), 1e-6f);
         assertFalse(FocusSystem.isFull(state));
+    }
+
+    @Test
+    void fillRateScalesWithHeroLevelAndEquippedMythics() {
+        assertEquals(1f, FocusSystem.fillRateMultiplier(null), 1e-6f);
+        GameState fresh = GameState.newRun(505L);
+        assertEquals(1f, FocusSystem.fillRateMultiplier(fresh), 1e-6f);
+
+        fresh.heroLevel = 51;
+        assertEquals(2f, FocusSystem.fillRateMultiplier(fresh), 1e-6f);
+
+        fresh.equippedItems.put(
+            "WEAPON", EquipmentCatalog.byId("sunfall_last_arrow").createItem()
+        );
+        fresh.equippedItems.put(
+            "HELMET", EquipmentCatalog.byId("crown_hollow_eye").createItem()
+        );
+        assertEquals(2.4f, FocusSystem.fillRateMultiplier(fresh), 1e-5f);
+
+        FocusSystem.addHits(fresh, 10, 0, 0);
+        assertEquals(48f, fresh.focus, 1e-4f);
     }
 
     @Test

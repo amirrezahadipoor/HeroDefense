@@ -19,6 +19,9 @@ import java.util.List;
  */
 public final class HeroUltimateSystem {
     public static final float ULTIMATE_DAMAGE_MULTIPLIER = 4f;
+    /** +3% Ultimate damage per Hero level above 1, +15% per equipped Mythic. */
+    public static final float ULTIMATE_LEVEL_BONUS = 0.03f;
+    public static final float ULTIMATE_MYTHIC_BONUS = 0.15f;
     /** Blast anchor matches the Focus ring center on the Hero's frame. */
     public static final float BLAST_Y_OFFSET = 73f;
 
@@ -37,7 +40,7 @@ public final class HeroUltimateSystem {
         if (state == null || state.hero == null || !FocusSystem.isFull(state)) {
             return UltimateResult.NONE;
         }
-        float damage = Math.max(0f, statCalculator.damage(state)) * ULTIMATE_DAMAGE_MULTIPLIER;
+        float damage = Math.max(0f, statCalculator.damage(state)) * damageMultiplier(state);
         state.focus = 0f;
         List<Enemy> foes = new ArrayList<>();
         if (state.aliveEnemies != null) {
@@ -60,6 +63,15 @@ public final class HeroUltimateSystem {
         return new UltimateResult(
             foes.size(), damage, arcs, state.hero.x, state.hero.y + BLAST_Y_OFFSET
         );
+    }
+
+    /** Full damage multiplier: base x level scaling x equipped-Mythic scaling. */
+    public static float damageMultiplier(GameState state) {
+        if (state == null) return ULTIMATE_DAMAGE_MULTIPLIER;
+        int levels = Math.max(0, state.heroLevel - 1);
+        return ULTIMATE_DAMAGE_MULTIPLIER
+            * (1f + levels * ULTIMATE_LEVEL_BONUS)
+            * (1f + MythicEffects.equippedMythicCount(state) * ULTIMATE_MYTHIC_BONUS);
     }
 
     private static float distanceSquared(float x1, float y1, float x2, float y2) {

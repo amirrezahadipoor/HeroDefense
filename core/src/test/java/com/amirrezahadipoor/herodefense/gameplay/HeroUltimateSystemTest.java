@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.GameState;
@@ -106,6 +107,30 @@ final class HeroUltimateSystemTest {
 
         assertEquals(3, rewards.kills());
         assertTrue(state.coins > 0);
+    }
+
+    @Test
+    void ultimateDamageScalesWithHeroLevelAndEquippedMythics() {
+        assertEquals(4f, HeroUltimateSystem.damageMultiplier(null), 1e-6f);
+        GameState state = GameState.newRun(516L);
+        assertEquals(4f, HeroUltimateSystem.damageMultiplier(state), 1e-6f);
+
+        state.heroLevel = 101;
+        state.equippedItems.put(
+            "WEAPON", EquipmentCatalog.byId("sunfall_last_arrow").createItem()
+        );
+        state.equippedItems.put(
+            "HELMET", EquipmentCatalog.byId("crown_hollow_eye").createItem()
+        );
+        // 4 x (1 + 100 x 0.03) x (1 + 2 x 0.15) = 4 x 4 x 1.3 = 20.8.
+        assertEquals(20.8f, HeroUltimateSystem.damageMultiplier(state), 1e-4f);
+
+        state.aliveEnemies.add(enemy(state, 90f, 0f));
+        state.focus = state.focusMax;
+        float expected = new HeroStatCalculator().damage(state) * 20.8f;
+        UltimateResult result = ultimate.fire(state);
+        assertEquals(expected, result.damageEach(), 0.5f);
+        assertEquals(1_000_000f - expected, state.aliveEnemies.get(0).health, 0.5f);
     }
 
     private static Enemy enemy(GameState state, float offsetX, float offsetY) {
