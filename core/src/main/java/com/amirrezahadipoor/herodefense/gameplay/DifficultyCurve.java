@@ -15,8 +15,8 @@ public final class DifficultyCurve {
      * Waves 101–200 (after the planting ceremony) continue from the wave-100 values with their
      * own per-wave growth so the second half stays clearable with uncapped Hero progression.
      */
-    public static final float SECOND_HALF_HEALTH_GROWTH = 1.021f;
-    public static final float SECOND_HALF_DAMAGE_GROWTH = 1.006f;
+    public static final float SECOND_HALF_HEALTH_GROWTH = 1.023f;
+    public static final float SECOND_HALF_DAMAGE_GROWTH = 1.008f;
     public static final float BOSS_HEALTH_MULTIPLIER = 15f;
     public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;

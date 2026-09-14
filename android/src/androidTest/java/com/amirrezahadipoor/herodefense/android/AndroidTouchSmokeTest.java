@@ -22,6 +22,7 @@ import com.amirrezahadipoor.herodefense.HeroDefenseGame;
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.model.ItemTier;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.save.GameStateCodec;
@@ -57,7 +58,14 @@ public final class AndroidTouchSmokeTest {
             tapWorld(surface, 360f, 760f); // New Game
             await("new-game touch dispatch", () -> game.handledTouchUpCount() > touchCount);
             float[] correction = touchCorrection(game, 360f, 760f);
-            await("wave starts", () -> game.screenState() == GameScreenState.PLAYING);
+            // Phase 19: every new run opens with the Hero's zoomed-in challenge before Wave 1.
+            await("opening cinematic", () -> game.screenState() == GameScreenState.CINEMATIC);
+            assertFalse(game.gameState().waveActive);
+            SystemClock.sleep(2_000L); // Camera is tight on the Hero, first line on screen
+            captureScreen("opening-line-one-premium-v2.png");
+            SystemClock.sleep(3_700L); // "Are you sure?!"
+            captureScreen("opening-line-three-premium-v2.png");
+            await("wave starts", 12_000L, () -> game.screenState() == GameScreenState.PLAYING);
             assertEquals(1, game.gameState().waveNumber);
             assertTrue(game.gameState().waveActive);
             assertTrue(game.gameState().livingEnemyCount() > 0);
@@ -153,6 +161,11 @@ public final class AndroidTouchSmokeTest {
             assertTrue(game.gameState().coins > coinsBefore);
             SystemClock.sleep(100L);
             captureScreen("inventory-sell-feedback-premium-v2.png");
+            boolean autoSellBefore = game.autoSellEnabled(ItemTier.COMMON);
+            tapWorld(surface, 255f + correction[0], 1_086f + correction[1]); // COMMON auto-sell chip
+            await("auto-sell chip toggles", () -> game.autoSellEnabled(ItemTier.COMMON) != autoSellBefore);
+            tapWorld(surface, 255f + correction[0], 1_086f + correction[1]); // restore
+            await("auto-sell chip restores", () -> game.autoSellEnabled(ItemTier.COMMON) == autoSellBefore);
             tapWorld(surface, 620f + correction[0], 1_160f + correction[1]);
             await("inventory showcase closes", () -> game.screenState() == GameScreenState.PLAYING);
         }
@@ -294,6 +307,10 @@ public final class AndroidTouchSmokeTest {
             captureScreen("victory-premium-v2.png");
 
             tapWorld(surface, 360f + correction[0], 290f + correction[1]); // Defend again
+            await("fresh run opening", () ->
+                game.screenState() == GameScreenState.CINEMATIC && game.gameState().waveNumber == 1
+            );
+            tapWorld(surface, 360f + correction[0], 640f + correction[1]); // Skip the opening
             await("fresh run", () ->
                 game.screenState() == GameScreenState.PLAYING && game.gameState().waveNumber == 1
             );
@@ -373,6 +390,8 @@ public final class AndroidTouchSmokeTest {
             captureScreen("defeat-premium-v2.png");
 
             tapWorld(surface, 360f + correction[0], 290f + correction[1]); // Restart at Wave 1
+            await("restart opening", () -> game.screenState() == GameScreenState.CINEMATIC);
+            tapWorld(surface, 360f + correction[0], 640f + correction[1]); // Skip the opening
             await("restarted run", () ->
                 game.screenState() == GameScreenState.PLAYING
                     && game.gameState().hero.alive
@@ -589,6 +608,7 @@ public final class AndroidTouchSmokeTest {
 
     private static void prepareInventoryShowcaseSave() {
         GameState state = GameState.newRun(881L);
+        state.waveNumber = 2; // past the opening, so Continue starts the wave directly
         for (String id : new String[] {
             "crown_of_first_leaves",
             "crystalbark_plate",
@@ -609,6 +629,7 @@ public final class AndroidTouchSmokeTest {
 
     private static void prepareShopShowcaseSave() {
         GameState state = GameState.newRun(882L);
+        state.waveNumber = 2; // past the opening, so Continue starts the wave directly
         state.coins = 80;
         state.shopUpgradeLevels.put(HeroStat.AGILITY.name(), 2);
         state.shopUpgradeLevels.put(HeroStat.LUCK.name(), 20);

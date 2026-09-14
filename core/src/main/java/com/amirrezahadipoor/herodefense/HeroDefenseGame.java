@@ -29,6 +29,7 @@ import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
+import com.amirrezahadipoor.herodefense.gameplay.OpeningCinematic;
 import com.amirrezahadipoor.herodefense.gameplay.PlantingCeremony;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
@@ -73,6 +74,7 @@ import com.amirrezahadipoor.herodefense.render.FloatingDamageTextRenderer;
 import com.amirrezahadipoor.herodefense.render.GameOverOverlayRenderer;
 import com.amirrezahadipoor.herodefense.render.CeremonyHeroRenderer;
 import com.amirrezahadipoor.herodefense.render.HeroSpriteRenderer;
+import com.amirrezahadipoor.herodefense.render.OpeningCinematicRenderer;
 import com.amirrezahadipoor.herodefense.render.SaplingTreeRenderer;
 import com.amirrezahadipoor.herodefense.render.HudRenderer;
 import com.amirrezahadipoor.herodefense.render.InventoryOverlayRenderer;
@@ -124,6 +126,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private CeremonyHeroRenderer ceremonyHeroRenderer;
     private SaplingTreeRenderer saplingTreeRenderer;
     private final PlantingCeremony plantingCeremony = new PlantingCeremony();
+    private final OpeningCinematic openingCinematic = new OpeningCinematic();
+    private OpeningCinematicRenderer openingCinematicRenderer;
     private static final float WATER_DROP_INTERVAL_SECONDS = 0.07f;
     private float waterDropAccumulator;
     private HapticFeedback hapticFeedback;
@@ -237,6 +241,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         heroSpriteRenderer = new HeroSpriteRenderer();
         ceremonyHeroRenderer = new CeremonyHeroRenderer();
         saplingTreeRenderer = new SaplingTreeRenderer();
+        openingCinematicRenderer = new OpeningCinematicRenderer();
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
@@ -324,6 +329,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     public GameState gameState() {
         return gameState;
+    }
+
+    /** Read-only test visibility; auto-sell chips still toggle only through touch. */
+    public boolean autoSellEnabled(com.amirrezahadipoor.herodefense.model.ItemTier tier) {
+        return settings != null && settings.autoSells(tier);
     }
 
     /** Read-only test visibility; inventory actions themselves still require touch. */
@@ -420,6 +430,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (saplingTreeRenderer != null) {
             saplingTreeRenderer.close();
+        }
+        if (openingCinematicRenderer != null) {
+            openingCinematicRenderer.close();
         }
         if (hudRenderer != null) {
             hudRenderer.close();
@@ -550,7 +563,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.CINEMATIC) {
-                    plantingCeremony.skip();
+                    if (openingCinematic.isActive()) {
+                        openingCinematic.skip();
+                    } else {
+                        plantingCeremony.skip();
+                    }
                     return true;
                 }
                 if (flow.state() == GameScreenState.LEVEL_UP) {
@@ -624,15 +641,21 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (flow.state() == GameScreenState.INVENTORY
                     && inventoryTouchController.isOpen()) {
                     InventoryTouchController.Action action = inventoryTouchController.tap(
-                        gameState, worldX, worldY
+                        gameState, settings, worldX, worldY
                     );
                     if (action == InventoryTouchController.Action.CLOSED) {
                         flow.returnFromOverlay();
                         saveNow();
                     } else if (action == InventoryTouchController.Action.EQUIPPED
                         || action == InventoryTouchController.Action.UNEQUIPPED
-                        || action == InventoryTouchController.Action.SOLD) {
+                        || action == InventoryTouchController.Action.SOLD
+                        || action == InventoryTouchController.Action.FORGED) {
+                        if (action == InventoryTouchController.Action.FORGED) {
+                            audioManager.play(AudioCue.PURCHASE);
+                        }
                         saveNow();
+                    } else if (action == InventoryTouchController.Action.AUTO_SELL_TOGGLED) {
+                        settingsRepository.save(settings);
                     }
                     return true;
                 }
@@ -665,8 +688,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.clear();
         floatingCoinTextSystem.clear();
         floatingDamageTextSystem.clear();
-        waveLifecycleSystem.startCurrentWave(gameState);
+        // Wave 1 spawns only after the opening; a Continue from this save replays it.
         flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.CINEMATIC);
+        openingCinematic.begin();
         saveNow();
     }
 
@@ -680,6 +705,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             beginPlantingCeremony();
         } else if (gameState.unspentTalentPoints > 0) {
             flow.transitionTo(GameScreenState.LEVEL_UP);
+        } else if (!gameState.waveActive && untouchedFirstWave(gameState)) {
+            // Killed during the opening: replay it so every new run still starts with the prologue.
+            flow.transitionTo(GameScreenState.CINEMATIC);
+            openingCinematic.begin();
         } else if (!gameState.waveActive) {
             int bossesBefore = livingBossCount(gameState);
             waveLifecycleSystem.startCurrentWave(gameState);
@@ -688,6 +717,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 presentBossEntrance(gameState);
             }
         }
+    }
+
+    /** True while a run has not yet begun wave 1 (the save written right after New Game). */
+    static boolean untouchedFirstWave(GameState state) {
+        return state.waveNumber == 1 && !state.waveActive && state.totalKills == 0
+            && state.aliveEnemies.isEmpty() && state.aliveBosses.isEmpty();
     }
 
     private void emitDefeatParticles(GameState state) {
@@ -776,6 +811,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.update(deltaSeconds);
         floatingCoinTextSystem.update(deltaSeconds);
         floatingDamageTextSystem.update(deltaSeconds);
+        if (openingCinematic.isActive()) {
+            gameState.anchorHeroAtArenaCenter();
+            heroAnimationController.update(gameState.hero, deltaSeconds);
+            if (openingCinematic.update(deltaSeconds)) {
+                waveLifecycleSystem.startCurrentWave(gameState);
+                flow.transitionTo(GameScreenState.PLAYING);
+                saveNow();
+            }
+            return;
+        }
         boolean finished = plantingCeremony.update(deltaSeconds);
         if (plantingCeremony.pouring()) {
             waterDropAccumulator += deltaSeconds;
@@ -889,7 +934,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             screenShakeSystem.triggerTreeFall();
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
-        } else if (killRewards.levelsGained() > 0) {
+        } else if (killRewards.levelsGained() > 0 && gameState.hero.alive) {
+            // A last-breath kill during the tree siege must not open Level-Up over the defeat.
             flow.transitionTo(GameScreenState.LEVEL_UP);
             saveNow();
         } else {
@@ -932,9 +978,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (flow.state() != GameScreenState.MENU && flow.state() != GameScreenState.SETTINGS) {
             float baseCameraX = WorldLayout.REFERENCE_WIDTH * 0.5f;
             float baseCameraY = WorldLayout.REFERENCE_HEIGHT * 0.5f;
+            boolean opening = flow.state() == GameScreenState.CINEMATIC && openingCinematic.isActive();
+            float focus = opening ? openingCinematic.cameraFocus() : 0f;
+            camera.zoom = opening ? openingCinematic.cameraZoom() : 1f;
             camera.position.set(
-                baseCameraX + screenShakeSystem.offsetX(),
-                baseCameraY + screenShakeSystem.offsetY(),
+                baseCameraX + screenShakeSystem.offsetX()
+                    + (GameState.ARENA_CENTER_X - baseCameraX) * focus,
+                baseCameraY + screenShakeSystem.offsetY()
+                    + (GameState.ARENA_CENTER_Y + 60f - baseCameraY) * focus,
                 camera.position.z
             );
             camera.update();
@@ -949,7 +1000,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             spriteBatch.end();
             particleRenderer.drawAmbient(camera.combined, ambientSeconds);
             spriteBatch.begin();
-            boolean cinematic = flow.state() == GameScreenState.CINEMATIC;
+            boolean cinematic = flow.state() == GameScreenState.CINEMATIC && !opening;
             if (cinematic) {
                 if (plantingCeremony.saplingVisible()) {
                     saplingTreeRenderer.drawGrowing(spriteBatch, plantingCeremony);
@@ -974,10 +1025,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             floatingCoinTextRenderer.draw(
                 spriteBatch, camera.combined, floatingCoinTextSystem
             );
+            camera.zoom = 1f;
             camera.position.set(baseCameraX, baseCameraY, camera.position.z);
             camera.update();
+            if (opening) {
+                openingCinematicRenderer.draw(spriteBatch, camera.combined, openingCinematic);
+            }
         }
-        if (flow.state() == GameScreenState.PLAYING || flow.state() == GameScreenState.CINEMATIC) {
+        boolean openingActive = flow.state() == GameScreenState.CINEMATIC && openingCinematic.isActive();
+        if (flow.state() == GameScreenState.PLAYING
+            || (flow.state() == GameScreenState.CINEMATIC && !openingActive)) {
             hudRenderer.draw(
                 spriteBatch, camera.combined, gameState, uiIconRenderer, uiFrameRenderer,
                 presentationDeltaSeconds

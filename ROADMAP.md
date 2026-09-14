@@ -290,6 +290,30 @@ Make every new skill visibly and audibly powerful, show the Hero's growth on scr
 - [x] Waves 101–200 with the second tree standing as a permanent monument; Game Over now shows the monsters destroying every planted tree instead of ending abruptly. (`FINAL_WAVE = 200`, `secondTreePlanted` idle sway via `SaplingTreeRenderer`; on Hero death survivors march on the nearest tree for `TREE_SIEGE_SECONDS` while its health drains, then both trees fall.)
 - [x] Rebalance the full 1–200 run with uncapped progression; simulator gate extended to Wave 200 and `docs/BALANCE.md` updated. (Waves 1–100 unchanged; waves 101–200 continue at `HP × 1.021^(w−100)`, `damage × 1.006^(w−100)`; 9/9 seeds finish, avg 10.0%, worst wave 28.8%, 312 forced-card scenarios pass.)
 
+## Phase 19 — Opening, Polish, and Economy Balance
+
+Give every new run a short spoken opening, then sweep the game for bugs and rough edges, and finally rebalance the whole run around what the player actually buys: items, stat purchases, Anvil upgrades, and skills.
+
+### 19.1 Opening Cinematic
+
+- [x] New-run opening (English, before Wave 1): the camera zooms in on the Hero, a dark cloud rolls over the arena, and the Hero speaks in white text in three beats — "Can you protect the World Tree?!", "Can you?", "Are you sure?!" — then the camera eases back to the standard framing and Wave 1 begins. Touch-skippable, deterministic, never shown on Continue. (`gameplay/OpeningCinematic` timeline 7.8 s, camera zoom 0.58 with focus on the Hero, `render/OpeningCinematicRenderer` rolling cloud puffs + white speech; `startNewRun` enters `CINEMATIC` and spawns Wave 1 only when it ends.)
+- [x] Opening ships with an on-device touch smoke flow and screen captures (`opening-line-one/three-premium-v2.png`); CI run `34788282541` green.
+
+### 19.2 Polish and Bug Sweep
+
+- [x] Hero level cap raised 100 → 200 with progressive XP costs past 100 (`×1.03` per late level) so waves 101–200 keep granting talent points instead of showing `MAX` for the whole second half; save repair clamps to the new cap (`HeroProgressionSystemTest`, HUD contract test).
+- [x] Save repair: any run past wave 100 that is not mid-ceremony now has `secondTreePlanted = true`, so pre-18.4 saves at waves 101+ render the second tree and its siege target (`EdgeProbe` scenario → `GameStateTest`).
+- [x] Save repair clamps Anvil `upgradeLevel` to 0..5 and drops null inventory/equipped entries (`GameStateTest`).
+- [x] A level gained by the Hero's last shot during the tree siege no longer opens Level-Up over the defeat (guarded on `hero.alive`).
+- [x] BUG: the in-game inventory tap never passed `GameSettings`, so the auto-sell chips were inert on device; Anvil forges were also not saved. Fixed, forge now saves + plays the purchase cue, and `AndroidTouchSmokeTest` toggles the COMMON chip by touch.
+- [x] Continue on the save written right after New Game (wave 1 never started) replays the opening instead of dropping straight into combat (`HeroDefenseGame.untouchedFirstWave`, `OpeningReplayTest`); showcase saves in the Android smoke test moved to wave 2.
+- [x] CI evidence hygiene: the API-35 emulator's Quickstep ANR dialog was overlaying every capture; `scripts/android-touch-test.sh` now sets `hide_error_dialogs` and stops the launcher before the touch run.
+- [x] Systematic pass over every screen and flow (menu, HUD, combat, ceremony, opening, level-up, cards, inventory/anvil/auto-sell, shop, pause, settings, defeat/victory): flow transitions re-audited (`GameFlowController`), `EdgeProbe` save scenarios all pass, on-device captures reviewed for every overlay, stale “Ten-level combat skills” shop copy replaced now that skills are endless; every fix above carries its regression test.
+
+### 19.3 Economy-Aware Rebalance
+
+- [x] Rebalance the 1–200 run against the real economy: the simulator now reforges equipped Rare/Legendary items at the Anvil (cheapest step ≤ cheapest shop price) and keeps a coin ledger (`BalanceSimulator.lastLedger()`: kills ≈ 80k, sales ≈ 20k, stats 54k / skills 29k / Anvil 17k on the baseline); with that stronger player the second half was ~1–3% pressure, so waves 101–200 now grow `HP × 1.023^(w−100)`, `damage × 1.008^(w−100)` (HP w200 ≈ 7353, dmg ≈ 0.806). 9/9 and 15/15 seeds finish, avg 8.6%, worst wave 29.6%, longest clear 69 s; forced-card regression passes; `docs/BALANCE.md` gained Anvil + economy-audit sections.
+
 ## Standing Rules
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.

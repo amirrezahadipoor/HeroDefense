@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.badlogic.gdx.graphics.Color;
+import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.input.MainMenuTouchLayout;
 import com.amirrezahadipoor.herodefense.polish.TouchPulse;
@@ -48,7 +49,7 @@ final class PremiumMainMenuHudContractTest {
         state.heroExperience = 25;
         assertEquals(25f / 75f, HudRenderer.experienceRatio(state), 1e-5f);
         assertEquals("25 / 75 XP", HudRenderer.experienceLabel(state));
-        state.heroLevel = 100;
+        state.heroLevel = HeroProgressionSystem.LEVEL_CAP;
         assertEquals(1f, HudRenderer.experienceRatio(state));
         assertEquals("MAX", HudRenderer.experienceLabel(state));
     }

@@ -26,6 +26,7 @@ import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.gameplay.ItemForgeSystem;
 import com.amirrezahadipoor.herodefense.model.Item;
 import com.amirrezahadipoor.herodefense.potions.AutoPotionSystem;
 import com.amirrezahadipoor.herodefense.potions.HealthPotionSystem;
@@ -67,6 +68,9 @@ public final class BalanceSimulator {
     private final KillRewardSystem killRewards = new KillRewardSystem(progression);
     private final DropPickupSystem pickups = new DropPickupSystem();
     private final InventoryEquipmentSystem equipment = new InventoryEquipmentSystem(stats);
+    private final ItemForgeSystem forge = new ItemForgeSystem(stats);
+    /** Coin ledger of the last run, for economy audits (income and spend by sink). */
+    private final Ledger ledger = new Ledger();
     private final BossRewardCardSystem rewardCards = new BossRewardCardSystem();
     private final StatShopSystem shop = new StatShopSystem();
     private final SkillShopSystem skillShop = new SkillShopSystem();
@@ -92,6 +96,7 @@ public final class BalanceSimulator {
 
     private BalanceReport run(long seed, RewardCardId forcedCard, int forcedBossNumber) {
         GameState state = GameState.newRun(seed);
+        ledger.reset();
         new StarterLoadoutSystem().provisionOnce(state);
         allocateTalentPoints(state);
         buyBalancedShopUpgrades(state);
@@ -131,7 +136,10 @@ public final class BalanceSimulator {
                 itemDrops.processDefeatedEnemies(state);
                 potionDrops.processDefeatedEnemies(state);
                 KillRewardResult rewards = killRewards.processDefeatedEnemies(state);
+                ledger.killIncome += rewards.coins();
+                int coinsBeforePickups = state.coins;
                 pickups.update(state, STEP_SECONDS);
+                ledger.pickupIncome += Math.max(0, state.coins - coinsBeforePickups);
                 if (rewards.levelsGained() > 0) allocateTalentPoints(state);
                 improveEquipmentAndSellSpareItems(state);
                 buyBalancedShopUpgrades(state);
@@ -214,6 +222,13 @@ public final class BalanceSimulator {
                 ? skillShop.purchase(state, selectedSkill)
                 : selectedStat != null && shop.purchase(state, selectedStat);
             if (!bought) return;
+            if (selectedSkill != null) {
+                ledger.skillSpend += cheapest;
+                ledger.skillLevels++;
+            } else {
+                ledger.statSpend += cheapest;
+                ledger.statLevels++;
+            }
         }
     }
 
@@ -229,7 +244,75 @@ public final class BalanceSimulator {
                 equipment.equip(state, item);
             }
         }
-        for (Item spare : new ArrayList<>(state.inventory)) equipment.sell(state, spare);
+        for (Item spare : new ArrayList<>(state.inventory)) {
+            int price = spare.sellPrice;
+            if (equipment.sell(state, spare)) ledger.sellIncome += price;
+        }
+        forgeEquippedItems(state);
+    }
+
+    /**
+     * Anvil policy: reforge the equipped item with the cheapest next step while it costs no
+     * more than the cheapest shop purchase would; a player who has both open takes the
+     * cheaper permanent gain first.
+     */
+    private void forgeEquippedItems(GameState state) {
+        for (int step = 0; step < 8; step++) {
+            Item best = null;
+            int bestCost = Integer.MAX_VALUE;
+            for (Item item : state.equippedItems.values()) {
+                int cost = ItemForgeSystem.nextCost(item);
+                if (cost > 0 && cost < bestCost && state.coins >= cost) {
+                    best = item;
+                    bestCost = cost;
+                }
+            }
+            if (best == null || bestCost > cheapestShopPrice(state)) return;
+            if (forge.forge(state, best) != ItemForgeSystem.Result.FORGED) return;
+            ledger.forgeSpend += bestCost;
+            ledger.forgeSteps++;
+        }
+    }
+
+    private int cheapestShopPrice(GameState state) {
+        int cheapest = Integer.MAX_VALUE;
+        for (HeroStat candidate : BALANCED_STATS) cheapest = Math.min(cheapest, shop.price(state, candidate));
+        for (SkillId candidate : SkillId.values()) cheapest = Math.min(cheapest, skillShop.price(state, candidate));
+        return cheapest;
+    }
+
+    /** Ledger of the most recent {@link #run(long)}; the sums are coins, the counts purchases. */
+    public Ledger lastLedger() {
+        return ledger;
+    }
+
+    public static final class Ledger {
+        public long killIncome;
+        public long pickupIncome;
+        public long sellIncome;
+        public long statSpend;
+        public long skillSpend;
+        public long forgeSpend;
+        public int statLevels;
+        public int skillLevels;
+        public int forgeSteps;
+
+        void reset() {
+            killIncome = pickupIncome = sellIncome = statSpend = skillSpend = forgeSpend = 0L;
+            statLevels = skillLevels = forgeSteps = 0;
+        }
+
+        public long income() {
+            return killIncome + pickupIncome + sellIncome;
+        }
+
+        @Override
+        public String toString() {
+            return String.format(Locale.ROOT,
+                "income kills=%d pickups=%d sells=%d | spend stats=%d(%d lv) skills=%d(%d lv) forge=%d(%d steps)",
+                killIncome, pickupIncome, sellIncome, statSpend, statLevels, skillSpend, skillLevels,
+                forgeSpend, forgeSteps);
+        }
     }
 
     private void chooseReward(
