@@ -95,16 +95,16 @@ public final class AndroidTouchSmokeTest {
             SystemClock.sleep(600L);
             captureScreen("pause-premium-v2.png");
 
-            tapWorld(surface, 360f + correction[0], 1_000f + correction[1]); // Stat Shop
+            tapWorld(surface, 360f + correction[0], 940f + correction[1]); // Stat Shop
             await("shop opens over pause", () -> game.screenState() == GameScreenState.SHOP);
             tapWorld(surface, 620f + correction[0], 1_170f + correction[1]); // Close Shop
             await("shop returns to pause", () -> game.screenState() == GameScreenState.PAUSED);
-            tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
+            tapWorld(surface, 360f + correction[0], 400f + correction[1]); // Resume
             await("resume after shop", () -> game.screenState() == GameScreenState.PLAYING);
 
             tapWorld(surface, 600f + correction[0], statusRowY(surface) + correction[1]); // Pause again
             await("paused again", () -> game.screenState() == GameScreenState.PAUSED);
-            tapWorld(surface, 360f + correction[0], 830f + correction[1]); // Inventory
+            tapWorld(surface, 360f + correction[0], 780f + correction[1]); // Inventory
             await("inventory opens over pause", () ->
                 game.screenState() == GameScreenState.INVENTORY && game.inventoryOpen()
             );
@@ -121,7 +121,7 @@ public final class AndroidTouchSmokeTest {
             await("inventory returns to pause", () ->
                 game.screenState() == GameScreenState.PAUSED && !game.inventoryOpen()
             );
-            tapWorld(surface, 360f + correction[0], 600f + correction[1]); // Resume
+            tapWorld(surface, 360f + correction[0], 400f + correction[1]); // Resume
             await("play resumes", () -> game.screenState() == GameScreenState.PLAYING);
 
             assertEquals(
@@ -244,9 +244,9 @@ public final class AndroidTouchSmokeTest {
             View surface = gameSurfaceFrom(scenario);
 
             long touchCount = game.handledTouchUpCount();
-            tapWorld(surface, 360f, 380f); // Settings
+            tapWorld(surface, 360f, 300f); // Settings
             await("settings touch dispatch", () -> game.handledTouchUpCount() > touchCount);
-            float[] correction = touchCorrection(game, 360f, 380f);
+            float[] correction = touchCorrection(game, 360f, 300f);
             await("settings opens", () -> game.screenState() == GameScreenState.SETTINGS);
             tapWorld(surface, 360f + correction[0], 775f + correction[1]); // Sound toggle
             SystemClock.sleep(700L);
