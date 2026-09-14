@@ -64,6 +64,15 @@ public final class StatShopTouchLayout {
         return row < 0 ? null : SkillId.values()[row];
     }
 
+    /**
+     * Evolution option under the touch when a skill row sits at its fork: the left
+     * half picks option 0, the right half option 1, anything off-row is -1.
+     */
+    public static int evolutionOptionAt(float x, float y) {
+        if (rowAt(x, y) < 0) return -1;
+        return x < ROW_X + ROW_WIDTH * 0.5f ? 0 : 1;
+    }
+
     public static boolean closeAt(float x, float y) {
         return x >= CLOSE_X && x <= CLOSE_X + CLOSE_SIZE
             && y >= CLOSE_Y && y <= CLOSE_Y + CLOSE_SIZE;

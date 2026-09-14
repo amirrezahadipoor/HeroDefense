@@ -72,6 +72,20 @@ final class SkillShopSystemTest {
     }
 
     @Test
+    void atEvolutionForkOpensOnlyWhileCoreCompleteAndUnevolved() {
+        GameState state = GameState.newRun(9L);
+        state.coins = 1_000_000;
+        SkillId skill = SkillId.MULTI_SHOT;
+        assertFalse(shop.atEvolutionFork(state, skill));
+        for (int bought = 0; bought < SkillId.CORE_LEVELS; bought++) {
+            assertTrue(shop.purchase(state, skill));
+        }
+        assertTrue(shop.atEvolutionFork(state, skill));
+        assertTrue(shop.purchaseEvolution(state, skill, SkillEvolution.HORNET_VOLLEY));
+        assertFalse(shop.atEvolutionFork(state, skill));
+    }
+
+    @Test
     void evolutionForkCostsTheRetiredLevelElevenPriceAndLocksAfterOneChoice() {
         GameState state = GameState.newRun(4L);
         state.skillLevels.put(SkillId.CHAIN_LIGHTNING.saveKey(), SkillId.CORE_LEVELS);

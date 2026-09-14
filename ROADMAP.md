@@ -441,7 +441,7 @@ Answers the "auto-attack only, no agency" gap directly with one meaningful tap-t
 
 ### 24.2 Skill Evolutions
 
-- [ ] At `SkillId.CORE_LEVELS` (level 10), let the player choose one of two Evolutions per skill instead of continuing the flat endless curve — Chain Lightning evolves into either "Storm Chain" (always hits 3 targets, chance to stun) or "Vampiric Chain" (arcs heal the Hero for a share of the damage dealt), and similarly for the other four skills.
+- [x] At `SkillId.CORE_LEVELS` (level 10), let the player choose one of two Evolutions per skill instead of continuing the flat endless curve — Chain Lightning evolves into either "Storm Chain" (always hits 3 targets, chance to stun) or "Vampiric Chain" (arcs heal the Hero for a share of the damage dealt), and similarly for the other four skills.
 - [x] Make each Evolution a one-time coin-gated choice per skill per run, resetting on Ascension along with the rest of the skill shop, so there is a real build fork rather than one optimal endless-purchase order.
 
 ## Phase 25 — Difficulty Overhaul: Telegraphs, Elites, and Endless Ascension Scaling

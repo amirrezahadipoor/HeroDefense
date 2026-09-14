@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.input.StatShopTouchLayout;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
+import com.amirrezahadipoor.herodefense.skills.SkillEvolution;
+import com.amirrezahadipoor.herodefense.skills.SkillId;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,6 +34,30 @@ final class PremiumShopPresentationTest {
             assertTrue(benefit.startsWith("+1 "), stat.name());
             assertTrue(benefit.length() >= 10, stat.name());
         }
+    }
+
+    @Test
+    void evolutionForkLabelsNameBothOptionsAndFitTheirSlots() {
+        for (SkillId skill : SkillId.values()) {
+            String left = StatShopOverlayRenderer.skillForkLeft(skill);
+            String right = StatShopOverlayRenderer.skillForkRight(skill);
+            assertTrue(left.startsWith("LEFT: "), skill.name());
+            assertTrue(right.startsWith("RIGHT: "), skill.name());
+            assertTrue(left.contains(SkillEvolution.forSkill(skill).get(0).displayName()),
+                skill.name());
+            assertTrue(right.contains(SkillEvolution.forSkill(skill).get(1).displayName()),
+                skill.name());
+            assertTrue(left.length() <= 34, skill.name() + ": " + left);
+            assertTrue(right.length() <= 34, skill.name() + ": " + right);
+        }
+    }
+
+    @Test
+    void evolvedRowsNameTheChosenEvolution() {
+        assertEquals("STORM CHAIN (+2 arcs+stun)",
+            StatShopOverlayRenderer.evolvedBenefit(SkillEvolution.STORM_CHAIN));
+        assertEquals("VAMPIRIC CHAIN (heal 30%)",
+            StatShopOverlayRenderer.evolvedBenefit(SkillEvolution.VAMPIRIC_CHAIN));
     }
 
     @Test

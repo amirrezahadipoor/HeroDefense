@@ -18,4 +18,18 @@ final class StatShopTouchLayoutTest {
         assertTrue(StatShopTouchLayout.closeAt(620f, 1170f));
         assertNull(StatShopTouchLayout.statAt(10f, 10f));
     }
+
+    @Test
+    void evolutionForkSplitsEachRowIntoLeftAndRightOptions() {
+        for (int index = 0; index < 5; index++) {
+            float y = StatShopTouchLayout.rowBottom(index) + StatShopTouchLayout.ROW_HEIGHT / 2f;
+            assertEquals(0, StatShopTouchLayout.evolutionOptionAt(
+                StatShopTouchLayout.ROW_X + 10f, y), "row " + index);
+            assertEquals(1, StatShopTouchLayout.evolutionOptionAt(
+                StatShopTouchLayout.ROW_X + StatShopTouchLayout.ROW_WIDTH - 10f, y),
+                "row " + index);
+        }
+        assertEquals(-1, StatShopTouchLayout.evolutionOptionAt(10f, 10f));
+        assertEquals(-1, StatShopTouchLayout.evolutionOptionAt(360f, 60f));
+    }
 }

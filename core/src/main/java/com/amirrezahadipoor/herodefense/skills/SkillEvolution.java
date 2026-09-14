@@ -10,49 +10,51 @@ import java.util.List;
  */
 public enum SkillEvolution {
     STORM_CHAIN(
-        SkillId.CHAIN_LIGHTNING, "storm_chain", "Storm Chain",
+        SkillId.CHAIN_LIGHTNING, "storm_chain", "Storm Chain", "+2 arcs+stun",
         "+2 arc targets; arcs Stun (20%, 1.0s)"
     ),
     VAMPIRIC_CHAIN(
-        SkillId.CHAIN_LIGHTNING, "vampiric_chain", "Vampiric Chain",
+        SkillId.CHAIN_LIGHTNING, "vampiric_chain", "Vampiric Chain", "heal 30%",
         "Arcs heal the Hero for 30% of damage dealt"
     ),
     HORNET_VOLLEY(
-        SkillId.MULTI_SHOT, "hornet_volley", "Hornet Volley", "+2 extra arrows per volley"
+        SkillId.MULTI_SHOT, "hornet_volley", "Hornet Volley", "+2 arrows", "+2 extra arrows per volley"
     ),
     TRUE_FLIGHT(
-        SkillId.MULTI_SHOT, "true_flight", "True Flight",
+        SkillId.MULTI_SHOT, "true_flight", "True Flight", "100% arrow",
         "Secondary arrows deal full damage"
     ),
     DEEP_ROOTS(
-        SkillId.STUN_CHANCE, "deep_roots", "Deep Roots", "Stuns last +1.2s longer"
+        SkillId.STUN_CHANCE, "deep_roots", "Deep Roots", "+1.2s stun", "Stuns last +1.2s longer"
     ),
     STARFALL(
-        SkillId.STUN_CHANCE, "starfall", "Starfall", "Stunned foes take +25% damage"
+        SkillId.STUN_CHANCE, "starfall", "Starfall", "stun +25%", "Stunned foes take +25% damage"
     ),
     EXECUTIONER(
-        SkillId.CRITICAL_MASTERY, "executioner", "Executioner",
+        SkillId.CRITICAL_MASTERY, "executioner", "Executioner", "crit x+0.5",
         "Critical multiplier +0.5"
     ),
     KEEN_EYE(
-        SkillId.CRITICAL_MASTERY, "keen_eye", "Keen Eye", "Critical chance +10%"
+        SkillId.CRITICAL_MASTERY, "keen_eye", "Keen Eye", "crit +10%", "Critical chance +10%"
     ),
     FARSTRIDER(
-        SkillId.LONG_RANGE, "farstrider", "Farstrider", "Bonus range +150"
+        SkillId.LONG_RANGE, "farstrider", "Farstrider", "range +150", "Bonus range +150"
     ),
     DEADEYE(
-        SkillId.LONG_RANGE, "deadeye", "Deadeye", "+25% damage beyond 350 units"
+        SkillId.LONG_RANGE, "deadeye", "Deadeye", "+25% far", "+25% damage beyond 350 units"
     );
 
     private final SkillId skill;
     private final String id;
     private final String displayName;
+    private final String forkShort;
     private final String description;
 
-    SkillEvolution(SkillId skill, String id, String displayName, String description) {
+    SkillEvolution(SkillId skill, String id, String displayName, String forkShort, String description) {
         this.skill = skill;
         this.id = id;
         this.displayName = displayName;
+        this.forkShort = forkShort;
         this.description = description;
     }
 
@@ -67,6 +69,14 @@ public enum SkillEvolution {
 
     public String displayName() {
         return displayName;
+    }
+
+    /**
+     * Compact effect label (<= 12 chars) for the shop fork row, where each option
+     * shares one line with its side ("LEFT: Storm Chain: +2 arcs+stun").
+     */
+    public String forkShort() {
+        return forkShort;
     }
 
     public String description() {

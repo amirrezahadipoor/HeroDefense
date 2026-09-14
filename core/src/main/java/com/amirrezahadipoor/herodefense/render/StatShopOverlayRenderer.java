@@ -12,6 +12,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillEffects;
+import com.amirrezahadipoor.herodefense.skills.SkillEvolution;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 
@@ -36,7 +37,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
     /** One row's resolved presentation, shared by both tabs so the layout never diverges. */
     private record Row(
         String iconKey, String title, String benefit, int level, int maxLevel,
-        int price, boolean maxed, boolean affordable, Color accent
+        int price, boolean maxed, boolean affordable, Color accent, String forkDetail
     ) {
     }
 
@@ -133,7 +134,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         drawText(batch, "ROOTS", 362f, 1166f, 0.72f, GOLD);
         drawText(batch, "WORLD TREE ARMORY", 40f, 1240f, 1.36f, GOLD);
         drawText(batch, tab == Tab.SKILLS
-                ? "Combat skills; costly, permanent, no ceiling"
+                ? "Combat skills; costly, permanent, evolving"
                 : "Permanent upgrades bought only with earned coins",
             40f, 1200f, 0.72f, SUBTLE);
         icons.draw(batch, "coin", 44f, 1152f, 34f);
@@ -162,8 +163,8 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             drawText(batch, row.title(), 170f, y + 102f + offset, 0.98f,
                 row.affordable() || row.maxed() ? IVORY : MUTED);
             drawText(batch, row.benefit(), 170f, y + 66f + offset, 0.66f, SUBTLE);
-            drawText(batch, levelLabel(row.level(), row.maxLevel()),
-                170f, y + 44f + offset, 0.58f, GOLD);
+            drawText(batch, row.forkDetail() != null ? row.forkDetail() : levelLabel(row.level(), row.maxLevel()),
+                170f, y + 44f + offset, 0.58f, row.forkDetail() != null ? IVORY : GOLD);
             Color affordabilityColor = row.maxed() ? GOLD : row.affordable() ? POSITIVE : NEGATIVE;
             drawCentered(batch,
                 affordabilityLabel(row.maxed(), row.affordable(), row.price(), state.coins),
@@ -176,7 +177,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         if (feedback != null) {
             Color base = tab == Tab.SKILLS
                 ? switch (skills.feedbackResult()) {
-                    case PURCHASED -> POSITIVE;
+                    case PURCHASED, EVOLVED -> POSITIVE;
                     case INSUFFICIENT_COINS -> NEGATIVE;
                     case MAXED -> GOLD;
                     default -> SUBTLE;
@@ -206,7 +207,7 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
                 pretty(stat).toUpperCase(Locale.ROOT),
                 statBenefit(stat),
                 purchased, StatShopSystem.CORE_LEVELS,
-                price, false, state.coins >= price, POSITIVE
+                price, false, state.coins >= price, POSITIVE, null
             );
         }
         return rows;
@@ -218,21 +219,42 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
         for (int index = 0; index < ids.length; index++) {
             SkillId skill = ids[index];
             int level = skills.level(state, skill);
-            int price = skills.price(state, skill);
-            rows[index] = new Row(
-                skill.iconKey(),
-                skill.displayName().toUpperCase(Locale.ROOT),
-                skillBenefit(skill, level),
-                level, SkillId.CORE_LEVELS,
-                price, false, state.coins >= price, ARCANE
-            );
+            SkillEvolution evolution = SkillEffects.evolution(state, skill);
+            if (evolution != null) {
+                rows[index] = new Row(
+                    skill.iconKey(),
+                    skill.displayName().toUpperCase(Locale.ROOT),
+                    evolvedBenefit(evolution),
+                    SkillId.CORE_LEVELS, SkillId.CORE_LEVELS,
+                    0, true, false, ARCANE, null
+                );
+            } else if (skills.atEvolutionFork(state, skill)) {
+                int price = skills.evolutionPrice(state, skill);
+                rows[index] = new Row(
+                    skill.iconKey(),
+                    skill.displayName().toUpperCase(Locale.ROOT),
+                    skillForkLeft(skill),
+                    SkillId.CORE_LEVELS, SkillId.CORE_LEVELS,
+                    price, false, state.coins >= price, ARCANE, skillForkRight(skill)
+                );
+            } else {
+                int price = skills.price(state, skill);
+                rows[index] = new Row(
+                    skill.iconKey(),
+                    skill.displayName().toUpperCase(Locale.ROOT),
+                    skillBenefit(skill, level),
+                    level, SkillId.CORE_LEVELS,
+                    price, false, state.coins >= price, ARCANE, null
+                );
+            }
         }
         return rows;
     }
 
     /**
-     * Levels are endless: the label shows "LEVEL n / core" through the core tier and then
+     * Stats are endless: the label shows "LEVEL n / core" through the core tier and then
      * "LEVEL n  |  ENDLESS" so the player sees both the number and that growth continues.
+     * Skills cap at the core tier and fork into an Evolution instead.
      */
     static String levelLabel(int level, int coreLevels) {
         if (level <= coreLevels) return "LEVEL " + level + " / " + coreLevels;
@@ -259,6 +281,26 @@ public final class StatShopOverlayRenderer implements AutoCloseable {
             case DODGE -> "+1 dodge rating";
             case HEALTH -> "+1 vitality and max health";
         };
+    }
+
+    /**
+     * Left fork option: shown on the benefit line while the skill sits at its fork.
+     * Tap the row's left half to buy it.
+     */
+    static String skillForkLeft(SkillId skill) {
+        SkillEvolution option = SkillEvolution.forSkill(skill).get(0);
+        return "LEFT: " + option.displayName() + ": " + option.forkShort();
+    }
+
+    /** Right fork option: shown in the level slot while the skill sits at its fork. */
+    static String skillForkRight(SkillId skill) {
+        SkillEvolution option = SkillEvolution.forSkill(skill).get(1);
+        return "RIGHT: " + option.displayName() + ": " + option.forkShort();
+    }
+
+    /** Evolved rows show the chosen Evolution and its compact effect instead of a level. */
+    static String evolvedBenefit(SkillEvolution evolution) {
+        return evolution.displayName().toUpperCase(Locale.ROOT) + " (" + evolution.forkShort() + ")";
     }
 
     /** Describes the concrete next-level effect so a player knows exactly what a purchase buys. */

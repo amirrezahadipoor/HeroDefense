@@ -106,6 +106,7 @@ import com.amirrezahadipoor.herodefense.input.RootNetworkTouchController;
 import com.amirrezahadipoor.herodefense.render.RootNetworkOverlayRenderer;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
+import com.amirrezahadipoor.herodefense.skills.SkillEvolution;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 import com.amirrezahadipoor.herodefense.story.BossTitleCards;
 import com.amirrezahadipoor.herodefense.story.CeremonyLines;
@@ -716,7 +717,16 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         shopTab = tab;
                     } else if (shopTab == StatShopTouchLayout.Tab.SKILLS) {
                         SkillId skill = StatShopTouchLayout.skillAt(worldX, worldY);
-                        if (skillShopSystem.purchase(gameState, skill)) {
+                        if (skill != null && skillShopSystem.atEvolutionFork(gameState, skill)) {
+                            int option = StatShopTouchLayout.evolutionOptionAt(worldX, worldY);
+                            if (option >= 0 && skillShopSystem.purchaseEvolution(
+                                gameState, skill, SkillEvolution.forSkill(skill).get(option)
+                            )) {
+                                codexSystem.unlockSecretsForSkillPurchase(gameState);
+                                audioManager.play(AudioCue.PURCHASE);
+                                saveNow();
+                            }
+                        } else if (skillShopSystem.purchase(gameState, skill)) {
                             codexSystem.unlockSecretsForSkillPurchase(gameState);
                             audioManager.play(AudioCue.PURCHASE);
                             saveNow();

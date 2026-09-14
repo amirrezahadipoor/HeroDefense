@@ -40,10 +40,18 @@ public final class SkillShopSystem {
      * Price of the level-10 Evolution fork: exactly what level 11 would have
      * cost on the retired endless curve. Only defined at the fork.
      */
+    /**
+     * Whether the skill sits at its Evolution fork: core-complete but unevolved, so
+     * the shop row offers the two-evolution choice instead of another level.
+     */
+    public boolean atEvolutionFork(GameState state, SkillId skill) {
+        return state != null && skill != null
+            && level(state, skill) >= SkillId.CORE_LEVELS
+            && SkillEffects.evolution(state, skill) == null;
+    }
+
     public int evolutionPrice(GameState state, SkillId skill) {
-        if (state == null || skill == null
-            || level(state, skill) < SkillId.CORE_LEVELS
-            || SkillEffects.evolution(state, skill) != null) {
+        if (!atEvolutionFork(state, skill)) {
             return Integer.MAX_VALUE;
         }
         int base = priceForLevel(skill, SkillId.CORE_LEVELS);
