@@ -70,4 +70,17 @@ public enum TrialId {
     public String iconKey() {
         return iconKey;
     }
+
+    /** Null-safe lookup; unknown or corrupt names resolve to null instead of throwing. */
+    public static TrialId forName(String name) {
+        if (name == null) {
+            return null;
+        }
+        for (TrialId trial : values()) {
+            if (trial.name().equals(name)) {
+                return trial;
+            }
+        }
+        return null;
+    }
 }

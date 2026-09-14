@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.trials.TrialId;
 
 /** Premium segmented portrait HUD that preserves a clear view of the active arena. */
 public final class HudRenderer implements AutoCloseable {
@@ -26,6 +27,11 @@ public final class HudRenderer implements AutoCloseable {
     static final float EXP_BAR_HEIGHT = 9f;
     static final float INFO_PANEL_Y = 1065f;
     static final float INFO_PANEL_HEIGHT = 100f;
+    /** Active-trial mini icons stacked right of the pause button; first trial on top. */
+    static final float TRIAL_ICON_X = 660f;
+    static final float TRIAL_ICON_TOP_Y = 1112f;
+    static final float TRIAL_ICON_STRIDE = 44f;
+    static final float TRIAL_ICON_SIZE = 40f;
 
     private static final Color GOLD = Color.valueOf("EAC66D");
     private static final Color IVORY = Color.valueOf("F3E4BC");
@@ -202,6 +208,19 @@ public final class HudRenderer implements AutoCloseable {
 
         float pauseOffset = MainMenuRenderer.pressedOffset(pauseState);
         icons.draw(batch, "pause", 603f, 1088f + up + pauseOffset, 54f, pauseState);
+
+        if (state.activeTrials != null) {
+            int shown = 0;
+            for (String name : state.activeTrials) {
+                TrialId trial = TrialId.forName(name);
+                if (trial == null) {
+                    continue;
+                }
+                icons.draw(batch, trial.iconKey(), TRIAL_ICON_X,
+                    TRIAL_ICON_TOP_Y + up - shown * TRIAL_ICON_STRIDE, TRIAL_ICON_SIZE);
+                shown++;
+            }
+        }
 
         drawUtilityAction(
             batch, icons, "inventory", "INVENTORY",

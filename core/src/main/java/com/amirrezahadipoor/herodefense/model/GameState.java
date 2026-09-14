@@ -3,6 +3,7 @@ package com.amirrezahadipoor.herodefense.model;
 import com.amirrezahadipoor.herodefense.WorldLayout;
 import com.amirrezahadipoor.herodefense.trials.TrialDraftSystem;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
+import com.amirrezahadipoor.herodefense.trials.TrialId;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -265,9 +266,9 @@ public final class GameState {
         usedWhisperIds.values().removeIf(v -> v == null);
         skillEvolutions.values().removeIf(v -> v == null);
         trialUnlocked.values().removeIf(v -> v == null);
-        activeTrials.removeIf(t -> t == null);
-        pendingTrialOffer.removeIf(t -> t == null);
-        trialDraftPicks.removeIf(t -> t == null);
+        activeTrials.removeIf(t -> TrialId.forName(t) == null);
+        pendingTrialOffer.removeIf(t -> TrialId.forName(t) == null);
+        trialDraftPicks.removeIf(t -> TrialId.forName(t) == null);
         eliteKillCounts.replaceAll((k, v) -> v == null ? 0 : Math.max(0, v));
     }
 
