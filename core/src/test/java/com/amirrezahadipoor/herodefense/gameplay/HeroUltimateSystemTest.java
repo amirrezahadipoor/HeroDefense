@@ -31,7 +31,7 @@ final class HeroUltimateSystemTest {
 
     @Test
     void fullFocusStrikesEveryFoeAndDrainsToZero() {
-        assertEquals(4f, HeroUltimateSystem.ULTIMATE_DAMAGE_MULTIPLIER);
+        assertEquals(2f, HeroUltimateSystem.ULTIMATE_DAMAGE_MULTIPLIER);
         GameState state = GameState.newRun(512L);
         for (int i = 0; i < 10; i++) {
             state.aliveEnemies.add(enemy(state, 90f + i * 30f, 0f));
@@ -111,9 +111,9 @@ final class HeroUltimateSystemTest {
 
     @Test
     void ultimateDamageScalesWithHeroLevelAndEquippedMythics() {
-        assertEquals(4f, HeroUltimateSystem.damageMultiplier(null), 1e-6f);
+        assertEquals(2f, HeroUltimateSystem.damageMultiplier(null), 1e-6f);
         GameState state = GameState.newRun(516L);
-        assertEquals(4f, HeroUltimateSystem.damageMultiplier(state), 1e-6f);
+        assertEquals(2f, HeroUltimateSystem.damageMultiplier(state), 1e-6f);
 
         state.heroLevel = 101;
         state.equippedItems.put(
@@ -122,12 +122,12 @@ final class HeroUltimateSystemTest {
         state.equippedItems.put(
             "HELMET", EquipmentCatalog.byId("crown_hollow_eye").createItem()
         );
-        // 4 x (1 + 100 x 0.03) x (1 + 2 x 0.15) = 4 x 4 x 1.3 = 20.8.
-        assertEquals(20.8f, HeroUltimateSystem.damageMultiplier(state), 1e-4f);
+        // 2 x (1 + 100 x 0.03) x (1 + 2 x 0.15) = 2 x 4 x 1.3 = 10.4.
+        assertEquals(10.4f, HeroUltimateSystem.damageMultiplier(state), 1e-4f);
 
         state.aliveEnemies.add(enemy(state, 90f, 0f));
         state.focus = state.focusMax;
-        float expected = new HeroStatCalculator().damage(state) * 20.8f;
+        float expected = new HeroStatCalculator().damage(state) * 10.4f;
         UltimateResult result = ultimate.fire(state);
         assertEquals(expected, result.damageEach(), 0.5f);
         assertEquals(1_000_000f - expected, state.aliveEnemies.get(0).health, 0.5f);

@@ -18,8 +18,8 @@ public final class DifficultyCurve {
     // Tuned against the 5-15% / 35% / 120 s gate (see docs/BALANCE.md).
     public static final int MIDDLE_SEGMENT_FIRST_WAVE = 25;
     public static final int MIDDLE_SEGMENT_LAST_WAVE = 80;
-    public static final float MIDDLE_HEALTH_GROWTH = 1.040f;
-    public static final float MIDDLE_DAMAGE_GROWTH = 1.004f;
+    public static final float MIDDLE_HEALTH_GROWTH = 1.041f;
+    public static final float MIDDLE_DAMAGE_GROWTH = 1.006f;
     public static final float BOSS_HEALTH_MULTIPLIER = 15f;
     public static final float BOSS_DAMAGE_MULTIPLIER = 3f;
     public static final float MAX_REASONABLE_HEALTH_FRACTION_PER_HIT = 0.28f;

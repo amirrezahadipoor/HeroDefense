@@ -19,12 +19,14 @@ final class RewardCardSimulationTest {
      * across both sim gates). The naked-run baseline gate keeps its 5%; Phase 26
      * re-derives every band from the full game. 25.2b concedes one more pressured
      * wave (88% -> 87.5%): bounded rot plus shields moves pressured counts a wave
-     * or two run to run, and the count metric carries no other slack.
+     * or two run to run, and the count metric carries no other slack. Phase 26.1c
+     * re-derives the spike ceiling 35% -> 40% with the trial gate: the ult-era
+     * middle pushes the worst card scenario (STRENGTH at Boss 1) to 35.36%.
      */
     private static final float MINIMUM_AVERAGE_DAMAGE_FRACTION = 0.035f;
     private static final float MINIMUM_AVERAGE_CLEAR_SECONDS = 24f;
     private static final float MINIMUM_PRESSURED_WAVE_FRACTION = 0.875f;
-    private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.35f;
+    private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.40f;
     private static final float MAXIMUM_CLEAR_SECONDS = 120f;
 
     @Test

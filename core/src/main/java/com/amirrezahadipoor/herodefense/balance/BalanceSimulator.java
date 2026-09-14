@@ -14,6 +14,8 @@ import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroStatCalculator;
+import com.amirrezahadipoor.herodefense.gameplay.HeroUltimateSystem;
+import com.amirrezahadipoor.herodefense.gameplay.UltimateResult;
 import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
 import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
@@ -35,6 +37,7 @@ import com.amirrezahadipoor.herodefense.potions.PotionDropSystem;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.rewards.RewardCardId;
 import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
+import com.amirrezahadipoor.herodefense.skills.SkillEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillEvolution;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
@@ -64,6 +67,7 @@ public final class BalanceSimulator {
     private final EnemyMovementSystem movement = new EnemyMovementSystem();
     private final HeroAutoAttackSystem heroAttack = new HeroAutoAttackSystem(stats);
     private final BossSpecialAttackSystem bossSpecials = new BossSpecialAttackSystem(heroDamage);
+    private final HeroUltimateSystem ultimates = new HeroUltimateSystem(stats);
     private final EliteAffixSystem eliteAffixes = new EliteAffixSystem(heroDamage);
     private final EnemyMeleeAttackSystem melee = new EnemyMeleeAttackSystem(heroDamage);
     private final AutoPotionSystem autoPotion = new AutoPotionSystem(new HealthPotionSystem());
@@ -188,6 +192,9 @@ public final class BalanceSimulator {
                 state.anchorHeroAtArenaCenter();
                 movement.update(state, STEP_SECONDS);
                 heroAttack.update(state, STEP_SECONDS);
+                // Phase 26.1c: fire the Ultimate on cooldown (the moment Focus fills).
+                UltimateResult fired = ultimates.fire(state);
+                if (fired != UltimateResult.NONE) ledger.ultimateFires++;
 
                 float healthBeforeEnemyAttacks = state.hero.health;
                 bossSpecials.update(state, STEP_SECONDS);
@@ -284,6 +291,7 @@ public final class BalanceSimulator {
      * both tabs of the shop moving instead of hoarding.
      */
     private void buyBalancedShopUpgrades(GameState state) {
+        buyFocusedEvolution(state);
         // Endless shop: bound the greedy loop per visit rather than by a level cap.
         int budget = 64;
         for (int purchase = 0; purchase < budget; purchase++) {
@@ -319,6 +327,7 @@ public final class BalanceSimulator {
                 bought = skillShop.purchaseEvolution(
                     state, selectedEvolution, SkillEvolution.simPick(selectedEvolution)
                 );
+                if (bought) ledger.evolutionsBought++;
             } else if (selectedSkill != null) {
                 bought = skillShop.purchase(state, selectedSkill);
             } else {
@@ -333,6 +342,59 @@ public final class BalanceSimulator {
                 ledger.statLevels++;
             }
         }
+    }
+
+    /**
+     * Phase 26.1c Evolution policy: complete the unevolved skill closest to level 10
+     * (one level per shop visit), then take its higher-DPS fork via
+     * {@link SkillEvolution#simPick}. One Evolution per run keeps the policy's shape
+     * change minimal while its combat effect is tuned against the same gate. Once the
+     * fork opens, a quarter of each visit's coins is set aside for it, so power keeps
+     * flowing through the greedy loop instead of stalling behind full hoarding.
+     */
+    private void buyFocusedEvolution(GameState state) {
+        if (ledger.evolutionsBought > 0) return;
+        SkillId focus = null;
+        int bestLevel = -1;
+        for (SkillId candidate : SkillId.values()) {
+            if (SkillEffects.evolution(state, candidate) != null) continue;
+            int level = skillShop.level(state, candidate);
+            if (level > bestLevel) {
+                focus = candidate;
+                bestLevel = level;
+            }
+        }
+        if (focus == null) return;
+        if (skillShop.level(state, focus) < SkillId.CORE_LEVELS) {
+            int price = skillShop.price(state, focus);
+            if (state.coins >= price && skillShop.purchase(state, focus)) {
+                ledger.skillSpend += price;
+                ledger.skillLevels++;
+            }
+            return;
+        }
+        int evolutionPrice = skillShop.evolutionPrice(state, focus);
+        if (ledger.evolutionFund >= evolutionPrice) {
+            // The fund pays into the purse first: the shop charges state.coins.
+            ledger.evolutionFund -= evolutionPrice;
+            state.coins += evolutionPrice;
+            if (skillShop.purchaseEvolution(state, focus, SkillEvolution.simPick(focus))) {
+                ledger.skillSpend += evolutionPrice;
+                ledger.skillLevels++;
+                ledger.evolutionsBought++;
+                // Sweep leftover change back; the fund's job is done.
+                state.coins += ledger.evolutionFund;
+                ledger.evolutionFund = 0;
+                return;
+            }
+            state.coins -= evolutionPrice;
+            ledger.evolutionFund += evolutionPrice;
+        }
+        // Fund a quarter of this visit's coins toward the fork; the greedy loop below
+        // still spends the rest, so the power curve never stalls behind full hoarding.
+        int diverted = state.coins / 4;
+        state.coins -= diverted;
+        ledger.evolutionFund += diverted;
     }
 
     private void improveEquipmentAndSellSpareItems(GameState state) {
@@ -401,10 +463,14 @@ public final class BalanceSimulator {
         public int statLevels;
         public int skillLevels;
         public int forgeSteps;
+        public int ultimateFires;
+        public int evolutionsBought;
+        public int evolutionFund;
 
         void reset() {
             killIncome = pickupIncome = sellIncome = statSpend = skillSpend = forgeSpend = 0L;
-            statLevels = skillLevels = forgeSteps = 0;
+            statLevels = skillLevels = forgeSteps = ultimateFires = evolutionsBought = 0;
+            evolutionFund = 0;
         }
 
         public long income() {
@@ -414,9 +480,9 @@ public final class BalanceSimulator {
         @Override
         public String toString() {
             return String.format(Locale.ROOT,
-                "income kills=%d pickups=%d sells=%d | spend stats=%d(%d lv) skills=%d(%d lv) forge=%d(%d steps)",
+                "income kills=%d pickups=%d sells=%d | spend stats=%d(%d lv) skills=%d(%d lv) forge=%d(%d steps) ults=%d evos=%d",
                 killIncome, pickupIncome, sellIncome, statSpend, statLevels, skillSpend, skillLevels,
-                forgeSpend, forgeSteps);
+                forgeSpend, forgeSteps, ultimateFires, evolutionsBought);
         }
     }
 

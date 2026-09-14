@@ -19,7 +19,7 @@ import java.util.List;
  * the simulator can fire the same Ultimate without any presentation.
  */
 public final class HeroUltimateSystem {
-    public static final float ULTIMATE_DAMAGE_MULTIPLIER = 4f;
+    public static final float ULTIMATE_DAMAGE_MULTIPLIER = 2f;
     /** +3% Ultimate damage per Hero level above 1, +15% per equipped Mythic. */
     public static final float ULTIMATE_LEVEL_BONUS = 0.03f;
     public static final float ULTIMATE_MYTHIC_BONUS = 0.15f;

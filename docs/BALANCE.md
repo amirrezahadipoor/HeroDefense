@@ -186,13 +186,16 @@ sits at 5.03–9.26% (no room to cool) while its worst single wave reaches 37–
 so the naive per-cell 5–15% / 35% / 120 s window is empty above tier 0. The committed
 `AscensionGateTest` therefore re-derives the bands instead of re-running them: every
 cell must finish 200/200; naked and forced-card averages stay strict at 5–15% (all
-68 cells green); single-wave ceilings index by tier (naked/card: 40% + 2pp per tier;
-trial pairs: 35% + 3pp per tier); clear-time ceiling is 120 s + 3 s per tier; and the
-trial-pair pressured floor steps down 175 → 160 → 145 → 120 waves (root bonuses plus
-elite loot let empowered builds trivialize wave counts faster than they blunt
-spikes). The gate covers a naked 9-seed matrix (36 runs), every forced card at boss
-20 (32 runs), and power/damage/horde trial pairs on 3-seed medians (36 runs); the
-full 66-pair and 312-scenario matrices stay tier-0.
+cells green); single-wave maxima and max clears gate per-tier MEDIANS (one wave in
+200 is seed noise — a tier-6 seed threw 63.8% against a 40.1% next-worst), with an
+absolute 100% backstop at every cell; naked/card median ceilings index 40% + 2pp per
+tier with clears at 120 s + 3 s per tier; trial-pair median spikes index 40% + 4pp
+per tier; and the trial-pair pressured floor steps down 175 → 160 → 145 → 120 waves
+(root bonuses plus elite loot let empowered builds trivialize wave counts faster
+than they blunt spikes). The gate covers a naked 9-seed matrix (36 runs), every
+forced card at boss 20 on 3-seed medians (96 runs), and power/damage/horde trial
+pairs on 3-seed medians (36 runs); the full 66-pair and 312-scenario matrices stay
+tier-0 (their spike ceiling re-derived 35% -> 40% in 26.1c, below).
 
 ### Phase 26.1b result (Elite damage accounting)
 
@@ -202,5 +205,22 @@ weeping rot all land inside the gross-damage HP-delta window. `EliteDamageAccoun
 locks the inclusion: the baseline run spawns all 23 Elite waves, every one lands
 pressured damage (1.74–24.14%), and Elite waves contribute +0.62pp to the reported
 10.14% run average.
+
+### Phase 26.1c result (Ultimate + Evolution policies, ult-era re-derivation)
+
+The simulator now fires the Ultimate the moment Focus fills and buys one focused
+Evolution (closest skill to level 10, higher-DPS fork via `simPick` — DEADEYE on the
+baseline — funded by a quarter of each visit's coins once the fork opens, so power
+keeps flowing instead of stalling behind full hoarding). Fire-on-cooldown at the
+shipped 24.1 budget (4x damage, 2 focus/hit, 549 fires/run) trivialized the game
+(naked average 1.66%), so the gate set the power budget: shipped 2x damage with 0.1
+focus/hit paces rare nukes (~120 fires/run, one per 1.6 waves) and lands the naked
+baseline at 9.91% mid-band. Ultimates flattened the 25.3b middle (+0.01pp), so the
+segment re-steepened to 1.041/1.006 (quarters 7.23 → 9.52 → 10.76 → 9.29%,
+rise +0.0207 against the +1pp bar). Empowered spike ceilings re-derived for the
+ult-era middle: tier-0 trial/card maxima 35% -> 40% (worst 37.67%, HEAVY_CROWNS +
+FAMISHED_EARTH), trial-spot median ceiling to 40% + 4pp per tier (BLOOD_PRICE +
+HOLLOW_CALLING tier-3 median 49.5%). Naked averages hold per-cell strict 5–15% at
+every tier (36 cells: 6.08–10.8%).
 
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

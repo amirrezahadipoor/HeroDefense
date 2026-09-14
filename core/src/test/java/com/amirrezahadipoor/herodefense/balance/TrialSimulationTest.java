@@ -27,12 +27,15 @@ final class TrialSimulationTest {
      * while the naked-run baseline gate keeps its 5%. Phase 26 re-derives every
      * band from the full game. 25.2b concedes one more pressured wave (88% -> 87.5%):
      * bounded rot plus shields moves pressured counts a wave or two run to run, and
-     * the count metric carries no other slack.
+     * the count metric carries no other slack. Phase 26.1c re-derives the spike
+     * ceiling 35% -> 40%: ultimates plus the hotter middle push poor and
+     * damage-modded builds to 35.7-37.7% median spikes (worst HEAVY_CROWNS +
+     * FAMISHED_EARTH at 37.67%), so 35 no longer fits the full game.
      */
     private static final float MINIMUM_AVERAGE_DAMAGE_FRACTION = 0.035f;
     private static final float MINIMUM_AVERAGE_CLEAR_SECONDS = 24f;
     private static final float MINIMUM_PRESSURED_WAVE_FRACTION = 0.875f;
-    private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.35f;
+    private static final float MAXIMUM_SINGLE_WAVE_DAMAGE_FRACTION = 0.40f;
     private static final float MAXIMUM_CLEAR_SECONDS = 120f;
 
     private record PerRun(

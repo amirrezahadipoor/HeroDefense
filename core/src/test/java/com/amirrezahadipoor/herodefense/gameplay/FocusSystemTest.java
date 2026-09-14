@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Test;
 final class FocusSystemTest {
     @Test
     void everyLandedHitChargesAndCritsChargeDouble() {
-        assertEquals(2f, FocusSystem.FOCUS_PER_HIT);
+        assertEquals(0.1f, FocusSystem.FOCUS_PER_HIT);
         GameState state = GameState.newRun(501L);
         assertEquals(0f, state.focus);
 
         FocusSystem.addHits(state, 3, 0, 0);
-        assertEquals(6f, state.focus, 1e-6f);
+        assertEquals(0.3f, state.focus, 1e-6f);
 
         FocusSystem.addHits(state, 2, 2, 0);
-        assertEquals(14f, state.focus, 1e-6f);
+        assertEquals(0.7f, state.focus, 1e-6f);
 
         FocusSystem.addHits(state, 0, 0, 4);
-        assertEquals(22f, state.focus, 1e-6f);
+        assertEquals(1.1f, state.focus, 1e-6f);
     }
 
     @Test
@@ -79,7 +79,7 @@ final class FocusSystemTest {
         assertEquals(2.4f, FocusSystem.fillRateMultiplier(fresh), 1e-5f);
 
         FocusSystem.addHits(fresh, 10, 0, 0);
-        assertEquals(48f, fresh.focus, 1e-4f);
+        assertEquals(2.4f, fresh.focus, 1e-4f);
     }
 
     @Test

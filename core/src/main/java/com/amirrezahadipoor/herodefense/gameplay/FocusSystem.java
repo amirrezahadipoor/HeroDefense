@@ -9,7 +9,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
  * deterministic; rendering reads {@link #ratio} for the ring around the Hero.
  */
 public final class FocusSystem {
-    public static final float FOCUS_PER_HIT = 2f;
+    public static final float FOCUS_PER_HIT = 0.1f;
     public static final float CRITICAL_FOCUS_MULTIPLIER = 2f;
     /** +2% fill per Hero level above 1, +10% per equipped Mythic. */
     public static final float FILL_LEVEL_BONUS = 0.02f;
