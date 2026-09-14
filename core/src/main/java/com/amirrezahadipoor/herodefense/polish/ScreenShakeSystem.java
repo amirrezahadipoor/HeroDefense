@@ -19,6 +19,11 @@ public final class ScreenShakeSystem {
         trigger(0.34f, 14f);
     }
 
+    /** Ultimate blast: the strongest kick in the game, gated by the Focus meter. */
+    public void triggerUltimate() {
+        trigger(0.45f, 20f);
+    }
+
     /** Arrival rumble: longer than a Hero hit but weaker than a boss kill. */
     public void triggerBossEntrance() {
         trigger(0.24f, 8f);

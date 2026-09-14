@@ -16,6 +16,10 @@ final class HudTouchLayoutTest {
         assertTrue(HudTouchLayout.pauseAt(630f, 1115f));
         assertTrue(HudTouchLayout.inventoryAt(270f, 76f));
         assertTrue(HudTouchLayout.shopAt(450f, 76f));
+        assertTrue(HudTouchLayout.ultimateAt(630f, 76f));
+        assertFalse(HudTouchLayout.ultimateAt(450f, 76f));
+        assertFalse(HudTouchLayout.shopAt(630f, 76f));
+        assertTrue(HudTouchLayout.ULTIMATE_X + HudTouchLayout.UTILITY_BUTTON_WIDTH <= 720f);
         assertFalse(HudTouchLayout.pauseAt(490f, 1115f));
         assertFalse(HudTouchLayout.speedAt(630f, 1115f));
         assertFalse(HudTouchLayout.inventoryAt(450f, 76f));

@@ -19,12 +19,14 @@ import com.amirrezahadipoor.herodefense.gameplay.EnemyFactory;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMeleeAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyMovementSystem;
 import com.amirrezahadipoor.herodefense.gameplay.EnemyWaveSpawner;
+import com.amirrezahadipoor.herodefense.gameplay.FocusSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAnimationController;
 import com.amirrezahadipoor.herodefense.gameplay.CombatEvent;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAttackUpdateResult;
 import com.amirrezahadipoor.herodefense.gameplay.HeroAutoAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroDamageSystem;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
+import com.amirrezahadipoor.herodefense.gameplay.HeroUltimateSystem;
 import com.amirrezahadipoor.herodefense.gameplay.InventoryEquipmentSystem;
 import com.amirrezahadipoor.herodefense.gameplay.ItemDropSystem;
 import com.amirrezahadipoor.herodefense.gameplay.KillRewardResult;
@@ -32,6 +34,7 @@ import com.amirrezahadipoor.herodefense.gameplay.KillRewardSystem;
 import com.amirrezahadipoor.herodefense.gameplay.WaveCompletion;
 import com.amirrezahadipoor.herodefense.gameplay.OpeningCinematic;
 import com.amirrezahadipoor.herodefense.gameplay.PlantingCeremony;
+import com.amirrezahadipoor.herodefense.gameplay.UltimateResult;
 import com.amirrezahadipoor.herodefense.gameplay.WaveLifecycleSystem;
 import com.amirrezahadipoor.herodefense.input.CodexTouchController;
 import com.amirrezahadipoor.herodefense.input.GameOverTouchLayout;
@@ -783,6 +786,14 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     return true;
                 }
                 if (flow.state() == GameScreenState.PLAYING
+                    && HudTouchLayout.ultimateAt(worldX, worldY)) {
+                    if (FocusSystem.isFull(gameState)) {
+                        fireUltimate();
+                        saveNow();
+                    }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PLAYING
                     && simulationSpeedTouchController.tap(gameState, worldX, worldY)) {
                     saveNow();
                     return true;
@@ -1002,6 +1013,22 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             storyBeatLine = reflection;
             storyBeatSeconds = 0f;
         }
+    }
+
+    /** Fires the Ultimate and plays its blast, beam fan, shake, and sound. */
+    private void fireUltimate() {
+        UltimateResult result = new HeroUltimateSystem().fire(gameState);
+        if (!result.fired()) return;
+        particleSystem.emitUltimateBlast(result.blastX(), result.blastY());
+        for (Enemy foe : result.arcTargets()) {
+            if (foe == null) continue;
+            particleSystem.emitChainArc(
+                result.blastX(), result.blastY(), foe.x, foe.y + 40f
+            );
+        }
+        screenShakeSystem.triggerUltimate();
+        audioManager.play(AudioCue.CHAIN_LIGHTNING);
+        audioManager.play(AudioCue.CRITICAL);
     }
 
     /** Sparkles where a homing drop lands on the Inventory control, before the drop is removed. */

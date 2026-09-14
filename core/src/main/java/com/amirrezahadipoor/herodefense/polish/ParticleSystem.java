@@ -73,6 +73,23 @@ public final class ParticleSystem {
         emitBurst(ParticleType.BOSS_DUST, x, y, bossMotes(), 110f, 0.85f, 9f);
     }
 
+    /**
+     * Ultimate blast: one large shockwave, an enlarged double critical ring,
+     * and a radial gold star, all inside the Ultimate budget multiplier.
+     */
+    public void emitUltimateBlast(float x, float y) {
+        add(ParticleType.BOSS_SHOCKWAVE, x, y, 0f, 0f, 0.60f, 260f);
+        add(ParticleType.CRITICAL_RING, x, y, 0f, 0f, 0.30f, 90f);
+        add(ParticleType.CRITICAL_RING, x, y, 0f, 0f, 0.42f, 140f);
+        int motes = Math.round(VfxBudget.NORMAL_HIT_MAX_MOTES * VfxBudget.ULTIMATE_MULTIPLIER);
+        emitBurst(ParticleType.HIT, x, y, motes, 200f, 0.40f, 7f);
+        for (int index = 0; index < VfxBudget.ULTIMATE_SPARKS; index++) {
+            float angle = index * (float) (Math.PI * 2.0 / VfxBudget.ULTIMATE_SPARKS);
+            add(ParticleType.CRITICAL_SPARK, x, y,
+                (float) Math.cos(angle) * 260f, (float) Math.sin(angle) * 260f, 0.26f, 6f);
+        }
+    }
+
     /** Boss death: a larger shockwave layered over the standard collapse treatment. */
     public void emitBossDeath(float x, float y) {
         emitDeath(x, y);

@@ -8,6 +8,13 @@ public final class VfxBudget {
     /** Critical and boss events may exceed the normal hit only through these multipliers. */
     public static final float CRITICAL_MULTIPLIER = 1.5f;
     public static final float BOSS_MULTIPLIER = 2.0f;
+    /**
+     * The Ultimate's higher, rate-limited budget: one blast per full Focus
+     * meter, at most this multiple of a normal hit plus a capped beam fan.
+     */
+    public static final float ULTIMATE_MULTIPLIER = 3.0f;
+    public static final int ULTIMATE_MAX_ARCS = 8;
+    public static final int ULTIMATE_SPARKS = 8;
     /** Phase 18 skill effects: each arc/stun is cheaper than a normal hit so volleys stay bounded. */
     public static final int CRITICAL_SPARKS = 4;
     public static final int CHAIN_ARC_MAX_MOTES = 4;

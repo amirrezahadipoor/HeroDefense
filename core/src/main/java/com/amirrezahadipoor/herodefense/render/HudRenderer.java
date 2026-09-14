@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.gameplay.HeroProgressionSystem;
+import com.amirrezahadipoor.herodefense.gameplay.FocusSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.trials.TrialId;
@@ -96,6 +97,11 @@ public final class HudRenderer implements AutoCloseable {
             HudTouchLayout.SHOP_X, HudTouchLayout.utilityButtonY(),
             HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT
         );
+        UiFrameRenderer.State ultimateState = frames.resolve(
+            true, false,
+            HudTouchLayout.ULTIMATE_X, HudTouchLayout.utilityButtonY(),
+            HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT
+        );
 
         float up = HudTouchLayout.topShift();
         batch.setProjectionMatrix(projection);
@@ -132,6 +138,14 @@ public final class HudRenderer implements AutoCloseable {
             HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT,
             true, false
         );
+        if (FocusSystem.isFull(state)) {
+            frames.draw(
+                batch, UiFrameRenderer.Kind.BUTTON,
+                HudTouchLayout.ULTIMATE_X, HudTouchLayout.utilityButtonY(),
+                HudTouchLayout.UTILITY_BUTTON_WIDTH, HudTouchLayout.UTILITY_BUTTON_HEIGHT,
+                true, true
+            );
+        }
         batch.end();
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -230,6 +244,12 @@ public final class HudRenderer implements AutoCloseable {
             batch, icons, "shop", "SHOP",
             HudTouchLayout.SHOP_X, shopState
         );
+        if (FocusSystem.isFull(state)) {
+            drawUtilityAction(
+                batch, icons, "general_power", "ULTIMATE",
+                HudTouchLayout.ULTIMATE_X, ultimateState
+            );
+        }
         batch.end();
     }
 

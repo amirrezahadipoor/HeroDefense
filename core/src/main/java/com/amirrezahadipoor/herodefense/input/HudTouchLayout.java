@@ -20,6 +20,7 @@ public final class HudTouchLayout {
     public static final float UTILITY_BUTTON_HEIGHT = 104f;
     public static final float INVENTORY_X = 195f;
     public static final float SHOP_X = 375f;
+    public static final float ULTIMATE_X = 555f;
     /** Upper bound on how far either HUD row may leave the 1280 design grid. */
     public static final float MAX_EDGE_SHIFT = 72f;
 
@@ -58,6 +59,10 @@ public final class HudTouchLayout {
 
     public static boolean shopAt(float x, float y) {
         return insideUtility(x, y, SHOP_X);
+    }
+
+    public static boolean ultimateAt(float x, float y) {
+        return insideUtility(x, y, ULTIMATE_X);
     }
 
     private static boolean inside(float x, float y, float left) {

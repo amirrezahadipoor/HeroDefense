@@ -47,6 +47,21 @@ final class PremiumVfxRestraintTest {
     }
 
     @Test
+    void ultimateBlastStaysWithinItsDocumentedBudget() {
+        assertEquals(3.0f, VfxBudget.ULTIMATE_MULTIPLIER);
+        assertEquals(8, VfxBudget.ULTIMATE_MAX_ARCS);
+        ParticleSystem particles = new ParticleSystem();
+        particles.emitUltimateBlast(0f, 0f);
+        assertEquals(1, count(particles, ParticleType.BOSS_SHOCKWAVE));
+        assertEquals(2, count(particles, ParticleType.CRITICAL_RING));
+        assertEquals(
+            Math.round(VfxBudget.NORMAL_HIT_MAX_MOTES * VfxBudget.ULTIMATE_MULTIPLIER),
+            count(particles, ParticleType.HIT)
+        );
+        assertEquals(VfxBudget.ULTIMATE_SPARKS, count(particles, ParticleType.CRITICAL_SPARK));
+    }
+
+    @Test
     void skillEffectsStayCheaperThanANormalHitAndExpire() {
         ParticleSystem particles = new ParticleSystem();
         particles.emitChainArc(0f, 0f, 120f, 40f);
