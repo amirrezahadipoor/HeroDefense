@@ -62,6 +62,11 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             GameOverTouchLayout.RESTART_X, GameOverTouchLayout.RESTART_Y,
             GameOverTouchLayout.RESTART_WIDTH, GameOverTouchLayout.RESTART_HEIGHT
         );
+        UiFrameRenderer.State ascendState = frames.resolve(
+            interactive, false,
+            GameOverTouchLayout.ASCEND_X, GameOverTouchLayout.ASCEND_Y,
+            GameOverTouchLayout.ASCEND_WIDTH, GameOverTouchLayout.ASCEND_HEIGHT
+        );
 
         batch.setProjectionMatrix(projection);
         batch.setColor(1f, 1f, 1f, reveal);
@@ -74,6 +79,10 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             GameOverTouchLayout.RESTART_X, GameOverTouchLayout.RESTART_Y,
             GameOverTouchLayout.RESTART_WIDTH, GameOverTouchLayout.RESTART_HEIGHT,
             interactive, victory);
+        frames.draw(batch, UiFrameRenderer.Kind.BUTTON,
+            GameOverTouchLayout.ASCEND_X, GameOverTouchLayout.ASCEND_Y,
+            GameOverTouchLayout.ASCEND_WIDTH, GameOverTouchLayout.ASCEND_HEIGHT,
+            interactive, true);
 
         Color titleColor = victory ? OverlayText.GOLD : OverlayText.NEGATIVE;
         text.drawCentered(batch, victory ? "RUN COMPLETE" : "DEFEAT", 360f, 1168f, 0.78f,
@@ -94,13 +103,24 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
             MainMenuRenderer.coinTotalLabel(state.totalKillCoinsEarned), reveal);
 
         float offset = MainMenuRenderer.pressedOffset(restartState);
-        icons.draw(batch, "restart", 152f, GameOverTouchLayout.RESTART_Y + 34f + offset, 92f,
+        icons.draw(batch, "restart", 152f, GameOverTouchLayout.RESTART_Y + 24f + offset, 64f,
             restartState);
-        text.draw(batch, victory ? "DEFEND AGAIN" : "RESTART AT WAVE 1", 268f,
-            GameOverTouchLayout.RESTART_Y + 108f + offset, 1.28f,
+        text.draw(batch, victory ? "DEFEND AGAIN" : "RESTART AT WAVE 1", 228f,
+            GameOverTouchLayout.RESTART_Y + 68f + offset, 1.08f,
             interactive ? OverlayText.IVORY : OverlayText.MUTED, reveal);
-        text.draw(batch, "Begin a fresh run from Wave 1", 268f,
-            GameOverTouchLayout.RESTART_Y + 60f + offset, 0.72f, OverlayText.SUBTLE, reveal);
+        text.draw(batch, "Begin fresh run same tier", 228f,
+            GameOverTouchLayout.RESTART_Y + 34f + offset, 0.62f, OverlayText.SUBTLE, reveal);
+
+        float ascOffset = MainMenuRenderer.pressedOffset(ascendState);
+        icons.draw(batch, "general_power", 152f, GameOverTouchLayout.ASCEND_Y + 24f + ascOffset, 64f,
+            ascendState);
+        int heartwoodPreview = GameState.calculateHeartwoodReward(state.peakWaveReached, state.ascensionTier, !state.heroDiedThisRun);
+        text.draw(batch, "ASCEND  |  +" + heartwoodPreview + " HEARTWOOD", 228f,
+            GameOverTouchLayout.ASCEND_Y + 68f + ascOffset, 1.08f,
+            interactive ? OverlayText.GOLD : OverlayText.MUTED, reveal);
+        text.draw(batch, "Tier " + state.ascensionTier + " -> " + (state.ascensionTier + 1) + "  |  Harder foes, permanent roots", 228f,
+            GameOverTouchLayout.ASCEND_Y + 34f + ascOffset, 0.62f, OverlayText.SUBTLE, reveal);
+
         batch.end();
         batch.setColor(Color.WHITE);
     }

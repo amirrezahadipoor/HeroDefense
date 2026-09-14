@@ -538,8 +538,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     if (GameOverOverlayRenderer.isInteractive(
                         gameOverPresentationSeconds,
                         gameState.runComplete
-                    ) && GameOverTouchLayout.restartAt(worldX, worldY)) {
-                        startNewRun();
+                    )) {
+                        GameOverTouchLayout.Action action = GameOverTouchLayout.actionAt(worldX, worldY);
+                        if (action == GameOverTouchLayout.Action.RESTART) {
+                            startNewRunSameTier();
+                        } else if (action == GameOverTouchLayout.Action.ASCEND) {
+                            ascendRun();
+                        }
                     }
                     return true;
                 }
@@ -596,6 +601,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     } else {
                         HeroStat stat = StatShopTouchLayout.statAt(worldX, worldY);
                         if (statShopSystem.purchase(gameState, stat)) {
+                            gameState.shopStatsBoughtThisRun++;
+                            gameState.bareHandedEligible = false;
                             audioManager.play(AudioCue.PURCHASE);
                             saveNow();
                         }
@@ -679,6 +686,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     }
 
     private void startNewRun() {
+        // Legacy entry used by tests — full wipe.
         saves.clear();
         gameState = GameState.newRun(System.currentTimeMillis());
         new StarterLoadoutSystem().provisionOnce(gameState);
@@ -688,7 +696,47 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         particleSystem.clear();
         floatingCoinTextSystem.clear();
         floatingDamageTextSystem.clear();
-        // Wave 1 spawns only after the opening; a Continue from this save replays it.
+        flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.CINEMATIC);
+        openingCinematic.begin();
+        saveNow();
+    }
+
+    private void startNewRunSameTier() {
+        if (gameState == null) {
+            startNewRun();
+            return;
+        }
+        long seed = System.currentTimeMillis();
+        gameState.resetForNewRun(seed);
+        new StarterLoadoutSystem().provisionOnce(gameState);
+        simulationSeconds = 0f;
+        gameOverPresentationSeconds = 0f;
+        hitStopSystem.clear();
+        particleSystem.clear();
+        floatingCoinTextSystem.clear();
+        floatingDamageTextSystem.clear();
+        flow.transitionTo(GameScreenState.PLAYING);
+        flow.transitionTo(GameScreenState.CINEMATIC);
+        openingCinematic.begin();
+        saveNow();
+    }
+
+    private void ascendRun() {
+        if (gameState == null) {
+            startNewRun();
+            return;
+        }
+        gameState.ascendAndAwardHeartwood();
+        long seed = System.currentTimeMillis();
+        gameState.resetForNewRun(seed);
+        new StarterLoadoutSystem().provisionOnce(gameState);
+        simulationSeconds = 0f;
+        gameOverPresentationSeconds = 0f;
+        hitStopSystem.clear();
+        particleSystem.clear();
+        floatingCoinTextSystem.clear();
+        floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
         openingCinematic.begin();
@@ -902,7 +950,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         emitDefeatParticles(gameState);
         if (!gameOver && gameState.hero.alive) {
-            autoPotionSystem.update(gameState);
+            com.amirrezahadipoor.herodefense.potions.PotionTier used = autoPotionSystem.update(gameState);
+            if (used != null) {
+                gameState.potionsUsedThisRun++;
+                gameState.noPotionRun = false;
+            }
         }
         int itemDrops = itemDropSystem.processDefeatedEnemies(gameState);
         if (itemDrops > 0) audioManager.play(AudioCue.ITEM_DROP);
@@ -927,6 +979,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             audioManager.play(AudioCue.ITEM_DROP);
         }
         if (gameOver) {
+            gameState.heroDiedThisRun = true;
+            if (gameState.waveNumber > gameState.peakWaveReached) {
+                gameState.peakWaveReached = gameState.waveNumber;
+            }
             particleSystem.emitTreeDestruction(WorldLayout.WORLD_TREE_X, WorldLayout.WORLD_TREE_Y);
             if (gameState.secondTreePlanted) {
                 particleSystem.emitTreeDestruction(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y);
@@ -935,7 +991,6 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
         } else if (killRewards.levelsGained() > 0 && gameState.hero.alive) {
-            // A last-breath kill during the tree siege must not open Level-Up over the defeat.
             flow.transitionTo(GameScreenState.LEVEL_UP);
             saveNow();
         } else {
@@ -945,11 +1000,20 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 audioManager.play(AudioCue.BOSS_ENTRANCE);
                 presentBossEntrance(gameState);
             }
+            if (waveCompletion != WaveCompletion.NO_CHANGE) {
+                if (gameState.waveNumber > gameState.peakWaveReached) {
+                    gameState.peakWaveReached = gameState.waveNumber;
+                }
+            }
             if (waveCompletion == WaveCompletion.BOSS_REWARD) {
                 flow.transitionTo(GameScreenState.CARD_CHOICE);
             } else if (waveCompletion == WaveCompletion.PLANTING_CEREMONY) {
                 beginPlantingCeremony();
             } else if (waveCompletion == WaveCompletion.RUN_COMPLETED) {
+                gameState.runComplete = true;
+                if (gameState.waveNumber > gameState.peakWaveReached) {
+                    gameState.peakWaveReached = gameState.waveNumber;
+                }
                 flow.transitionTo(GameScreenState.GAME_OVER);
             }
             if (waveCompletion != WaveCompletion.NO_CHANGE) {

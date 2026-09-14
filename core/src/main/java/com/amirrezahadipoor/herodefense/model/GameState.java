@@ -50,6 +50,33 @@ public final class GameState {
     public float treeSiegeRemainingSeconds;
     public long nextEntityId = 2L;
 
+    // --- Ascension (Phase 20) ---
+    public int ascensionTier;
+    public int heartwood;
+    public int peakWaveReached = 1;
+    public boolean heroDiedThisRun;
+    public int potionsUsedThisRun;
+    public float fastestWaveClearSeconds = Float.MAX_VALUE;
+    public float longestPauseSeconds;
+    public int shopStatsBoughtThisRun;
+    public float focus;
+    public float focusMax = 100f;
+
+    // Meta-progression
+    public Map<String, Boolean> rootNodesPurchased = new LinkedHashMap<>();
+    public Map<String, Boolean> codexUnlocked = new LinkedHashMap<>();
+    public Map<String, Integer> eliteKillCounts = new LinkedHashMap<>();
+    public Map<String, Boolean> firstBossKills = new LinkedHashMap<>();
+    public Map<String, String> skillEvolutions = new LinkedHashMap<>();
+    public List<String> activeTrials = new ArrayList<>();
+    public Map<String, Boolean> trialUnlocked = new LinkedHashMap<>();
+
+    // Run stats for secret codex entries
+    public boolean bareHandedEligible = true;
+    public boolean noPotionRun = true;
+    public int totalRunsCompleted;
+    public int totalAscensionsCompleted;
+
     public Hero hero = new Hero(1L, ARENA_CENTER_X, ARENA_CENTER_Y);
     public List<Enemy> aliveEnemies = new ArrayList<>();
     public List<Boss> aliveBosses = new ArrayList<>();
@@ -152,7 +179,6 @@ public final class GameState {
             ceremonyPending = false;
             secondTreePlanted = false;
         } else if (!ceremonyPending) {
-            // Any run already past the planting wave has its second tree standing.
             secondTreePlanted = true;
         }
         if (ceremonyPending) waveActive = false;
@@ -184,6 +210,130 @@ public final class GameState {
         if (awaitingBossReward) waveActive = false;
         ensurePotionSlots();
         nextEntityId = Math.max(2L, nextEntityId);
+
+        // --- Ascension fields (Phase 20) ---
+        ascensionTier = Math.max(0, ascensionTier);
+        heartwood = Math.max(0, heartwood);
+        peakWaveReached = Math.max(1, Math.min(FINAL_WAVE, peakWaveReached));
+        if (waveNumber > peakWaveReached) peakWaveReached = waveNumber;
+        potionsUsedThisRun = Math.max(0, potionsUsedThisRun);
+        fastestWaveClearSeconds = Float.isFinite(fastestWaveClearSeconds) && fastestWaveClearSeconds > 0f
+            ? fastestWaveClearSeconds : Float.MAX_VALUE;
+        longestPauseSeconds = Float.isFinite(longestPauseSeconds) ? Math.max(0f, longestPauseSeconds) : 0f;
+        shopStatsBoughtThisRun = Math.max(0, shopStatsBoughtThisRun);
+        focus = Float.isFinite(focus) ? Math.max(0f, Math.min(focusMax, focus)) : 0f;
+        focusMax = Float.isFinite(focusMax) && focusMax > 0f ? focusMax : 100f;
+        totalRunsCompleted = Math.max(0, totalRunsCompleted);
+        totalAscensionsCompleted = Math.max(0, totalAscensionsCompleted);
+        if (rootNodesPurchased == null) rootNodesPurchased = new LinkedHashMap<>();
+        if (codexUnlocked == null) codexUnlocked = new LinkedHashMap<>();
+        if (eliteKillCounts == null) eliteKillCounts = new LinkedHashMap<>();
+        if (firstBossKills == null) firstBossKills = new LinkedHashMap<>();
+        if (skillEvolutions == null) skillEvolutions = new LinkedHashMap<>();
+        if (activeTrials == null) activeTrials = new ArrayList<>();
+        if (trialUnlocked == null) trialUnlocked = new LinkedHashMap<>();
+        rootNodesPurchased.values().removeIf(v -> v == null);
+        codexUnlocked.values().removeIf(v -> v == null);
+        firstBossKills.values().removeIf(v -> v == null);
+        skillEvolutions.values().removeIf(v -> v == null);
+        trialUnlocked.values().removeIf(v -> v == null);
+        activeTrials.removeIf(t -> t == null);
+        eliteKillCounts.replaceAll((k, v) -> v == null ? 0 : Math.max(0, v));
+    }
+
+    public static int calculateHeartwoodReward(int peakWave, int ascensionTier, boolean flawless) {
+        int base = peakWave / 5;
+        if (peakWave >= FINAL_WAVE) base += 50;
+        base += ascensionTier * 10;
+        if (flawless) base += 20;
+        return Math.max(0, base);
+    }
+
+    public void recordWaveReached(int wave) {
+        if (wave > peakWaveReached) peakWaveReached = wave;
+        if (wave > waveNumber) waveNumber = wave;
+    }
+
+    public void resetForNewRun(long newSeed) {
+        // Keep meta-progression
+        int keptTier = ascensionTier;
+        int keptHeartwood = heartwood;
+        Map<String, Boolean> keptRoots = new LinkedHashMap<>(rootNodesPurchased);
+        Map<String, Boolean> keptCodex = new LinkedHashMap<>(codexUnlocked);
+        Map<String, Integer> keptElite = new LinkedHashMap<>(eliteKillCounts);
+        Map<String, Boolean> keptFirstBoss = new LinkedHashMap<>(firstBossKills);
+        Map<String, Boolean> keptTrialsUnlocked = new LinkedHashMap<>(trialUnlocked);
+        int keptRuns = totalRunsCompleted;
+        int keptAscensions = totalAscensionsCompleted;
+
+        // Full reset to fresh run
+        GameState fresh = newRun(newSeed);
+        fresh.ascensionTier = keptTier;
+        fresh.heartwood = keptHeartwood;
+        fresh.rootNodesPurchased = keptRoots;
+        fresh.codexUnlocked = keptCodex;
+        fresh.eliteKillCounts = keptElite;
+        fresh.firstBossKills = keptFirstBoss;
+        fresh.trialUnlocked = keptTrialsUnlocked;
+        fresh.totalRunsCompleted = keptRuns;
+        fresh.totalAscensionsCompleted = keptAscensions;
+        fresh.peakWaveReached = 1;
+
+        // Copy fresh into this
+        this.runSeed = fresh.runSeed;
+        this.combatRandomState = fresh.combatRandomState;
+        this.waveNumber = 1;
+        this.coins = 0;
+        this.heroLevel = 1;
+        this.heroExperience = 0;
+        this.unspentTalentPoints = 0;
+        this.defeatedBosses = 0;
+        this.totalKills = 0;
+        this.totalKillCoinsEarned = 0;
+        this.worldTreeHealth = worldTreeMaxHealth;
+        this.waveActive = false;
+        this.starterLoadoutGranted = false;
+        this.awaitingBossReward = false;
+        this.pendingRewardBossNumber = 0;
+        this.runComplete = false;
+        this.ceremonyPending = false;
+        this.secondTreePlanted = false;
+        this.treeSiegeRemainingSeconds = 0f;
+        this.heroDiedThisRun = false;
+        this.potionsUsedThisRun = 0;
+        this.fastestWaveClearSeconds = Float.MAX_VALUE;
+        this.longestPauseSeconds = 0f;
+        this.shopStatsBoughtThisRun = 0;
+        this.bareHandedEligible = true;
+        this.noPotionRun = true;
+        this.focus = 0f;
+        this.hero = fresh.hero;
+        this.aliveEnemies = fresh.aliveEnemies;
+        this.aliveBosses = fresh.aliveBosses;
+        this.projectiles = fresh.projectiles;
+        this.drops = fresh.drops;
+        this.inventory = fresh.inventory;
+        this.equippedItems = fresh.equippedItems;
+        this.permanentEffects = fresh.permanentEffects;
+        this.shopUpgradeLevels = fresh.shopUpgradeLevels;
+        this.skillLevels = fresh.skillLevels;
+        this.chosenRewardCards = fresh.chosenRewardCards;
+        this.pendingRewardCards = fresh.pendingRewardCards;
+        this.healthPotions = fresh.healthPotions;
+        this.activeTrials = fresh.activeTrials;
+        this.skillEvolutions = fresh.skillEvolutions;
+        this.nextEntityId = 2L;
+        validateAndRepair();
+    }
+
+    public int ascendAndAwardHeartwood() {
+        boolean flawless = !heroDiedThisRun;
+        int earned = calculateHeartwoodReward(peakWaveReached, ascensionTier, flawless);
+        heartwood += earned;
+        ascensionTier++;
+        totalAscensionsCompleted++;
+        totalRunsCompleted++;
+        return earned;
     }
 
     private static long initialRandomState(long seed) {
