@@ -32,6 +32,21 @@ public final class RarityGlowRenderer implements AutoCloseable {
         VisualRarity rarity,
         float runTimeSeconds
     ) {
+        draw(batch, region, x, y, width, height, rarity, runTimeSeconds, 1f);
+    }
+
+    /** Variant scaling the aura intensity (bow glow escalates with progression). */
+    public void draw(
+        SpriteBatch batch,
+        TextureRegion region,
+        float x,
+        float y,
+        float width,
+        float height,
+        VisualRarity rarity,
+        float runTimeSeconds,
+        float intensityMultiplier
+    ) {
         if (!rarity.isGlowing()) {
             batch.draw(region, x, y, width, height);
             return;
@@ -42,7 +57,7 @@ public final class RarityGlowRenderer implements AutoCloseable {
         glowShader.setUniformf("u_texelSize", 1f / texture.getWidth(), 1f / texture.getHeight());
         glowShader.setUniformf("u_glowColor", rarity.red(), rarity.green(), rarity.blue(), 1f);
         glowShader.setUniformf("u_time", runTimeSeconds);
-        glowShader.setUniformf("u_intensity", rarity.intensity());
+        glowShader.setUniformf("u_intensity", rarity.intensity() * intensityMultiplier);
         batch.draw(region, x, y, width, height);
         batch.flush();
         batch.setShader(null);

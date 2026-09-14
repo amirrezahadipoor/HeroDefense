@@ -28,8 +28,14 @@ public final class EquipmentSpriteRenderer implements AutoCloseable {
     private final Map<String, TextureAtlas> loadedAtlases = new HashMap<>();
     private final RarityGlowRenderer rarityGlowRenderer = new RarityGlowRenderer();
 
+    /** Bow aura multiplier from raw progression: 1.0 unworked, 2.2 at the cap. */
+    static float progressionGlowMultiplier(GameState state) {
+        return 1f + CombatEntityRenderer.progressionStep(state) * 0.12f;
+    }
+
     public void draw(SpriteBatch batch, GameState state, int frameIndex, float runTimeSeconds) {
         Set<String> activeIds = new HashSet<>();
+        float bowGlow = progressionGlowMultiplier(state);
         for (EquipmentSlot slot : LAYER_ORDER) {
             Item item = state.equippedItems.get(slot.name());
             if (item == null || item.id == null || item.id.isEmpty()) {
@@ -60,7 +66,8 @@ public final class EquipmentSpriteRenderer implements AutoCloseable {
                 HeroSpriteRenderer.FRAME_SIZE,
                 HeroSpriteRenderer.FRAME_SIZE,
                 VisualRarity.fromTier(item.tier),
-                runTimeSeconds
+                runTimeSeconds,
+                slot == EquipmentSlot.WEAPON ? bowGlow : 1f
             );
         }
         disposeUnequipped(activeIds);

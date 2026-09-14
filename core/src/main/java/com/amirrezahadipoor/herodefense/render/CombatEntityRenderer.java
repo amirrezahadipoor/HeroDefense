@@ -18,7 +18,9 @@ import com.amirrezahadipoor.herodefense.model.DropCollectionStage;
 import com.amirrezahadipoor.herodefense.model.DropEntity;
 import com.amirrezahadipoor.herodefense.model.Enemy;
 import com.amirrezahadipoor.herodefense.model.EnemyType;
+import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.model.Item;
 import com.amirrezahadipoor.herodefense.model.Projectile;
 import com.amirrezahadipoor.herodefense.potions.PotionTier;
 
@@ -41,6 +43,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
         + HudTouchLayout.UTILITY_BUTTON_HEIGHT * 0.5f;
     private static final float DROP_HOMING_ARC_HEIGHT = 86f;
     static final int PROJECTILE_TRAIL_STEPS = 3;
+    static final int MAX_PROGRESSION_STEP = 10;
     private static final Set<String> BOSS_ASSET_KEYS = bossAssetKeys();
 
     private final Map<String, EntityClips> clipsByKey = new LinkedHashMap<>();
@@ -116,6 +119,11 @@ public final class CombatEntityRenderer implements AutoCloseable {
     }
 
     private void drawProjectiles(SpriteBatch batch, GameState state) {
+        int power = progressionStep(state);
+        float heat = trailHeat(power);
+        float goldRed = 0.93f + (1f - 0.93f) * heat;
+        float goldGreen = 0.71f + (0.95f - 0.71f) * heat;
+        float goldBlue = 0.25f + (0.75f - 0.25f) * heat;
         for (Projectile projectile : state.projectiles) {
             if (projectile == null || !projectile.active) continue;
             float angle = MathUtils.atan2(projectile.velocityY, projectile.velocityX)
@@ -128,15 +136,15 @@ public final class CombatEntityRenderer implements AutoCloseable {
             float ny = speed <= 0f ? 0f : projectile.velocityY / speed;
             for (int step = 1; step <= PROJECTILE_TRAIL_STEPS; step++) {
                 float back = step * 9f;
-                float alpha = projectileTrailAlpha(step);
+                float alpha = projectileTrailAlpha(step, power);
                 if (projectile.critical) {
                     batch.setColor(0.35f, 0.92f, 0.96f, alpha);
                 } else if (projectile.secondary) {
                     batch.setColor(0.62f, 0.86f, 0.58f, alpha * 0.9f);
                 } else {
-                    batch.setColor(0.93f, 0.71f, 0.25f, alpha);
+                    batch.setColor(goldRed, goldGreen, goldBlue, alpha);
                 }
-                float size = (projectile.secondary ? 6f : 5f) - step;
+                float size = (projectile.secondary ? 6f : 5f) - step + power * 0.25f;
                 batch.draw(
                     pixel,
                     projectile.x - nx * back - size * 0.5f,
@@ -179,7 +187,39 @@ public final class CombatEntityRenderer implements AutoCloseable {
     }
 
     static float projectileTrailAlpha(int step) {
-        return Math.max(0f, 0.55f - step * 0.15f);
+        return projectileTrailAlpha(step, 0);
+    }
+
+    static float projectileTrailAlpha(int step, int powerStep) {
+        float boost =
+            Math.max(0, Math.min(MAX_PROGRESSION_STEP, powerStep)) * 0.03f;
+        return Math.min(0.85f, Math.max(0f, 0.55f - step * 0.15f) + boost);
+    }
+
+    /** 0..1 heat of a normal arrow's trail gold as raw progression climbs. */
+    static float trailHeat(int powerStep) {
+        return Math.max(0, Math.min(MAX_PROGRESSION_STEP, powerStep))
+            / (float) MAX_PROGRESSION_STEP;
+    }
+
+    /**
+     * Raw progression in 0..10: the worn bow's Anvil forge level plus the
+     * Ascension tier. Drives arrow-trail and bow-glow escalation.
+     */
+    static int progressionStep(GameState state) {
+        if (state == null) return 0;
+        int forge = 0;
+        if (state.equippedItems != null) {
+            Item bow = state.equippedItems.get(EquipmentSlot.WEAPON.name());
+            if (bow != null) {
+                forge = Math.max(
+                    0, Math.min(GameState.MAX_ITEM_UPGRADE, bow.upgradeLevel)
+                );
+            }
+        }
+        return Math.max(
+            0, Math.min(MAX_PROGRESSION_STEP, forge + Math.max(0, state.ascensionTier))
+        );
     }
 
     private void drawDrops(SpriteBatch batch, GameState state, float runTimeSeconds) {
