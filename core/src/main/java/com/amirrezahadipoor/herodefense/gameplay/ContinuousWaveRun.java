@@ -40,6 +40,7 @@ public final class ContinuousWaveRun {
         state.aliveEnemies.clear();
         state.aliveBosses.clear();
         state.projectiles.clear();
+        if (state.rotTrail != null) state.rotTrail.clear();
         state.drops.removeIf(drop -> drop == null || !drop.active);
         state.hero.currentTargetId = -1L;
     }

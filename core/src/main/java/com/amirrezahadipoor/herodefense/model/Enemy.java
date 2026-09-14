@@ -61,6 +61,9 @@ public class Enemy extends ArenaEntity {
         if (!alive || amount <= 0f) {
             return;
         }
+        if (affixShieldRemainingSeconds > 0f) {
+            return;
+        }
         health = Math.max(0f, health - amount);
         if (health == 0f) {
             alive = false;

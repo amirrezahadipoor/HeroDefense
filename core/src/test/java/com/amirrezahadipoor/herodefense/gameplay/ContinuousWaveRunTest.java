@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.amirrezahadipoor.herodefense.model.GameState;
+import com.amirrezahadipoor.herodefense.model.RotTrailSegment;
 import com.amirrezahadipoor.herodefense.model.Hero;
 import org.junit.jupiter.api.Test;
 
@@ -55,6 +56,14 @@ final class ContinuousWaveRunTest {
         second.wave200ReachedCount = 1;
         run.completeCurrentWave(second);
         assertEquals(2, second.wave200ReachedCount);
+    }
+
+    @Test
+    void completingAWaveClearsShedRot() {
+        GameState state = GameState.newRun(3L);
+        state.rotTrail.add(new RotTrailSegment(1L, 0f, 0f, 3f, 10f, 7L));
+        run.completeCurrentWave(state);
+        assertTrue(state.rotTrail.isEmpty());
     }
 
     @Test

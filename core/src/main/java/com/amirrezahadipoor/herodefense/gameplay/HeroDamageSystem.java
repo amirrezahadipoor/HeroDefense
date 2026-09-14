@@ -25,6 +25,18 @@ public final class HeroDamageSystem {
     }
 
     /**
+     * Ground damage nobody dodges (weeping rot): trial-scaled and deterministic, but
+     * never a "hit taken", so hit-counted Mythics stay quiet while heroes stand in rot.
+     */
+    public IncomingHitResult applyEnvironmentalHit(GameState state, float damage) {
+        if (state == null || state.hero == null || !state.hero.alive || damage <= 0f) {
+            return IncomingHitResult.IGNORED;
+        }
+        return state.hero.receiveIncomingHit(
+            damage * TrialEffects.damageTakenMultiplier(state.activeTrials), 0.5f, 0f);
+    }
+
+    /**
      * Applies a hit with a pre-rolled dodge die (telegraphed boss specials roll at
      * trigger time so the combat stream never shifts, then land at detonation).
      */

@@ -94,6 +94,26 @@ final class EnemyWaveSpawnerTest {
     }
 
     @Test
+    void rootwardElitesOpenNearTheirFirstShield() {
+        boolean seen = false;
+        for (long seed = 1L; seed <= 50L; seed++) {
+            for (int wave : new int[] {7, 14, 21, 28}) {
+                GameState state = GameState.newRun(seed);
+                spawner.spawnRegularEnemies(state, wave, 10);
+                for (Enemy enemy : state.aliveEnemies) {
+                    if ("rootward_ward".equals(enemy.eliteAffix)) {
+                        seen = true;
+                        assertEquals(EliteAffixSystem.ROOTWARD_SHIELD_PERIOD
+                            - EliteAffixSystem.ROOTWARD_FIRST_SHIELD_DELAY,
+                            enemy.affixTimerSeconds, 1e-6f);
+                    }
+                }
+            }
+        }
+        assertTrue(seen);
+    }
+
+    @Test
     void lateWavePopulationIsCappedToAvoidUnfairMeleeSwarms() {
         assertEquals(EnemyWaveSpawner.MAX_REGULAR_ENEMIES, spawner.regularCountForWave(100));
         assertTrue(spawner.regularCountForWave(25) < EnemyWaveSpawner.MAX_REGULAR_ENEMIES);

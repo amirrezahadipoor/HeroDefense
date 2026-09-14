@@ -454,7 +454,7 @@ Directly answers the flat, "easy once you open the shop" curve: boss hits are cu
 
 ### 25.2 Elite Affixes
 
-- [ ] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one affix from the fixed pool `blightburst` (explodes on death) / `rootward_ward` (periodically shields) / `weeping_rot` (damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave. Each Elite kill shows one `docs/STORY_CONTENT.md` §4 fragment overlay for its affix, alternating I/II by that affix's persisted kill count (deterministic); counts live in `eliteKillCounts`.
+- [x] Every 7th non-boss wave, mark 1–2 spawned enemies as Elite: a larger silhouette scale, a distinct outline color (reusing `RarityGlowRenderer`), one affix from the fixed pool `blightburst` (explodes on death) / `rootward_ward` (periodically shields) / `weeping_rot` (damaging trail), and roughly 3× HP / 1.5× damage relative to a regular enemy that wave. Each Elite kill shows one `docs/STORY_CONTENT.md` §4 fragment overlay for its affix, alternating I/II by that affix's persisted kill count (deterministic); counts live in `eliteKillCounts`.
 - [x] Guarantee at least a Rare-tier drop from every Elite kill; the first kill of each affix unlocks Codex entry 13/14/15 respectively (Blightburst → 13, Rootward Ward → 14, Weeping Rot → 15) — tying the hardest optional fights directly to the story hook.
 
 ### 25.3 Endless Ascension Scaling

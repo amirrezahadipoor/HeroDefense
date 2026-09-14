@@ -13,6 +13,7 @@ import com.amirrezahadipoor.herodefense.items.EquipmentDefinition;
 import com.amirrezahadipoor.herodefense.model.Boss;
 import com.amirrezahadipoor.herodefense.gameplay.BossSpecialAttackSystem;
 import com.amirrezahadipoor.herodefense.gameplay.DropPickupSystem;
+import com.amirrezahadipoor.herodefense.gameplay.EliteAffixSystem;
 import com.amirrezahadipoor.herodefense.gameplay.FocusSystem;
 import com.amirrezahadipoor.herodefense.input.HudTouchLayout;
 import com.amirrezahadipoor.herodefense.model.BossType;
@@ -24,6 +25,7 @@ import com.amirrezahadipoor.herodefense.model.EquipmentSlot;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
 import com.amirrezahadipoor.herodefense.model.Projectile;
+import com.amirrezahadipoor.herodefense.model.RotTrailSegment;
 import com.amirrezahadipoor.herodefense.potions.PotionTier;
 
 import java.util.HashMap;
@@ -82,6 +84,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
     }
 
     public void drawEffects(SpriteBatch batch, GameState state, float runTimeSeconds) {
+        drawRotTrail(batch, state);
         drawTelegraphWarnings(batch, state, runTimeSeconds);
         drawFocusRing(batch, state);
         drawProjectiles(batch, state);
@@ -109,7 +112,7 @@ public final class CombatEntityRenderer implements AutoCloseable {
         if (!boss && enemy.eliteAffix != null && enemy.alive) {
             dropGlowRenderer.draw(
                 batch, frames.get(frameIndex), x, y, size, size,
-                eliteGlow(enemy.eliteAffix), runTimeSeconds);
+                eliteGlow(enemy.eliteAffix), runTimeSeconds, eliteGlowIntensity(enemy));
         } else {
             batch.draw(frames.get(frameIndex), x, y, size, size);
         }
@@ -246,6 +249,29 @@ public final class CombatEntityRenderer implements AutoCloseable {
             stack++;
         }
         batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    /** Fading rot patches read as dark ground; fresher rot burns more opaque. */
+    private void drawRotTrail(SpriteBatch batch, GameState state) {
+        if (state == null || state.rotTrail == null || state.rotTrail.isEmpty()) return;
+        for (RotTrailSegment segment : state.rotTrail) {
+            if (segment == null) continue;
+            float fraction = segment.remainingSeconds
+                / EliteAffixSystem.WEEPING_SEGMENT_LIFETIME;
+            batch.setColor(0.45f, 0.10f, 0.16f, rotSegmentAlpha(fraction));
+            batch.draw(pixel, segment.x - 35f, segment.y - 12f, 70f, 24f);
+        }
+        batch.setColor(1f, 1f, 1f, 1f);
+    }
+
+    static float rotSegmentAlpha(float fractionRemaining) {
+        return 0.25f + 0.45f * MathUtils.clamp(fractionRemaining, 0f, 1f);
+    }
+
+    /** A raised rootward shield burns its outline brighter while it holds. */
+    static float eliteGlowIntensity(Enemy enemy) {
+        if (enemy != null && enemy.affixShieldRemainingSeconds > 0f) return 1.8f;
+        return 1f;
     }
 
     /** Outline color for an Elite affix; regulars and unknowns never glow. */

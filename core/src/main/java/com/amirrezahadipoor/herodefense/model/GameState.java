@@ -103,6 +103,7 @@ public final class GameState {
     public List<Boss> aliveBosses = new ArrayList<>();
     public List<Projectile> projectiles = new ArrayList<>();
     public List<DropEntity> drops = new ArrayList<>();
+    public List<RotTrailSegment> rotTrail = new ArrayList<>();
     public List<Item> inventory = new ArrayList<>();
     /** Ascension tiers whose guaranteed Wave-200 Mythic was already granted. */
     public List<Integer> mythicGrantTiers = new ArrayList<>();
@@ -283,6 +284,7 @@ public final class GameState {
         if (trialUnlocked == null) trialUnlocked = new LinkedHashMap<>();
         if (pendingTrialOffer == null) pendingTrialOffer = new ArrayList<>();
         if (trialDraftPicks == null) trialDraftPicks = new ArrayList<>();
+        if (rotTrail == null) rotTrail = new ArrayList<>();
         rootNodesPurchased.values().removeIf(v -> v == null);
         codexUnlocked.values().removeIf(v -> v == null);
         firstBossKills.values().removeIf(v -> v == null);
@@ -293,6 +295,7 @@ public final class GameState {
         activeTrials.removeIf(t -> TrialId.forName(t) == null);
         pendingTrialOffer.removeIf(t -> TrialId.forName(t) == null);
         trialDraftPicks.removeIf(t -> TrialId.forName(t) == null);
+        rotTrail.removeIf(segment -> segment == null);
         eliteKillCounts.replaceAll((k, v) -> v == null ? 0 : Math.max(0, v));
     }
 

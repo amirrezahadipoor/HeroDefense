@@ -113,6 +113,10 @@ public final class EnemyWaveSpawner {
                 watcherMix(state.runSeed, waveNumber, 101 + pick, ELITE_SALT),
                 EliteAffix.values().length)];
             elite.eliteAffix = affix.id();
+            if (affix == EliteAffix.ROOTWARD_WARD) {
+                elite.affixTimerSeconds = EliteAffixSystem.ROOTWARD_SHIELD_PERIOD
+                    - EliteAffixSystem.ROOTWARD_FIRST_SHIELD_DELAY;
+            }
             elite.health *= ELITE_HEALTH_MULT;
             elite.maxHealth *= ELITE_HEALTH_MULT;
             elite.damage *= ELITE_DAMAGE_MULT;
