@@ -479,7 +479,7 @@ Extends the existing simulator-driven balance discipline to every new system abo
 
 ### 26.3 The Hours Table
 
-- [ ] Add a table (`docs/BALANCE.md` or a new `docs/PROGRESSION_HOURS.md`) deriving expected total playtime from the shipped numbers: one full Wave 1–200 clear, Root Network node cost versus Heartwood income per ascension, the number of ascensions needed to exhaust the Root Network, Codex completion pace across the unlock triggers in Phase 21.1, and Mythic-item collection pace — so the 50-hour target is an equation the team can re-check after every later balance pass, not a one-time estimate.
+- [x] Add a table (`docs/BALANCE.md` or a new `docs/PROGRESSION_HOURS.md`) deriving expected total playtime from the shipped numbers: one full Wave 1–200 clear, Root Network node cost versus Heartwood income per ascension, the number of ascensions needed to exhaust the Root Network, Codex completion pace across the unlock triggers in Phase 21.1, and Mythic-item collection pace — so the 50-hour target is an equation the team can re-check after every later balance pass, not a one-time estimate.
 
 ## Standing Rules (additions)
 
