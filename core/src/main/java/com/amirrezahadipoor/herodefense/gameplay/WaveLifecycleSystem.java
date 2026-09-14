@@ -58,6 +58,7 @@ public final class WaveLifecycleSystem {
         if (bossSpawner.isBossWave(state.waveNumber)) {
             int bossNumber = state.waveNumber / 5;
             state.defeatedBosses = Math.max(state.defeatedBosses, bossNumber);
+            ContinuousWaveRun.recordWaveClear(state);
             state.waveActive = false;
             rewardCards.prepareChoices(state, bossNumber);
             return WaveCompletion.BOSS_REWARD;

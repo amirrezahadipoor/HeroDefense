@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amirrezahadipoor.herodefense.audio.AudioCue;
@@ -132,6 +133,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private final PlantingCeremony plantingCeremony = new PlantingCeremony();
     private final OpeningCinematic openingCinematic = new OpeningCinematic();
     private final CodexSystem codexSystem = new CodexSystem();
+    private GameScreenState lastFrameState = GameScreenState.MENU;
+    private long pauseStartNanos;
     private OpeningCinematicRenderer openingCinematicRenderer;
     private static final float WATER_DROP_INTERVAL_SECONDS = 0.07f;
     private float waterDropAccumulator;
@@ -297,6 +300,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     @Override
     public void render() {
         audioManager.update(settings);
+        trackPauseDuration();
         float deltaSeconds = Math.min(Gdx.graphics.getDeltaTime(), MAX_FRAME_DELTA);
         audioManager.tick(deltaSeconds);
         touchFeedbackSystem.update(deltaSeconds);
@@ -493,6 +497,26 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
     }
 
+    /** Wall-clock pause lengths feed the Long Pause secret; a resume persists the record. */
+    private void trackPauseDuration() {
+        if (gameState == null) {
+            lastFrameState = flow.state();
+            return;
+        }
+        GameScreenState now = flow.state();
+        if (now == GameScreenState.PAUSED && lastFrameState != GameScreenState.PAUSED) {
+            pauseStartNanos = TimeUtils.nanoTime();
+        } else if (now != GameScreenState.PAUSED && lastFrameState == GameScreenState.PAUSED) {
+            float seconds = (TimeUtils.nanoTime() - pauseStartNanos) / 1_000_000_000f;
+            if (seconds > 0f) {
+                gameState.longestPauseSeconds = Math.max(gameState.longestPauseSeconds, seconds);
+                codexSystem.unlockSecretsForPause(gameState);
+                saveNow();
+            }
+        }
+        lastFrameState = now;
+    }
+
     private void saveNow() {
         if (saves != null && gameState != null) {
             saves.save(gameState);
@@ -614,6 +638,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                     } else if (shopTab == StatShopTouchLayout.Tab.SKILLS) {
                         SkillId skill = StatShopTouchLayout.skillAt(worldX, worldY);
                         if (skillShopSystem.purchase(gameState, skill)) {
+                            codexSystem.unlockSecretsForSkillPurchase(gameState);
                             audioManager.play(AudioCue.PURCHASE);
                             saveNow();
                         }
@@ -693,6 +718,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         || action == InventoryTouchController.Action.SOLD
                         || action == InventoryTouchController.Action.FORGED) {
                         if (action == InventoryTouchController.Action.FORGED) {
+                            codexSystem.unlockSecretsForForge(gameState);
                             audioManager.play(AudioCue.PURCHASE);
                         }
                         saveNow();
@@ -941,6 +967,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
 
     private void updatePlaying(float deltaSeconds) {
         float simulationDelta = deltaSeconds * gameState.simulationSpeed;
+        if (gameState.waveActive) gameState.waveElapsedSeconds += simulationDelta;
         screenShakeSystem.update(simulationDelta);
         particleSystem.update(simulationDelta);
         floatingCoinTextSystem.update(simulationDelta);
@@ -1008,6 +1035,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             }
         }
         codexSystem.unlockForWaveReached(gameState);
+        codexSystem.unlockSecretsForProgress(gameState);
         if (killRewards.coins() > 0) {
             floatingCoinTextSystem.emit(
                 gameState.hero.x,

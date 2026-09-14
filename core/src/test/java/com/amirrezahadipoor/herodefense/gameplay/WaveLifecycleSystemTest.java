@@ -100,4 +100,17 @@ final class WaveLifecycleSystemTest {
         assertFalse(early.ceremonyPending);
         assertFalse(early.secondTreePlanted);
     }
+
+    @Test
+    void bossWaveClearRecordsTheWaveTimerBeforeTheCardChoice() {
+        GameState state = GameState.newRun(103L);
+        state.waveNumber = 5;
+        lifecycle.startCurrentWave(state);
+        state.waveElapsedSeconds = 25f;
+        state.aliveBosses.get(0).receiveDamage(Float.MAX_VALUE);
+
+        assertEquals(WaveCompletion.BOSS_REWARD, lifecycle.updateAfterCombat(state));
+        assertEquals(25f, state.fastestWaveClearSeconds);
+        assertEquals(0f, state.waveElapsedSeconds);
+    }
 }

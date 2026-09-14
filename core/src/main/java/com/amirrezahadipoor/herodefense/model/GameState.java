@@ -76,6 +76,10 @@ public final class GameState {
     public boolean noPotionRun = true;
     public int totalRunsCompleted;
     public int totalAscensionsCompleted;
+    /** Times any run has advanced into wave 200; never reset (feeds codex entry 30). */
+    public int wave200ReachedCount;
+    /** Simulated combat seconds in the current wave (feeds the Fastest Fall secret). */
+    public float waveElapsedSeconds;
 
     public Hero hero = new Hero(1L, ARENA_CENTER_X, ARENA_CENTER_Y);
     public List<Enemy> aliveEnemies = new ArrayList<>();
@@ -225,6 +229,8 @@ public final class GameState {
         focusMax = Float.isFinite(focusMax) && focusMax > 0f ? focusMax : 100f;
         totalRunsCompleted = Math.max(0, totalRunsCompleted);
         totalAscensionsCompleted = Math.max(0, totalAscensionsCompleted);
+        wave200ReachedCount = Math.max(0, wave200ReachedCount);
+        waveElapsedSeconds = Float.isFinite(waveElapsedSeconds) ? Math.max(0f, waveElapsedSeconds) : 0f;
         if (rootNodesPurchased == null) rootNodesPurchased = new LinkedHashMap<>();
         if (codexUnlocked == null) codexUnlocked = new LinkedHashMap<>();
         if (eliteKillCounts == null) eliteKillCounts = new LinkedHashMap<>();
@@ -306,6 +312,7 @@ public final class GameState {
         this.shopStatsBoughtThisRun = 0;
         this.bareHandedEligible = true;
         this.noPotionRun = true;
+        this.waveElapsedSeconds = 0f;
         this.focus = 0f;
         this.hero = fresh.hero;
         this.aliveEnemies = fresh.aliveEnemies;
