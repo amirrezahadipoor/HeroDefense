@@ -13,6 +13,7 @@ final class DropRarityVisualTest {
         assertEquals(VisualRarity.UNCOMMON, rarity("moonwood_longbow"));
         assertEquals(VisualRarity.RARE, rarity("starfall_bow"));
         assertEquals(VisualRarity.LEGENDARY, rarity("worldbranch"));
+        assertEquals(VisualRarity.MYTHIC, rarity("sunfall_last_arrow"));
         assertTrue(rarity("starfall_bow").isGlowing());
         assertTrue(rarity("worldbranch").isGlowing());
 

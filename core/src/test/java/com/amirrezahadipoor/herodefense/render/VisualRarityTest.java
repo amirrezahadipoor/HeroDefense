@@ -14,7 +14,9 @@ final class VisualRarityTest {
         assertFalse(VisualRarity.UNCOMMON.isGlowing());
         assertTrue(VisualRarity.RARE.isGlowing());
         assertTrue(VisualRarity.LEGENDARY.isGlowing());
+        assertTrue(VisualRarity.MYTHIC.isGlowing());
         assertTrue(VisualRarity.LEGENDARY.intensity() > VisualRarity.RARE.intensity());
+        assertTrue(VisualRarity.MYTHIC.intensity() > VisualRarity.LEGENDARY.intensity());
     }
 
     @Test
@@ -24,7 +26,8 @@ final class VisualRarityTest {
             assertTrue(
                 rarity.isGlowing()
                     == (definition.tier().name().equals("RARE")
-                        || definition.tier().name().equals("LEGENDARY"))
+                        || definition.tier().name().equals("LEGENDARY")
+                        || definition.tier().name().equals("MYTHIC"))
             );
         }
     }

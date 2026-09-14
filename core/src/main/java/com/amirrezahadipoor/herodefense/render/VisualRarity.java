@@ -5,7 +5,9 @@ public enum VisualRarity {
     COMMON(false, 0f, 0f, 0f, 0f),
     UNCOMMON(false, 0f, 0f, 0f, 0f),
     RARE(true, 0.22f, 0.55f, 1.0f, 0.82f),
-    LEGENDARY(true, 1.0f, 0.67f, 0.16f, 1.0f);
+    LEGENDARY(true, 1.0f, 0.67f, 0.16f, 1.0f),
+    /** Violet aura matching the Mythic inventory ink, burning hottest of all. */
+    MYTHIC(true, 0.78f, 0.49f, 1.0f, 1.3f);
 
     private final boolean glowing;
     private final float red;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
-/** Draws Rare/Legendary aura edges at runtime without modifying source sprites. */
+/** Draws Rare/Legendary/Mythic aura edges at runtime without modifying source sprites. */
 public final class RarityGlowRenderer implements AutoCloseable {
     private final ShaderProgram glowShader;
 
