@@ -78,7 +78,7 @@ final class ItemForgeSystemTest {
 
     @Test
     void forgingAnEquippedItemRaisesMaxHealthImmediatelyAndCommonIsRefused() {
-        GameState state = GameState.newRun(11L);
+        GameState state = GameState.newRun(12L);
         Item plate = EquipmentCatalog.byId("crystalbark_plate").createItem();
         state.inventory.add(plate);
         new InventoryEquipmentSystem().equip(state, plate);
@@ -103,5 +103,46 @@ final class ItemForgeSystemTest {
         assertEquals("Starfall Bow", ItemForgeSystem.baseName(bow));
         assertEquals("Starfall Bow +4", ItemForgeSystem.displayName(ItemForgeSystem.baseName(bow), 4));
         assertEquals("Starfall Bow", ItemForgeSystem.displayName("Starfall Bow", 0));
+    }
+
+    @Test
+    void affixRerollChanceStartsSmallAndGrowsWithForgeLevel() {
+        assertEquals(0.05f, ItemForgeSystem.affixRerollChance(0), 1e-6f);
+        assertEquals(0.09f, ItemForgeSystem.affixRerollChance(2), 1e-6f);
+        assertEquals(0.13f, ItemForgeSystem.affixRerollChance(4), 1e-6f);
+    }
+
+    @Test
+    void luckyReforgeRerollsTheAffixInsteadOfAddingAStatStep() {
+        GameState state = GameState.newRun(11L); // First affix roll lands under the 5% bar.
+        Item bow = EquipmentCatalog.byId("starfall_bow").createItem();
+        bow.affixId = "DAMAGE";
+        state.inventory.add(bow);
+        state.coins = 10_000;
+        float agility = bow.statBonuses.get(HeroStat.AGILITY.name());
+        int cost = ItemForgeSystem.nextCost(bow);
+
+        assertEquals(ItemForgeSystem.Result.AFFIX_REROLLED, forge.forge(state, bow));
+        assertEquals(10_000 - cost, state.coins);
+        assertEquals(0, bow.upgradeLevel);
+        assertEquals("Starfall Bow", bow.name);
+        assertEquals(agility, bow.statBonuses.get(HeroStat.AGILITY.name()), 1e-6f);
+        assertFalse(bow.affixId == null || bow.affixId.isEmpty() || bow.affixId.equals("DAMAGE"));
+        assertTrue(forge.feedbackMessage().startsWith("AFFIX REROLLED"));
+    }
+
+    @Test
+    void decliningRerollsKeepsEveryReforgeOnTheStatTrack() {
+        ItemForgeSystem optimal = new ItemForgeSystem();
+        optimal.declineAffixRerolls();
+        GameState state = GameState.newRun(11L); // Would reroll with the gamble allowed.
+        Item bow = EquipmentCatalog.byId("starfall_bow").createItem();
+        bow.affixId = "DAMAGE";
+        state.inventory.add(bow);
+        state.coins = 10_000;
+
+        assertEquals(ItemForgeSystem.Result.FORGED, optimal.forge(state, bow));
+        assertEquals(1, bow.upgradeLevel);
+        assertEquals("DAMAGE", bow.affixId);
     }
 }

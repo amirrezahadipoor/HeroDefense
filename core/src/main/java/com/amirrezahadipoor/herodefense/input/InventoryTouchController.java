@@ -126,7 +126,9 @@ public final class InventoryTouchController {
             Item selected = selectedItem(state);
             if (selected == null) return Action.NONE;
             ItemForgeSystem.Result result = forgeSystem.forge(state, selected);
-            Action action = result == ItemForgeSystem.Result.FORGED ? Action.FORGED : Action.FORGE_REFUSED;
+            Action action = result == ItemForgeSystem.Result.FORGED
+                || result == ItemForgeSystem.Result.AFFIX_REROLLED
+                ? Action.FORGED : Action.FORGE_REFUSED;
             showFeedback(action, selected.name, 0);
             return action;
         }

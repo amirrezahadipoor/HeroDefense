@@ -1,5 +1,7 @@
 package com.amirrezahadipoor.herodefense.gameplay;
 
+import com.amirrezahadipoor.herodefense.items.AffixEffects;
+import com.amirrezahadipoor.herodefense.items.AffixId;
 import com.amirrezahadipoor.herodefense.items.EquipmentCatalog;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
@@ -13,15 +15,23 @@ import java.util.Map;
  * of what was spent. Steps are persisted on the item itself so saves stay self-describing.
  */
 public final class ItemForgeSystem {
-    public enum Result { NONE, FORGED, INSUFFICIENT_COINS, NOT_FORGEABLE, MAXED }
+    public enum Result { NONE, FORGED, AFFIX_REROLLED, INSUFFICIENT_COINS, NOT_FORGEABLE, MAXED }
 
     public static final int MAX_UPGRADE = 5;
     public static final int RARE_BASE_COST = 150;
     public static final int LEGENDARY_BASE_COST = 350;
     public static final float COST_GROWTH = 1.6f;
+    public static final float AFFIX_REROLL_BASE_CHANCE = 0.05f;
+    public static final float AFFIX_REROLL_CHANCE_PER_LEVEL = 0.02f;
     private static final float FEEDBACK_DURATION_SECONDS = 1.25f;
 
     private final HeroStatCalculator statCalculator;
+    /**
+     * Whether the affix gamble is offered. Real players may chase affixes; the balance
+     * simulator models optimal play and declines the negative-expected-value gamble, so
+     * balance gates measure power rather than luck.
+     */
+    private boolean affixRerollsAllowed = true;
     private Result feedbackResult = Result.NONE;
     private String feedbackItemName;
     private int feedbackCoins;
@@ -57,6 +67,15 @@ public final class ItemForgeSystem {
         return (int) Math.round(cost / 5.0) * 5;
     }
 
+    /**
+     * Chance that a reforge at the given level rerolls the item's affix instead of adding
+     * a stat step: small at first, kinder to deeply forged items chasing a better affix.
+     */
+    public static float affixRerollChance(int upgradeLevel) {
+        return AFFIX_REROLL_BASE_CHANCE
+            + Math.max(0, Math.min(MAX_UPGRADE, upgradeLevel)) * AFFIX_REROLL_CHANCE_PER_LEVEL;
+    }
+
     /** Name with the +N suffix stripped, so the suffix is never stacked. */
     public static String baseName(Item item) {
         if (item == null || item.name == null) return "";
@@ -65,6 +84,11 @@ public final class ItemForgeSystem {
 
     public static String displayName(String baseName, int upgradeLevel) {
         return upgradeLevel <= 0 ? baseName : baseName + " +" + upgradeLevel;
+    }
+
+    /** Declines the affix gamble: every reforge adds its stat step. Used by the simulator. */
+    public void declineAffixRerolls() {
+        affixRerollsAllowed = false;
     }
 
     public Result forge(GameState state, Item item) {
@@ -86,6 +110,12 @@ public final class ItemForgeSystem {
         }
         float previousMaxHealth = statCalculator.maxHealth(state);
         state.coins -= cost;
+        if (affixRerollsAllowed && state.nextAffixRandomFloat() < affixRerollChance(level)) {
+            rerollAffix(state, item);
+            item.sellPrice += cost / 2;
+            showFeedback(Result.AFFIX_REROLLED, item, cost);
+            return Result.AFFIX_REROLLED;
+        }
         for (Map.Entry<String, Float> bonus : item.statBonuses.entrySet()) {
             float value = bonus.getValue() == null ? 0f : bonus.getValue();
             bonus.setValue(value + 1f);
@@ -102,6 +132,20 @@ public final class ItemForgeSystem {
         return Result.FORGED;
     }
 
+    /**
+     * Replaces the item's affix with a freshly rolled, different one (or grants one to an
+     * affix-free heirloom from an older save). Bounded retries keep it deterministic.
+     */
+    private static void rerollAffix(GameState state, Item item) {
+        for (int attempt = 0; attempt < AffixId.values().length; attempt++) {
+            String rolled = AffixEffects.rollForDrop(state, ItemTier.parse(item.tier));
+            if (!rolled.isEmpty() && !rolled.equals(item.affixId)) {
+                item.affixId = rolled;
+                return;
+            }
+        }
+    }
+
     public void update(float realDeltaSeconds) {
         if (realDeltaSeconds <= 0f || feedbackRemainingSeconds <= 0f) return;
         feedbackRemainingSeconds = Math.max(0f, feedbackRemainingSeconds - realDeltaSeconds);
@@ -116,6 +160,7 @@ public final class ItemForgeSystem {
         if (feedbackRemainingSeconds <= 0f || feedbackItemName == null) return null;
         return switch (feedbackResult) {
             case FORGED -> "REFORGED  |  " + feedbackItemName + "  |  -$ " + feedbackCoins;
+            case AFFIX_REROLLED -> "AFFIX REROLLED  |  " + feedbackItemName + "  |  -$ " + feedbackCoins;
             case INSUFFICIENT_COINS -> "NEED $ " + feedbackCoins + " MORE  |  ANVIL";
             case NOT_FORGEABLE -> "ANVIL TAKES RARE & LEGENDARY ONLY";
             case MAXED -> "FULLY REFORGED  |  " + feedbackItemName;

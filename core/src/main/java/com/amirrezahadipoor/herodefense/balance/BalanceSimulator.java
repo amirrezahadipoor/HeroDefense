@@ -82,6 +82,13 @@ public final class BalanceSimulator {
         new ContinuousWaveRun()
     );
 
+    public BalanceSimulator() {
+        // Optimal play declines the Anvil's affix gamble: rerolls trade a guaranteed stat
+        // step for a fresh random affix, so they are luck, not power, and stay out of
+        // balance measurement.
+        forge.declineAffixRerolls();
+    }
+
     public BalanceReport run(long seed) {
         return run(seed, null, 0, 0, List.of());
     }
@@ -336,9 +343,11 @@ public final class BalanceSimulator {
                 }
             }
             if (best == null || bestCost > cheapestShopPrice(state)) return;
-            if (forge.forge(state, best) != ItemForgeSystem.Result.FORGED) return;
+            ItemForgeSystem.Result result = forge.forge(state, best);
+            if (result != ItemForgeSystem.Result.FORGED
+                && result != ItemForgeSystem.Result.AFFIX_REROLLED) return;
             ledger.forgeSpend += bestCost;
-            ledger.forgeSteps++;
+            if (result == ItemForgeSystem.Result.FORGED) ledger.forgeSteps++;
         }
     }
 
