@@ -807,6 +807,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                             codexSystem.unlockSecretsForForge(gameState);
                             audioManager.play(AudioCue.PURCHASE);
                         }
+                        if (action == InventoryTouchController.Action.EQUIPPED) {
+                            codexSystem.unlockSecretsForEquipment(gameState);
+                        }
                         saveNow();
                     } else if (action == InventoryTouchController.Action.AUTO_SELL_TOGGLED) {
                         settingsRepository.save(settings);

@@ -143,6 +143,19 @@ final class CodexSystemTest {
     }
 
     @Test
+    void aFullSetNeedsFourPiecesOfOneSetEquipped() {
+        GameState state = GameState.newRun(15L);
+        equipById(state, "WEAPON", "verdant_recurve");
+        equipById(state, "HELMET", "fern_guard");
+        equipById(state, "ARMOR", "mossweave_coat");
+        assertTrue(codex.unlockSecretsForEquipment(state).isEmpty());
+
+        equipById(state, "BOOTS", "windstep_boots");
+        assertEquals(List.of("codex_22"), codex.unlockSecretsForEquipment(state));
+        assertTrue(codex.unlockSecretsForEquipment(state).isEmpty());
+    }
+
+    @Test
     void reforgedNeedsAnyItemAtPlusFive() {
         GameState state = GameState.newRun(16L);
         Item close = new Item("starfall_bow", "Starfall Bow", "WEAPON", "RARE");
@@ -199,6 +212,12 @@ final class CodexSystemTest {
         assertTrue(codex.isUnlocked(maxed, "codex_27"));
         assertTrue(codex.isUnlocked(maxed, "codex_29"));
         assertTrue(codex.isUnlocked(maxed, "codex_30"));
+    }
+
+    private static void equipById(GameState state, String slot, String id) {
+        state.equippedItems.put(
+            slot, com.amirrezahadipoor.herodefense.items.EquipmentCatalog.byId(id).createItem()
+        );
     }
 
     @Test

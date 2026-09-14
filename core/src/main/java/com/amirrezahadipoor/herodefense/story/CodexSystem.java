@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense.story;
 
+import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
 import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.Item;
 
@@ -107,6 +108,16 @@ public final class CodexSystem {
         if (state.waveNumber >= GameState.FINAL_WAVE && state.wave200ReachedCount >= 2
             && unlock(state, "codex_30")) {
             unlocked.add("codex_30");
+        }
+        return unlocked;
+    }
+
+    /** Secret 22 A Full Set: all four pieces of any set equipped at once. */
+    public List<String> unlockSecretsForEquipment(GameState state) {
+        List<String> unlocked = new ArrayList<>();
+        if (state == null) return unlocked;
+        if (!EquipmentSetBonus.completedSets(state).isEmpty() && unlock(state, "codex_22")) {
+            unlocked.add("codex_22");
         }
         return unlocked;
     }

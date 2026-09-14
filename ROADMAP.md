@@ -419,7 +419,7 @@ Give players build decisions worth thinking about without redrawing the 40-item 
 
 ### 23.2 Set Items
 
-- [ ] Group 8 of the existing 40 items into two 4-piece sets (reusing existing art, e.g. the Verdant Covenant pieces already in the catalog) that grant a bonus at 2 and 4 equipped pieces — for example +5% attack speed at 2, an extra Chain Lightning target at 4 — via a new `EquipmentSetBonus` table keyed off a new `EquipmentDefinition.setId`.
+- [x] Group 8 of the existing 40 items into two 4-piece sets (reusing existing art, e.g. the Verdant Covenant pieces already in the catalog) that grant a bonus at 2 and 4 equipped pieces — for example +5% attack speed at 2, an extra Chain Lightning target at 4 — via a new `EquipmentSetBonus` table keyed off a new `EquipmentDefinition.setId`.
 - [ ] Surface active/partial set status in Inventory ("2/4 Verdant Covenant equipped") so the incentive to hunt down the rest of a set is visible while playing, not just in a wiki.
 
 ### 23.3 Mythic Tier & Escalating Presentation

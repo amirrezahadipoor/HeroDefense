@@ -4,6 +4,7 @@ import com.amirrezahadipoor.herodefense.model.GameState;
 import com.amirrezahadipoor.herodefense.model.HeroStat;
 import com.amirrezahadipoor.herodefense.model.HeroStats;
 import com.amirrezahadipoor.herodefense.items.AffixEffects;
+import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
 import com.amirrezahadipoor.herodefense.model.Item;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
 
@@ -27,14 +28,16 @@ public final class HeroStatCalculator {
         return (HeroStats.BASE_DAMAGE
             + points(state, HeroStat.STRENGTH) * HeroStats.DAMAGE_PER_STRENGTH)
             * TrialEffects.heroDamageMultiplier(state.activeTrials)
-            * AffixEffects.damageMultiplier(state);
+            * AffixEffects.damageMultiplier(state)
+            * EquipmentSetBonus.damageMultiplier(state);
     }
 
     public float attackIntervalSeconds(GameState state) {
         float attacksPerSecond = (HeroStats.BASE_ATTACKS_PER_SECOND
             + points(state, HeroStat.AGILITY) * HeroStats.ATTACK_SPEED_PER_AGILITY)
             * TrialEffects.heroAttackSpeedMultiplier(state.activeTrials)
-            * AffixEffects.attackSpeedMultiplier(state);
+            * AffixEffects.attackSpeedMultiplier(state)
+            * EquipmentSetBonus.attackSpeedMultiplier(state);
         return 1f / attacksPerSecond;
     }
 
@@ -58,7 +61,8 @@ public final class HeroStatCalculator {
         return (HeroStats.BASE_MAX_HEALTH
             + points(state, HeroStat.HEALTH) * HeroStats.MAX_HEALTH_PER_POINT)
             * TrialEffects.heroMaxHealthMultiplier(state.activeTrials)
-            * AffixEffects.maxHealthMultiplier(state);
+            * AffixEffects.maxHealthMultiplier(state)
+            * EquipmentSetBonus.maxHealthMultiplier(state);
     }
 
     private static int basePoints(GameState state, HeroStat stat) {

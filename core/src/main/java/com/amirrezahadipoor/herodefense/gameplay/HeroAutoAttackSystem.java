@@ -7,6 +7,7 @@ import com.amirrezahadipoor.herodefense.model.Hero;
 import com.amirrezahadipoor.herodefense.model.Projectile;
 import com.amirrezahadipoor.herodefense.rewards.BossRewardCardSystem;
 import com.amirrezahadipoor.herodefense.items.AffixEffects;
+import com.amirrezahadipoor.herodefense.items.EquipmentSetBonus;
 import com.amirrezahadipoor.herodefense.skills.SkillEffects;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.trials.TrialEffects;
@@ -256,7 +257,10 @@ public final class HeroAutoAttackSystem {
     /** Arcs a share of the arrow's damage to the nearest foes around the struck target. */
     private int chainLightning(GameState state, Enemy struck, float arrowDamage, int level) {
         collectTargetsByDistance(state, struck.x, struck.y, SkillEffects.CHAIN_RADIUS, struck);
-        int arcs = Math.min(SkillEffects.chainTargets(level), scratchTargets.size());
+        int arcs = Math.min(
+            SkillEffects.chainTargets(level) + EquipmentSetBonus.chainTargetsBonus(state),
+            scratchTargets.size()
+        );
         float arcDamage = arrowDamage * SkillEffects.CHAIN_DAMAGE_SHARE;
         for (int index = 0; index < arcs; index++) {
             Enemy victim = scratchTargets.get(index);

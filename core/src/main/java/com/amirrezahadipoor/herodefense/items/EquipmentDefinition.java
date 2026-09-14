@@ -18,6 +18,7 @@ public final class EquipmentDefinition {
     private final String iconPath;
     private final Map<HeroStat, Integer> statBonuses;
     private final String artId;
+    private final String setId;
 
     public EquipmentDefinition(
         String id,
@@ -27,7 +28,7 @@ public final class EquipmentDefinition {
         String iconPath,
         Map<HeroStat, Integer> statBonuses
     ) {
-        this(id, name, slot, tier, iconPath, statBonuses, id);
+        this(id, name, slot, tier, iconPath, statBonuses, id, "");
     }
 
     public EquipmentDefinition(
@@ -39,6 +40,19 @@ public final class EquipmentDefinition {
         Map<HeroStat, Integer> statBonuses,
         String artId
     ) {
+        this(id, name, slot, tier, iconPath, statBonuses, artId, "");
+    }
+
+    public EquipmentDefinition(
+        String id,
+        String name,
+        EquipmentSlot slot,
+        ItemTier tier,
+        String iconPath,
+        Map<HeroStat, Integer> statBonuses,
+        String artId,
+        String setId
+    ) {
         this.artId = artId;
         this.id = id;
         this.name = name;
@@ -46,6 +60,7 @@ public final class EquipmentDefinition {
         this.tier = tier;
         this.iconPath = iconPath;
         this.statBonuses = Collections.unmodifiableMap(new LinkedHashMap<>(statBonuses));
+        this.setId = setId == null ? "" : setId;
     }
 
     public String id() {
@@ -75,6 +90,11 @@ public final class EquipmentDefinition {
     /** Id of the reviewed equipment art (atlas + icon) this item is drawn with. */
     public String artId() {
         return artId;
+    }
+
+    /** Equipment-set id, or "" when the piece belongs to no set. */
+    public String setId() {
+        return setId;
     }
 
     public Item createItem() {

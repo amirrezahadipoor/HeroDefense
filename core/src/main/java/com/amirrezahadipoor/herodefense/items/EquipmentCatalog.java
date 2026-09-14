@@ -32,23 +32,23 @@ public final class EquipmentCatalog {
         item("hunter_loop", "Hunter Loop", EquipmentSlot.RING_2, ItemTier.COMMON, HeroStat.LUCK, 1, HeroStat.AGILITY, 0),
         item("twine_circle", "Twine Circle", EquipmentSlot.RING_1, ItemTier.COMMON, HeroStat.LUCK, 1, HeroStat.DODGE, 0),
         item("moonwood_longbow", "Moonwood Longbow", EquipmentSlot.WEAPON, ItemTier.UNCOMMON, HeroStat.AGILITY, 2, HeroStat.STRENGTH, 0),
-        bow("verdant_recurve", "Verdant Recurve", ItemTier.UNCOMMON, HeroStat.STRENGTH, 2, HeroStat.AGILITY, 0, "moonwood_longbow"),
-        item("fern_guard", "Fern Guard", EquipmentSlot.HELMET, ItemTier.UNCOMMON, HeroStat.DODGE, 2, HeroStat.HEALTH, 0),
+        bow("verdant_recurve", "Verdant Recurve", ItemTier.UNCOMMON, HeroStat.STRENGTH, 2, HeroStat.AGILITY, 0, "moonwood_longbow", "verdant_covenant"),
+        item("fern_guard", "Fern Guard", EquipmentSlot.HELMET, ItemTier.UNCOMMON, HeroStat.DODGE, 2, HeroStat.HEALTH, 0, "verdant_covenant"),
         item("antler_circlet", "Antler Circlet", EquipmentSlot.HELMET, ItemTier.UNCOMMON, HeroStat.HEALTH, 2, HeroStat.DODGE, 0),
         item("ranger_mail", "Ranger Mail", EquipmentSlot.ARMOR, ItemTier.UNCOMMON, HeroStat.HEALTH, 2, HeroStat.STRENGTH, 0),
-        item("mossweave_coat", "Mossweave Coat", EquipmentSlot.ARMOR, ItemTier.UNCOMMON, HeroStat.STRENGTH, 2, HeroStat.HEALTH, 0),
-        item("windstep_boots", "Windstep Boots", EquipmentSlot.BOOTS, ItemTier.UNCOMMON, HeroStat.AGILITY, 2, HeroStat.DODGE, 0),
+        item("mossweave_coat", "Mossweave Coat", EquipmentSlot.ARMOR, ItemTier.UNCOMMON, HeroStat.STRENGTH, 2, HeroStat.HEALTH, 0, "verdant_covenant"),
+        item("windstep_boots", "Windstep Boots", EquipmentSlot.BOOTS, ItemTier.UNCOMMON, HeroStat.AGILITY, 2, HeroStat.DODGE, 0, "verdant_covenant"),
         item("rootguard_sabatons", "Rootguard Sabatons", EquipmentSlot.BOOTS, ItemTier.UNCOMMON, HeroStat.DODGE, 2, HeroStat.AGILITY, 0),
         item("jade_sap_ring", "Jade Sap Ring", EquipmentSlot.RING_1, ItemTier.UNCOMMON, HeroStat.LUCK, 2, HeroStat.STRENGTH, 0),
         item("hawk_eye_band", "Hawk Eye Band", EquipmentSlot.RING_2, ItemTier.UNCOMMON, HeroStat.LUCK, 2, HeroStat.HEALTH, 0),
         item("silver_briar_ring", "Silver Briar Ring", EquipmentSlot.RING_1, ItemTier.UNCOMMON, HeroStat.LUCK, 2, HeroStat.DODGE, 0),
         item("dewstone_loop", "Dewstone Loop", EquipmentSlot.RING_2, ItemTier.UNCOMMON, HeroStat.LUCK, 2, HeroStat.AGILITY, 0),
         item("starfall_bow", "Starfall Bow", EquipmentSlot.WEAPON, ItemTier.RARE, HeroStat.AGILITY, 3, HeroStat.STRENGTH, 1),
-        bow("golemsbane_warbow", "Golemsbane Warbow", ItemTier.RARE, HeroStat.STRENGTH, 3, HeroStat.AGILITY, 1, "starfall_bow"),
-        item("owlguard_helm", "Owlguard Helm", EquipmentSlot.HELMET, ItemTier.RARE, HeroStat.DODGE, 3, HeroStat.HEALTH, 1),
-        item("crystalbark_plate", "Crystalbark Plate", EquipmentSlot.ARMOR, ItemTier.RARE, HeroStat.HEALTH, 3, HeroStat.STRENGTH, 1),
+        bow("golemsbane_warbow", "Golemsbane Warbow", ItemTier.RARE, HeroStat.STRENGTH, 3, HeroStat.AGILITY, 1, "starfall_bow", "bastion_oath"),
+        item("owlguard_helm", "Owlguard Helm", EquipmentSlot.HELMET, ItemTier.RARE, HeroStat.DODGE, 3, HeroStat.HEALTH, 1, "bastion_oath"),
+        item("crystalbark_plate", "Crystalbark Plate", EquipmentSlot.ARMOR, ItemTier.RARE, HeroStat.HEALTH, 3, HeroStat.STRENGTH, 1, "bastion_oath"),
         item("shadeleaf_mantle", "Shadeleaf Mantle", EquipmentSlot.ARMOR, ItemTier.RARE, HeroStat.STRENGTH, 3, HeroStat.HEALTH, 1),
-        item("stormrunner_boots", "Stormrunner Boots", EquipmentSlot.BOOTS, ItemTier.RARE, HeroStat.AGILITY, 3, HeroStat.DODGE, 1),
+        item("stormrunner_boots", "Stormrunner Boots", EquipmentSlot.BOOTS, ItemTier.RARE, HeroStat.AGILITY, 3, HeroStat.DODGE, 1, "bastion_oath"),
         item("sapphire_luck_ring", "Sapphire Luck Ring", EquipmentSlot.RING_1, ItemTier.RARE, HeroStat.LUCK, 3, HeroStat.STRENGTH, 1),
         item("bloodroot_signet", "Bloodroot Signet", EquipmentSlot.RING_2, ItemTier.RARE, HeroStat.LUCK, 3, HeroStat.HEALTH, 1),
         item("echo_band", "Echo Band", EquipmentSlot.RING_1, ItemTier.RARE, HeroStat.LUCK, 3, HeroStat.DODGE, 1),
@@ -81,6 +81,20 @@ public final class EquipmentCatalog {
         HeroStat secondary,
         int secondaryAmount
     ) {
+        return item(id, name, slot, tier, primary, primaryAmount, secondary, secondaryAmount, "");
+    }
+
+    private static EquipmentDefinition item(
+        String id,
+        String name,
+        EquipmentSlot slot,
+        ItemTier tier,
+        HeroStat primary,
+        int primaryAmount,
+        HeroStat secondary,
+        int secondaryAmount,
+        String setId
+    ) {
         Map<HeroStat, Integer> bonuses = new LinkedHashMap<>();
         bonuses.put(primary, primaryAmount);
         if (secondaryAmount > 0) {
@@ -92,7 +106,9 @@ public final class EquipmentCatalog {
             slot,
             tier,
             "generated/icons/equipment_" + id + ".png",
-            bonuses
+            bonuses,
+            id,
+            setId
         );
     }
 
@@ -107,6 +123,20 @@ public final class EquipmentCatalog {
         int secondaryAmount,
         String artId
     ) {
+        return bow(id, name, tier, primary, primaryAmount, secondary, secondaryAmount, artId, "");
+    }
+
+    private static EquipmentDefinition bow(
+        String id,
+        String name,
+        ItemTier tier,
+        HeroStat primary,
+        int primaryAmount,
+        HeroStat secondary,
+        int secondaryAmount,
+        String artId,
+        String setId
+    ) {
         Map<HeroStat, Integer> bonuses = new LinkedHashMap<>();
         bonuses.put(primary, primaryAmount);
         if (secondaryAmount > 0) {
@@ -119,7 +149,8 @@ public final class EquipmentCatalog {
             tier,
             "generated/icons/equipment_" + artId + ".png",
             bonuses,
-            artId
+            artId,
+            setId
         );
     }
 
