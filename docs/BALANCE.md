@@ -260,4 +260,19 @@ boredom, not fear, before wave 50) and turns knife's-edge late (50% worst wave,
 Note: the tier-5 baseline run bought no Evolution (fork plus fund never aligned
 there); the policy is conditional per-run, locked firing on the tier-0 baseline.
 
+### 26.2b target session model (one Wave 1–200 run)
+
+Pace definition: engaged (Ultimate on cooldown, focused Evolution, greedy-optimal
+build), shopping (every wave and level-up), no idle time (back-to-back waves,
+instant planting ceremony). That is exactly the simulator's pace, so the model is
+the simulator's median run clear time: tier 0 clears 200 waves in **7970 s
+(2.21 h)** (3-seed median; seeds span 7625–8409 s). Every ascension tier must land
+within roughly ±20% of that time (committed as `sessionTimesStayWithinTwentyPercentOfTierZero`
+on 3-seed medians — single-seed totals swing ±20% inside one tier, so cells cannot
+gate it). Measured medians: t1 8005 (+0.4%), t2 7232 (−9.3%), t3 7672 (−3.7%),
+t4 7588 (−4.8%), t5 7259 (−8.9%), t6 8437 (+5.9%), t7 8565 (+7.5%), t8 8796
+(+10.3%), t9 8681 (+8.9%), t10 7884 (−1.1%) — all inside ±10.3%, so added challenge
+comes from build precision (pressure, spikes, close calls), not padded wave count.
+
+
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

@@ -181,6 +181,36 @@ final class AscensionGateTest {
         assertTrue(failures.isEmpty(), "Breaking tier cells:\n" + String.join("\n", failures));
     }
 
+    @Test
+    void sessionTimesStayWithinTwentyPercentOfTierZero() {
+        // Phase 26.2b: added challenge must come from build precision, not padded
+        // wave count — every tier's median run clears within +-20% of tier 0's.
+        // Single-seed totals swing +-20% inside one tier, so tiers gate medians.
+        System.out.println("tier,seed,total_s");
+        System.out.println("tier,median_total_s,delta_fraction");
+        float tierZeroMedian = 0f;
+        for (int tier = 0; tier <= 10; tier++) {
+            List<Float> totals = new ArrayList<>();
+            for (long s = 0; s < 3; s++) {
+                BalanceReport report = new BalanceSimulator()
+                    .runWithAscensionTier(BASELINE_SEED + s, tier);
+                assertTrue(report.reachedFinalWave(),
+                    "tier " + tier + " seed " + (BASELINE_SEED + s) + " must finish");
+                float total = 0f;
+                for (WaveSample sample : report.waves()) total += sample.clearTimeSeconds();
+                System.out.println(tier + "," + (BASELINE_SEED + s) + "," + total);
+                totals.add(total);
+            }
+            float median = medianFloat(totals.stream().sorted().toList());
+            if (tier == 0) tierZeroMedian = median;
+            float delta = (median - tierZeroMedian) / tierZeroMedian;
+            System.out.println(tier + "," + median + "," + delta);
+            assertTrue(Math.abs(delta) <= 0.20f,
+                "tier " + tier + " median session " + median + "s drifted " + delta
+                    + " from tier 0 median " + tierZeroMedian + "s");
+        }
+    }
+
     private static void check(List<String> failures, boolean condition, String message) {
         if (!condition) failures.add(message);
     }
