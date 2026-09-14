@@ -80,6 +80,10 @@ public final class GameState {
     public int totalAscensionsCompleted;
     /** Times any run has advanced into wave 200; never reset (feeds codex entry 30). */
     public int wave200ReachedCount;
+    /** Ascension tier whose opening lines this run plays; -1 until the opening begins. */
+    public int openingTier = -1;
+    /** Epilogue id (A–E) recorded when the run ended; blank until then. */
+    public String epilogueId = "";
     /** Simulated combat seconds in the current wave (feeds the Fastest Fall secret). */
     public float waveElapsedSeconds;
 
@@ -232,6 +236,8 @@ public final class GameState {
         totalRunsCompleted = Math.max(0, totalRunsCompleted);
         totalAscensionsCompleted = Math.max(0, totalAscensionsCompleted);
         wave200ReachedCount = Math.max(0, wave200ReachedCount);
+        openingTier = Math.max(-1, openingTier);
+        if (epilogueId == null) epilogueId = "";
         waveElapsedSeconds = Float.isFinite(waveElapsedSeconds) ? Math.max(0f, waveElapsedSeconds) : 0f;
         if (rootNodesPurchased == null) rootNodesPurchased = new LinkedHashMap<>();
         if (codexUnlocked == null) codexUnlocked = new LinkedHashMap<>();
@@ -315,6 +321,8 @@ public final class GameState {
         this.potionsUsedThisRun = 0;
         this.fastestWaveClearSeconds = Float.MAX_VALUE;
         this.longestPauseSeconds = 0f;
+        this.openingTier = -1;
+        this.epilogueId = "";
         this.shopStatsBoughtThisRun = 0;
         this.bareHandedEligible = true;
         this.noPotionRun = true;

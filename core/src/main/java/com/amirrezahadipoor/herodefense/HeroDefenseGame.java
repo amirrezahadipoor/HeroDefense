@@ -103,6 +103,7 @@ import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 import com.amirrezahadipoor.herodefense.story.CodexSystem;
+import com.amirrezahadipoor.herodefense.story.Epilogue;
 import com.amirrezahadipoor.herodefense.story.WhisperLines;
 
 import java.util.Optional;
@@ -823,7 +824,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
-        openingCinematic.begin(gameState.ascensionTier);
+        beginOpening();
         saveNow();
     }
 
@@ -844,7 +845,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
-        openingCinematic.begin(gameState.ascensionTier);
+        beginOpening();
         saveNow();
     }
 
@@ -866,7 +867,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         floatingDamageTextSystem.clear();
         flow.transitionTo(GameScreenState.PLAYING);
         flow.transitionTo(GameScreenState.CINEMATIC);
-        openingCinematic.begin(gameState.ascensionTier);
+        beginOpening();
         saveNow();
     }
 
@@ -883,7 +884,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         } else if (!gameState.waveActive && untouchedFirstWave(gameState)) {
             // Killed during the opening: replay it so every new run still starts with the prologue.
             flow.transitionTo(GameScreenState.CINEMATIC);
-            openingCinematic.begin(gameState.ascensionTier);
+            openingCinematic.begin(openingTierFor(gameState));
         } else if (!gameState.waveActive) {
             int bossesBefore = livingBossCount(gameState);
             waveLifecycleSystem.startCurrentWave(gameState);
@@ -892,6 +893,17 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 presentBossEntrance(gameState);
             }
         }
+    }
+
+    /** Snapshots the run's opening tier, then plays that tier's lines. */
+    private void beginOpening() {
+        gameState.openingTier = gameState.ascensionTier;
+        openingCinematic.begin(gameState.openingTier);
+    }
+
+    /** Tier whose opening lines a save replays: the snapshot, else the live tier. */
+    static int openingTierFor(GameState state) {
+        return state.openingTier >= 0 ? state.openingTier : state.ascensionTier;
     }
 
     /** True while a run has not yet begun wave 1 (the save written right after New Game). */
@@ -1123,6 +1135,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 particleSystem.emitTreeDestruction(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y);
             }
             screenShakeSystem.triggerTreeFall();
+            gameState.epilogueId = Epilogue.select(gameState).name();
             flow.transitionTo(GameScreenState.GAME_OVER);
             saveNow();
         } else if (killRewards.levelsGained() > 0 && gameState.hero.alive) {
@@ -1149,6 +1162,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 if (gameState.waveNumber > gameState.peakWaveReached) {
                     gameState.peakWaveReached = gameState.waveNumber;
                 }
+                gameState.epilogueId = Epilogue.select(gameState).name();
                 flow.transitionTo(GameScreenState.GAME_OVER);
             }
             if (waveCompletion != WaveCompletion.NO_CHANGE) {

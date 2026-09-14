@@ -169,7 +169,7 @@ public final class GameOverOverlayRenderer implements AutoCloseable {
     private void drawEpilogue(
         SpriteBatch batch, GameState state, boolean victory, float reveal
     ) {
-        Epilogue epilogue = Epilogue.select(state);
+        Epilogue epilogue = Epilogue.endingFor(state);
         float y = EPILOGUE_FIRST_LINE_Y;
         for (String beat : epilogue.lines()) {
             for (String line : CodexOverlayRenderer.wrapLines(

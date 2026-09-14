@@ -89,6 +89,23 @@ final class GameStateTest {
     }
 
     @Test
+    void openingSnapshotAndEpilogueIdResetEachRunAndRepair() {
+        GameState state = GameState.newRun(14L);
+        state.openingTier = 2;
+        state.epilogueId = "B";
+        state.resetForNewRun(15L);
+        assertEquals(-1, state.openingTier);
+        assertEquals("", state.epilogueId);
+
+        GameState broken = new GameState();
+        broken.openingTier = -5;
+        broken.epilogueId = null;
+        broken.validateAndRepair();
+        assertEquals(-1, broken.openingTier);
+        assertEquals("", broken.epilogueId);
+    }
+
+    @Test
     void repairClampsAnvilLevelsAndDropsNullItems() {
         GameState state = GameState.newRun(11L);
         Item forged = new Item();

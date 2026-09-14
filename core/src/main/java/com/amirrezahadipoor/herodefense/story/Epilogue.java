@@ -52,6 +52,21 @@ public enum Epilogue {
     }
 
     /**
+     * Ending to show: the id recorded when the run ended wins, so a later detour (root
+     * network, reload) can never reselect; saves without an id select live.
+     */
+    public static Epilogue endingFor(GameState state) {
+        if (state.epilogueId != null) {
+            for (Epilogue epilogue : values()) {
+                if (epilogue.name().equals(state.epilogueId)) {
+                    return epilogue;
+                }
+            }
+        }
+        return select(state);
+    }
+
+    /**
      * Selects the epilogue for a finished run. A needs Wave 200 cleared with no Hero death,
      * fewer than 3 potions used, and finishing HP at or above 30% of max — B is every other
      * Wave-200 clear (a Hero death always ends the run, so the doc's "died and revived" clause

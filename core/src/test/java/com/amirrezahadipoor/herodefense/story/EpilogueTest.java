@@ -85,6 +85,17 @@ final class EpilogueTest {
         );
     }
 
+    @Test
+    void persistedEpilogueIdWinsOverLiveSelection() {
+        GameState state = loss(10);
+        state.epilogueId = "E";
+        assertEquals(Epilogue.E, Epilogue.endingFor(state));
+        state.epilogueId = "bogus";
+        assertEquals(Epilogue.C, Epilogue.endingFor(state));
+        state.epilogueId = "";
+        assertEquals(Epilogue.C, Epilogue.endingFor(state));
+    }
+
     private static Epilogue select(GameState state) {
         return Epilogue.select(state);
     }

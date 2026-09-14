@@ -1,5 +1,6 @@
 package com.amirrezahadipoor.herodefense;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,5 +33,20 @@ class OpeningReplayTest {
         GameState state = GameState.newRun(7L);
         state.waveNumber = 2;
         assertFalse(HeroDefenseGame.untouchedFirstWave(state));
+    }
+
+    @Test
+    void continueReplaysSnapshotTierNotLiveTier() {
+        GameState state = GameState.newRun(7L);
+        state.ascensionTier = 3;
+        state.openingTier = 1;
+        assertEquals(1, HeroDefenseGame.openingTierFor(state));
+    }
+
+    @Test
+    void missingSnapshotFallsBackToLiveTier() {
+        GameState state = GameState.newRun(7L);
+        state.ascensionTier = 2;
+        assertEquals(2, HeroDefenseGame.openingTierFor(state));
     }
 }
