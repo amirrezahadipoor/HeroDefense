@@ -76,6 +76,19 @@ final class GameStateTest {
     }
 
     @Test
+    void usedWhispersSurviveNewRunsAndNullRepair() {
+        GameState state = GameState.newRun(12L);
+        state.usedWhisperIds.put("whisper_1", Boolean.TRUE);
+        state.resetForNewRun(13L);
+        assertTrue(Boolean.TRUE.equals(state.usedWhisperIds.get("whisper_1")));
+
+        GameState broken = new GameState();
+        broken.usedWhisperIds = null;
+        broken.validateAndRepair();
+        assertTrue(broken.usedWhisperIds.isEmpty());
+    }
+
+    @Test
     void repairClampsAnvilLevelsAndDropsNullItems() {
         GameState state = GameState.newRun(11L);
         Item forged = new Item();

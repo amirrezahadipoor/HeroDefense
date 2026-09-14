@@ -67,6 +67,8 @@ public final class GameState {
     public Map<String, Boolean> codexUnlocked = new LinkedHashMap<>();
     public Map<String, Integer> eliteKillCounts = new LinkedHashMap<>();
     public Map<String, Boolean> firstBossKills = new LinkedHashMap<>();
+    /** Idle-whisper ids already shown once; the pool never repeats (§8). */
+    public Map<String, Boolean> usedWhisperIds = new LinkedHashMap<>();
     public Map<String, String> skillEvolutions = new LinkedHashMap<>();
     public List<String> activeTrials = new ArrayList<>();
     public Map<String, Boolean> trialUnlocked = new LinkedHashMap<>();
@@ -235,12 +237,14 @@ public final class GameState {
         if (codexUnlocked == null) codexUnlocked = new LinkedHashMap<>();
         if (eliteKillCounts == null) eliteKillCounts = new LinkedHashMap<>();
         if (firstBossKills == null) firstBossKills = new LinkedHashMap<>();
+        if (usedWhisperIds == null) usedWhisperIds = new LinkedHashMap<>();
         if (skillEvolutions == null) skillEvolutions = new LinkedHashMap<>();
         if (activeTrials == null) activeTrials = new ArrayList<>();
         if (trialUnlocked == null) trialUnlocked = new LinkedHashMap<>();
         rootNodesPurchased.values().removeIf(v -> v == null);
         codexUnlocked.values().removeIf(v -> v == null);
         firstBossKills.values().removeIf(v -> v == null);
+        usedWhisperIds.values().removeIf(v -> v == null);
         skillEvolutions.values().removeIf(v -> v == null);
         trialUnlocked.values().removeIf(v -> v == null);
         activeTrials.removeIf(t -> t == null);
@@ -268,6 +272,7 @@ public final class GameState {
         Map<String, Boolean> keptCodex = new LinkedHashMap<>(codexUnlocked);
         Map<String, Integer> keptElite = new LinkedHashMap<>(eliteKillCounts);
         Map<String, Boolean> keptFirstBoss = new LinkedHashMap<>(firstBossKills);
+        Map<String, Boolean> keptWhispers = new LinkedHashMap<>(usedWhisperIds);
         Map<String, Boolean> keptTrialsUnlocked = new LinkedHashMap<>(trialUnlocked);
         int keptRuns = totalRunsCompleted;
         int keptAscensions = totalAscensionsCompleted;
@@ -280,6 +285,7 @@ public final class GameState {
         fresh.codexUnlocked = keptCodex;
         fresh.eliteKillCounts = keptElite;
         fresh.firstBossKills = keptFirstBoss;
+        fresh.usedWhisperIds = keptWhispers;
         fresh.trialUnlocked = keptTrialsUnlocked;
         fresh.totalRunsCompleted = keptRuns;
         fresh.totalAscensionsCompleted = keptAscensions;

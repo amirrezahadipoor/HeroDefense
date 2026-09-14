@@ -67,6 +67,7 @@ import com.amirrezahadipoor.herodefense.polish.ScreenShakeSystem;
 import com.amirrezahadipoor.herodefense.polish.TouchFeedbackSystem;
 import com.amirrezahadipoor.herodefense.render.ArenaEnvironmentRenderer;
 import com.amirrezahadipoor.herodefense.render.CodexOverlayRenderer;
+import com.amirrezahadipoor.herodefense.render.IdleWhisperRenderer;
 import com.amirrezahadipoor.herodefense.render.CombatEntityRenderer;
 import com.amirrezahadipoor.herodefense.render.DisplayMetrics;
 import com.amirrezahadipoor.herodefense.render.GameFonts;
@@ -102,6 +103,7 @@ import com.amirrezahadipoor.herodefense.shop.StatShopSystem;
 import com.amirrezahadipoor.herodefense.skills.SkillId;
 import com.amirrezahadipoor.herodefense.skills.SkillShopSystem;
 import com.amirrezahadipoor.herodefense.story.CodexSystem;
+import com.amirrezahadipoor.herodefense.story.WhisperLines;
 
 import java.util.Optional;
 
@@ -145,6 +147,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private HudRenderer hudRenderer;
     private CodexTouchController codexTouchController;
     private CodexOverlayRenderer codexOverlayRenderer;
+    private IdleWhisperRenderer idleWhisperRenderer;
+    /** Current idle-whisper line, or null when no whisper is showing. */
+    private String whisperLine;
+    private float whisperSeconds;
     private InventoryTouchController inventoryTouchController;
     private InventoryOverlayRenderer inventoryOverlayRenderer;
     private ItemDropSystem itemDropSystem;
@@ -263,6 +269,7 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         hudRenderer = new HudRenderer();
         equipmentSpriteRenderer = new EquipmentSpriteRenderer();
         codexOverlayRenderer = new CodexOverlayRenderer();
+        idleWhisperRenderer = new IdleWhisperRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer();
         levelUpOverlayRenderer = new LevelUpOverlayRenderer();
         mainMenuRenderer = new MainMenuRenderer();
@@ -314,11 +321,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         statShopSystem.update(deltaSeconds);
         skillShopSystem.update(deltaSeconds);
         if (rootNetworkSystem != null) rootNetworkSystem.update(deltaSeconds);
-        if (flow.simulationRunning()) {
+        if (flow.simulationRunning() && whisperLine == null) {
             float gameplayDelta = hitStopSystem.consume(deltaSeconds);
             if (gameplayDelta > 0f) updatePlaying(gameplayDelta);
         } else if (flow.state() == GameScreenState.CINEMATIC) {
             updateCinematic(deltaSeconds);
+        }
+        if (whisperLine != null && flow.state() == GameScreenState.PLAYING) {
+            whisperSeconds += deltaSeconds;
+            if (whisperSeconds >= IdleWhisperRenderer.SHOW_SECONDS) whisperLine = null;
         }
         ambientSeconds += deltaSeconds;
         if (flow.state() == GameScreenState.GAME_OVER) {
@@ -465,6 +476,9 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (codexOverlayRenderer != null) {
             codexOverlayRenderer.close();
         }
+        if (idleWhisperRenderer != null) {
+            idleWhisperRenderer.close();
+        }
         if (inventoryOverlayRenderer != null) {
             inventoryOverlayRenderer.close();
         }
@@ -520,6 +534,13 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             if (seconds > 0f) {
                 gameState.longestPauseSeconds = Math.max(gameState.longestPauseSeconds, seconds);
                 codexSystem.unlockSecretsForPause(gameState);
+                if (whisperLine == null && seconds >= 300f && now == GameScreenState.PLAYING) {
+                    whisperLine = WhisperLines.firstUnused(gameState.usedWhisperIds);
+                    if (whisperLine != null) {
+                        whisperSeconds = 0f;
+                        WhisperLines.markUsed(gameState.usedWhisperIds, whisperLine);
+                    }
+                }
                 saveNow();
             }
         }
@@ -696,6 +717,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                         audioManager.play(AudioCue.PURCHASE);
                         saveNow();
                     }
+                    return true;
+                }
+                if (flow.state() == GameScreenState.PLAYING && whisperLine != null) {
+                    whisperLine = null;
                     return true;
                 }
                 if (flow.state() == GameScreenState.PLAYING
@@ -1286,6 +1311,11 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             rootNetworkOverlayRenderer.draw(
                 spriteBatch, camera.combined, gameState, rootNetworkSystem,
                 uiIconRenderer, uiFrameRenderer, saplingTreeRenderer, ambientSeconds
+            );
+        }
+        if (whisperLine != null && flow.state() == GameScreenState.PLAYING) {
+            idleWhisperRenderer.draw(
+                spriteBatch, camera.combined, whisperLine, whisperSeconds
             );
         }
         touchFeedbackRenderer.draw(camera.combined, touchFeedbackSystem);

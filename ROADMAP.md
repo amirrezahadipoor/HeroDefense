@@ -378,7 +378,7 @@ Give the world a memory. Reuses the three-beat cinematic text system already bui
 - [x] Render each `docs/STORY_CONTENT.md` §3 boss bio as the second paragraph of its Codex entry 9–12 detail view (Tree-voice text first, bio second), unlocked together with the entry — no new art.
 - [x] Add a Codex screen (`GameScreenState.CODEX`), reachable from the Main Menu and from Pause, listing locked entries as silhouettes and unlocked entries in full, in the same card layout style as Inventory; Tree-voice body text renders leaf-green, never white.
 - [x] (Optional §8) Silent Rootling: a rare (~2% of Rootling spawns, deterministic) harmless variant that stands at the tree line and never moves or attacks; purely visual, worth no XP/coins/drops, despawns at wave end.
-- [ ] (Optional §8) Idle whisper: when Resume follows a single pause ≥ 300 s real time, show one still-unused Tree-voice whisper line once (reuse the reflection overlay; each whisper at most one sentence) before combat continues.
+- [x] (Optional §8) Idle whisper: when Resume follows a single pause ≥ 300 s real time, show one still-unused Tree-voice whisper line once (reuse the reflection overlay; each whisper at most one sentence) before combat continues.
 
 ### 21.2 Evolving Opening & Branching Endings
 
