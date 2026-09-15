@@ -22,6 +22,9 @@ on:
           - ui-supplement
           - skill-icons
           - ceremony
+          - vfx
+          - projectile
+          - equipment-overlay
           - all
 
 permissions:
