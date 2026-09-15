@@ -843,13 +843,13 @@ def build_crystal_prop(variant: int = 0) -> BuiltModel:
     return BuiltModel(None, objects, {
         "variant": variant,
         "prop": identity,
-        "modelRevision": "arena-crystal-premium-v2",
+        "modelRevision": "arena-crystal-premium-v4-vibrant",
         "silhouetteLandmarks": [
             "faceted bedrock", "guard ring", "identity shard rhythm", "moss grounding",
         ],
-        "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
-        "runtimeGlow": False,
-        "visualQuality": "studio-v3",
+        "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, emissive jewel glow 1.2",  # Phase 48
+        "runtimeGlow": True,  # Phase 48: emissive crystal
+        "visualQuality": "studio-v4-vibrant",
     })
 
 

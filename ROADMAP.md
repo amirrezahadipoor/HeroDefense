@@ -865,7 +865,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 48 — Emissive Environment Crystals
 
-- [ ] In `tools/blender/hd_pipeline/environment.py`: give crystal props an emissive component (strength 1.2, color per crystal type cyan/amber/violet) so they look like colorful jewels, not grey stones. Reuse existing crystal meshes, no new geometry.
+- [x] In `tools/blender/hd_pipeline/environment.py`: give crystal props an emissive component (strength 1.2, color per crystal type cyan/amber/violet) so they look like colorful jewels, not grey stones. Reuse existing crystal meshes, no new geometry.
 
 ## Block 4 — Stunning Final Render (Phases 49–53)
 

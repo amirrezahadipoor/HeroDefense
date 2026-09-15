@@ -145,10 +145,13 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     emission = nodes.new("ShaderNodeEmission")
     # Phase 46: emission glow for leaves and gold — 1.0->1.4 for phosphor effect
     # Phase 47: eye gets brighter for double white highlights
+    # Phase 48: crystal emissive like jewel
     if any(k in name.lower() for k in ("leaf", "gold")):
         emission.inputs["Strength"].default_value = 1.4
     elif "eye" in name.lower():
         emission.inputs["Strength"].default_value = 1.2  # Phase 47: eye brighter
+    elif "crystal" in name.lower() or "prop_crystal" in name.lower():
+        emission.inputs["Strength"].default_value = 1.2  # Phase 48: crystal emissive jewel
     else:
         emission.inputs["Strength"].default_value = 1.0
 
