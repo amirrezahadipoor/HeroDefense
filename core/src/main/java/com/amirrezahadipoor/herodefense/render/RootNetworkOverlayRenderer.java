@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.amirrezahadipoor.herodefense.ascension.RootNetworkCatalog;
 import com.amirrezahadipoor.herodefense.ascension.RootNetworkSystem;
 import com.amirrezahadipoor.herodefense.ascension.RootNodeDefinition;
+import com.amirrezahadipoor.herodefense.ascension.RootNodeBonusType;
 import com.amirrezahadipoor.herodefense.input.RootNetworkTouchLayout;
 import com.amirrezahadipoor.herodefense.model.GameState;
 
@@ -75,17 +76,7 @@ public final class RootNetworkOverlayRenderer implements AutoCloseable {
         batch.begin();
         for (RootNodeDefinition def : RootNetworkCatalog.all()) {
             boolean purchased = system.isPurchased(state, def.id());
-            String icon = switch (def.bonusType()) {
-                case STARTING_STRENGTH -> "strength";
-                case STARTING_AGILITY -> "agility";
-                case STARTING_LUCK -> "luck";
-                case STARTING_DODGE -> "dodge";
-                case STARTING_HEALTH -> "health";
-                case STARTING_COIN -> "coin";
-                case STARTING_TALENT_POINT -> "general_power";
-                case FOCUS_FILL_BONUS -> "chain_lightning";
-                case MAX_HEALTH_BONUS -> "health";
-            };
+            String icon = iconKeyFor(def.bonusType());
             icons.draw(batch, icon, def.x() - 16f, def.y() - 16f, 32f);
             if (purchased) {
                 text.drawCentered(batch, "OK", def.x(), def.y() + 28f, 0.8f, OverlayText.GOLD, 1f);
@@ -105,6 +96,21 @@ public final class RootNetworkOverlayRenderer implements AutoCloseable {
         }
         text.drawCentered(batch, "Tap a green node to awaken it with Heartwood", 360f, 140f, 0.7f, OverlayText.SUBTLE, 1f);
         batch.end();
+    }
+
+    /** Reviewed icon key per node bonus; every key must resolve in `UiIconRenderer`. */
+    static String iconKeyFor(RootNodeBonusType bonusType) {
+        return switch (bonusType) {
+            case STARTING_STRENGTH -> "strength";
+            case STARTING_AGILITY -> "agility";
+            case STARTING_LUCK -> "luck";
+            case STARTING_DODGE -> "dodge";
+            case STARTING_HEALTH -> "health";
+            case STARTING_COIN -> "coin";
+            case STARTING_TALENT_POINT -> "general_power";
+            case FOCUS_FILL_BONUS -> "skill_chain_lightning";
+            case MAX_HEALTH_BONUS -> "health";
+        };
     }
 
     @Override

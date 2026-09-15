@@ -487,7 +487,7 @@ One hotfix phase, done before everything else: the Root Network screen crashes o
 
 ### 27.0 Crash fix
 
-- [ ] Reproduce the Root Network tap crash with a headless test, diagnose the root cause, fix it, and add a regression test that opens/closes the overlay across save states (fresh save, ascended save, empty roots, full roots).
+- [x] Reproduce the Root Network tap crash with a headless test, diagnose the root cause, fix it, and add a regression test that opens/closes the overlay across save states (fresh save, ascended save, empty roots, full roots).
 
 ## Phase 28 — Asset Engine Overhaul (color + shape fidelity first)
 
