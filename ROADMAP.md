@@ -537,7 +537,7 @@ Rebuilds every icon/item with a real shortage (no more borrowed art) and reduces
 
 - [x] Render the 6 Mythic arts per the style guide, unwire their same-slot borrows in `EquipmentCatalog`, and lock each with a contract test.
 - [x] Render the 4 borrowed bows' own art, unwire the borrows, and lock each with a contract test.
-- [ ] Render everything remaining on the `docs/ART_SHORTAGE.md` list (icons/items), promote through the Phase 28 review flow, and cover each with a contract test.
+- [x] Render everything remaining on the `docs/ART_SHORTAGE.md` list (icons/items), promote through the Phase 28 review flow, and cover each with a contract test. — 29.3 closed: audit shows 0 borrowed, no remaining icons/items to render.
 
 ### 29.4 Hero wears boots + weapon only
 

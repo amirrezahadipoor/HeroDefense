@@ -25,6 +25,6 @@ python3 -m unittest discover -s tools/visual/tests -k ArtShortage -v
 
 - [x] 29.1: 6 mythics have own mesh/material + atlas + icon, `EquipmentCatalog` no longer borrows, contract test green
 - [x] 29.2: 4 bows have own art, borrows unwired, contract test green
-- [ ] 29.3: remaining list empty, `docs/ART_SHORTAGE.md` shows 0 borrowed, all contract tests green
+- [x] 29.3: remaining list empty, `docs/ART_SHORTAGE.md` shows 0 borrowed, all contract tests green
 - [ ] 29.4: hero LAYER_ORDER reduced to boots+weapon only
 
