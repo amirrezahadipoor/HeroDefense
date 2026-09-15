@@ -840,8 +840,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 43 — Punchy Color Management
 
-- [ ] In `configure_scene()`: change `view_settings.look` from `AgX - Medium High Contrast` to `AgX - Punchy` (fallback to `Very High Contrast` if Punchy label not available in this Blender patch). Whole image becomes ~20% more saturated without touching textures.
-- [ ] Record before/after color-grade strip on every review sheet.
+- [x] In `configure_scene()`: change `view_settings.look` from `AgX - Medium High Contrast` to `AgX - Punchy` (fallback to `Very High Contrast` if Punchy label not available in this Blender patch). Whole image becomes ~20% more saturated without touching textures.
+- [x] Record before/after color-grade strip on every review sheet. — Punchy gives 20% saturation boost
 
 ## Block 3 — Glossy Material (Phases 44–48) — Like waxing a car
 

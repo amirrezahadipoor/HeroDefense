@@ -198,10 +198,12 @@ def configure_scene(
     scene.render.line_thickness = 1.0
 
     try:
-        scene.view_settings.look = "AgX - Medium High Contrast"
+        scene.view_settings.look = "AgX - Punchy"  # Phase 43: Medium High Contrast -> Punchy for 20% more saturation
     except TypeError:
-        # Exact look labels differ slightly among Blender patch releases.
-        pass
+        try:
+            scene.view_settings.look = "AgX - Very High Contrast"  # fallback if Punchy not available
+        except TypeError:
+            pass
     scene.view_settings.exposure = 0.0
     scene.view_settings.gamma = 1.0
 
