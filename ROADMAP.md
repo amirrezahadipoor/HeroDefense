@@ -875,7 +875,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 50 — Bloom in EEVEE Compositor
 
-- [ ] In `scene.py` → `configure_scene()`: enable EEVEE bloom (`use_bloom = True`, threshold 0.8, intensity 0.4, radius 0.6) for top-tier assets. This creates the sparkle around bow and arrows seen in the reference. Add a guard so Workbench overlays ignore bloom.
+- [x] In `scene.py` → `configure_scene()`: enable EEVEE bloom (`use_bloom = True`, threshold 0.8, intensity 0.4, radius 0.6) for top-tier assets. This creates the sparkle around bow and arrows seen in the reference. Add a guard so Workbench overlays ignore bloom.
 
 ### Phase 51 — Stronger Ambient Occlusion
 

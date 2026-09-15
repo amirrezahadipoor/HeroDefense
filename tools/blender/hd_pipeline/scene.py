@@ -214,6 +214,23 @@ def configure_scene(
     # else opaque renders 2×/24, downsampled to identical runtime dimensions.
     scene.eevee.taa_render_samples = samples
     scene.eevee.taa_samples = samples
+    # Phase 50: bloom for sparkle around bow/arrows like reference
+    # Only for top-tier (hero/bosses/trees) to keep performance and avoid washing out small icons
+    if frame_class in ("character", "boss", "tree") or asset_key.startswith("hero"):
+        try:
+            scene.eevee.use_bloom = True
+            scene.eevee.bloom_threshold = 0.8
+            scene.eevee.bloom_intensity = 0.4
+            scene.eevee.bloom_radius = 0.6
+            scene.eevee.bloom_clamp = 0.0
+        except AttributeError:
+            # Older Blender EEVEE API fallback
+            pass
+    else:
+        try:
+            scene.eevee.use_bloom = False
+        except AttributeError:
+            pass
     # Use deterministic alpha-dilation outlines for every asset class. Unlike
     # Freestyle, this keeps repeated software-GL renders memory-bounded in CI.
     scene.render.use_freestyle = False
