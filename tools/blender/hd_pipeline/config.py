@@ -6,8 +6,24 @@ from pathlib import Path
 BLENDER_VERSION = "4.2.23"
 FRAME_RATE = 12
 RENDER_SUPERSAMPLE = 2
-OPAQUE_RENDER_SAMPLES = 16
+OPAQUE_RENDER_SAMPLES = 24
+# Workbench equipment overlays ignore sample counts; the number below is
+# provenance-only and stays at its historic value.
 OVERLAY_RENDER_SAMPLES = 8
+# Phase 28.3: hero, bosses, and trees render at the top tier; every other
+# opaque asset shares the mid-tier floors above.
+TOP_TIER_CLASSES = frozenset({"boss", "tree"})
+TOP_TIER_KEY_PREFIX = "hero"
+TOP_TIER_SUPERSAMPLE = 3
+TOP_TIER_SAMPLES = 32
+
+
+def render_tier(asset_key: str, frame_class: str) -> tuple[int, int]:
+    """(supersample, eevee_samples) for one asset; hero/bosses/trees highest."""
+    if frame_class in TOP_TIER_CLASSES or asset_key == TOP_TIER_KEY_PREFIX \
+            or asset_key.startswith(TOP_TIER_KEY_PREFIX + "_"):
+        return (TOP_TIER_SUPERSAMPLE, TOP_TIER_SAMPLES)
+    return (RENDER_SUPERSAMPLE, OPAQUE_RENDER_SAMPLES)
 OUTLINE_RGBA = (0.0072, 0.0152, 0.0194, 1.0)  # linear-ish #142126
 
 CAMERA_LOCATION = (6.5, -9.5, 6.2)

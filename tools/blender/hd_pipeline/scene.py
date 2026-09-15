@@ -15,9 +15,8 @@ from .config import (
     CAMERA_SHIFT_Y,
     CAMERA_TARGET,
     FRAME_DIMENSIONS,
-    OPAQUE_RENDER_SAMPLES,
     OUTLINE_RGBA,
-    RENDER_SUPERSAMPLE,
+    render_tier,
 )
 
 
@@ -101,25 +100,29 @@ def transparent_material(name: str, color_hex: str, alpha: float) -> bpy.types.M
     return material
 
 
-def configure_scene(frame_class: str, output_directory: Path) -> bpy.types.Scene:
+def configure_scene(
+    frame_class: str, output_directory: Path, asset_key: str = ""
+) -> bpy.types.Scene:
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_EEVEE_NEXT"
     scene.render.film_transparent = True
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.image_settings.color_depth = "8"
+    supersample, samples = render_tier(asset_key, frame_class)
     frame_width, frame_height = _frame_dimensions(frame_class)
-    scene.render.resolution_x = frame_width * RENDER_SUPERSAMPLE
-    scene.render.resolution_y = frame_height * RENDER_SUPERSAMPLE
+    scene.render.resolution_x = frame_width * supersample
+    scene.render.resolution_y = frame_height * supersample
+    scene["hero_render_supersample"] = supersample
     scene.render.resolution_percentage = 100
     scene.render.fps = 12
     scene.render.filepath = str(output_directory)
     scene.render.use_file_extension = True
     scene.render.image_settings.compression = 40
-    # Premium-v2 renders opaque assets at 2× working resolution with enough temporal
-    # samples for clean facets and downsampled edges while remaining practical in CI.
-    scene.eevee.taa_render_samples = OPAQUE_RENDER_SAMPLES
-    scene.eevee.taa_samples = OPAQUE_RENDER_SAMPLES
+    # Phase 28.3 per-category tiers: hero/bosses/trees render 3×/32, everything
+    # else opaque renders 2×/24, downsampled to identical runtime dimensions.
+    scene.eevee.taa_render_samples = samples
+    scene.eevee.taa_samples = samples
     # Use deterministic alpha-dilation outlines for every asset class. Unlike
     # Freestyle, this keeps repeated software-GL renders memory-bounded in CI.
     scene.render.use_freestyle = False

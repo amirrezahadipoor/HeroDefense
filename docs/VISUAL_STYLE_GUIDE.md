@@ -35,7 +35,7 @@ Premium-v2 is a substantial quality upgrade, not a change to noisy realism. Ever
 ### 0.4 Premium render treatment without runtime bloat
 
 - Final runtime frame dimensions remain locked unless a measured device test approves a change.
-- Premium-v2 source frames render at 2× working resolution, use at least 16 EEVEE temporal samples for opaque base assets (8 for sparse equipment overlays), then downsample once with alpha-safe high-quality filtering.
+- Premium-v2 source frames render at 2× working resolution (3× for hero, bosses, and trees), use at least 24 EEVEE temporal samples for opaque base assets (32 for hero, bosses, and trees; 8 for sparse equipment overlays), then downsample once with alpha-safe high-quality filtering.
 - Downsampling must preserve straight alpha, the locked outline thickness, stable pivots, and at least four pixels of transparent/extruded edge safety.
 - Prefer better geometry, posing, lighting, and supersampled edges over larger runtime textures. Doubling runtime width and height costs roughly four times the decoded GPU memory.
 - Every atlas page must be at most 2048×2048. Multi-page output is required rather than silently exceeding the limit.

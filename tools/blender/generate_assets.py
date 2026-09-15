@@ -37,7 +37,12 @@ from hd_pipeline.config import (  # noqa: E402
     REGULAR_CHARACTERS,
     RENDER_SUPERSAMPLE,
     REQUIRED_BONES,
+    TOP_TIER_CLASSES,
+    TOP_TIER_KEY_PREFIX,
+    TOP_TIER_SAMPLES,
+    TOP_TIER_SUPERSAMPLE,
     RenderAsset,
+    render_tier,
 )
 from hd_pipeline.environment import (  # noqa: E402
     build_arena_backdrop,
@@ -118,7 +123,8 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
     _fresh_directory(frame_root)
     reset_scene()
     MATERIALS.clear()
-    scene = configure_scene(asset.frame_class, frame_root)
+    supersample, render_samples = render_tier(asset.key, asset.frame_class)
+    scene = configure_scene(asset.frame_class, frame_root, asset.key)
     model = build_character(asset.builder)
     if model.armature is None:
         raise RuntimeError(f"Character {asset.key} did not create an armature")
@@ -178,8 +184,8 @@ def render_character(asset: RenderAsset, output: Path, keep_frames: bool) -> dic
         "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
         "frameRate": FRAME_RATE,
-        "renderSupersample": RENDER_SUPERSAMPLE,
-        "renderSamples": OPAQUE_RENDER_SAMPLES,
+        "renderSupersample": supersample,
+        "renderSamples": render_samples,
         "triangles": triangles,
         "meshParts": len(mesh_parts),
         "materialCount": len(material_names),
@@ -231,7 +237,8 @@ def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
     _fresh_directory(frame_root)
     reset_scene()
     MATERIALS.clear()
-    scene = configure_scene("tree", frame_root)
+    supersample, render_samples = render_tier(key, "tree")
+    scene = configure_scene("tree", frame_root, key)
     model = build_world_tree(damaged)
     actions = author_world_tree_actions(model.armature, damaged)
     if ISOLATED_RENDERING:
@@ -285,8 +292,8 @@ def render_tree_state(damaged: bool, output: Path, keep_frames: bool) -> dict:
         "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
         "frameRate": FRAME_RATE,
-        "renderSupersample": RENDER_SUPERSAMPLE,
-        "renderSamples": OPAQUE_RENDER_SAMPLES,
+        "renderSupersample": supersample,
+        "renderSamples": render_samples,
         "triangles": triangle_count(model.render_objects),
         "meshParts": len(mesh_parts),
         "materialCount": len(material_names),
@@ -315,6 +322,7 @@ def _render_rigged_clips(
     worker_kind: str,
 ) -> dict:
     """Shared export path for Phase 18 ceremony sheets (Hero clips and sapling growth)."""
+    supersample, render_samples = render_tier(key, frame_class)
     frame_root = output / "_frames" / key
     if ISOLATED_RENDERING:
         frame_paths = {clip: [] for clip in clip_counts}
@@ -359,8 +367,8 @@ def _render_rigged_clips(
         "alphaMode": "STRAIGHT_RGBA",
         "clips": regions,
         "frameRate": FRAME_RATE,
-        "renderSupersample": RENDER_SUPERSAMPLE,
-        "renderSamples": OPAQUE_RENDER_SAMPLES,
+        "renderSupersample": supersample,
+        "renderSamples": render_samples,
         "triangles": triangle_count(model.render_objects),
         "meshParts": len(mesh_parts),
         "materialCount": len(material_names),
@@ -383,7 +391,7 @@ def render_ceremony(output: Path, keep_frames: bool) -> list[dict]:
     _fresh_directory(hero_root)
     reset_scene()
     MATERIALS.clear()
-    scene = configure_scene("character", hero_root)
+    scene = configure_scene("character", hero_root, "hero_ceremony")
     hero = build_ceremony_hero()
     hero_actions = author_ceremony_actions(hero.armature, "hero_ceremony")
     entries.append(_render_rigged_clips(
@@ -394,7 +402,7 @@ def render_ceremony(output: Path, keep_frames: bool) -> list[dict]:
     _fresh_directory(sapling_root)
     reset_scene()
     MATERIALS.clear()
-    scene = configure_scene("tree", sapling_root)
+    scene = configure_scene("tree", sapling_root, "world_tree_sapling")
     sapling = build_sapling_tree()
     sapling_actions = author_sapling_actions(sapling.armature)
     entries.append(_render_rigged_clips(
@@ -508,9 +516,10 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
 
 
 def _runtime_frame_dimensions(scene: bpy.types.Scene) -> tuple[int, int]:
+    supersample = scene.get("hero_render_supersample", RENDER_SUPERSAMPLE)
     return (
-        scene.render.resolution_x // RENDER_SUPERSAMPLE,
-        scene.render.resolution_y // RENDER_SUPERSAMPLE,
+        scene.render.resolution_x // supersample,
+        scene.render.resolution_y // supersample,
     )
 
 
@@ -576,7 +585,8 @@ def render_static_model(
     _fresh_directory(frame_root)
     reset_scene()
     MATERIALS.clear()
-    scene = configure_scene(frame_class, frame_root)
+    supersample, render_samples = render_tier(key, frame_class)
+    scene = configure_scene(frame_class, frame_root, key)
     model = builder()
     path = frame_root / f"{key}_idle_00.png"
     if ISOLATED_RENDERING:
@@ -633,8 +643,8 @@ def render_static_model(
         "triangles": triangle_count(model.render_objects),
         "meshParts": sum(obj.type == "MESH" for obj in model.render_objects),
         "materialCount": _material_count(model.render_objects),
-        "renderSupersample": RENDER_SUPERSAMPLE,
-        "renderSamples": OPAQUE_RENDER_SAMPLES,
+        "renderSupersample": supersample,
+        "renderSamples": render_samples,
         **model.metadata,
     }
     _write_json(target_directory / f"{key}.json", entry)
@@ -764,7 +774,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     reset_scene()
     MATERIALS.clear()
-    scene = configure_scene(payload["frameClass"], output.parent)
+    scene = configure_scene(payload["frameClass"], output.parent,
+                              payload.get("key", ""))
     if payload["kind"] == "equipment":
         configure_equipment_overlay_renderer(scene)
     if "samples" in payload:
@@ -905,6 +916,9 @@ def main() -> None:
         "renderSupersample": RENDER_SUPERSAMPLE,
         "opaqueRenderSamples": OPAQUE_RENDER_SAMPLES,
         "overlayRenderSamples": OVERLAY_RENDER_SAMPLES,
+        "renderTierTopClasses": sorted(TOP_TIER_CLASSES),
+        "renderTierTopKeyPrefix": TOP_TIER_KEY_PREFIX,
+        "renderTierTop": [TOP_TIER_SUPERSAMPLE, TOP_TIER_SAMPLES],
         "maxAtlasPageSize": MAX_ATLAS_SIZE,
         "decodedCatalogBudgetBytes": 335_544_320,
         "decodedCombatResidencyBudgetBytes": 134_217_728,

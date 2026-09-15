@@ -61,8 +61,8 @@ class WorldTreePremiumSourceTest(unittest.TestCase):
         self.assertIn('clip_counts["destroy"] = 10', source)
         for field in (
             '"frameRate": FRAME_RATE',
-            '"renderSupersample": RENDER_SUPERSAMPLE',
-            '"renderSamples": OPAQUE_RENDER_SAMPLES',
+            '"renderSupersample": supersample',
+            '"renderSamples": render_samples',
             '"meshParts": len(mesh_parts)',
             '"materialCount": len(material_names)',
             '"rigBoneCount": len(model.armature.data.bones)',
