@@ -8,7 +8,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from review_strips import grade_row
+from review_strips import grade_row, silhouette_view
 
 # Studio-v3 contact-sheet mode: baseline premium-v2 vs candidate studio-v3
 STUDIO_TIER_BASELINE_QUALITY = "premium-v2"

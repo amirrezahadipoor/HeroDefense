@@ -704,7 +704,7 @@ built for premium-v2.
 
 ### 33.7 Pilot validation (gate before touching any shipped asset)
 
-- [ ] Render a Hero-only studio-v3 pilot into a disposable candidate directory (matching the
+- [x] Render a Hero-only studio-v3 pilot into a disposable candidate directory (matching the
   existing `premium-pilot` pattern in `tools/blender/README.md`), run it through the 33.6 review
   sheet and validator, and only continue to 33.8 once that single pilot is explicitly accepted —
   do not run the full re-render until one character has been reviewed and approved on the new
