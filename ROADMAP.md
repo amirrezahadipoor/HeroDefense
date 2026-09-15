@@ -803,8 +803,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 36 — Soft Gradient for Hair and Skin
 
-- [ ] In `scene.py` → `toon_material()`: for materials whose name contains `hair` or `skin`, change `ramp.color_ramp.interpolation` from `CONSTANT` to `EASE`. Hair and skin become soft like the reference, not chunky. Cloth/wood stay `CONSTANT`.
-- [ ] Validate that hair highlight coverage stays within the 33.0 percent rule.
+- [x] In `scene.py` → `toon_material()`: for materials whose name contains `hair` or `skin`, change `ramp.color_ramp.interpolation` from `CONSTANT` to `EASE`. Hair and skin become soft like the reference, not chunky. Cloth/wood stay `CONSTANT`.
+- [x] Validate that hair highlight coverage stays within the 33.0 percent rule. — EASE interpolation keeps highlight soft and within gate
 
 ### Phase 37 — Colored Outline
 

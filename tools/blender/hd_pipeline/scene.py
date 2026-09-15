@@ -68,7 +68,11 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     diffuse.inputs["Roughness"].default_value = 0.38 if metallic else 0.72
     shader_to_rgb = nodes.new("ShaderNodeShaderToRGB")
     ramp = nodes.new("ShaderNodeValToRGB")
-    ramp.color_ramp.interpolation = "CONSTANT"
+    # Phase 36: soft gradient for hair/skin like reference, not chunky
+    if any(k in name.lower() for k in ("hair", "skin")):
+        ramp.color_ramp.interpolation = "EASE"
+    else:
+        ramp.color_ramp.interpolation = "CONSTANT"
     base = hex_rgba(color_hex)
     ramp.color_ramp.elements.remove(ramp.color_ramp.elements[1])
     # Phase 35: 5-band toon ramp for stunning vibrant look — was 3 bands 0.55/0.82/1.08
