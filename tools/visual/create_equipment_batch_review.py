@@ -411,15 +411,20 @@ def create_icon_sheets(
             column, row = index % columns, index // columns
             x, y = 30 + column * 335, 88 + row * 435
             text(draw, (x + 155, y), title(item["id"]), 18, bold=True, anchor="ma")
-            before = Image.open(
-                baseline / "icons" / f"equipment_{item['id']}.png"
-            ).convert("RGBA")
+            before_path = baseline / "icons" / f"equipment_{item['id']}.png"
             after = Image.open(
                 candidate / "icons" / f"equipment_{item['id']}.png"
             ).convert("RGBA")
-            paste_card(canvas, before, x, y + 18, 145, 175)
+            if before_path.is_file():
+                paste_card(canvas, Image.open(before_path).convert("RGBA"),
+                           x, y + 18, 145, 175)
+                text(draw, (x + 72, y + 215), "Before", 15, anchor="ma",
+                     color="#AFC5BE")
+            else:
+                paste_empty_card(canvas, x, y + 18, 145, 175)
+                text(draw, (x + 72, y + 215), "No baseline", 15, anchor="ma",
+                     color="#AFC5BE")
             paste_card(canvas, after, x + 165, y + 18, 145, 175)
-            text(draw, (x + 72, y + 215), "Before", 15, anchor="ma", color="#AFC5BE")
             text(draw, (x + 237, y + 215), "Premium", 15, anchor="ma", color="#AFC5BE")
             paste_card(canvas, silhouette_view(after), x + 82, y + 232, 145, 175)
             text(draw, (x + 155, y + 422), "Shape", 15, anchor="ma", color="#AFC5BE")
@@ -524,6 +529,23 @@ def paste_card(
     )
     preview = sprite.resize(size, Image.Resampling.NEAREST)
     card.alpha_composite(preview, ((width - size[0]) // 2, (height - size[1]) // 2))
+    canvas.paste(card.convert("RGB"), (x, y))
+    ImageDraw.Draw(canvas).rounded_rectangle(
+        (x, y, x + width, y + height),
+        9,
+        outline="#58706A",
+        width=2,
+    )
+
+
+def paste_empty_card(
+    canvas: Image.Image,
+    x: int,
+    y: int,
+    width: int,
+    height: int,
+) -> None:
+    card = checker(width, height)
     canvas.paste(card.convert("RGB"), (x, y))
     ImageDraw.Draw(canvas).rounded_rectangle(
         (x, y, x + width, y + height),
