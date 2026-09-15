@@ -515,7 +515,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.5 Validation + CI
 
-- [ ] Extend `tools/visual/validate_generated_assets.py` (edge safety, pivot stability, silhouette + grade checks where automatable) and wire an asset check into CI so bad batches fail fast.
+- [x] Extend `tools/visual/validate_generated_assets.py` (edge safety, pivot stability, silhouette + grade checks where automatable) and wire an asset check into CI so bad batches fail fast.
 
 ### 28.6 Engine runbook
 
