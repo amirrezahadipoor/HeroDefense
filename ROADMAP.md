@@ -825,8 +825,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 40 — Phosphorescent Rim Light
 
-- [ ] Raise `HD_RIM` from 450W to 800W and change color from `#D8FFD2` to `#A8FFB0` phosphorescent green. The character edge gets a green glow like the reference. Keep `size 3.0m`.
-- [ ] Check rim coverage percent per material.
+- [x] Raise `HD_RIM` from 450W to 800W and change color from `#D8FFD2` to `#A8FFB0` phosphorescent green. The character edge gets a green glow like the reference. Keep `size 3.0m`.
+- [x] Check rim coverage percent per material. — 800W rim gives green glow like reference, coverage within gate
 
 ### Phase 41 — Fourth Amber Back Light
 
