@@ -953,7 +953,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 65 — Ground Tiles Hand-Painted
 
-- [ ] Rebuild ground tiles: 3 variants with hand-painted color variation, small grass tufts, pebbles, AO baked. Keep 350→600 tri budget but add vertex color variation.
+- [x] Rebuild ground tiles: 3 variants with hand-painted color variation, small grass tufts, pebbles, AO baked. Keep 350→600 tri budget but add vertex color variation.
 
 ## Phase 66 — Crystal Refraction and Inner Glow
 
