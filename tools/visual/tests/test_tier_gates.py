@@ -30,6 +30,10 @@ BATCH_GATE_FILES = (
     "promote_ui_batch.py",
     "promote_ui_supplement.py",
     "promote_world_tree_batch.py",
+    "create_vfx_batch_review.py",
+    "create_projectile_batch_review.py",
+    "promote_vfx_batch.py",
+    "promote_projectile_batch.py",
 )
 MID_TIER_ASSET_FILES = (
     "create_arena_batch_review.py",
@@ -41,6 +45,10 @@ MID_TIER_ASSET_FILES = (
     "promote_skill_icons.py",
     "promote_ui_batch.py",
     "promote_ui_supplement.py",
+    "create_vfx_batch_review.py",
+    "create_projectile_batch_review.py",
+    "promote_vfx_batch.py",
+    "promote_projectile_batch.py",
 )
 TOP_TIER_ASSET_FILES = (
     "create_boss_batch_review.py",
@@ -52,6 +60,7 @@ TOP_TIER_ASSET_FILES = (
 OVERLAY_FILES = (
     "create_equipment_batch_review.py",
     "promote_equipment_batch.py",
+    "promote_equipment_overlay.py",
 )
 
 

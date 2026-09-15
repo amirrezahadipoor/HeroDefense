@@ -35,6 +35,8 @@ CAMERA_SCALE = {
     "tree": 6.0,
     "environment": 5.1,
     "arena": 11.5,
+    "projectile": 1.5,
+    "vfx": 2.9,
 }
 CAMERA_SHIFT_Y = {
     "character": 0.0,
@@ -43,6 +45,8 @@ CAMERA_SHIFT_Y = {
     "tree": 0.12,
     "environment": 0.0,
     "arena": 0.0,
+    "projectile": 0.0,
+    "vfx": 0.0,
 }
 FRAME_SIZE = {
     "character": 192,
@@ -53,6 +57,8 @@ FRAME_SIZE = {
     # The portrait backdrop retains frameSize for manifest compatibility while its
     # explicit frameWidth/frameHeight contract is defined below.
     "arena": 720,
+    "projectile": 64,
+    "vfx": 128,
 }
 FRAME_DIMENSIONS = {
     **{key: (size, size) for key, size in FRAME_SIZE.items()},
@@ -64,6 +70,11 @@ CLIPS: dict[str, int] = {
     "attack": 8,
     "hit": 4,
     "death": 10,
+}
+
+# Phase 28.4: one-shot effect strips; the engine plays them once per trigger.
+VFX_CLIPS: dict[str, int] = {
+    "play": 8,
 }
 
 REQUIRED_BONES = (
@@ -135,6 +146,19 @@ BOSSES = (
     RenderAsset("ember_wyrm", "boss", "ember_wyrm", "boss"),
     RenderAsset("void_knight", "boss", "void_knight", "boss"),
 )
+
+# Phase 28.4 proof sets; Phases 29.4/30 extend the keys, not the categories.
+PROJECTILES = (
+    RenderAsset("projectile_arrow", "projectile", "arrow", "projectile"),
+)
+
+VFX_ASSETS = (
+    RenderAsset("vfx_impact_flash", "vfx", "impact_flash", "vfx"),
+    RenderAsset("vfx_shockwave_ring", "vfx", "shockwave_ring", "vfx"),
+)
+
+# Hero-worn look reduced to boots + weapon (owned artistically by Phase 29.4).
+OVERLAY_VISUAL_SLOTS = frozenset({"boots", "weapon"})
 
 
 def repository_root(script_file: str) -> Path:

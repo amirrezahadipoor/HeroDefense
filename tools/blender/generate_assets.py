@@ -33,7 +33,9 @@ from hd_pipeline.config import (  # noqa: E402
     FRAME_SIZE,
     OPAQUE_RENDER_SAMPLES,
     OVERLAY_RENDER_SAMPLES,
+    OVERLAY_VISUAL_SLOTS,
     PALETTE,
+    PROJECTILES,
     REGULAR_CHARACTERS,
     RENDER_SUPERSAMPLE,
     REQUIRED_BONES,
@@ -41,6 +43,8 @@ from hd_pipeline.config import (  # noqa: E402
     TOP_TIER_KEY_PREFIX,
     TOP_TIER_SAMPLES,
     TOP_TIER_SUPERSAMPLE,
+    VFX_ASSETS,
+    VFX_CLIPS,
     RenderAsset,
     render_tier,
 )
@@ -58,6 +62,7 @@ from hd_pipeline.environment import (  # noqa: E402
     build_world_tree,
     author_world_tree_actions,
 )
+from hd_pipeline.effects import EFFECT_BUILDERS, build_arrow  # noqa: E402
 from hd_pipeline.ceremony import (  # noqa: E402
     CEREMONY_CLIPS,
     SAPLING_CLIPS,
@@ -101,7 +106,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--batch",
-        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "skill-icons", "ceremony", "all"),
+        choices=("pilot", "premium-pilot", "enemies", "bosses", "characters", "world-tree", "equipment", "arena", "environment", "ui", "ui-supplement", "skill-icons", "ceremony", "vfx", "projectile", "equipment-overlay", "all"),
         default="pilot",
     )
     parser.add_argument("--output", type=Path)
@@ -735,6 +740,117 @@ def render_skill_icons(output: Path) -> list[dict]:
     return entries
 
 
+def render_projectile(output: Path, only: set[str]) -> list[dict]:
+    """Render single-frame projectile sprites through the static-model path."""
+    entries = []
+    for asset in PROJECTILES:
+        if only and asset.key not in only:
+            continue
+        entries.append(render_static_model(
+            asset.key, asset.family, asset.frame_class,
+            build_arrow, output,
+            {"assetKind": "projectile", "variant": "normal"},
+        ))
+    return entries
+
+
+def render_vfx(output: Path, keep_frames: bool, only: set[str]) -> list[dict]:
+    """Render parametric one-shot effect strips; geometry rebuilds per frame."""
+    entries = []
+    for asset in VFX_ASSETS:
+        if only and asset.key not in only:
+            continue
+        key = asset.key
+        frame_root = output / "_frames" / key
+        _fresh_directory(frame_root)
+        supersample, render_samples = render_tier(key, asset.frame_class)
+        builder = EFFECT_BUILDERS[asset.builder]
+        frame_paths: dict[str, list[Path]] = {}
+        model = None
+        if ISOLATED_RENDERING:
+            for clip, count in VFX_CLIPS.items():
+                frame_paths[clip] = []
+                for index in range(count):
+                    target = frame_root / f"{key}_{clip}_{index:02d}.png"
+                    _run_frame_worker({
+                        "kind": "vfx",
+                        "key": key,
+                        "frameClass": asset.frame_class,
+                        "effect": asset.builder,
+                        "clip": clip,
+                        "frame": index + 1,
+                        "frameCount": count,
+                        "output": str(target),
+                    })
+                    frame_paths[clip].append(target)
+            reset_scene()
+            MATERIALS.clear()
+            model = builder(1.0)
+        else:
+            for clip, count in VFX_CLIPS.items():
+                frame_paths[clip] = []
+                for index in range(count):
+                    reset_scene()
+                    MATERIALS.clear()
+                    model = builder(index / max(count - 1, 1))
+                    scene = configure_scene(asset.frame_class, frame_root, key)
+                    path = frame_root / f"{key}_{clip}_{index:02d}.png"
+                    scene.frame_set(1)
+                    scene.render.filepath = str(path)
+                    bpy.ops.render.render(write_still=True)
+                    frame_width, _ = _runtime_frame_dimensions(scene)
+                    downsample_alpha_safe(path, frame_width)
+                    if not scene.render.use_freestyle:
+                        apply_alpha_outline(path, _outline_radius(frame_width))
+                    frame_paths[clip].append(path)
+        effect_directory = output / asset.family
+        effect_directory.mkdir(parents=True, exist_ok=True)
+        sheet_path = effect_directory / f"{key}.png"
+        pages, regions = pack_grid(frame_paths, sheet_path, FRAME_SIZE[asset.frame_class])
+        atlas_path = effect_directory / f"{key}.atlas"
+        _write_libgdx_atlas(atlas_path, pages, regions)
+        entry = {
+            "key": key,
+            "family": asset.family,
+            "builder": asset.builder,
+            "frameClass": asset.frame_class,
+            "frameSize": FRAME_SIZE[asset.frame_class],
+            "sheet": _relative(pages[0]["path"], output),
+            "sheets": _sheet_manifest(pages, output),
+            "atlas": _relative(atlas_path, output),
+            "sheetWidth": pages[0]["width"],
+            "sheetHeight": pages[0]["height"],
+            "pivot": _pivot_for(asset.frame_class),
+            "alphaMode": "STRAIGHT_RGBA",
+            "clips": regions,
+            "frameRate": FRAME_RATE,
+            "renderSupersample": supersample,
+            "renderSamples": render_samples,
+            "triangles": triangle_count(model.render_objects),
+            "meshParts": sum(obj.type == "MESH" for obj in model.render_objects),
+            "materialCount": _material_count(model.render_objects),
+            "boneAnimated": False,
+            **model.metadata,
+        }
+        _write_json(effect_directory / f"{key}.json", entry)
+        if not keep_frames:
+            shutil.rmtree(frame_root)
+        entries.append(entry)
+    return entries
+
+
+def render_equipment_overlay(
+    catalog_path: Path, output: Path, keep_frames: bool, only: set[str],
+) -> list[dict]:
+    """Render only the hero-worn boots + weapon subset of the equipment catalog."""
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    subset = {item["id"] for item in catalog["items"]
+              if item["visualSlot"] in OVERLAY_VISUAL_SLOTS}
+    if only:
+        subset &= only
+    return render_equipment(catalog_path, output, keep_frames, subset)
+
+
 def _run_frame_worker(payload: dict) -> None:
     output_path = Path(payload["output"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -815,6 +931,9 @@ def _execute_frame_worker(payload_path: Path) -> None:
         model = build_sapling_tree()
         actions = author_sapling_actions(model.armature)
         model.armature.animation_data.action = actions[payload["clip"]]
+    elif payload["kind"] == "vfx":
+        builder = EFFECT_BUILDERS[payload["effect"]]
+        builder((int(payload["frame"]) - 1) / max(int(payload["frameCount"]) - 1, 1))
     elif payload["kind"] == "static":
         asset_kind = payload["assetKind"]
         if asset_kind == "arenaBackdrop":
@@ -829,6 +948,8 @@ def _execute_frame_worker(payload_path: Path) -> None:
             build_ui_frame(payload["frameKey"])
         elif asset_kind == "ui":
             build_ui_icon(payload["iconKey"])
+        elif asset_kind == "projectile":
+            build_arrow(payload.get("variant", "normal"))
         else:
             raise ValueError(f"Unknown static worker asset: {asset_kind}")
     else:
@@ -905,6 +1026,12 @@ def main() -> None:
         generated.extend(render_ui_supplement(output))
     if args.batch in {"ceremony", "all"}:
         generated.extend(render_ceremony(output, args.keep_frames))
+    if args.batch == "vfx":
+        generated.extend(render_vfx(output, args.keep_frames, only))
+    if args.batch == "projectile":
+        generated.extend(render_projectile(output, only))
+    if args.batch == "equipment-overlay":
+        generated.extend(render_equipment_overlay(args.catalog.resolve(), output, args.keep_frames, only))
 
     by_key = {entry["key"]: entry for entry in existing}
     by_key.update({entry["key"]: entry for entry in generated})
@@ -980,6 +1107,8 @@ def _pivot_for(frame_class: str) -> dict[str, object]:
         "item": (0.5, 0.5),
         "environment": (0.5, 0.5),
         "arena": (0.5, 0.5),
+        "projectile": (0.5, 0.5),
+        "vfx": (0.5, 0.5),
     }
     x, y = values[frame_class]
     return {"x": x, "y": y, "units": "normalized-bottom-left"}

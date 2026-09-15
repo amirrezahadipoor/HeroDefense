@@ -441,6 +441,7 @@ def create_composite_sheets(
     output: Path,
 ) -> None:
     page_size = 8
+    total_pages = (len(items) + page_size - 1) // page_size
     for page_start in range(0, len(items), page_size):
         page_items = items[page_start : page_start + page_size]
         page_number = page_start // page_size + 1
@@ -448,7 +449,7 @@ def create_composite_sheets(
         canvas = base_canvas(
             width,
             height,
-            f"EQUIPPED SOCKET & MOTION REVIEW — PAGE {page_number}/5",
+            f"EQUIPPED SOCKET & MOTION REVIEW — PAGE {page_number}/{total_pages}",
         )
         draw = ImageDraw.Draw(canvas)
         for index, item in enumerate(page_items):
