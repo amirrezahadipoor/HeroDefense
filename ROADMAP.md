@@ -871,7 +871,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 49 — Higher Render Precision
 
-- [ ] In `config.py`: raise `TOP_TIER_SUPERSAMPLE` from 3 to 4 and `TOP_TIER_SAMPLES` from 36 to 48. Edges become sharper, colors cleaner. Keep `RENDER_SUPERSAMPLE` 2→3 for regular enemies. Record new numbers in `render_tier()`.
+- [x] In `config.py`: raise `TOP_TIER_SUPERSAMPLE` from 3 to 4 and `TOP_TIER_SAMPLES` from 36 to 48. Edges become sharper, colors cleaner. Keep `RENDER_SUPERSAMPLE` 2→3 for regular enemies. Record new numbers in `render_tier()`.
 
 ### Phase 50 — Bloom in EEVEE Compositor
 
