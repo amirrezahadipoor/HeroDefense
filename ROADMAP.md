@@ -621,12 +621,12 @@ built for premium-v2.
 
 ### 33.0 Studio-tier style guide amendment
 
-- [ ] Add a "Studio-v3" section to `docs/VISUAL_STYLE_GUIDE.md` (§0 sits above it as history, not
+- [x] Add a "Studio-v3" section to `docs/VISUAL_STYLE_GUIDE.md` (§0 sits above it as history, not
   replaced) that names every rule this tier is allowed to exceed — most importantly §3's "specular
   disabled except metal/glass" and "exactly three diffuse bands," and §4's single fixed outline
   thickness — and states the new rule in each rule's place, in the same locked-table format the
   existing guide uses.
-- [ ] Write the acceptance bar as checkable criteria (line-weight contrast ratio between silhouette
+- [x] Write the acceptance bar as checkable criteria (line-weight contrast ratio between silhouette
   and interior lines, minimum/maximum highlight coverage as a percent of a material's area, palette
   saturation/value-spacing rule), not as a picture to match — keep the guide entirely textual per
   existing convention.

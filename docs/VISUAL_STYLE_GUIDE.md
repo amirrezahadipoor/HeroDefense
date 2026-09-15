@@ -1,6 +1,6 @@
 # Hero Defense Visual Style Guide
 
-**Status:** locked premium-v2 target. Any deliberate exception must be documented in the asset manifest and reviewed before commit.
+**Status:** locked studio-v3 target (premium-v2 retained below as history, additive). Any deliberate exception must be documented in the asset manifest and reviewed before commit.
 
 ## 0. Premium-v2 Quality Bar
 
@@ -72,6 +72,32 @@ A premium-v2 batch is rejected unless it has:
 6. atlas-page, decoded-memory, APK-size, and startup/residency measurements;
 7. a successful runtime asset-contract test and touch-only Android emulator journey;
 8. explicit visual review before its own commit and push.
+
+### 0.8 Studio-v3 Quality Bar (additive on premium-v2, not replacing §0)
+
+Premium-v2 (§0–§0.7) stays documented as history. Studio-v3 is additive and must name every rule it exceeds before using it.
+
+#### Rule overrides (locked)
+
+| Locked rule (§) | Premium-v2 | Studio-v3 |
+|---|---|---|
+| §3 specular disabled except metal/glass `0.28/0.4` | Specular disabled except metal `0.28` and potion glass `0.4` | Specular **enabled per-material** as thresholded pop via `ShaderNodeBsdfGlossy` gated by `Layer Weight` facing; cloth/skin/wood default off (0%) unless explicitly tagged |
+| §3 exactly three diffuse bands | Exactly three bands: shadow `0.55`, mid `0.82`, light `1.08` at thresholds `0.32`/`0.68` | **Four bands**: shadow/mid/light as before **plus rim** band above light, driven by `Fresnel/LayerWeight` → `ColorRamp` at grazing angles, additive, narrow |
+| §4 single fixed outline thickness | One uniform `Freestyle thickness 1.5` + one flat `apply_alpha_outline radius=3` | **Weighted**: silhouette/border heavier than interior/crease; `Freestyle` silhouette vs interior two weights + `apply_alpha_outline` two-pass (outer larger for silhouette, inner `3` for seams), same `#142126` color |
+| §3 palette value only | Palette value grouping only | Palette must pass **saturation/value-spacing** per character (see below) |
+
+No other § is exceeded by studio-v3 without amending this table first.
+
+#### Acceptance bar (checkable, no reference image)
+
+| Criterion | Checkable gate | Tool |
+|---|---|---|
+| Line-weight contrast | Silhouette : interior line thickness ratio **1.5:1 to 2.5:1** measured on 256 px frames after supersampled downsample; silhouette mean ≥ `1.9×` interior mean | `validate_generated_assets.py` (pixel edge width) |
+| Highlight coverage per material | Highlight α>0.25 pixels as % of material face area: metal **2–6%**, leather straps **1–4%**, hair **1.5–5%**, eyes **0.5–2%**, cloth/skin/wood **0–1%** unless tagged; measured per-clip mid-frame | validator pixel census (manifest + PNG) |
+| Palette saturation/value | Each character carries 4 locked hex roles: saturated hero `S≥60 V≥45`, neutral leather/metal/stone `S≤30`, skin/organic, accent; **value step ≥0.15 luminance** between any two roles on shipped PNG midtone | locked Palette table + contrast audit |
+| Geometry/read | Head **35–45%** of height still holds; secondary details ≤2 per character, within existing triangle budgets and 25-bone rig; no new socket/bone/pivot | manifest `validation` |
+
+All four must pass on the studio-v3 pilot (33.7) before full re-render (33.8).
 
 ## 1. Visual Goal
 
