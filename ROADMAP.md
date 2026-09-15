@@ -495,7 +495,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.0 Headless-Blender spike (time-boxed, decides the production path)
 
-- [ ] Install Blender via `scripts/install-blender-temp.sh` in a clean machine/sandbox, attempt one EEVEE equipment render through `hd_pipeline`, and record GO/NO-GO plus the fallback (2D production in-sandbox + packaged 3D jobs) in `docs/ASSET_ENGINE.md`.
+- [x] Install Blender via `scripts/install-blender-temp.sh` in a clean machine/sandbox, attempt one EEVEE equipment render through `hd_pipeline`, and record GO/NO-GO plus the fallback (2D production in-sandbox + packaged 3D jobs) in `docs/ASSET_ENGINE.md`.
 
 ### 28.1 Color script + shape language (the modern-game bar, written down)
 
