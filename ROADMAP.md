@@ -961,7 +961,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 67 — Arena Backdrop HD Hand-Painted
 
-- [ ] Arena backdrop 720×1280 → 1440×2560 working (downsample to 720×1280). Hand-painted clouds, distant trees, depth fog via gradient. Keep full-bleed but add color variation.
+- [x] Arena backdrop 720×1280 → 1440×2560 working (downsample to 720×1280). Hand-painted clouds, distant trees, depth fog via gradient. Keep full-bleed but add color variation.
 
 ## Phase 68 — Lighting Upgrade: HDRI + Light Probes + Contact Shadows
 
