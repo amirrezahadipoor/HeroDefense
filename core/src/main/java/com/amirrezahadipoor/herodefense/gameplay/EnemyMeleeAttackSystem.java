@@ -38,11 +38,10 @@ public final class EnemyMeleeAttackSystem {
         return false;
     }
 
-    /** True when the siege timer has run out and the tree has just been destroyed. */
+    /** True when the siege timer has run out and the grove has just been destroyed. */
     public static boolean advanceTreeSiege(GameState state, float deltaSeconds) {
-        if (state.worldTreeHealth <= 0f) return true;
+        if (isGroveDestroyed(state)) return true;
         if (state.treeSiegeRemainingSeconds <= 0f) {
-            // Loaded a save where the Hero was already dead: no siege left to play.
             state.destroyWorldTree();
             return true;
         }
@@ -51,11 +50,24 @@ public final class EnemyMeleeAttackSystem {
         );
         float ratio = state.treeSiegeRemainingSeconds / GameState.TREE_SIEGE_SECONDS;
         state.worldTreeHealth = Math.min(state.worldTreeHealth, state.worldTreeMaxHealth * ratio);
+        for (int i = 0; i < state.plantedTreesCount; i++) {
+            float max = state.getTreeMaxHealth(i + 1);
+            float cur = state.getTreeHealth(i + 1);
+            state.setTreeHealth(i + 1, Math.min(cur, max * ratio));
+        }
         if (state.treeSiegeRemainingSeconds <= 0f) {
             state.destroyWorldTree();
             return true;
         }
         return false;
+    }
+
+    static boolean isGroveDestroyed(GameState state) {
+        if (state.worldTreeHealth > 0f) return false;
+        for (int i = 0; i < state.plantedTreesCount; i++) {
+            if (state.getTreeHealth(i + 1) > 0f) return false;
+        }
+        return true;
     }
 
     private void attackIfInRange(GameState state, Enemy enemy, float deltaSeconds) {

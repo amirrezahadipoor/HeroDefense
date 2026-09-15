@@ -1282,8 +1282,8 @@ public final class HeroDefenseGame extends ApplicationAdapter {
                 gameState.peakWaveReached = gameState.waveNumber;
             }
             particleSystem.emitTreeDestruction(WorldLayout.WORLD_TREE_X, WorldLayout.WORLD_TREE_Y);
-            if (gameState.secondTreePlanted) {
-                particleSystem.emitTreeDestruction(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y);
+            for (int i = 0; i < gameState.plantedTreesCount; i++) {
+                particleSystem.emitTreeDestruction(WorldLayout.groveTreeX(i), WorldLayout.groveTreeY(i));
             }
             screenShakeSystem.triggerTreeFall();
             gameState.epilogueId = Epilogue.select(gameState).name();

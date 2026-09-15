@@ -214,6 +214,11 @@ public final class HudRenderer implements AutoCloseable {
         icons.draw(batch, "coin", 231f, 1087f + up, 48f);
         drawShadowed(batch, "COINS", 286f, 1144f + up, 0.66f, GOLD);
         drawShadowed(batch, "$ " + Math.max(0, state.coins), 286f, 1107f + up, 1.02f, IVORY);
+        // Grove HP (32.3): show planted count and health ratio reusing groveHealthRatio
+        int groveTotal = 1 + Math.max(0, state.plantedTreesCount);
+        float groveRatio = WorldTreeAnimationController.groveHealthRatio(state);
+        String groveLabel = "GROVE " + groveTotal + "/4 " + Math.round(groveRatio * 100) + "%";
+        drawShadowed(batch, groveLabel, 286f, 1075f + up, 0.52f, groveRatio < 0.4f ? CRITICAL : (groveRatio < 0.7f ? WOUNDED : HEALTHY));
 
         float speedOffset = MainMenuRenderer.pressedOffset(speedState);
         icons.draw(batch, "speed", 440f, 1091f + up + speedOffset, 44f, speedState);

@@ -580,7 +580,7 @@ Generalizes the single Wave-100 second tree into plantings at waves 50/100/150. 
 
 - [x] Generalize `secondTreePlanted` into a planted-trees count with per-tree HP.
 - [x] Trigger plantings at waves 50/100/150 (short 3-beat at 50/150 reusing the `PlantingCeremony` timeline, full 5-beat at 100).
-- [ ] Enemies target the nearest tree, the defeat siege destroys all standing trees, and the HUD shows grove HP.
+- [x] Enemies target the nearest tree, the defeat siege destroys all standing trees, and the HUD shows grove HP.
 - [ ] Render N trees (site anchors, growth stages, aura) reusing the sapling atlas per site.
 
 ### 32.5 Text + balance tail

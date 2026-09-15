@@ -47,11 +47,27 @@ public final class EnemyMovementSystem {
         }
         float targetX = WorldLayout.WORLD_TREE_X;
         float targetY = WorldLayout.WORLD_TREE_Y;
-        if (state.secondTreePlanted
-            && enemy.distanceSquaredTo(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y)
-                < enemy.distanceSquaredTo(targetX, targetY)) {
-            targetX = WorldLayout.SECOND_TREE_X;
-            targetY = WorldLayout.SECOND_TREE_Y;
+        float bestDist2 = enemy.distanceSquaredTo(targetX, targetY);
+        int groveCount = state.plantedTreesCount;
+        // Backwards compat: old saves/tests set secondTreePlanted without count -> treat as SECOND_TREE (100)
+        if (groveCount == 0 && state.secondTreePlanted) {
+            float d2 = enemy.distanceSquaredTo(WorldLayout.SECOND_TREE_X, WorldLayout.SECOND_TREE_Y);
+            if (d2 < bestDist2) {
+                bestDist2 = d2;
+                targetX = WorldLayout.SECOND_TREE_X;
+                targetY = WorldLayout.SECOND_TREE_Y;
+            }
+        } else {
+            for (int i = 0; i < groveCount; i++) {
+                float gx = WorldLayout.groveTreeX(i);
+                float gy = WorldLayout.groveTreeY(i);
+                float d2 = enemy.distanceSquaredTo(gx, gy);
+                if (d2 < bestDist2) {
+                    bestDist2 = d2;
+                    targetX = gx;
+                    targetY = gy;
+                }
+            }
         }
         // The dead Hero no longer stuns anything; the charge is uninterrupted.
         enemy.stunRemainingSeconds = 0f;

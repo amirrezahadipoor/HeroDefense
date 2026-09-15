@@ -62,16 +62,37 @@ public final class WorldTreeAnimationController {
     }
 
     static boolean isDestroyed(GameState state) {
-        return state == null
-            || state.hero == null
-            || !state.hero.alive
-            || state.worldTreeHealth <= 0f;
+        if (state == null || state.hero == null || !state.hero.alive) return true;
+        if (state.worldTreeHealth > 0f) return false;
+        for (int i = 0; i < state.plantedTreesCount; i++) {
+            if (state.getTreeHealth(i + 1) > 0f) return false;
+        }
+        return true;
     }
 
     static boolean isDamaged(GameState state) {
         if (isDestroyed(state)) return true;
-        float maximum = Math.max(1f, state.worldTreeMaxHealth);
-        return state.worldTreeHealth / maximum <= DAMAGED_HEALTH_RATIO;
+        float cur = state.worldTreeHealth;
+        float max = Math.max(1f, state.worldTreeMaxHealth);
+        float ratio = cur / max;
+        for (int i = 0; i < state.plantedTreesCount; i++) {
+            float c = state.getTreeHealth(i + 1);
+            float m = Math.max(1f, state.getTreeMaxHealth(i + 1));
+            ratio = Math.min(ratio, c / m);
+        }
+        return ratio <= DAMAGED_HEALTH_RATIO;
+    }
+
+    /** Grove health ratio across all standing trees (0..1). */
+    public static float groveHealthRatio(GameState state) {
+        if (state == null) return 0f;
+        float totalCur = Math.max(0f, state.worldTreeHealth);
+        float totalMax = Math.max(1f, state.worldTreeMaxHealth);
+        for (int i = 0; i < state.plantedTreesCount; i++) {
+            totalCur += Math.max(0f, state.getTreeHealth(i + 1));
+            totalMax += Math.max(1f, state.getTreeMaxHealth(i + 1));
+        }
+        return Math.max(0f, Math.min(1f, totalCur / totalMax));
     }
 
     static int loopFrame(float loopTimeSeconds) {

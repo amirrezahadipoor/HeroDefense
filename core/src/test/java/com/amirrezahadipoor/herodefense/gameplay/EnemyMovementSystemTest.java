@@ -39,6 +39,8 @@ final class EnemyMovementSystemTest {
         right.stunRemainingSeconds = 2f;
         state.aliveEnemies.add(left);
         state.aliveEnemies.add(right);
+        // Keep original intent (left->WORLD_TREE, right->SECOND_TREE) via compat
+        state.plantedTreesCount = 0;
         state.secondTreePlanted = true;
         state.hero.alive = false;
 
