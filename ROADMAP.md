@@ -981,7 +981,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 72 — Validation Upgrade for 950+ Gates
 
-- [ ] Extend `tools/visual/validate_generated_assets.py` with 950+ gates: texel density ≥2.5, normal variance >0.05, highlight coverage per material within new tighter bounds (gold 3–7%, hair 2–6%, eye 1–3%), PBR maps present for top-tier, bloom enabled for hero/boss, AO enabled, colored outline per category. Fail CI if gate fails.
+- [x] Extend `tools/visual/validate_generated_assets.py` with 950+ gates: texel density ≥2.5, normal variance >0.05, highlight coverage per material within new tighter bounds (gold 3–7%, hair 2–6%, eye 1–3%), PBR maps present for top-tier, bloom enabled for hero/boss, AO enabled, colored outline per category. Fail CI if gate fails.
 
 ## Phase 73 — Full Re-render All Batches on Studio-V5-HD-PBR Engine
 

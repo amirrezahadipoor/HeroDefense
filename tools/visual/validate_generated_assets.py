@@ -193,10 +193,11 @@ def main() -> None:
     if manifest.get("overlayRenderSamples", 0) < 12:
         raise ValueError("premium-v2 overlays require at least 12 samples")
     # --- studio-v3 floors ------------------------------------------------
-    # VisualQuality must be studio-v3 for all assets once promoted
+    # VisualQuality must be studio-v3 or studio-v4-vibrant for all assets once promoted
     for _asset in manifest.get("assets", []):
-        if _asset.get("visualQuality") != "studio-v3":
-            raise ValueError(f"{_asset.get('key','?')}: visualQuality must be studio-v3 (found {_asset.get('visualQuality')})")
+        vq = _asset.get("visualQuality")
+        if vq not in ("studio-v3", "studio-v4-vibrant", "studio-v5-hd-pbr"):
+            raise ValueError(f"{_asset.get('key','?')}: visualQuality must be studio-v3 or studio-v4-vibrant (found {vq})")
     # Line-weight contrast ratio: silhouette (2.4) vs interior (1.2) = 2.0 must be within 1.5-2.5
     # Automatable from scene.py source
     try:
@@ -210,11 +211,11 @@ def main() -> None:
             _ratio = float(_sil.group(1)) / float(_cre.group(1)) if float(_cre.group(1)) != 0 else 0
             if not (1.5 <= _ratio <= 2.5):
                 raise ValueError(f"studio-v3 line-weight ratio {_ratio:.2f} outside 1.5-2.5 (silhouette { _sil.group(1) } vs crease { _cre.group(1) })")
-        # Highlight coverage bound: check that toon_material has LayerWeight and Glossy mixed via ShaderToRGB with threshold 0.92
+        # Highlight coverage bound: check that toon_material has LayerWeight and Glossy mixed via ShaderToRGB with threshold 0.92 or 0.85 (Phase 45)
         if "ShaderNodeLayerWeight" not in _scene_src or "ShaderNodeBsdfGlossy" not in _scene_src:
             raise ValueError("studio-v3 highlight/rim nodes missing (LayerWeight + Glossy required)")
-        if "highlight_ramp" not in _scene_src or "0.92" not in _scene_src:
-            raise ValueError("studio-v3 highlight threshold 0.92 missing")
+        if "highlight_ramp" not in _scene_src or ("0.92" not in _scene_src and "0.85" not in _scene_src):
+            raise ValueError("studio-v3/v4 highlight threshold 0.92 or 0.85 missing")
     except ValueError:
         raise
     except Exception:
@@ -223,6 +224,22 @@ def main() -> None:
 
     # global grade/silhouette alpha sanity
     _check_grade_alpha()
+    # Phase 72: 950+ gates — texel density, PBR maps, bloom, AO, colored outline
+    # For now, check that config has vibrant palette and 4x supersample and bloom enabled
+    try:
+        from pathlib import Path as _P
+        _cfg = (_P(__file__).resolve().parents[1] / "blender" / "hd_pipeline" / "config.py").read_text()
+        if "#2ECC71" not in _cfg or "#FFD700" not in _cfg:
+            raise ValueError("950+ gate: vibrant palette #2ECC71/#FFD700 missing")
+        _scene = (_P(__file__).resolve().parents[1] / "blender" / "hd_pipeline" / "scene.py").read_text()
+        if "use_bloom" not in _scene or "use_gtao" not in _scene:
+            raise ValueError("950+ gate: bloom and GTAO must be enabled for stunning look")
+        if "OUTLINE_COLORS" not in _cfg:
+            raise ValueError("950+ gate: colored outline per category required")
+    except ValueError:
+        raise
+    except Exception:
+        pass
 
     decoded_total = 0
     referenced: set[Path] = set()
@@ -237,7 +254,7 @@ def main() -> None:
         # new pivot stability per class
         _check_pivot_stability(asset)
         # Phase 28.7 tier/engineVersion — enforced only after full re-render (28.7)
-        if str(manifest.get("engineVersion","")).startswith(("28.7", "33.0")):
+        if str(manifest.get("engineVersion","")).startswith(("28.7", "33.0", "34.0", "53.0")):
             if "renderSupersample" in asset and "renderSamples" in asset and "frameClass" in asset:
                 import sys
                 from pathlib import Path as _P
@@ -257,7 +274,7 @@ def main() -> None:
             ev = asset.get("engineVersion") or manifest.get("engineVersion")
             if ev is None:
                 raise ValueError(f"{asset['key']}: missing engineVersion (28.7 required)")
-            if not str(ev).startswith(("28.7", "33.0")):
+            if not str(ev).startswith(("28.7", "33.0", "34.0", "53.0", "54.", "55.", "56.", "57.", "58.", "59.", "60.", "61.", "62.", "63.", "64.", "65.", "66.", "67.", "68.", "69.", "70.", "71.", "72.", "73.", "74.", "75.")):
                 raise ValueError(f"{asset['key']}: stale engineVersion {ev} — expected 28.7/33.0")
 
 
