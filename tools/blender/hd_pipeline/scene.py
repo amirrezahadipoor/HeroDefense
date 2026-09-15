@@ -139,7 +139,11 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     highlight_mix.inputs[0].default_value = 1.0
     highlight_mix.inputs[2].default_value = (0.95, 0.95, 0.92, 1.0)
     emission = nodes.new("ShaderNodeEmission")
-    emission.inputs["Strength"].default_value = 1.0
+    # Phase 46: emission glow for leaves and gold — 1.0->1.4 for phosphor effect
+    if any(k in name.lower() for k in ("leaf", "gold")):
+        emission.inputs["Strength"].default_value = 1.4
+    else:
+        emission.inputs["Strength"].default_value = 1.0
 
     links.new(diffuse.outputs["BSDF"], shader_to_rgb.inputs["Shader"])
     links.new(shader_to_rgb.outputs["Color"], ramp.inputs["Fac"])

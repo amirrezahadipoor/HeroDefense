@@ -856,8 +856,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 46 — Emission Glow for Leaves and Gold
 
-- [ ] Raise `emission.inputs["Strength"]` from 1.0 to 1.4 for leaf and gold materials. Leaves and gold glow slightly even at night, matching the sparkle in the reference. Wood/stone stay at 1.0.
-- [ ] Verify that emission does not blow out the alpha-dilated outline.
+- [x] Raise `emission.inputs["Strength"]` from 1.0 to 1.4 for leaf and gold materials. Leaves and gold glow slightly even at night, matching the sparkle in the reference. Wood/stone stay at 1.0.
+- [x] Verify that emission does not blow out the alpha-dilated outline. — 1.4 glow does not blow out outline
 
 ### Phase 47 — Eye Material with Double White Highlights
 
