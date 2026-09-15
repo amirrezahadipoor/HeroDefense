@@ -11,6 +11,10 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 from review_strips import grade_row, silhouette_view
 
+# Studio-v3 contact-sheet mode: baseline premium-v2 vs candidate studio-v3
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+
 POTION_KEYS = tuple(f"health_potion_{tier}" for tier in range(1, 7))
 NEW_REWARD_KEYS = ("ui_general_power", "ui_lifesteal")
 EXPECTED_KEYS = (*POTION_KEYS, *NEW_REWARD_KEYS)
@@ -75,8 +79,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         "pipelineVersion": 3,
         "generatedBatch": "ui-supplement",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
         "maxAtlasPageSize": 2048,
     }.items():
         if candidate_manifest.get(field) != expected:
@@ -189,8 +193,8 @@ def validate_metadata(asset: dict, key: str) -> None:
         "pivot": EXPECTED_PIVOT,
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
-        "visualQuality": "premium-v2",
+        "renderSamples": 28,
+        "visualQuality": "studio-v3",
     }
     if key in POTION_KEYS:
         tier = int(key.rsplit("_", 1)[1])

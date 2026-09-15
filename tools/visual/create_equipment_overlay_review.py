@@ -11,6 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import create_equipment_batch_review as eq
 
+# Studio-v3 contact-sheet mode: baseline premium-v2 vs candidate studio-v3
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+
 OVERLAY_VISUAL_SLOTS = ("boots", "weapon")
 
 

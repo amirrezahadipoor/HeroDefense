@@ -53,7 +53,7 @@ class UiPremiumSourceTest(unittest.TestCase):
         potion = self._function_source("build_potion_icon")
         for contract in (
             '"heartwood-elixir"', '"health-potion-premium-v2"',
-            '"tierConstruction"', '"visualQuality": "premium-v2"',
+            '"tierConstruction"', '"visualQuality": "studio-v3"',
             "potion_collar_leaf_", "potion_tier_foot_ring",
             "potion_shoulder_seed_", "potion_cradle_",
         ):
@@ -81,7 +81,7 @@ class UiPremiumSourceTest(unittest.TestCase):
         ):
             self.assertIn(semantic, source)
         self.assertIn('"ui-control-icon-premium-v2"', source)
-        self.assertIn('"visualQuality": "premium-v2"', source)
+        self.assertIn('"visualQuality": "studio-v3"', source)
 
     def test_frame_states_change_construction_not_only_tint(self) -> None:
         source = self._function_source("build_ui_frame")

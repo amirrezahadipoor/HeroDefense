@@ -11,6 +11,12 @@ from PIL import Image, ImageDraw
 
 from review_strips import grade_row, silhouette_view
 
+# Studio-v3 contact-sheet mode: same side-by-side-against-baseline layout as premium-v2,
+# baseline is the current premium-v2 output, candidate is studio-v3 (weighted 2.4/1.2 + rim/highlight).
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+# Contact sheet uses readability_sheet(old, new) with old=premium-v2, new=studio-v3
+
 EXPECTED_KEYS = ("vfx_impact_flash", "vfx_shockwave_ring")
 EXPECTED_EFFECT = {"vfx_impact_flash": "impact_flash",
                    "vfx_shockwave_ring": "shockwave_ring"}
@@ -39,9 +45,9 @@ def main() -> None:
         "generatedBatch": "vfx",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "overlayRenderSamples": 8,
-        "renderTierTop": [3, 32],
+        "opaqueRenderSamples": 28,
+        "overlayRenderSamples": 12,
+        "renderTierTop": [3, 36],
         "maxAtlasPageSize": 2048,
     }.items():
         if manifest.get(field) != expected:
@@ -97,12 +103,12 @@ def audit_asset(candidate: Path, manifest_path: Path, asset: dict) -> dict:
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
         "modelRevision": EXPECTED_MODEL_REVISION,
         "effectKind": "vfx",
         "effect": EXPECTED_EFFECT[key],
         "boneAnimated": False,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     }
     for field, value in expected.items():
         if asset.get(field) != value:

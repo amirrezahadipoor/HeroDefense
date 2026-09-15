@@ -87,7 +87,7 @@ from hd_pipeline.scene import (  # noqa: E402
 )
 
 PIPELINE_VERSION = 3
-ENGINE_VERSION = "28.7-premium-v2-3x32-full"
+ENGINE_VERSION = "33.0-studio-v3-3x36-full"  # studio-v3 3x36 top, 2x28 mid, 2x12 overlay, weighted 2.4/1.2 outline + rim/highlight
 ISOLATED_RENDERING = False
 PREMIUM_PILOT_EQUIPMENT_IDS = {
     "worldbranch",
@@ -513,7 +513,7 @@ def render_equipment(catalog_path: Path, output: Path, keep_frames: bool, only: 
             "rigProfile": "hero-socket-v2",
             "renderSupersample": RENDER_SUPERSAMPLE,
             "renderSamples": OVERLAY_RENDER_SAMPLES,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         _write_json(sprite_directory / f"{item['id']}.json", entry)
         entries.append(entry)

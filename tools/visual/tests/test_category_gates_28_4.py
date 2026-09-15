@@ -16,7 +16,7 @@ import promote_projectile_batch as projectile
 import promote_vfx_batch as vfx
 
 
-def _vfx_asset(key: str, samples: int = 24) -> dict:
+def _vfx_asset(key: str, samples: int = 28) -> dict:
     effect = "impact_flash" if key == "vfx_impact_flash" else "shockwave_ring"
     return {
         "key": key, "family": "vfx", "builder": effect, "frameClass": "vfx",
@@ -27,7 +27,7 @@ def _vfx_asset(key: str, samples: int = 24) -> dict:
         "renderSupersample": 2, "renderSamples": samples,
         "triangles": 1200, "meshParts": 7, "materialCount": 2,
         "modelRevision": "effects-v1", "effectKind": "vfx", "effect": effect,
-        "boneAnimated": False, "visualQuality": "premium-v2",
+        "boneAnimated": False, "visualQuality": "studio-v3",
         "sheets": [{"decodedBytes": 1024 * 128 * 4, "file": f"vfx/{key}.png",
                     "height": 128, "width": 1024}],
         "clips": {"play": [{"height": 128, "index": i, "page": 0, "width": 128,
@@ -35,7 +35,7 @@ def _vfx_asset(key: str, samples: int = 24) -> dict:
     }
 
 
-def _projectile_asset(samples: int = 24) -> dict:
+def _projectile_asset(samples: int = 28) -> dict:
     key = "projectile_arrow"
     return {
         "key": key, "family": "projectile", "frameClass": "projectile",
@@ -46,7 +46,7 @@ def _projectile_asset(samples: int = 24) -> dict:
         "renderSamples": samples, "triangles": 300, "meshParts": 6,
         "materialCount": 4, "modelRevision": "effects-v1",
         "effectKind": "projectile", "variant": "normal", "flightAxis": "+X",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "sheets": [{"decodedBytes": 64 * 64 * 4, "file": f"projectile/{key}.png",
                     "height": 64, "width": 64}],
         "clips": {"idle": [{"height": 64, "index": 0, "page": 0, "width": 64,
@@ -97,8 +97,8 @@ class NewCategoryAssetGateTest(unittest.TestCase):
             "atlas": "equipment/trail_boots.atlas",
             "icon": "icons/equipment_trail_boots.png",
             "modelRevision": "equipment-premium-v2", "rigProfile": "hero-socket-v2",
-            "renderSupersample": 2, "renderSamples": 8,
-            "visualQuality": "premium-v2",
+            "renderSupersample": 2, "renderSamples": 12,
+            "visualQuality": "studio-v3",
             "runtimeGlow": item["tier"] in {"RARE", "LEGENDARY"},
             "boneAnimated": True, "triangles": 500,
             "sheets": [{"decodedBytes": 1920 * 768 * 4,
@@ -109,7 +109,7 @@ class NewCategoryAssetGateTest(unittest.TestCase):
                       (("idle", 6), ("attack", 8), ("hit", 4), ("death", 10))},
         }
         overlay.validate_asset(item, asset)
-        asset["renderSamples"] = 24
+        asset["renderSamples"] = 28
         with self.assertRaises(ValueError):
             overlay.validate_asset(item, asset)
 
@@ -118,8 +118,8 @@ class NewCategoryCandidateGateTest(unittest.TestCase):
     def _candidate(self, root: Path, batch: str, assets: list[dict]) -> Path:
         manifest = {
             "pipelineVersion": 3, "generatedBatch": batch, "frameRate": 12,
-            "renderSupersample": 2, "opaqueRenderSamples": 24,
-            "overlayRenderSamples": 8, "renderTierTop": [3, 32],
+            "renderSupersample": 2, "opaqueRenderSamples": 28,
+            "overlayRenderSamples": 12, "renderTierTop": [3, 36],
             "maxAtlasPageSize": 2048, "assets": assets,
         }
         manifest_path = root / "asset_manifest.json"
@@ -176,7 +176,7 @@ class NewCategoryCandidateGateTest(unittest.TestCase):
                     "icon": f"icons/equipment_{item_id}.png",
                     "modelRevision": "equipment-premium-v2",
                     "rigProfile": "hero-socket-v2", "renderSupersample": 2,
-                    "renderSamples": 8, "visualQuality": "premium-v2",
+                    "renderSamples": 12, "visualQuality": "studio-v3",
                     "runtimeGlow": item["tier"] in {"RARE", "LEGENDARY"},
                     "boneAnimated": True, "triangles": 500,
                     "sheets": [{"decodedBytes": 1920 * 768 * 4,

@@ -231,9 +231,9 @@ def validate_asset(asset: dict, key: str) -> None:
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
         "renderSupersample": 3,
-        "renderSamples": 32,
+        "renderSamples": 36,
         "boneAnimated": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
     for field, value in expected.items():
         if asset.get(field) != value:

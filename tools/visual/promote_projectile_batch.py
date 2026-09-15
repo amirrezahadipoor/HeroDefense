@@ -73,9 +73,9 @@ def validate_candidate(source: Path, manifest: dict, candidate: dict) -> set[Pat
         "generatedBatch": "projectile",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "overlayRenderSamples": 8,
-        "renderTierTop": [3, 32],
+        "opaqueRenderSamples": 28,
+        "overlayRenderSamples": 12,
+        "renderTierTop": [3, 36],
         "maxAtlasPageSize": 2048,
     }.items():
         if manifest.get(field) != expected:
@@ -110,12 +110,12 @@ def validate_asset(asset: dict, key: str) -> None:
         "pivot": {"units": "normalized-bottom-left", "x": 0.5, "y": 0.5},
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
         "modelRevision": "effects-v1",
         "effectKind": "projectile",
         "variant": "normal",
         "flightAxis": "+X",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     }
     for field, value in expected.items():
         if asset.get(field) != value:

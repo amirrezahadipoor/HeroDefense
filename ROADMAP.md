@@ -692,13 +692,13 @@ built for premium-v2.
 
 ### 33.6 Review-sheet and validator extension
 
-- [ ] Extend the existing `tools/visual/create_*_batch_review.py` family with a studio-tier contact
+- [x] Extend the existing `tools/visual/create_*_batch_review.py` family with a studio-tier contact
   sheet mode: same side-by-side-against-baseline layout already used for premium-v2, with the
   baseline now being the current premium-v2 output rather than the pre-premium-v2 one.
-- [ ] Extend `tools/visual/validate_generated_assets.py` with the new checkable criteria from 33.0
+- [x] Extend `tools/visual/validate_generated_assets.py` with the new checkable criteria from 33.0
   (line-weight ratio, highlight coverage bound) wherever they're automatable from the manifest or
   pixel data, following the existing "manifest-only mode when Pillow is unavailable" fallback.
-- [ ] Bump the manifest's `assets[].visualQuality` value path to a new `"studio-v3"` string once a
+- [x] Bump the manifest's `assets[].visualQuality` value path to a new `"studio-v3"` string once a
   batch is promoted, alongside the existing `pipelineVersion`/`engineVersion`/`renderSupersample`/
   `renderSamples` provenance fields — mirroring exactly how premium-v2 is recorded today.
 

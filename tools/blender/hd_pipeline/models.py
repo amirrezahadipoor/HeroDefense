@@ -346,7 +346,7 @@ def build_hero() -> BuiltModel:
         "attachment_variant": "equipment_neutral",
         "modelRevision": "hero-premium-v2-final",
         "rigProfile": "premium-humanoid-v2",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -509,7 +509,7 @@ def build_rootling() -> BuiltModel:
         armature,
         objects,
         {
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
             "modelRevision": "rootling-thorn-scout-v2",
             "rigProfile": "premium-humanoid-v2",
             "animationProfile": "rootling-skirmisher-v2",
@@ -600,7 +600,7 @@ def build_stonekin() -> BuiltModel:
         armature,
         objects,
         {
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
             "modelRevision": "stonekin-rune-bulwark-v2",
             "rigProfile": "premium-heavy-humanoid-v2",
             "animationProfile": "stonekin-juggernaut-v2",
@@ -687,7 +687,7 @@ def build_gloom_wolf() -> BuiltModel:
         armature,
         objects,
         {
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
             "modelRevision": "gloom-wolf-shadow-stalker-v2",
             "rigProfile": "premium-quadruped-mapped-v2",
             "animationProfile": "gloom-wolf-pouncer-v2",
@@ -773,7 +773,7 @@ def build_fungal_brute() -> BuiltModel:
         armature,
         objects,
         {
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
             "modelRevision": "fungal-brute-spore-bruiser-v2",
             "rigProfile": "premium-heavy-humanoid-v2",
             "animationProfile": "fungal-brute-brawler-v2",
@@ -902,7 +902,7 @@ def build_ancient_golem() -> BuiltModel:
         "animationProfile": "ancient-golem-ground-slam-v2",
         "silhouetteLandmarks": ["trilithon crest", "exposed heartstone", "paired slam fists", "split pillar feet"],
         "surfaceLanguage": "faceted basalt strata, restrained moss, cyan rune seams",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -997,7 +997,7 @@ def build_thorn_matriarch() -> BuiltModel:
         "animationProfile": "thorn-matriarch-thorn-cage-v2",
         "silhouetteLandmarks": ["ten-petal crown", "rooted royal gown", "paired cage-thorn fans", "briar halo"],
         "surfaceLanguage": "layered heartwood, emerald leaves, blood-petal crown, ivory thorns",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -1110,7 +1110,7 @@ def build_ember_wyrm() -> BuiltModel:
         "animationProfile": "ember-wyrm-flame-sweep-v2",
         "silhouetteLandmarks": ["faceted bat wings", "horned long muzzle", "gold furnace belly", "barbed sweeping tail"],
         "surfaceLanguage": "obsidian scales, crimson membranes, gold belly plates, restrained emissive flame",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -1212,7 +1212,7 @@ def build_void_knight() -> BuiltModel:
         "animationProfile": "void-knight-void-charge-v2",
         "silhouetteLandmarks": ["forked void horns", "asymmetric pauldrons", "split torn cape", "socket-driven greatblade"],
         "surfaceLanguage": "layered gunmetal plate, silver edges, old gold, restrained violet abyss glow",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 

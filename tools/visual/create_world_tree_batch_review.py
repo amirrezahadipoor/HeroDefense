@@ -19,6 +19,13 @@ from create_character_animation_review import (
 
 from review_strips import grade_row
 
+# Studio-v3 contact-sheet mode: same side-by-side-against-baseline layout as premium-v2,
+# baseline is the current premium-v2 output, candidate is studio-v3 (weighted 2.4/1.2 + rim/highlight).
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+# Contact sheet uses readability_sheet(old, new) with old=premium-v2, new=studio-v3
+
+
 TREES = (
     (
         "world_tree_healthy",
@@ -119,8 +126,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         "generatedBatch": "world-tree",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
         "maxAtlasPageSize": 2048,
     }
     for field, expected in expected_global.items():
@@ -299,12 +306,12 @@ def validate_metadata(entry: dict, key: str, revision: str, animation_profile: s
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
         "renderSupersample": 3,
-        "renderSamples": 32,
+        "renderSamples": 36,
         "rigBoneCount": 13,
         "bones": EXPECTED_BONES,
         "boneAnimated": True,
         "rigged": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "modelRevision": revision,
         "rigProfile": "segmented-world-tree-v2",
         "animationProfile": animation_profile,

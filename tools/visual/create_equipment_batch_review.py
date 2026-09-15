@@ -12,6 +12,12 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageStat
 
 from review_strips import grade_row, silhouette_view
 
+# Studio-v3 contact-sheet mode: same side-by-side-against-baseline layout as premium-v2,
+# baseline is the current premium-v2 output, candidate is studio-v3 (weighted 2.4/1.2 + rim/highlight).
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+# Contact sheet uses readability_sheet(old, new) with old=premium-v2, new=studio-v3
+
 CLIPS = ("idle", "attack", "hit", "death")
 POSES = (
     ("Idle", "idle", 0),
@@ -22,7 +28,7 @@ POSES = (
 )
 TIERS = ("COMMON", "UNCOMMON", "RARE", "LEGENDARY")
 EXPECTED_FRAME_COUNTS = {"idle": 6, "attack": 8, "hit": 4, "death": 10}
-EXPECTED_VISUAL_QUALITY = "premium-v2"
+EXPECTED_VISUAL_QUALITY = "studio-v3"
 EXPECTED_MODEL_REVISION = "equipment-premium-v2"
 EXPECTED_RIG_PROFILE = "hero-socket-v2"
 EXPECTED_FRAME_SIZE = 192
@@ -320,7 +326,7 @@ def validate_asset_contract(
         "modelRevision": EXPECTED_MODEL_REVISION,
         "rigProfile": EXPECTED_RIG_PROFILE,
         "renderSupersample": 2,
-        "renderSamples": 8,
+        "renderSamples": 12,
         "visualQuality": EXPECTED_VISUAL_QUALITY,
         "runtimeGlow": item["tier"] in {"RARE", "LEGENDARY"},
         "boneAnimated": True,

@@ -8,7 +8,11 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from review_strips import grade_row, silhouette_view
+from review_strips import grade_row
+
+# Studio-v3 contact-sheet mode: baseline premium-v2 vs candidate studio-v3
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
 
 EQUIPMENT = (
     "boots_of_three_winds",

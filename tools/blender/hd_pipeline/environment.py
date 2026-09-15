@@ -518,7 +518,7 @@ def build_world_tree(damaged: bool = False) -> BuiltModel:
     metadata = {
         "state": "damaged" if damaged else "healthy",
         "rigged": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "modelRevision": (
             "heartwood-sanctum-wounded-v2" if damaged
             else "heartwood-sanctum-healthy-v2"
@@ -647,7 +647,7 @@ def build_arena_backdrop() -> BuiltModel:
         "depthBands": 5,
         "clearLaneFraction": 0.55,
         "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -721,7 +721,7 @@ def build_ground_tile(variant: int = 0) -> BuiltModel:
         "groundIdentity": identities[variant],
         "modelRevision": "arena-ground-premium-v3",
         "surfaceLanguage": "faceted dark soil, restrained waystones, moss leaves, broad root runs",
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -849,7 +849,7 @@ def build_crystal_prop(variant: int = 0) -> BuiltModel:
         ],
         "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
         "runtimeGlow": False,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -991,7 +991,7 @@ def build_ui_frame(key: str) -> BuiltModel:
         }[state],
         "modelRevision": "forest-glass-nine-patch-v2",
         "touchOnlyUI": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -1225,7 +1225,7 @@ def build_ui_icon(key: str) -> BuiltModel:
         "modelRevision": "ui-control-icon-premium-v2",
         "silhouetteLayers": ["shadow medallion", "guard ring", "semantic glyph", "paired gold anchors"],
         "touchOnlyUI": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })
 
 
@@ -1302,5 +1302,5 @@ def build_potion_icon(tier: int) -> BuiltModel:
             "seeded shoulders and foot ring",
             "legendary cradle rails and living stopper",
         )[tier - 1],
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     })

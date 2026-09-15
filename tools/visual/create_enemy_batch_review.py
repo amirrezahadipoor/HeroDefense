@@ -21,6 +21,13 @@ from create_character_animation_review import (
 
 from review_strips import grade_row
 
+# Studio-v3 contact-sheet mode: same side-by-side-against-baseline layout as premium-v2,
+# baseline is the current premium-v2 output, candidate is studio-v3 (weighted 2.4/1.2 + rim/highlight).
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+# Contact sheet uses readability_sheet(old, new) with old=premium-v2, new=studio-v3
+
+
 ENEMIES = (
     ("rootling", "Rootling", "rootling-thorn-scout-v2", "premium-humanoid-v2", "rootling-skirmisher-v2"),
     ("stonekin", "Stonekin", "stonekin-rune-bulwark-v2", "premium-heavy-humanoid-v2", "stonekin-juggernaut-v2"),
@@ -80,9 +87,9 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         raise ValueError("Candidate frame rate must remain 12 fps")
     if candidate_manifest.get("renderSupersample") != 2:
         raise ValueError("Candidate must use 2x supersampling")
-    if candidate_manifest.get("opaqueRenderSamples") != 24:
+    if candidate_manifest.get("opaqueRenderSamples") != 28:
         raise ValueError("Candidate must use 24 opaque samples")
-    if candidate_manifest.get("renderTierTop") != [3, 32]:
+    if candidate_manifest.get("renderTierTop") != [3, 36]:
         raise ValueError("Candidate must carry the Phase 28.3 tier fingerprint")
 
     required_bones = candidate_manifest.get("requiredBones", [])
@@ -230,9 +237,9 @@ def validate_metadata(
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
         "boneAnimated": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "modelRevision": revision,
         "rigProfile": rig_profile,
         "animationProfile": animation_profile,

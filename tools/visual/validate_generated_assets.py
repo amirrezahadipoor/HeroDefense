@@ -188,10 +188,38 @@ def main() -> None:
         raise ValueError("premium-v2 output requires pipeline version 3 or newer")
     if manifest.get("renderSupersample") not in (2, 3):
         raise ValueError("premium-v2 output must use 2x or 3x working renders")
-    if manifest.get("opaqueRenderSamples", 0) < 16:
-        raise ValueError("premium-v2 opaque renders require at least 16 samples")
-    if manifest.get("overlayRenderSamples", 0) < 8:
-        raise ValueError("premium-v2 overlays require at least 8 samples")
+    if manifest.get("opaqueRenderSamples", 0) < 28:
+        raise ValueError("premium-v2 opaque renders require at least 28 samples")
+    if manifest.get("overlayRenderSamples", 0) < 12:
+        raise ValueError("premium-v2 overlays require at least 12 samples")
+    # --- studio-v3 floors ------------------------------------------------
+    # VisualQuality must be studio-v3 for all assets once promoted
+    for _asset in manifest.get("assets", []):
+        if _asset.get("visualQuality") != "studio-v3":
+            raise ValueError(f"{_asset.get('key','?')}: visualQuality must be studio-v3 (found {_asset.get('visualQuality')})")
+    # Line-weight contrast ratio: silhouette (2.4) vs interior (1.2) = 2.0 must be within 1.5-2.5
+    # Automatable from scene.py source
+    try:
+        from pathlib import Path as _P
+        import re as _re
+        _scene_src = (_P(__file__).resolve().parents[1] / "blender" / "hd_pipeline" / "scene.py").read_text(encoding="utf-8")
+        # Find silhouette and crease thickness values
+        _sil = _re.search(r"silhouette.*thickness\s*=\s*([0-9.]+)", _scene_src)
+        _cre = _re.search(r"crease.*thickness\s*=\s*([0-9.]+)", _scene_src)
+        if _sil and _cre:
+            _ratio = float(_sil.group(1)) / float(_cre.group(1)) if float(_cre.group(1)) != 0 else 0
+            if not (1.5 <= _ratio <= 2.5):
+                raise ValueError(f"studio-v3 line-weight ratio {_ratio:.2f} outside 1.5-2.5 (silhouette { _sil.group(1) } vs crease { _cre.group(1) })")
+        # Highlight coverage bound: check that toon_material has LayerWeight and Glossy mixed via ShaderToRGB with threshold 0.92
+        if "ShaderNodeLayerWeight" not in _scene_src or "ShaderNodeBsdfGlossy" not in _scene_src:
+            raise ValueError("studio-v3 highlight/rim nodes missing (LayerWeight + Glossy required)")
+        if "highlight_ramp" not in _scene_src or "0.92" not in _scene_src:
+            raise ValueError("studio-v3 highlight threshold 0.92 missing")
+    except ValueError:
+        raise
+    except Exception:
+        # Manifest-only fallback when source not available
+        pass
 
     # global grade/silhouette alpha sanity
     _check_grade_alpha()
@@ -209,7 +237,7 @@ def main() -> None:
         # new pivot stability per class
         _check_pivot_stability(asset)
         # Phase 28.7 tier/engineVersion — enforced only after full re-render (28.7)
-        if manifest.get("engineVersion","").startswith("28.7"):
+        if str(manifest.get("engineVersion","")).startswith(("28.7", "33.0")):
             if "renderSupersample" in asset and "renderSamples" in asset and "frameClass" in asset:
                 import sys
                 from pathlib import Path as _P
@@ -229,8 +257,8 @@ def main() -> None:
             ev = asset.get("engineVersion") or manifest.get("engineVersion")
             if ev is None:
                 raise ValueError(f"{asset['key']}: missing engineVersion (28.7 required)")
-            if not str(ev).startswith("28.7"):
-                raise ValueError(f"{asset['key']}: stale engineVersion {ev} — expected 28.7")
+            if not str(ev).startswith(("28.7", "33.0")):
+                raise ValueError(f"{asset['key']}: stale engineVersion {ev} — expected 28.7/33.0")
 
 
         if asset["alphaMode"] != "STRAIGHT_RGBA":

@@ -13,6 +13,12 @@ from create_character_animation_review import canvas_base, checker, text
 
 from review_strips import grade_row, silhouette_view
 
+# Studio-v3 contact-sheet mode: same side-by-side-against-baseline layout as premium-v2,
+# baseline is the current premium-v2 output, candidate is studio-v3 (weighted 2.4/1.2 + rim/highlight).
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+# Contact sheet uses readability_sheet(old, new) with old=premium-v2, new=studio-v3
+
 ICON_KEYS = (
     "ui_health", "ui_wave", "ui_coin", "ui_pause", "ui_speed",
     "ui_inventory", "ui_shop", "ui_settings", "ui_restart",
@@ -70,8 +76,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         "pipelineVersion": 3,
         "generatedBatch": "ui",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
         "maxAtlasPageSize": 2048,
     }
     for field, expected in globals_expected.items():
@@ -184,9 +190,9 @@ def validate_metadata(entry: dict, key: str) -> None:
         "pivot": EXPECTED_PIVOT,
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
         "touchOnlyUI": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     }
     if key in ICON_KEYS:
         expected.update({

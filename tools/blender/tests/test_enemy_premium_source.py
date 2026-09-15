@@ -37,7 +37,7 @@ class EnemyPremiumSourceTest(unittest.TestCase):
             name = f"build_{key}"
             self.assertIn(name, functions)
             segment = ast.get_source_segment(source, functions[name]) or ""
-            self.assertIn('"visualQuality": "premium-v2"', segment)
+            self.assertIn('"visualQuality": "studio-v3"', segment)
             for value in provenance:
                 self.assertIn(value, segment)
 

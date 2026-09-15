@@ -58,7 +58,7 @@ class ArenaPremiumSourceTest(unittest.TestCase):
             self.assertIn(name, source)
         self.assertIn('"depthBands": 5', source)
         self.assertIn('"clearLaneFraction": 0.55', source)
-        self.assertIn('"visualQuality": "premium-v2"', source)
+        self.assertIn('"visualQuality": "studio-v3"', source)
         self.assertNotIn("ShaderNodeTexNoise", source)
 
     def test_all_ground_variants_share_premium_construction_not_recoloring(self) -> None:

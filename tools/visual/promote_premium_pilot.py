@@ -63,8 +63,8 @@ def main() -> None:
         "pipelineVersion": 3,
         "generatedBatch": "premium-pilot",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "overlayRenderSamples": 8,
+        "opaqueRenderSamples": 28,
+        "overlayRenderSamples": 12,
     })
     catalog["assets"] = [by_key[key] for key in sorted(by_key)]
     _write_json(catalog_path, catalog)

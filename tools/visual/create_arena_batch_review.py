@@ -19,6 +19,12 @@ from create_character_animation_review import (
 
 from review_strips import grade_row, silhouette_view
 
+# Studio-v3 contact-sheet mode: same side-by-side-against-baseline layout as premium-v2,
+# baseline is the current premium-v2 output, candidate is studio-v3 (weighted 2.4/1.2 + rim/highlight).
+STUDIO_TIER_BASELINE_QUALITY = "premium-v2"
+STUDIO_TIER_CANDIDATE_QUALITY = "studio-v3"
+# Contact sheet uses readability_sheet(old, new) with old=premium-v2, new=studio-v3
+
 EXPECTED_KEYS = (
     "arena_backdrop",
     "ground_tile_0",
@@ -84,8 +90,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         "generatedBatch": "arena",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
         "maxAtlasPageSize": 2048,
     }
     for field, expected in expected_global.items():
@@ -235,7 +241,7 @@ def validate_metadata(entry: dict, key: str) -> None:
             "modelRevision": "forest-sanctuary-backdrop-v3",
             "compositionProfile": "portrait-clear-lane-v2",
             "depthBands": 5,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         triangle_range = (1_000, 3_000)
         minimum_parts = 45
@@ -253,7 +259,7 @@ def validate_metadata(entry: dict, key: str) -> None:
             "modelRevision": "arena-ground-premium-v3",
             "groundIdentity": GROUND_IDENTITIES[variant],
             "variant": variant,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         triangle_range = (300, 600)
         minimum_parts = 20
@@ -272,7 +278,7 @@ def validate_metadata(entry: dict, key: str) -> None:
             "prop": CRYSTAL_IDENTITIES[variant],
             "variant": variant,
             "runtimeGlow": False,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         triangle_range = (700, 2_200)
         minimum_parts = 30
@@ -285,7 +291,7 @@ def validate_metadata(entry: dict, key: str) -> None:
         "pivot": EXPECTED_PIVOT,
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
     }
     for field, expected_value in exact_common.items():
         if entry.get(field) != expected_value:

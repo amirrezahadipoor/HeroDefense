@@ -93,8 +93,8 @@ def main() -> None:
             "modelRevision": asset["modelRevision"],
             "rigProfile": asset["rigProfile"],
             "renderSupersample": 2,
-            "renderSamples": 8,
-            "visualQuality": "premium-v2",
+            "renderSamples": 12,
+            "visualQuality": "studio-v3",
             "reviewDocument": REVIEW_DOCUMENT,
             "categoryReview": review,
         })
@@ -167,8 +167,8 @@ def validate_asset(item: dict, asset: dict) -> None:
         "modelRevision": "equipment-premium-v2",
         "rigProfile": "hero-socket-v2",
         "renderSupersample": 2,
-        "renderSamples": 8,
-        "visualQuality": "premium-v2",
+        "renderSamples": 12,
+        "visualQuality": "studio-v3",
         "runtimeGlow": item["tier"] in {"RARE", "LEGENDARY"},
         "boneAnimated": True,
     }

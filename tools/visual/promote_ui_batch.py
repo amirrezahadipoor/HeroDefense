@@ -90,9 +90,9 @@ def validate_candidate(source: Path, manifest: dict, candidate: dict[str, dict])
         "pipelineVersion": 3,
         "generatedBatch": "ui",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
-        "overlayRenderSamples": 8,
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
+        "overlayRenderSamples": 12,
         "maxAtlasPageSize": 2048,
     }
     for field, expected in expected_global.items():
@@ -133,9 +133,9 @@ def validate_asset(asset: dict, key: str) -> None:
         "pivot": {"units": "normalized-bottom-left", "x": 0.5, "y": 0.5},
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
         "touchOnlyUI": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
     }
     if key in ICON_KEYS:
         expected.update({

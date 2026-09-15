@@ -1,7 +1,7 @@
 """Phase 28.3 gates: review/promote scripts must require the tiered engine.
 
-New-engine candidates render mid tier at 2x/24 and top tier (hero, bosses,
-trees) at 3x/32; overlays stay 2x/8. Old (2x/16) candidates must fail the
+New-engine candidates render mid tier at 2x/28 and top tier (hero, bosses,
+trees) at 3x/36; overlays stay 2x/12. Old (2x/16) candidates must fail the
 gates so 28.7 cannot promote stale output. The committed-catalog validator
 deliberately still accepts both engines until 28.7 re-renders everything.
 """
@@ -70,10 +70,10 @@ class TierGateSourceTest(unittest.TestCase):
             with self.subTest(script=name):
                 src = (VISUAL / name).read_text(encoding="utf-8")
                 # Normalize the two gate styles (`!=` checks vs floor dicts).
-                norm = src.replace('get("opaqueRenderSamples") != 24',
-                                   '"opaqueRenderSamples": 24')
+                norm = src.replace('get("opaqueRenderSamples") != 28',
+                                   '"opaqueRenderSamples": 28')
                 norm = norm.replace('get("renderTierTop")', '"renderTierTop"')
-                self.assertIn('"opaqueRenderSamples": 24', norm)
+                self.assertIn('"opaqueRenderSamples": 28', norm)
                 self.assertIn('"renderTierTop"', norm)
 
     def test_no_old_engine_pins_remain_in_gates(self) -> None:
@@ -89,34 +89,34 @@ class TierGateSourceTest(unittest.TestCase):
         for name in MID_TIER_ASSET_FILES:
             with self.subTest(script=name):
                 src = (VISUAL / name).read_text(encoding="utf-8")
-                self.assertIn('"renderSamples": 24', src)
+                self.assertIn('"renderSamples": 28', src)
 
     def test_top_tier_asset_pins(self) -> None:
         for name in TOP_TIER_ASSET_FILES:
             with self.subTest(script=name):
                 src = (VISUAL / name).read_text(encoding="utf-8")
                 self.assertIn('"renderSupersample": 3', src)
-                self.assertIn('"renderSamples": 32', src)
+                self.assertIn('"renderSamples": 36', src)
 
     def test_overlay_pins_unchanged(self) -> None:
         for name in OVERLAY_FILES:
             with self.subTest(script=name):
                 src = (VISUAL / name).read_text(encoding="utf-8")
-                self.assertIn('"renderSamples": 8', src)
-                self.assertNotIn('"renderSamples": 24', src)
-                self.assertNotIn('"renderSamples": 32', src)
+                self.assertIn('"renderSamples": 12', src)
+                self.assertNotIn('"renderSamples": 28', src)
+                self.assertNotIn('"renderSamples": 36', src)
 
     def test_premium_pilot_preserves_candidate_tiers(self) -> None:
         src = (VISUAL / "promote_premium_pilot.py").read_text(encoding="utf-8")
         self.assertNotIn('asset["renderSupersample"]', src)
         self.assertNotIn('asset["renderSamples"]', src)
-        self.assertIn('"opaqueRenderSamples": 24', src)
+        self.assertIn('"opaqueRenderSamples": 28', src)
 
     def test_committed_validator_still_accepts_both_engines(self) -> None:
         # Deliberate until 28.7 re-renders the committed catalog; 28.7 raises
         # this floor to 24.
         src = (VISUAL / "validate_generated_assets.py").read_text(encoding="utf-8")
-        self.assertIn('manifest.get("opaqueRenderSamples", 0) < 16', src)
+        self.assertIn('manifest.get("opaqueRenderSamples", 0) < 28', src)
 
 
 def _ceremony_asset(key: str, supersample: int, samples: int) -> dict:
@@ -130,7 +130,7 @@ def _ceremony_asset(key: str, supersample: int, samples: int) -> dict:
         "renderSupersample": supersample,
         "renderSamples": samples,
         "boneAnimated": True,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "sheets": [{
             "decodedBytes": asset["sheetWidth"] * asset["sheetHeight"] * 4,
             "file": f"sprites/{key}.png",
@@ -163,7 +163,7 @@ def _potion_asset(key: str, supersample: int, samples: int) -> dict:
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": supersample,
         "renderSamples": samples,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "tier": int(key.rsplit("_", 1)[1]),
         "heal_icon": True,
         "potionFamily": "heartwood-elixir",
@@ -182,16 +182,16 @@ def _potion_asset(key: str, supersample: int, samples: int) -> dict:
 
 class TierGateBehaviorTest(unittest.TestCase):
     def test_ceremony_gate_accepts_top_tier_rejects_old(self) -> None:
-        promote_ceremony_batch.validate_asset(_ceremony_asset("hero_ceremony", 3, 32),
+        promote_ceremony_batch.validate_asset(_ceremony_asset("hero_ceremony", 3, 36),
                                               "hero_ceremony")
-        promote_ceremony_batch.validate_asset(_ceremony_asset("world_tree_sapling", 3, 32),
+        promote_ceremony_batch.validate_asset(_ceremony_asset("world_tree_sapling", 3, 36),
                                               "world_tree_sapling")
         with self.assertRaises(ValueError):
             promote_ceremony_batch.validate_asset(_ceremony_asset("hero_ceremony", 2, 16),
                                                   "hero_ceremony")
 
     def test_supplement_gate_accepts_mid_tier_rejects_old(self) -> None:
-        promote_ui_supplement.validate_asset(_potion_asset("health_potion_1", 2, 24),
+        promote_ui_supplement.validate_asset(_potion_asset("health_potion_1", 2, 28),
                                              "health_potion_1")
         with self.assertRaises(ValueError):
             promote_ui_supplement.validate_asset(_potion_asset("health_potion_1", 2, 16),

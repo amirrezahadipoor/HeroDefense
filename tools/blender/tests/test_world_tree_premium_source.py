@@ -1,4 +1,4 @@
-"""Dependency-free source contracts for the premium-v2 World Tree batch."""
+"""Dependency-free source contracts for the studio-v3 World Tree batch."""
 from __future__ import annotations
 
 import ast
@@ -26,7 +26,7 @@ class WorldTreePremiumSourceTest(unittest.TestCase):
             "segmented-world-tree-v2",
             "living-heart-pulse-v2",
             "wounded-collapse-v2",
-            "premium-v2",
+            "studio-v3",
             "destroy",
         }
         literals = {

@@ -40,7 +40,7 @@ def build_arrow(variant: str = "normal") -> BuiltModel:
     ]
     return BuiltModel(None, objects, {
         "modelRevision": EFFECT_REVISION,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "effectKind": "projectile",
         "variant": variant,
         "flightAxis": "+X",
@@ -75,7 +75,7 @@ def build_impact_flash(progress: float) -> BuiltModel:
     objects.extend(_motes("flash_mote", 6, progress, 0.30, 0.70, 0.085, STAGE_Z, mote))
     return BuiltModel(None, objects, {
         "modelRevision": EFFECT_REVISION,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "effectKind": "vfx",
         "effect": "impact_flash",
     })
@@ -95,7 +95,7 @@ def build_shockwave_ring(progress: float) -> BuiltModel:
                            0.55 + 0.45 * progress, dust))
     return BuiltModel(None, objects, {
         "modelRevision": EFFECT_REVISION,
-        "visualQuality": "premium-v2",
+        "visualQuality": "studio-v3",
         "effectKind": "vfx",
         "effect": "shockwave_ring",
     })

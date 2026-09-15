@@ -50,7 +50,7 @@ class BossPremiumSourceTest(unittest.TestCase):
             builder_name = f"build_{key}"
             self.assertIn(builder_name, functions)
             segment = ast.get_source_segment(source, functions[builder_name]) or ""
-            self.assertIn('"visualQuality": "premium-v2"', segment)
+            self.assertIn('"visualQuality": "studio-v3"', segment)
             for value in provenance[:4]:
                 self.assertIn(value, segment)
             self.assertIn('"silhouetteLandmarks"', segment)

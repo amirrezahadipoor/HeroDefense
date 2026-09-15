@@ -82,9 +82,9 @@ def validate_candidate(source: Path, manifest: dict, candidate: dict[str, dict])
         "pipelineVersion": 3,
         "generatedBatch": "ui-supplement",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
-        "overlayRenderSamples": 8,
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
+        "overlayRenderSamples": 12,
         "maxAtlasPageSize": 2048,
     }.items():
         if manifest.get(field) != expected:
@@ -122,8 +122,8 @@ def validate_asset(asset: dict, key: str) -> None:
         "pivot": {"units": "normalized-bottom-left", "x": 0.5, "y": 0.5},
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
-        "visualQuality": "premium-v2",
+        "renderSamples": 28,
+        "visualQuality": "studio-v3",
     }
     if key in POTION_KEYS:
         expected.update({

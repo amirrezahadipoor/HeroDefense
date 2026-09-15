@@ -108,9 +108,9 @@ def validate_candidate_payload(
         "generatedBatch": "arena",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 24,
-        "renderTierTop": [3, 32],
-        "overlayRenderSamples": 8,
+        "opaqueRenderSamples": 28,
+        "renderTierTop": [3, 36],
+        "overlayRenderSamples": 12,
         "maxAtlasPageSize": 2048,
     }
     for field, expected in expected_global.items():
@@ -156,7 +156,7 @@ def validate_asset_contract(asset: dict, key: str) -> None:
             "modelRevision": "forest-sanctuary-backdrop-v3",
             "compositionProfile": "portrait-clear-lane-v2",
             "depthBands": 5,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         triangle_range = (1_000, 3_000)
         minimum_parts, minimum_materials = 45, 8
@@ -175,7 +175,7 @@ def validate_asset_contract(asset: dict, key: str) -> None:
             "modelRevision": "arena-ground-premium-v3",
             "groundIdentity": GROUND_IDENTITIES[variant],
             "variant": variant,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         triangle_range = (300, 600)
         minimum_parts, minimum_materials = 20, 6
@@ -195,7 +195,7 @@ def validate_asset_contract(asset: dict, key: str) -> None:
             "prop": CRYSTAL_IDENTITIES[variant],
             "variant": variant,
             "runtimeGlow": False,
-            "visualQuality": "premium-v2",
+            "visualQuality": "studio-v3",
         }
         triangle_range = (700, 2_200)
         minimum_parts, minimum_materials = 30, 8
@@ -204,7 +204,7 @@ def validate_asset_contract(asset: dict, key: str) -> None:
         "pivot": {"units": "normalized-bottom-left", "x": 0.5, "y": 0.5},
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 24,
+        "renderSamples": 28,
     }
     expected.update(common)
     for field, expected_value in expected.items():
