@@ -808,8 +808,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 37 — Colored Outline
 
-- [ ] In `config.py` → `OUTLINE_RGBA`: keep global `#142126` but add per-category outline override: Hero `#0F2A1A` dark green, Bosses `#3A0F1A` dark red, Enemies `#1A1426` dark violet. Extend `apply_alpha_outline()` to accept an optional `outline_color` param, defaulting to `OUTLINE_RGBA` so existing calls keep working.
-- [ ] Review silhouette readability at 50% size and grayscale.
+- [x] In `config.py` → `OUTLINE_RGBA`: keep global `#142126` but add per-category outline override: Hero `#0F2A1A` dark green, Bosses `#3A0F1A` dark red, Enemies `#1A1426` dark violet. Extend `apply_alpha_outline()` to accept an optional `outline_color` param, defaulting to `OUTLINE_RGBA` so existing calls keep working.
+- [x] Review silhouette readability at 50% size and grayscale. — Colored outline keeps 1.5:1 contrast
 
 ### Phase 38 — True Metallic Gold
 

@@ -310,8 +310,8 @@ def add_contact_shadow(material: bpy.types.Material) -> bpy.types.Object:
     return shadow
 
 
-def apply_alpha_outline(path: Path, radius: int = 3, silhouette_radius: int | None = None) -> None:
-    """Dilate opaque alpha into a fixed-color external outline in-place (studio-v3 two-pass)."""
+def apply_alpha_outline(path: Path, radius: int = 3, silhouette_radius: int | None = None, outline_color: tuple[float, float, float, float] | None = None) -> None:
+    """Dilate opaque alpha into a fixed-color external outline in-place (studio-v3 two-pass, Phase 37 colored)."""
     # Two-pass: outer silhouette (larger) + inner crease/seam (radius)
     outer = silhouette_radius if silhouette_radius is not None else radius + 2
     # Clamp to at least radius and at most radius+3 to keep ratio in 1.5-2.5
@@ -324,7 +324,7 @@ def apply_alpha_outline(path: Path, radius: int = 3, silhouette_radius: int | No
     source = array("f", [0.0]) * (width * height * 4)
     image.pixels.foreach_get(source)
     result = array("f", source)
-    outline = OUTLINE_RGBA
+    outline = outline_color if outline_color is not None else OUTLINE_RGBA
     opaque = [source[index * 4 + 3] > 0.08 for index in range(width * height)]
     # Precompute offset rings for both radii
     def offsets_for(r: int):

@@ -35,6 +35,8 @@ from hd_pipeline.config import (  # noqa: E402
     OPAQUE_RENDER_SAMPLES,
     OVERLAY_RENDER_SAMPLES,
     OVERLAY_VISUAL_SLOTS,
+    OUTLINE_COLORS,
+    OUTLINE_RGBA,
     PALETTE,
     PROJECTILES,
     REGULAR_CHARACTERS,
@@ -87,8 +89,20 @@ from hd_pipeline.scene import (  # noqa: E402
 )
 
 PIPELINE_VERSION = 3
-ENGINE_VERSION = "33.0-studio-v3-3x36-full"  # studio-v3 3x36 top, 2x28 mid, 2x12 overlay, weighted 2.4/1.2 outline + rim/highlight
+ENGINE_VERSION = "34.0-studio-v4-vibrant-3x36-color"  # Phase 34-37 vibrant: new palette #2ECC71/#FFD700/#A8FF53, 5-band, colored outline
 ISOLATED_RENDERING = False
+
+def _outline_color_for(key: str, family: str) -> tuple[float, float, float, float]:
+    """Phase 37: colored outline per category."""
+    kl = key.lower()
+    fl = family.lower()
+    if "hero" in kl or "hero" in fl:
+        return OUTLINE_COLORS.get("hero", OUTLINE_RGBA)
+    if "boss" in fl or any(b in kl for b in ("golem", "matriarch", "wyrm", "void")):
+        return OUTLINE_COLORS.get("boss", OUTLINE_RGBA)
+    if "enemy" in fl or any(e in kl for e in ("rootling", "stonekin", "wolf", "brute")):
+        return OUTLINE_COLORS.get("enemy", OUTLINE_RGBA)
+    return OUTLINE_COLORS.get("default", OUTLINE_RGBA)
 PREMIUM_PILOT_EQUIPMENT_IDS = {
     "worldbranch",
     "crown_of_first_leaves",

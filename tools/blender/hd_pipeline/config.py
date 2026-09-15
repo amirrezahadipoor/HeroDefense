@@ -26,6 +26,13 @@ def render_tier(asset_key: str, frame_class: str) -> tuple[int, int]:
         return (TOP_TIER_SUPERSAMPLE, TOP_TIER_SAMPLES)
     return (RENDER_SUPERSAMPLE, OPAQUE_RENDER_SAMPLES)
 OUTLINE_RGBA = (0.0072, 0.0152, 0.0194, 1.0)  # linear-ish #142126
+# Phase 37: colored outline per category — hero dark green, bosses dark red, enemies dark violet
+OUTLINE_COLORS = {
+    "hero": (0.006, 0.032, 0.016, 1.0),      # #0F2A1A dark green
+    "boss": (0.08, 0.015, 0.03, 1.0),        # #3A0F1A dark red
+    "enemy": (0.018, 0.012, 0.035, 1.0),     # #1A1426 dark violet
+    "default": (0.0072, 0.0152, 0.0194, 1.0), # #142126 fallback
+}
 
 CAMERA_LOCATION = (6.5, -9.5, 6.2)
 CAMERA_TARGET = (0.0, 0.0, 1.15)
