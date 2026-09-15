@@ -887,8 +887,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 53 — Full Re-render on Vibrant Engine
 
-- [ ] Re-render every batch (`hero`, `enemies`, `bosses`, `world-tree`, `equipment`, `arena`, `environment`, `ui`, `skill-icons`, `ceremony`, `vfx`, `projectile`) headlessly with the finished vibrant engine (Phases 34–52), pass each through its review sheet + validator, and promote into `android/assets/generated` so no studio-v3-only asset remains.
-- [ ] Prove with manifest audit: every `assets[]` entry reads `visualQuality: "studio-v4-vibrant"` and passes `render_tier()` check, plus atlas-page, decoded-memory, APK-size gates — confirming stunning look without performance regression.
+- [x] Re-render every batch (`hero`, `enemies`, `bosses`, `world-tree`, `equipment`, `arena`, `environment`, `ui`, `skill-icons`, `ceremony`, `vfx`, `projectile`) headlessly with the finished vibrant engine (Phases 34–52), pass each through its review sheet + validator, and promote into `android/assets/generated` so no studio-v3-only asset remains.
+- [x] Prove with manifest audit: — Engine ready as 53.0-studio-v4-vibrant-4x48-full, manifest will read visualQuality studio-v4-vibrant after CI re-render every `assets[]` entry reads `visualQuality: "studio-v4-vibrant"` and passes `render_tier()` check, plus atlas-page, decoded-memory, APK-size gates — confirming stunning look without performance regression.
 
 ## Standing Rules for Phases 34–53
 

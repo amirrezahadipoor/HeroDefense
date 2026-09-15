@@ -88,8 +88,8 @@ from hd_pipeline.scene import (  # noqa: E402
     triangle_count,
 )
 
-PIPELINE_VERSION = 3
-ENGINE_VERSION = "34.0-studio-v4-vibrant-3x36-color"  # Phase 34-37 vibrant: new palette #2ECC71/#FFD700/#A8FF53, 5-band, colored outline
+PIPELINE_VERSION = 4
+ENGINE_VERSION = "53.0-studio-v4-vibrant-4x48-full"  # Phase 49-53 final: 4x48 top, 3x32 mid, 5-band #2ECC71/#FFD700/#A8FF53, colored outline, bloom, GTAO, emissive crystals, double halo
 ISOLATED_RENDERING = False
 
 def _outline_color_for(key: str, family: str) -> tuple[float, float, float, float]:
