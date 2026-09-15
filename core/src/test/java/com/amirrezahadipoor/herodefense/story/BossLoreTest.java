@@ -11,7 +11,7 @@ final class BossLoreTest {
     @Test
     void everyBossIdentityHasAVerbatimBio() {
         assertEquals(
-            "Before it was a weapon of the Hollow, it was the forest's oldest sentry — a stone shepherd that had not moved from its post in longer than the Tree could remember. The Hollow did not need to twist it. It only needed to convince it that the siege had never ended.",
+            "Before it was a weapon of the Hollow, it was the forest's oldest guard. A stone keeper that had not moved from its post in longer than the Tree could recall. The Hollow did not need to turn it. It only needed to make it think the fight had never ended.",
             BossLore.bioFor("ANCIENT_GOLEM"));
         assertTrue(BossLore.bioFor("THORN_MATRIARCH").startsWith("She grew half the arena's Rootlings"));
         assertTrue(BossLore.bioFor("EMBER_WYRM").contains("never fully went out"));

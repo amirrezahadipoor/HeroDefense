@@ -145,19 +145,12 @@ public final class MythicEffects {
     public static String flavorLine(String itemId) {
         if (itemId == null) return null;
         return switch (itemId) {
-            case SUNFALL_LAST_ARROW -> "Fired once, centuries ago, at something that fell "
-                + "from further up than any bow should reach. It never came back down whole. "
-                + "Neither did the thing it hit.";
-            case CROWN_HOLLOW_EYE -> "Wear it and you start seeing weakness the way the "
-                + "Hollow sees strength — as the one true thing worth aiming for.";
-            case BARK_FIRST_ROOT -> "Cut from the World Tree's own outer bark, back when it "
-                + "could still spare the wood. It remembers how to close a wound.";
-            case WINDRUNNER_LAST_STEPS -> "They were made for running. He never ran again "
-                + "after he put them on — he just stopped needing to.";
-            case VERDANT_OATH -> "A promise sealed in sap: what heals you should also let "
-                + "you keep healing.";
-            case EMBERLESS_CORE -> "What's left of the ember that never went out — cooled, "
-                + "contained, and finally put to work instead of left to spread.";
+            case SUNFALL_LAST_ARROW -> "Shot once, long ago, at a high fall. The arrow did not come back whole. Nor did what it hit.";
+            case CROWN_HOLLOW_EYE -> "Wear it and you see weak spots as the Hollow sees strength. The one true thing to aim for.";
+            case BARK_FIRST_ROOT -> "Cut from the World Tree's bark when it could spare wood. It knows how to close a wound.";
+            case WINDRUNNER_LAST_STEPS -> "Made for running. He never ran again after putting them on. He no longer needed to.";
+            case VERDANT_OATH -> "A promise in sap. What heals you lets you keep healing.";
+            case EMBERLESS_CORE -> "The ember that never went out, cooled and put to work. No longer left to spread.";
             default -> null;
         };
     }

@@ -114,7 +114,7 @@ public final class ParticleRenderer implements AutoCloseable {
     static final int BEAM_MAX_SEGMENTS = 9;
 
     /** Deterministic pseudo-noise in [-1, 1] from the phase and vertex index. */
-    static float beamJitter(float phase, int index) {
+    public static float beamJitter(float phase, int index) {
         return (float) Math.sin(phase * 1.7f + index * 2.39996f) * (index % 2 == 0 ? 1f : -1f);
     }
 

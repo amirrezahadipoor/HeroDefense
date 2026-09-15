@@ -60,13 +60,13 @@ final class LoreCatalogTest {
     @Test
     void bodiesMatchTheStoryDocumentVerbatim() {
         assertEquals(
-            "Others stood here before you. I do not remember most of their names. I remember all of their last stands.",
+            "Others stood here before you. I do not recall most of their names. I recall all of their last stands.",
             LoreCatalog.byId("codex_01").body());
         assertEquals(
-            "This is the part no song is written about. Not the falling, not the standing — just the holding. Hold anyway.",
+            "This is the part no song is written about. Not the falling, not the standing. Just the holding. Hold anyway.",
             LoreCatalog.byId("codex_07").body());
         assertEquals(
-            "Fire is supposed to go out. This one refused, and refusal, given enough years, becomes a shape. The Wyrm is that refusal, wearing scales.",
+            "Fire is supposed to go out. This one said no, and a no, given enough years, becomes a shape. The Wyrm is that no, wearing scales.",
             LoreCatalog.byId("codex_11").body());
         assertEquals(
             "The first time was survival. I suspect you already know what the second time was. Say it to yourself, if not to me.",

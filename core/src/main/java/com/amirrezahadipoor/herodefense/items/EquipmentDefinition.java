@@ -92,6 +92,11 @@ public final class EquipmentDefinition {
         return artId;
     }
 
+    /** Visual key alias for artId (used by own-art contract tests). */
+    public String visualKey() {
+        return artId;
+    }
+
     /** Equipment-set id, or "" when the piece belongs to no set. */
     public String setId() {
         return setId;

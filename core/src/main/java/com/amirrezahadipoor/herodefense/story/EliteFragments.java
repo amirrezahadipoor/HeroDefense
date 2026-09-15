@@ -13,17 +13,17 @@ public final class EliteFragments {
         boolean first = Math.max(1, killCount) % 2 == 1;
         if ("blightburst".equals(affixId)) {
             return first
-                ? "It doesn't die so much as let go. Whatever was holding it together was never its own to keep."
-                : "The burst isn't rage. It's relief.";
+                ? "It does not die so much as let go. What was holding it together was never its own to keep."
+                : "The burst is not rage. It's relief.";
         }
         if ("rootward_ward".equals(affixId)) {
             return first
-                ? "The shield isn't armor. It's a root, briefly remembering what it was for."
-                : "Even corrupted, something in it still tries to protect something. It's just no longer sure what.";
+                ? "The shield is not armor. It's a root, briefly recalling what it was for."
+                : "Even changed, a thing in it still tries to protect a thing. It's just no longer sure what.";
         }
         if ("weeping_rot".equals(affixId)) {
             return first
-                ? "The ground it crosses doesn't heal. Not yet. Maybe not ever."
+                ? "The ground it crosses does not heal. Not yet. Maybe not ever."
                 : "Every trail leads back the same direction, if you follow it far enough: toward the Tree.";
         }
         return null;

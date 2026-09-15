@@ -95,16 +95,10 @@ Tier-independent, always the same:
 
 ## 3. Boss Lore (bios for the Codex, one paragraph each)
 
-- **Ancient Golem.** Before it was a weapon of the Hollow, it was the forest's oldest sentry — a
-  stone shepherd that had not moved from its post in longer than the Tree could remember. The
-  Hollow did not need to twist it. It only needed to convince it that the siege had never ended.
-- **Thorn Matriarch.** She grew half the arena's Rootlings herself, back when growing things was
-  all she did. What she plants now still takes root — it simply doesn't ask permission, and it
-  isn't kind.
-- **Ember Wyrm.** When the Hollow first touched this ground, something here caught fire and never
-  fully went out. The Wyrm is what that ember became once it learned to want more fuel.
-- **Void Knight.** No one here remembers what it looked like before. It doesn't either. It only
-  remembers falling, and it has spent every year since trying to make something else fall with it.
+- **Ancient Golem.** Before it was a weapon of the Hollow, it was the forest's oldest guard. A stone keeper that had not moved from its post in longer than the Tree could recall. The Hollow did not need to turn it. It only needed to make it think the fight had never ended.
+- **Thorn Matriarch.** She grew half the arena's Rootlings herself, back when growing things was all she did. What she plants now still takes root. It simply does not ask, and it is not kind.
+- **Ember Wyrm.** When the Hollow first touched this ground, a thing here caught fire and never fully went out. The Wyrm is what that ember became once it learned to want more fuel.
+- **Void Knight.** No one here recalls what it looked like before. It does not either. It only recalls falling, and it has spent every year since trying to make another thing fall with it.
 
 ## 4. Elite Affixes — "Whispering Wounds" (two Codex fragments each)
 
@@ -112,17 +106,15 @@ Each Elite carries a fragment of the Hollow's memory. Killing one drops a two-pa
 the two fragments can unlock in either order.
 
 **Blightburst** *(explodes on death)*
-- Fragment I: "It doesn't die so much as let go. Whatever was holding it together was never its
-  own to keep."
-- Fragment II: "The burst isn't rage. It's relief."
+- Fragment I: "It does not die so much as let go. What was holding it together was never its own to keep."
+- Fragment II: "The burst is not rage. It's relief."
 
 **Rootward Ward** *(periodically shields)*
-- Fragment I: "The shield isn't armor. It's a root, briefly remembering what it was for."
-- Fragment II: "Even corrupted, something in it still tries to protect something. It's just no
-  longer sure what."
+- Fragment I: "The shield is not armor. It's a root, briefly recalling what it was for."
+- Fragment II: "Even changed, a thing in it still tries to protect a thing. It's just no longer sure what."
 
 **Weeping Rot** *(leaves a damaging trail)*
-- Fragment I: "The ground it crosses doesn't heal. Not yet. Maybe not ever."
+- Fragment I: "The ground it crosses does not heal. Not yet. Maybe not ever."
 - Fragment II: "Every trail leads back the same direction, if you follow it far enough: toward the
   Tree."
 
@@ -133,37 +125,26 @@ implementation clarity only — display them unsorted-by-category once unlocked,
 
 ### 5.1 Wave-milestone entries (unlock on first reaching the wave)
 
-1. **Wave 1 — "Before You."** *"Others stood here before you. I do not remember most of their
-   names. I remember all of their last stands."*
+1. **Wave 1 — "Before You."** *"Others stood here before you. I do not recall most of their names. I recall all of their last stands."*
 2. **Wave 10 — "The Three Directions."** *"They do not come from everywhere. Only from three. I
    have never learned what holds the fourth."*
 3. **Wave 20 — "Counting."** *"I used to count the seasons. Now I count waves. It is a smaller
    unit of time, and it passes no more kindly."*
-4. **Wave 30 — "What Luck Finds."** *"Some of what falls from them still remembers being useful.
-   Wear it. I would rather you have it than the ground."*
+4. **Wave 30 — "What Luck Finds."** *"Some of what falls from them still recalls being useful. Wear it. I would rather you have it than the ground."*
 5. **Wave 40 — "The Quiet Ones."** *"Not every Rootling attacks. Some simply stand at the tree
    line and watch. I do not know if that is worse."*
-6. **Wave 60 — "Old Names."** *"Rootling. Stonekin. Gloom Wolf. Fungal Brute. I gave three of
-   those names myself, once, to living things, meaning something kinder."*
-7. **Wave 80 — "The Long Middle."** *"This is the part no song is written about. Not the falling,
-   not the standing — just the holding. Hold anyway."*
-8. **Wave 100 — "Two Roots."** *"I did not ask for a second trunk. I am glad of it regardless.
-   Grief is lighter, split two ways — and so, it turns out, is standing guard."*
+6. **Wave 60 — "Old Names."** *"Rootling. Stonekin. Gloom Wolf. Fungal Brute. I gave three of those names myself, once, to living things, meaning a kinder thing."*
+7. **Wave 80 — "The Long Middle."** *"This is the part no song is written about. Not the falling, not the standing. Just the holding. Hold anyway."*
+8. **Wave 100 — "Two Roots."** *"I did not ask for a second trunk. I am glad of it regardless. Grief is lighter, split two ways. And so, it turns out, is standing guard."*
 
 ### 5.2 Boss-first-kill entries (unlock on first defeat of each identity)
 
 9. **"What the Golem Guarded."** *"Before there was a Tree to defend, there was a boundary stone.
    The Golem was its keeper. I think, somewhere under the Hollow's grip, it still believes that is
    all this is: a boundary, and a keeper."*
-10. **"The Matriarch's Garden."** *"She is not attacking you with monsters. She is attacking you
-    with her children. I do not say this to trouble you. I say it because you deserve to know what
-    you're ending, and why it still might be a mercy."*
-11. **"An Ember That Refused."** *"Fire is supposed to go out. This one refused, and refusal, given
-    enough years, becomes a shape. The Wyrm is that refusal, wearing scales."*
-12. **"The Shape of Falling."** *"I asked the Void Knight, once, in the only language I have —
-    stillness, and time — what it wanted. It did not answer. I don't think it remembers the
-    question anymore. I don't think it remembers much of anything except falling, and wanting
-    company on the way down."*
+10. **"The Matriarch's Garden."** *"She is not attacking you with monsters. She is attacking you with her children. I do not say this to trouble you. I say it because you deserve to know what you are ending, and why it still might be a mercy."*
+11. **"An Ember That Refused."** *"Fire is supposed to go out. This one said no, and a no, given enough years, becomes a shape. The Wyrm is that no, wearing scales."*
+12. **"The Shape of Falling."** *"I asked the Void Knight, once, in the only language I have. Stillness, and time. What it wanted. It did not answer. I do not think it recalls the question anymore. I do not think it recalls much of anything except falling, and wanting company on the way down."*
 
 ### 5.3 Elite-kill entries (unlock on first kill of an Elite carrying that affix)
 
@@ -173,19 +154,13 @@ implementation clarity only — display them unsorted-by-category once unlocked,
 14. **"A Root's Last Job."** *(Rootward Ward)* *"I do not control what the Hollow does with what
     used to be mine. But I notice it still flinches toward protecting, even now. That is either
     hope or a very old habit. I have stopped trying to tell the difference."*
-15. **"The Trail Home."** *(Weeping Rot)* *"Every rotting thing wants to return to soil eventually.
-    I only wish this kind of soil grew something other than more of itself."*
+15. **"The Trail Home."** *(Weeping Rot)* *"Every rotting thing wants to return to soil eventually. I only wish this kind of soil grew a thing other than more of itself."*
 
 ### 5.4 Ascension entries (unlock on completing that Ascension tier)
 
-16. **After Ascension 1 — "Again."** *"You came back. I did not expect that. I am not certain the
-    Hollow expected it either — which may be the only advantage either of us has left."*
-17. **After Ascension 2 — "The Shape of a Habit."** *"Twice now. I am beginning to recognize your
-    footsteps before I see you. That is not nothing, after this many centuries of forgetting
-    faces."*
-18. **After Ascension 3 — "What Doesn't Reset."** *"The waves start over. The dark starts over. You
-    do not — not all the way. I've watched enough Wardens to know the difference between someone
-    starting fresh and someone simply starting again."*
+16. **After Ascension 1 — "Again."** *"You came back. I did not expect that. I am not certain the Hollow expected it either. Which may be the only advantage either of us has left."*
+17. **After Ascension 2 — "The Shape of a Habit."** *"Twice now. I am beginning to recognize your footsteps before I see you. That is not nothing, after this many years of forgetting faces."*
+18. **After Ascension 3 — "What Doesn't Reset."** *"The waves start over. The dark starts over. You do not. Not all the way. I have watched enough Wardens to know the difference between someone starting fresh and someone simply starting again."*
 19. **After Ascension 5 — "A Question I Don't Ask Often."** *"I wonder, sometimes, if the Hollow
     gets tired the way you do. I have decided I do not want to know the answer badly enough to ask
     it."*
@@ -195,15 +170,11 @@ implementation clarity only — display them unsorted-by-category once unlocked,
 
 ### 5.5 Curiosity / secret entries (unusual conditions — listed with their trigger)
 
-21. **"Bare-Handed"** *(reach Wave 50 having bought no Shop stats this run)* — *"You did that with
-    what you were given, not with what you bought. I don't know whether to call that discipline or
-    stubbornness. Possibly they are the same root."*
+21. **"Bare-Handed"** *(reach Wave 50 having bought no Shop stats this run)* — *"You did that with what you were given, not with what you bought. I do not know whether to call that discipline or stubbornness. Possibly they are the same root."*
 22. **"A Full Set"** *(equip a complete 4-piece set for the first time)* — *"Matched things hold
     together better than mismatched ones. I could have told you that before you spent the coin
     learning it."*
-23. **"Mastery, Spent"** *(any skill reaches level 10 for the first time)* — *"You have done that
-    thing ten times so precisely that it no longer looks like effort. I remember when standing here
-    felt like that too."*
+23. **"Mastery, Spent"** *(any skill reaches level 10 for the first time)* — *"You have done that thing ten times so precisely that it no longer looks like effort. I recall when standing here felt like that too."*
 24. **"Reforged"** *(forge any item to its maximum Anvil level for the first time)* — *"Nothing
     stays as it was made. You, least of all. I mean that kindly."*
 25. **"Six Mythics"** *(own all six Mythic items at once, any slot combination)* — *"I did not
@@ -213,13 +184,10 @@ implementation clarity only — display them unsorted-by-category once unlocked,
     — *"You never once needed the weakest thing I could offer you. I hope that was strength, and
     not simply luck standing beside you the whole way."*
 27. **"The Long Pause"** *(pause the game mid-wave for an unusually long time, then resume)* —
-    *"I do not mind if you leave and come back. I have had centuries of practice at waiting. It is
-    rather a specialty of mine, at this point."*
-28. **"Every Elite, Once"** *(kill at least one Elite of every affix type)* — *"You've heard every
-    fragment I have to whisper through them now. There is more to tell. There is always more. It
-    simply isn't theirs to carry."*
+    *"I do not mind if you leave and come back. I have had many years of practice at waiting. It is rather a specialty of mine, at this point."*
+28. **"Every Elite, Once"** *(kill at least one Elite of every affix type)* — *"You have heard every fragment I have to whisper through them now. There is more to tell. There is always more. It simply is not theirs to carry."*
 29. **"Fastest Fall"** *(clear a single wave in record time, e.g. under a defined threshold)* —
-    *"That was over before the Hollow finished sending it. I don't think it noticed yet."*
+    *"That was over before the Hollow finished sending it. I do not think it noticed yet."*
 30. **"Two Hundred, Once More"** *(reach Wave 200 for the second time, any Ascension tier)* —
     *"The first time was survival. I suspect you already know what the second time was. Say it
     to yourself, if not to me."*
@@ -255,22 +223,17 @@ recovery, or finished under a defined HP/potion-usage threshold)*
 ## 7. Mythic Item Flavor (one per equipment slot)
 
 - **Weapon — "Sunfall, the Last Arrow."** *Passive: Chain Lightning arcs also apply Stun.*
-  Flavor: "Fired once, centuries ago, at something that fell from further up than any bow should
-  reach. It never came back down whole. Neither did the thing it hit."
+  Flavor: "Shot once, long ago, at a high fall. The arrow did not come back whole. Nor did what it hit."
 - **Helmet — "Crown of the Hollow Eye."** *Passive: a critical hit marks its target; further hits
-  on a marked enemy deal bonus damage for a few seconds.* Flavor: "Wear it and you start seeing
-  weakness the way the Hollow sees strength — as the one true thing worth aiming for."
+  on a marked enemy deal bonus damage for a few seconds.* Flavor: "Wear it and you see weak spots as the Hollow sees strength. The one true thing to aim for."
 - **Armor — "Bark of the First Root."** *Passive: every tenth hit taken triggers a free heal
-  without spending a potion.* Flavor: "Cut from the World Tree's own outer bark, back when it
-  could still spare the wood. It remembers how to close a wound."
+  without spending a potion.* Flavor: "Cut from the World Tree's bark when it could spare wood. It knows how to close a wound."
 - **Boots — "Windrunner's Last Steps."** *Passive: attack speed slowly climbs the longer the Hero
-  holds position in a wave, capped.* Flavor: "They were made for running. He never ran again after
-  he put them on — he just stopped needing to."
+  holds position in a wave, capped.* Flavor: "Made for running. He never ran again after putting them on. He no longer needed to."
 - **Ring — "Verdant Oath."** *Passive: auto-potions also grant a few seconds of bonus lifesteal.*
-  Flavor: "A promise sealed in sap: what heals you should also let you keep healing."
+  Flavor: "A promise in sap. What heals you lets you keep healing."
 - **Ring — "Emberless Core."** *Passive: critical hits refund part of the shot's cooldown.*
-  Flavor: "What's left of the ember that never went out — cooled, contained, and finally put to
-  work instead of left to spread."
+  Flavor: "The ember that never went out, cooled and put to work. No longer left to spread."
 
 ## 8. A Few Extra Touches (small, optional, not required by any roadmap item)
 

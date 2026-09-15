@@ -32,13 +32,13 @@ public final class BossLore {
     private static Map<String, String> bios() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("ANCIENT_GOLEM",
-            "Before it was a weapon of the Hollow, it was the forest's oldest sentry — a stone shepherd that had not moved from its post in longer than the Tree could remember. The Hollow did not need to twist it. It only needed to convince it that the siege had never ended.");
+            "Before it was a weapon of the Hollow, it was the forest's oldest guard. A stone keeper that had not moved from its post in longer than the Tree could recall. The Hollow did not need to turn it. It only needed to make it think the fight had never ended.");
         map.put("THORN_MATRIARCH",
-            "She grew half the arena's Rootlings herself, back when growing things was all she did. What she plants now still takes root — it simply doesn't ask permission, and it isn't kind.");
+            "She grew half the arena's Rootlings herself, back when growing things was all she did. What she plants now still takes root. It simply does not ask, and it is not kind.");
         map.put("EMBER_WYRM",
-            "When the Hollow first touched this ground, something here caught fire and never fully went out. The Wyrm is what that ember became once it learned to want more fuel.");
+            "When the Hollow first touched this ground, a thing here caught fire and never fully went out. The Wyrm is what that ember became once it learned to want more fuel.");
         map.put("VOID_KNIGHT",
-            "No one here remembers what it looked like before. It doesn't either. It only remembers falling, and it has spent every year since trying to make something else fall with it.");
+            "No one here recalls what it looked like before. It does not either. It only recalls falling, and it has spent every year since trying to make another thing fall with it.");
         return Collections.unmodifiableMap(map);
     }
 }

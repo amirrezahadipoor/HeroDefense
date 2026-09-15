@@ -10,17 +10,17 @@ final class EliteFragmentsTest {
     @Test
     void oddKillsShowFragmentOneAndEvenKillsFragmentTwo() {
         assertEquals(
-            "It doesn't die so much as let go. Whatever was holding it together was never its own to keep.",
+            "It does not die so much as let go. What was holding it together was never its own to keep.",
             EliteFragments.fragmentFor("blightburst", 1));
-        assertEquals("The burst isn't rage. It's relief.",
+        assertEquals("The burst is not rage. It's relief.",
             EliteFragments.fragmentFor("blightburst", 2));
         assertEquals(
-            "The shield isn't armor. It's a root, briefly remembering what it was for.",
+            "The shield is not armor. It's a root, briefly recalling what it was for.",
             EliteFragments.fragmentFor("rootward_ward", 3));
         assertEquals(
-            "Even corrupted, something in it still tries to protect something. It's just no longer sure what.",
+            "Even changed, a thing in it still tries to protect a thing. It's just no longer sure what.",
             EliteFragments.fragmentFor("rootward_ward", 4));
-        assertEquals("The ground it crosses doesn't heal. Not yet. Maybe not ever.",
+        assertEquals("The ground it crosses does not heal. Not yet. Maybe not ever.",
             EliteFragments.fragmentFor("weeping_rot", 5));
         assertEquals(
             "Every trail leads back the same direction, if you follow it far enough: toward the Tree.",
