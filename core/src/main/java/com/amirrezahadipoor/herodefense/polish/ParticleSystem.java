@@ -54,6 +54,14 @@ public final class ParticleSystem {
         }
     }
 
+    /** Muzzle flash at the bow when Multi Shot fires: bright core plus fanned sparks. */
+    public void emitMuzzleFlash(float x, float y, int shots) {
+        add(ParticleType.IMPACT_CORE, x, y, 0f, 0f, 0.13f, 16f);
+        add(ParticleType.CRITICAL_RING, x, y, 0f, 0f, 0.18f, 22f);
+        int motes = Math.min(6, Math.max(2, shots * 2));
+        emitBurst(ParticleType.HIT, x, y, motes, 95f, 0.16f, 3.2f);
+    }
+
     /** Three stars orbiting the head for the whole stun; capped so a crowd stays readable. */
     public void emitStunSparks(float x, float y, float durationSeconds) {
         for (int index = 0; index < VfxBudget.STUN_SPARKS; index++) {

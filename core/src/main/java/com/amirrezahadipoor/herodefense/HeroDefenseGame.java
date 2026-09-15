@@ -1201,7 +1201,10 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         }
         if (attackEvents.chainArcs() > 0) audioManager.play(AudioCue.CHAIN_LIGHTNING);
         if (attackEvents.stuns() > 0) audioManager.play(AudioCue.STUN);
-        if (attackEvents.shots() > 1) audioManager.play(AudioCue.MULTI_SHOT);
+        if (attackEvents.shots() > 1) {
+            audioManager.play(AudioCue.MULTI_SHOT);
+            particleSystem.emitMuzzleFlash(gameState.hero.x, gameState.hero.y + 45f, attackEvents.shots());
+        }
         if (totalEnemyHealth(gameState) < enemyHealthBeforeAttack - 0.001f) {
             audioManager.play(AudioCue.HIT);
         }
