@@ -555,7 +555,7 @@ Brings in-combat visuals up to real-game standard: projectiles must be unmistaka
 
 - [x] Chain Lightning: jagged branching arcs with deterministic jitter, impact flash per target, and a per-target pop.
 - [x] Multi-shot: muzzle flash at the bow plus a visible fan of arrows.
-- [ ] Stun: shockwave ring plus upgraded orbiting stars.
+- [x] Stun: shockwave ring plus upgraded orbiting stars.
 - [ ] Hit/death feel: enemy hit-flash, per-type death bursts, larger arcing crit numbers, and a subtle camera shake on hero-hit/boss-death.
 
 ## Phase 31 — Story Simplification (plain English)

@@ -62,11 +62,14 @@ public final class ParticleSystem {
         emitBurst(ParticleType.HIT, x, y, motes, 95f, 0.16f, 3.2f);
     }
 
-    /** Three stars orbiting the head for the whole stun; capped so a crowd stays readable. */
+    /** Shockwave ring plus upgraded orbiting stars for the stun. */
     public void emitStunSparks(float x, float y, float durationSeconds) {
+        // Shockwave ring at the stun anchor
+        add(ParticleType.CRITICAL_RING, x, y + 22f, 0f, 0f, 0.22f, 26f);
+        add(ParticleType.CRITICAL_RING, x, y + 22f, 0f, 0f, 0.30f, 34f);
         for (int index = 0; index < VfxBudget.STUN_SPARKS; index++) {
             Particle spark = addAndGet(ParticleType.STUN_SPARK, x, y, 0f, 0f,
-                Math.min(1.6f, durationSeconds), 4.5f);
+                Math.min(1.6f, durationSeconds), 5.2f);
             spark.endX = index * (float) (Math.PI * 2.0 / VfxBudget.STUN_SPARKS);
         }
     }
