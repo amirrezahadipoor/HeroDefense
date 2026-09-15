@@ -519,7 +519,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.6 Engine runbook
 
-- [ ] Write `docs/ASSET_ENGINE.md`: how to run the pipeline, accept/reject checklist, and engine version recorded per batch in the asset manifest.
+- [x] Write `docs/ASSET_ENGINE.md`: how to run the pipeline, accept/reject checklist, and engine version recorded per batch in the asset manifest.
 
 ### 28.7 Full re-render on the new engine
 

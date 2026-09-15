@@ -273,6 +273,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -339,6 +340,7 @@
       },
       "compositionProfile": "portrait-clear-lane-v2",
       "depthBands": 5,
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "arena",
       "frameHeight": 1280,
@@ -392,6 +394,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -455,6 +458,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -517,6 +521,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -831,6 +836,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -1142,6 +1148,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1448,6 +1455,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1754,6 +1762,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2060,6 +2069,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2366,6 +2376,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2672,6 +2683,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2979,6 +2991,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3285,6 +3298,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3592,6 +3606,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3898,6 +3913,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4204,6 +4220,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4510,6 +4527,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4817,6 +4835,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5123,6 +5142,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5429,6 +5449,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5736,6 +5757,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6042,6 +6064,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6348,6 +6371,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6654,6 +6678,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6960,6 +6985,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7266,6 +7292,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7572,6 +7599,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7878,6 +7906,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8184,6 +8213,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8490,6 +8520,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8796,6 +8827,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9102,6 +9134,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9408,6 +9441,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9714,6 +9748,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10020,6 +10055,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10326,6 +10362,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10632,6 +10669,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10938,6 +10976,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11244,6 +11283,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11550,6 +11590,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11856,6 +11897,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -12165,6 +12207,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -12472,6 +12515,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -12527,6 +12571,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -12584,6 +12629,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -12641,6 +12687,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -12699,6 +12746,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12756,6 +12804,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12813,6 +12862,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12870,6 +12920,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12927,6 +12978,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12984,6 +13036,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -13293,6 +13346,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "hero",
       "frameClass": "character",
       "frameRate": 12,
@@ -13597,6 +13651,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "hero",
       "frameClass": "character",
       "frameRate": 12,
@@ -13908,6 +13963,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -14216,6 +14272,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -14523,6 +14580,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -14584,6 +14642,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14645,6 +14704,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14706,6 +14766,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14767,6 +14828,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14828,6 +14890,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14889,6 +14952,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14951,6 +15015,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15013,6 +15078,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15075,6 +15141,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15137,6 +15204,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15199,6 +15267,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15261,6 +15330,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15323,6 +15393,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15385,6 +15456,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15447,6 +15519,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15509,6 +15582,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15571,6 +15645,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15634,6 +15709,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15695,6 +15771,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15756,6 +15833,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15819,6 +15897,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15880,6 +15959,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15941,6 +16021,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16002,6 +16083,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16063,6 +16145,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16124,6 +16207,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16185,6 +16269,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16247,6 +16332,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16309,6 +16395,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16371,6 +16458,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16433,6 +16521,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16495,6 +16584,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16556,6 +16646,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16617,6 +16708,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16678,6 +16770,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16991,6 +17084,7 @@
           }
         ]
       },
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -17192,6 +17286,7 @@
         ]
       },
       "destructionClip": "destroy",
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -17312,6 +17407,7 @@
         ]
       },
       "destructionClip": null,
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -17533,6 +17629,7 @@
         ]
       },
       "destructionClip": null,
+      "engineVersion": "28.6-premium-v2-runbook",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -17580,8 +17677,11 @@
   "blenderVersion": "4.2.23",
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
+  "engineVersion": "28.6-premium-v2-runbook",
   "frameRate": 12,
+  "generatedAt": "2026-09-15T10:11:58Z",
   "generatedBatch": "ceremony",
+  "generatedCommit": "b2c6cacca6d8858f08d0e4edf2be98bf90e75647",
   "maxAtlasPageSize": 2048,
   "opaqueRenderSamples": 16,
   "overlayRenderSamples": 8,

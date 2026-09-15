@@ -8,6 +8,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import os
 import shutil
@@ -86,6 +87,7 @@ from hd_pipeline.scene import (  # noqa: E402
 )
 
 PIPELINE_VERSION = 3
+ENGINE_VERSION = "28.6-premium-v2-runbook"
 ISOLATED_RENDERING = False
 PREMIUM_PILOT_EQUIPMENT_IDS = {
     "worldbranch",
@@ -1051,6 +1053,9 @@ def main() -> None:
         "decodedCombatResidencyBudgetBytes": 134_217_728,
         "palette": PALETTE,
         "requiredBones": list(REQUIRED_BONES),
+        "engineVersion": ENGINE_VERSION,
+        "generatedAt": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
+        "generatedCommit": _git_commit(),
         "generatedBatch": args.batch,
         "assets": [by_key[key] for key in sorted(by_key)],
     }
