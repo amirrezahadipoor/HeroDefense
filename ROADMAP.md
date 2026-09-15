@@ -570,7 +570,7 @@ Simplifies every story dialogue/text so a ~12-year-old understands it on first r
 
 - [x] Rewrite the dialogues (`STORY_CONTENT.md` §1/§2/§6: openings, reflections, epilogues) in plain language and update the verbatim code + tests to match.
 - [x] Rewrite the texts (§3/§4/§5/§7: bios, fragments, Codex, Mythic flavor); Codex numbers/triggers stay untouched, wording only.
-- [ ] Verify no rewritten line overflows its overlay at minimum density (layout test/review).
+- [x] Verify no rewritten line overflows its overlay at minimum density (layout test/review).
 
 ## Phase 32 — Living Grove: a Tree Every 50 Waves
 
