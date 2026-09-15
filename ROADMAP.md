@@ -929,7 +929,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 59 — Hair Cards with Alpha for Flowing Green Hair
 
-- [ ] Replace cone hair locks with alpha cards: 8–12 hair planes with transparent texture, flowing like reference chibi green hair. Keep parented to head bone. Use `transparent_material()` with alpha clip. Maintain 25-bone rig, add no new bone, only mesh planes.
+- [x] Replace cone hair locks with alpha cards: 8–12 hair planes with transparent texture, flowing like reference chibi green hair. Keep parented to head bone. Use `transparent_material()` with alpha clip. Maintain 25-bone rig, add no new bone, only mesh planes.
 
 ## Phase 60 — Eye High-Detail: Iris Gradient + Triple Highlights + Blush
 

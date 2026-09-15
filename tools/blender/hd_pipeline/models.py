@@ -334,6 +334,9 @@ def build_hero() -> BuiltModel:
     attach(add_ico("hero_strap_end_2", (-0.16, -0.30, 1.15), (0.06, 0.025, 0.12), mats["wood"], 1), "chest")
     attach(add_ico("hero_fletching_tuft", (0.35, 0.18, 1.25), (0.05, 0.03, 0.08), mats["leaf"], 1), "chest")
     attach(add_leaf("hero_leaf_vein_1", (0.30, -0.20, 1.40), (0.12, 0.02, 0.22), mats["leaf"], (0.0, 0.1, 0.2)), "chest")
+    # Phase 59: hair cards with alpha for flowing green hair like reference
+    for i in range(8):
+        attach(add_leaf(f"hero_hair_card_{i}", (0.25 - i*0.07, -0.05 - i*0.02, 1.82 - i*0.05), (0.18, 0.01, 0.35), mats["hair"], (0.0, 0.15*i, 0.0)), "head")
 
     _humanoid_limbs(armature, objects, mats["green"], mats["dark"], mats["skin"])
     for side, sign in (("L", -1), ("R", 1)):
