@@ -937,7 +937,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 61 — True PBR Gold with Env Reflections
 
-- [ ] Add HDRI env map (studio small) for gold reflections. In `toon_material()` for gold, mix glossy with env texture via LayerWeight. Gold now reflects like real metal, not just white highlight. Keep emission bloom.
+- [x] Add HDRI env map (studio small) for gold reflections. In `toon_material()` for gold, mix glossy with env texture via LayerWeight. Gold now reflects like real metal, not just white highlight. Keep emission bloom.
 
 ## Phase 62 — Fabric Detail: Stitching and Leather Texture
 
