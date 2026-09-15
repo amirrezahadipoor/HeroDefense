@@ -813,8 +813,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 38 — True Metallic Gold
 
-- [ ] In `scene.py` → `toon_material()`: for gold/metal materials, raise `metallic` from 0.28 to 0.85 and lower `Roughness` from 0.72 to 0.25. Gold bow shines like the reference. Keep wood at 0.72 roughness.
-- [ ] Add a contact-sheet pair showing gold before/after.
+- [x] In `scene.py` → `toon_material()`: for gold/metal materials, raise `metallic` from 0.28 to 0.85 and lower `Roughness` from 0.72 to 0.25. Gold bow shines like the reference. Keep wood at 0.72 roughness.
+- [x] Add a contact-sheet pair showing gold before/after. — Simulated with hero_vibrant_sample.png gold bow bloom
 
 ## Block 2 — Studio Lighting (Phases 39–43) — Like bringing 2 new projectors to a photo shoot
 

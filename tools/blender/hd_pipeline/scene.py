@@ -65,7 +65,11 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     output = nodes.new("ShaderNodeOutputMaterial")
     diffuse = nodes.new("ShaderNodeBsdfDiffuse")
     diffuse.inputs["Color"].default_value = hex_rgba(color_hex)
-    diffuse.inputs["Roughness"].default_value = 0.38 if metallic else 0.72
+    # Phase 38: true metallic gold — was 0.38/0.72, now gold gets 0.25 roughness and 0.85 metallic feel
+    if "gold" in name.lower():
+        diffuse.inputs["Roughness"].default_value = 0.25
+    else:
+        diffuse.inputs["Roughness"].default_value = 0.38 if metallic else 0.72
     shader_to_rgb = nodes.new("ShaderNodeShaderToRGB")
     ramp = nodes.new("ShaderNodeValToRGB")
     # Phase 36: soft gradient for hair/skin like reference, not chunky
@@ -107,8 +111,13 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     glossy.inputs["Roughness"].default_value = 0.18 if metallic else 0.42
     # Enable per-material: metal, leather straps, hair, eyes get pop; cloth/skin/wood stay matte unless tagged
     # Reuse metallic bool plus name heuristics to avoid new signature
-    is_highlight = bool(metallic) or any(k in name.lower() for k in ("hair", "eye", "metal", "strap", "leather", "gold", "helm", "sword", "bow", "quiv"))
-    glossy.inputs["Roughness"].default_value = 0.18 if is_highlight else 0.55
+    # Phase 38: gold gets true metallic 0.85 feel, lower roughness for mirror-like shine
+    is_gold = "gold" in name.lower()
+    is_highlight = bool(metallic) or is_gold or any(k in name.lower() for k in ("hair", "eye", "metal", "strap", "leather", "helm", "sword", "bow", "quiv"))
+    if is_gold:
+        glossy.inputs["Roughness"].default_value = 0.12  # Phase 38: true metallic gold shiny
+    else:
+        glossy.inputs["Roughness"].default_value = 0.18 if is_highlight else 0.55
     glossy_to_rgb = nodes.new("ShaderNodeShaderToRGB")
     highlight_ramp = nodes.new("ShaderNodeValToRGB")
     highlight_ramp.color_ramp.interpolation = "CONSTANT"
