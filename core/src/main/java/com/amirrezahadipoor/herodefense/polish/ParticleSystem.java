@@ -28,13 +28,30 @@ public final class ParticleSystem {
         }
     }
 
-    /** One jagged beam plus a terminal flash and a few cyan motes per chain-lightning arc. */
+    /** Jagged branching arcs with deterministic jitter, impact flash per target, and per-target pop. */
     public void emitChainArc(float fromX, float fromY, float toX, float toY) {
         Particle beam = addAndGet(ParticleType.CHAIN_BEAM, fromX, fromY, 0f, 0f, 0.22f, 3.5f);
         beam.endX = toX;
         beam.endY = toY;
+        // Impact flash per target
         add(ParticleType.CHAIN_FLASH, toX, toY, 0f, 0f, 0.16f, 14f);
         emitBurst(ParticleType.HIT, toX, toY, VfxBudget.CHAIN_ARC_MAX_MOTES, 90f, 0.18f, 3.5f);
+        // Deterministic branching for longer arcs: one short offshoot at midpoint
+        float dx = toX - fromX;
+        float dy = toY - fromY;
+        float len = (float) Math.sqrt(dx * dx + dy * dy);
+        if (len > 140f) {
+            float nx = -dy / Math.max(1f, len);
+            float ny = dx / Math.max(1f, len);
+            float midX = (fromX + toX) * 0.5f;
+            float midY = (fromY + toY) * 0.5f;
+            float jitter = (emissionSequence % 2 == 0 ? 1f : -1f) * 13f;
+            float bx = midX + nx * jitter;
+            float by = midY + ny * jitter;
+            Particle branch = addAndGet(ParticleType.CHAIN_BEAM, midX, midY, 0f, 0f, 0.16f, 2.0f);
+            branch.endX = bx;
+            branch.endY = by;
+        }
     }
 
     /** Three stars orbiting the head for the whole stun; capped so a crowd stays readable. */
