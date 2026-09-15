@@ -585,7 +585,7 @@ Generalizes the single Wave-100 second tree into plantings at waves 50/100/150. 
 
 ### 32.5 Text + balance tail
 
-- [ ] Update tree-count-sensitive text (the Wave-125 "Two trees" reflection, Codex) and re-derive `docs/BALANCE.md` §26.2b + `docs/PROGRESSION_HOURS.md`, re-running every gate.
+- [x] Update tree-count-sensitive text (the Wave-125 "Two trees" reflection, Codex) and re-derive `docs/BALANCE.md` §26.2b + `docs/PROGRESSION_HOURS.md`, re-running every gate.
 
 ## Standing Rules (additions)
 

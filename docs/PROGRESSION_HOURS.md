@@ -10,7 +10,7 @@ re-derived.
 
 - **Session:** one Wave 1–200 clear at engaged/shopping/no-idle pace takes
   **7970 s (2.214 h)** — the tier-0 3-seed median, gated within ±20% at every
-  tier (26.2b). Humans slower than the sim pace push every total below upward.
+  tier (26.2b). Humans slower than the sim pace push every total below upward. Phase 32's grove (plantings at 50/100/150, short at 50/150) adds 8.9 s of ceremony presentation only — simulator ceremonies remain instant, so the median re-verified at 7970 s on 2026-09-15 and the 50-hour equation is unchanged.
 - **Root Network:** 23 nodes costing **1350 Heartwood** total (15 → 200 each).
 - **Heartwood income** per ascension (`peakWave/5 + (peakWave>=200 ? 50 : 0) +
   tier×10 + (flawless ? 20 : 0)`, × trial multiplier): a flawless full clear at
@@ -48,7 +48,7 @@ without dupe protection costs the coupon-collector factor H6 ≈ 2.45, hence
 Mythic completion is the long pole and subsumes the rest: ~21 baseline-luck
 runs (46 h) already include Root exhaustion (9–10 runs), the 10-ascension Codex
 gate, and every incidental secret; adding the two challenge secrets (~1.5 h)
-lands full completion at **≈48 h ≈ the 50-hour target**. Luck-stacked players
+lands full completion at **≈48 h ≈ the 50-hour target**. Phase 32 Living Grove does not change the arithmetic: grove ceremonies are presentation-only and grove HP is post-death-only, so kills/run (4440), session (7970 s), Root costs, and Codex (30 entries) are test-locked and re-verified green. Luck-stacked players
 commute it to ~35 h; dying, slower-than-sim pace, and suboptimal builds push
 casuals past 50 h. The target is therefore the baseline-luck full-completion
 mark, with skill expression on both sides.

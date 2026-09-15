@@ -21,7 +21,7 @@ final class ReflectionLinesTest {
             ReflectionLines.lineForWave(75)
         );
         assertEquals(
-            "Two trees now. Twice to lose. Bad trade. I would still make it.",
+            "Three trees now. Thrice to lose. Bad trade. I would still make it.",
             ReflectionLines.lineForWave(125)
         );
         assertEquals(

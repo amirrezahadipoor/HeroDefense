@@ -75,14 +75,14 @@ Shown once only, the very first time each identity is fought (not on every repea
 Matches the shipped `PlantingCeremony` beats one-to-one — walk, plant, water, growth, return.
 
 1. *(Hero walks toward the World Tree)* "One root should not hold this alone."
-2. *(planting the seed)* "Then a second one. Grow angry if you must."
+2. *(planting the seed)* "Then another one. Grow angry if you must."
 3. *(watering)* "I will hold the line. That is my job."
 4. *(the sapling grows — shown in the Tree's tint, not the Hero's)* "The grove remembers your gift."
-5. *(Hero turns back to the anchor point)* "Now hold both."
+5. *(Hero turns back to the anchor point)* "Now hold the grove."
 
 ### 2.4 Second-half reflection lines
 
-- **Wave 125:** "Two trees now. Twice to lose. Bad trade. I would still make it."
+- **Wave 125:** "Three trees now. Thrice to lose. Bad trade. I would still make it."
 - **Wave 150:** "It no longer sends weak first. It is done waiting."
 - **Wave 175:** "What is left may be the last. Or it wants me to think so."
 
@@ -135,7 +135,7 @@ implementation clarity only — display them unsorted-by-category once unlocked,
    line and watch. I do not know if that is worse."*
 6. **Wave 60 — "Old Names."** *"Rootling. Stonekin. Gloom Wolf. Fungal Brute. I gave three of those names myself, once, to living things, meaning a kinder thing."*
 7. **Wave 80 — "The Long Middle."** *"This is the part no song is written about. Not the falling, not the standing. Just the holding. Hold anyway."*
-8. **Wave 100 — "Two Roots."** *"I did not ask for a second trunk. I am glad of it regardless. Grief is lighter, split two ways. And so, it turns out, is standing guard."*
+8. **Wave 100 — "A Grove Takes Root."** *"I did not ask for a second trunk, nor a third. I am glad of both regardless. Grief is lighter, split three ways. And so, it turns out, is standing guard."*
 
 ### 5.2 Boss-first-kill entries (unlock on first defeat of each identity)
 

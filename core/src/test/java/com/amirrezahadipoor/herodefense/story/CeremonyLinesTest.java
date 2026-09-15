@@ -16,7 +16,7 @@ final class CeremonyLinesTest {
             CeremonyLines.lineFor(PlantingCeremony.Phase.WALK_OUT)
         );
         assertEquals(
-            "Then a second one. Grow angry if you must.",
+            "Then another one. Grow angry if you must.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.PLANT)
         );
         assertEquals(
@@ -28,7 +28,7 @@ final class CeremonyLinesTest {
             CeremonyLines.lineFor(PlantingCeremony.Phase.GROW)
         );
         assertEquals(
-            "Now hold both.",
+            "Now hold the grove.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.WALK_BACK)
         );
         assertNull(CeremonyLines.lineFor(PlantingCeremony.Phase.IDLE));

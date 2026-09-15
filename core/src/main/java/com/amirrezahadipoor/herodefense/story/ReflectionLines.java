@@ -14,7 +14,7 @@ public final class ReflectionLines {
             case 25 -> "Wolves fear something deeper than me. That should scare me more.";
             case 50 -> "Half of what I killed, I once knew. I try not to think of it.";
             case 75 -> "Ground past the tree line feels wrong. Not ground at all.";
-            case 125 -> "Two trees now. Twice to lose. Bad trade. I would still make it.";
+            case 125 -> "Three trees now. Thrice to lose. Bad trade. I would still make it.";
             case 150 -> "It no longer sends weak first. It is done waiting.";
             case 175 -> "What is left may be the last. Or it wants me to think so.";
             default -> null;

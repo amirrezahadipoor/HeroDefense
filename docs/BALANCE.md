@@ -117,7 +117,7 @@ The card regression runs all eight card identities as the forced choice at every
 
 The deterministic regression gate requires all of the following:
 
-- Complete exactly 200 waves with the Hero alive (the simulator plants the second tree instantly at the Wave 100 ceremony).
+- Complete exactly 200 waves with the Hero alive (the simulator plants the grove trees instantly at the 50/100/150 ceremonies).
 - Average gross incoming damage from enemy attacks, divided by contemporary maximum HP, must be 5%–15% across the run. Gross damage is measured before potion and lifesteal recovery so healing cannot hide pressure.
 - No single wave may exceed 35% gross damage or 120 seconds to clear.
 - Every metric must be finite and no wave may hit the simulator's timeout.
@@ -273,6 +273,8 @@ gate it). Measured medians: t1 8005 (+0.4%), t2 7232 (−9.3%), t3 7672 (−3.7%
 t4 7588 (−4.8%), t5 7259 (−8.9%), t6 8437 (+5.9%), t7 8565 (+7.5%), t8 8796
 (+10.3%), t9 8681 (+8.9%), t10 7884 (−1.1%) — all inside ±10.3%, so added challenge
 comes from build precision (pressure, spikes, close calls), not padded wave count.
+
+Phase 32 Living Grove adds grove plantings at waves 50/100/150 (short 4.45 s at 50/150, full 7.2 s at 100) reusing the sapling atlas; simulator ceremonies are instant, so the 3-seed median stays **7970 s (2.21 h)** and the tier deltas above re-verified green on 2026-09-15 (t0 7970 s, t1 8005 +0.4%, t2 7231 −9.3%, t10 7884 −1.1%, all within ±10.3% and ±20% gate). Extra grove HP is post-death siege only and does not move the DPS-to-HP pressure curve, so second-half checkpoints and growth constants are unchanged.
 
 
 Run `./scripts/balance-check.sh` immediately after every coefficient change and as a mandatory precondition to any manual playtest. The script forces a fresh run rather than accepting Gradle's prior task output. `BalanceSimulatorTest` also remains part of the complete `:core:test` suite executed by the core GitHub Actions workflow on every push and pull request.

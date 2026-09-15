@@ -18,10 +18,10 @@ public final class CeremonyLines {
         }
         return switch (phase) {
             case WALK_OUT -> "One root should not hold this alone.";
-            case PLANT -> "Then a second one. Grow angry if you must.";
+            case PLANT -> "Then another one. Grow angry if you must.";
             case WATER -> "I will hold the line. That is my job.";
             case GROW -> "The grove remembers your gift.";
-            case WALK_BACK -> "Now hold both.";
+            case WALK_BACK -> "Now hold the grove.";
             default -> null;
         };
     }
