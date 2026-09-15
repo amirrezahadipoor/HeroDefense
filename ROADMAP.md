@@ -507,7 +507,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.3 Pipeline precision
 
-- [ ] Raise working-resolution/sample floors in `tools/blender/hd_pipeline/config.py` per category (hero/bosses/trees highest), with before/after review sheets proving the gain.
+- [x] Raise working-resolution/sample floors in `tools/blender/hd_pipeline/config.py` per category (hero/bosses/trees highest), with before/after review sheets proving the gain.
 
 ### 28.4 New pipeline categories
 
