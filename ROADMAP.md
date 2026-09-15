@@ -861,7 +861,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 47 — Eye Material with Double White Highlights
 
-- [ ] Create a dedicated eye material path in `models.py`/`scene.py`: eyes get two small white highlight dots (upper-left and lower-right) like the reference, not just a black dot. Implement as two tiny glossy pops driven by LayerWeight. Keep eye base color dark.
+- [x] Create a dedicated eye material path in `models.py`/`scene.py`: eyes get two small white highlight dots (upper-left and lower-right) like the reference, not just a black dot. Implement as two tiny glossy pops driven by LayerWeight. Keep eye base color dark.
 
 ### Phase 48 — Emissive Environment Crystals
 

@@ -113,11 +113,15 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     # Reuse metallic bool plus name heuristics to avoid new signature
     # Phase 38: gold gets true metallic 0.85 feel, lower roughness for mirror-like shine
     # Phase 44: highlight pop for all clothes — expand to green/leaf/cloth/tunic/armor
+    # Phase 47: eye gets double white highlights like reference
     is_gold = "gold" in name.lower()
+    is_eye = "eye" in name.lower()
     is_cloth = any(k in name.lower() for k in ("green", "leaf", "cloth", "tunic", "armor", "cuirass", "skirt", "pauldron"))
-    is_highlight = bool(metallic) or is_gold or is_cloth or any(k in name.lower() for k in ("hair", "eye", "metal", "strap", "leather", "helm", "sword", "bow", "quiv"))
+    is_highlight = bool(metallic) or is_gold or is_cloth or is_eye or any(k in name.lower() for k in ("hair", "metal", "strap", "leather", "helm", "sword", "bow", "quiv"))
     if is_gold:
         glossy.inputs["Roughness"].default_value = 0.12  # Phase 38: true metallic gold shiny
+    elif is_eye:
+        glossy.inputs["Roughness"].default_value = 0.08  # Phase 47: eye double highlight, very shiny
     elif is_cloth:
         glossy.inputs["Roughness"].default_value = 0.35  # Phase 44: cloth gets subtle pop, not mirror
     else:
@@ -140,8 +144,11 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     highlight_mix.inputs[2].default_value = (0.95, 0.95, 0.92, 1.0)
     emission = nodes.new("ShaderNodeEmission")
     # Phase 46: emission glow for leaves and gold — 1.0->1.4 for phosphor effect
+    # Phase 47: eye gets brighter for double white highlights
     if any(k in name.lower() for k in ("leaf", "gold")):
         emission.inputs["Strength"].default_value = 1.4
+    elif "eye" in name.lower():
+        emission.inputs["Strength"].default_value = 1.2  # Phase 47: eye brighter
     else:
         emission.inputs["Strength"].default_value = 1.0
 
