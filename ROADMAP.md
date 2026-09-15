@@ -1050,6 +1050,103 @@ Long before the first wave, something did not grow here — it fell here. The Ho
 | §7 Mythic flavor | 23.3 Mythic item |
 | §8 Optionals | 21.1 optional items (Silent Rootling, Idle whisper) |
 
+# Hero Defense — Roadmap Addendum (Phases 54–75) — Path to 950+/1000 Ultra-Strict
+
+Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-strict asset scoring while keeping 3D pipeline, 25-bone rig, and touch-only gameplay. This addendum authorizes higher resolution, hand-painted PBR, hair cards, and runtime post-process — all gated by validator and performance budgets.
+
+## Phase 54 — HD Frame Size: 192→384 Hero, 256→512 Boss
+
+- [ ] In `config.py` → `FRAME_SIZE`: hero 192→384, boss 256→512, item 96→192. Keep `FRAME_DIMENSIONS` logic. Update `RENDER_SUPERSAMPLE` floors to handle 2× runtime: top-tier 4→3 at new size (effective 1152px working), mid-tier 3→2 (768px). This doubles on-screen readability from 150px to 300px hero height at 720×1280.
+- [ ] Update `docs/VISUAL_STYLE_GUIDE.md` §5 camera scale and §2 triangle budgets unchanged but note new texel density gate: ≥2.5 texels per screen pixel at reference.
+
+## Phase 55 — Geometry Refinement Within Same Rig
+
+- [ ] In `models.py`: increase hero tri budget 3200→6000, boss 5500→9000 within same 25 bones. Add secondary silhouette details: 2 extra hair clumps, strap ends, fletching tufts, leaf veins as separate low-poly planes. No new bone, no new socket.
+- [ ] Record before/after silhouette-only contact sheets at 50% size.
+
+## Phase 56 — Hand-Painted Albedo Textures
+
+- [ ] Add `tools/blender/texture_paint/` pipeline: Substance Painter / Blender Texture Paint workflow that bakes hand-painted albedo to 1024×1024 PNG, then downsamples to atlas. Start with hero_green and hero_leaf materials. Store source `.blend` with vertex colors, export albedo.
+- [ ] Update `toon_material()` to optionally mix hand-painted albedo via `ShaderNodeTexImage` multiplied over base color (factor 0.7). Keep procedural fallback.
+
+## Phase 57 — Normal Maps for Depth
+
+- [ ] Bake normal maps from high-poly sculpt (8000 tris hero) to low-poly (6000). Add normal map node in `toon_material()` with strength 0.6 for cloth/leather, 0.3 for skin. Store as `*_normal.png` alongside albedo, pack into separate atlas page if needed.
+
+## Phase 58 — Roughness/Metallic PBR Maps
+
+- [ ] Bake roughness and metallic maps: gold 0.15 roughness / 0.95 metallic, leather 0.55/0.1, skin 0.65/0.0, leaf 0.45/0.0. Add to `toon_material()` via separate textures. Update `MaterialSet.get()` to load PBR triple when available.
+
+## Phase 59 — Hair Cards with Alpha for Flowing Green Hair
+
+- [ ] Replace cone hair locks with alpha cards: 8–12 hair planes with transparent texture, flowing like reference chibi green hair. Keep parented to head bone. Use `transparent_material()` with alpha clip. Maintain 25-bone rig, add no new bone, only mesh planes.
+
+## Phase 60 — Eye High-Detail: Iris Gradient + Triple Highlights + Blush
+
+- [ ] New eye mesh: iris with radial gradient texture (green #2ECC71 → #A8FF53), 3 white highlight dots (upper-left large, lower-right small, mid tiny), plus blush plane on cheeks. Implement in `models.py` `build_hero()` eye section. Keep eye size within 192→384 frame.
+
+## Phase 61 — True PBR Gold with Env Reflections
+
+- [ ] Add HDRI env map (studio small) for gold reflections. In `toon_material()` for gold, mix glossy with env texture via LayerWeight. Gold now reflects like real metal, not just white highlight. Keep emission bloom.
+
+## Phase 62 — Fabric Detail: Stitching and Leather Texture
+
+- [ ] Add stitching geometry (tiny torus loops) and leather bump via normal map for belt, bracers, quiver. Update `models.py` belt/bracer builders. Keep tri budget within 6000.
+
+## Phase 63 — VFX Authored Textures
+
+- [ ] Replace ShapeRenderer VFX with authored texture sheets: impact_flash 128×128 8 frames hand-painted, shockwave_ring 128×128, chain lightning zigzag texture, stun stars. Render in `tools/blender/generate_assets.py` `vfx` batch via image textures, not procedural.
+
+## Phase 64 — Projectile True Arrow with Fletching Texture
+
+- [ ] Upgrade `projectile_arrow`: shaft wood grain texture, head metallic, fletching feather alpha texture with 3 variants (normal/crit/secondary). Rotate onto velocity vector, add head glint texture. Lock rotation math with tests.
+
+## Phase 65 — Ground Tiles Hand-Painted
+
+- [ ] Rebuild ground tiles: 3 variants with hand-painted color variation, small grass tufts, pebbles, AO baked. Keep 350→600 tri budget but add vertex color variation.
+
+## Phase 66 — Crystal Refraction and Inner Glow
+
+- [ ] Crystal props: add refraction shader (IOR 1.45) + inner emissive core with gradient (cyan/amber/violet) + outer glow. Update `environment.py` `build_crystal_prop()` to use emissive core strength 1.8 and add inner point light.
+
+## Phase 67 — Arena Backdrop HD Hand-Painted
+
+- [ ] Arena backdrop 720×1280 → 1440×2560 working (downsample to 720×1280). Hand-painted clouds, distant trees, depth fog via gradient. Keep full-bleed but add color variation.
+
+## Phase 68 — Lighting Upgrade: HDRI + Light Probes + Contact Shadows
+
+- [ ] In `scene.py`: add HDRI small studio map for ambient, add irradiance volume for light probes, enable contact shadows for all area lights (size 5.0→3.5 for sharper shadows). Keep 4 lights (Key/Fill/Rim/Back) but tune.
+
+## Phase 69 — Blender Post-Process: LUT + Bloom Tuned + Color Grading
+
+- [ ] In `configure_scene()`: add compositor LUT (AgX Punchy → custom LUT for vibrant), bloom threshold 0.8→0.75 intensity 0.4→0.6 for stronger sparkle, add subtle vignette 0.15. Keep transparent film.
+
+## Phase 70 — Runtime Post-Process in libGDX: Vignette + Bloom + LUT
+
+- [ ] In `core/src/main/java/.../render/`: add `PostProcessRenderer.java` with vignette shader (0.15), bloom (threshold 0.75), and color LUT (vibrant). Apply in `HeroDefenseGame.render()` after `spriteBatch`. Keep performance budget: <2ms on mid-range.
+
+## Phase 71 — Performance Diet: ETC2 + Mipmaps + Atlas Optimization
+
+- [ ] Optimize all atlases: compress PNG to ETC2 via `etc2comp`, generate mipmaps, pack to 2048×2048 max, keep decoded residency <50MB (was 69MB). Update `android/build.gradle` to use `aaptOptions { cruncherEnabled false }` for already compressed. Measure startup ms, frame time, texture count at wave 50 with boss — record in `docs/art_reviews/`.
+
+## Phase 72 — Validation Upgrade for 950+ Gates
+
+- [ ] Extend `tools/visual/validate_generated_assets.py` with 950+ gates: texel density ≥2.5, normal variance >0.05, highlight coverage per material within new tighter bounds (gold 3–7%, hair 2–6%, eye 1–3%), PBR maps present for top-tier, bloom enabled for hero/boss, AO enabled, colored outline per category. Fail CI if gate fails.
+
+## Phase 73 — Full Re-render All Batches on Studio-V5-HD-PBR Engine
+
+- [ ] Re-render every batch (`hero`, `rootling`, `stonekin`, `gloom_wolf`, `fungal_brute`, `ancient_golem`, `thorn_matriarch`, `ember_wyrm`, `void_knight`, `world_tree_*`, `equipment_*`, `arena`, `environment`, `ui`, `skill-icons`, `ceremony`, `vfx`, `projectile`) on final studio-v5-hd-pbr engine (Phases 54–72). Promote to `android/assets/generated` with `visualQuality: "studio-v5-hd-pbr"` and `engineVersion: "75.0-studio-v5-hd-pbr-4x48-pbr"`. Prove with manifest audit.
+
+## Phase 74 — Manual Review and 950+ Score Proof
+
+- [ ] Generate contact sheets for all batches at real size, 50%, grayscale, silhouette-only. Write review docs in `docs/art_reviews/` with before/after (studio-v3 vs studio-v5). Calculate ultra-strict asset score per category and prove overall ≥950/1000 with checkable criteria (texel density, normal, PBR, hair cards, eye detail, bloom, performance). Record in `docs/ASSET_SCORE_950.md`.
+
+## Phase 75 — Release APK Green
+
+- [ ] Run `./scripts/gradle.sh :core:test` and `:android:assembleDebug` locally, ensure `validate_generated_assets.py` passes with new gates.
+- [ ] Push final commit, wait for GitHub Actions `build-and-emulator-test` and `test-core` to go green, download `hero-defense-debug-apk` artifact, verify it installs and runs touch smoke test in emulator (menu, waves, inventory, reward card, root network, codex, trial draft).
+- [ ] Tag release `v0.5.0-vibrant-950` and prepare Cafe Bazaar store assets with new vibrant screenshots.
+
 ## Standing Rules (final)
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
@@ -1059,4 +1156,5 @@ Long before the first wave, something did not grow here — it fell here. The Ho
 - Treat the visual style guide as non-negotiable.
 - Use touch/tap/drag everywhere, including automated tests; no keyboard or mouse-only paths.
 - Keep workspace under 128 MB at all times.
+- Final APK must be green in GitHub Actions before closing Phase 75.
 
