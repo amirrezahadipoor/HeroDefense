@@ -481,6 +481,108 @@ Extends the existing simulator-driven balance discipline to every new system abo
 
 - [x] Add a table (`docs/BALANCE.md` or a new `docs/PROGRESSION_HOURS.md`) deriving expected total playtime from the shipped numbers: one full Wave 1–200 clear, Root Network node cost versus Heartwood income per ascension, the number of ascensions needed to exhaust the Root Network, Codex completion pace across the unlock triggers in Phase 21.1, and Mythic-item collection pace — so the 50-hour target is an equation the team can re-check after every later balance pass, not a one-time estimate.
 
+## Phase 27 — P0 Stability: Root Network Crash Fix
+
+One hotfix phase, done before everything else: the Root Network screen crashes on tap, which blocks all device testing of the phases below. Unlike the Phase 16–26 addendum (whose "no new Blender batch" rule stays scoped to those phases), Phases 27–32 below explicitly authorize new art batches.
+
+### 27.0 Crash fix
+
+- [ ] Reproduce the Root Network tap crash with a headless test, diagnose the root cause, fix it, and add a regression test that opens/closes the overlay across save states (fresh save, ascended save, empty roots, full roots).
+
+## Phase 28 — Asset Engine Overhaul (color + shape fidelity first)
+
+Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The bar is NOT more detail noise: colors/grading and shape language must match modern games — every asset must read instantly at real size, in grayscale, and as a pure silhouette.
+
+### 28.0 Headless-Blender spike (time-boxed, decides the production path)
+
+- [ ] Install Blender via `scripts/install-blender-temp.sh` in a clean machine/sandbox, attempt one EEVEE equipment render through `hd_pipeline`, and record GO/NO-GO plus the fallback (2D production in-sandbox + packaged 3D jobs) in `docs/ASSET_ENGINE.md`.
+
+### 28.1 Color script + shape language (the modern-game bar, written down)
+
+- [ ] Add Color-script and Shape-language sections to `docs/VISUAL_STYLE_GUIDE.md`: palette discipline + grading mood per run stage, rarity color language, and silhouette-first shape rules per asset category with checkable gates (real size, 50%, grayscale, silhouette-only).
+
+### 28.2 Review-sheet upgrade
+
+- [ ] Extend the `tools/visual/create_*_review.py` flow with silhouette-only views and a color-grade strip on every sheet, so appeal/color/shape regressions are visible before promotion, not after.
+
+### 28.3 Pipeline precision
+
+- [ ] Raise working-resolution/sample floors in `tools/blender/hd_pipeline/config.py` per category (hero/bosses/trees highest), with before/after review sheets proving the gain.
+
+### 28.4 New pipeline categories
+
+- [ ] Add `vfx` (skill effects, shockwaves, glows), `projectile` (arrows/bolts), and `equipment_overlay` (hero-worn boots/weapon only) categories with atlas-layout support plus review/promote scripts for each.
+
+### 28.5 Validation + CI
+
+- [ ] Extend `tools/visual/validate_generated_assets.py` (edge safety, pivot stability, silhouette + grade checks where automatable) and wire an asset check into CI so bad batches fail fast.
+
+### 28.6 Engine runbook
+
+- [ ] Write `docs/ASSET_ENGINE.md`: how to run the pipeline, accept/reject checklist, and engine version recorded per batch in the asset manifest.
+
+## Phase 29 — Missing Art + Hero Wearables
+
+Rebuilds every icon/item with a real shortage (no more borrowed art) and reduces the hero's worn look to boots + weapon only.
+
+### 29.0 Shortage audit
+
+- [ ] Enumerate every borrowed/placeholder/missing art via script/test (known: 6 Mythics + 4 bows borrow art) and freeze the build list in `docs/ART_SHORTAGE.md`.
+
+### 29.1–29.3 Production batches
+
+- [ ] Render the 6 Mythic arts per the style guide, unwire their same-slot borrows in `EquipmentCatalog`, and lock each with a contract test.
+- [ ] Render the 4 borrowed bows' own art, unwire the borrows, and lock each with a contract test.
+- [ ] Render everything remaining on the `docs/ART_SHORTAGE.md` list (icons/items), promote through the Phase 28 review flow, and cover each with a contract test.
+
+### 29.4 Hero wears boots + weapon only
+
+- [ ] Drop ARMOR/HELMET/RING_1/RING_2 from the hero `LAYER_ORDER` so only boots + weapon render on the hero; re-pose those overlays for silhouette readability at real size and update the renderer tests.
+
+## Phase 30 — Combat FX & True Arrows
+
+Brings in-combat visuals up to real-game standard: projectiles must be unmistakable arrows, and every skill must feel like an event.
+
+### 30.1 True arrows
+
+- [ ] Replace the stretched-pixel projectiles with real arrow sprites (shaft/head/fletching; normal/crit/secondary variants) rotated onto the velocity vector, with a rewritten trail (fletching streak + head glint); lock the rotation math with tests.
+
+### 30.2–30.5 Skill feel
+
+- [ ] Chain Lightning: jagged branching arcs with deterministic jitter, impact flash per target, and a per-target pop.
+- [ ] Multi-shot: muzzle flash at the bow plus a visible fan of arrows.
+- [ ] Stun: shockwave ring plus upgraded orbiting stars.
+- [ ] Hit/death feel: enemy hit-flash, per-type death bursts, larger arcing crit numbers, and a subtle camera shake on hero-hit/boss-death.
+
+## Phase 31 — Story Simplification (plain English)
+
+Simplifies every story dialogue/text so a ~12-year-old understands it on first read. Game language stays English; Persian localization is out of scope.
+
+### 31.0 Readability rules
+
+- [ ] Freeze the plain-language rules (short lines, common words, one idea per line; Hero stays terse-white, Tree stays leaf-green) in `docs/STORY_CONTENT.md`'s header or a new `docs/STORY_VOICE.md`.
+
+### 31.1–31.3 Rewrite passes
+
+- [ ] Rewrite the dialogues (`STORY_CONTENT.md` §1/§2/§6: openings, reflections, epilogues) in plain language and update the verbatim code + tests to match.
+- [ ] Rewrite the texts (§3/§4/§5/§7: bios, fragments, Codex, Mythic flavor); Codex numbers/triggers stay untouched, wording only.
+- [ ] Verify no rewritten line overflows its overlay at minimum density (layout test/review).
+
+## Phase 32 — Living Grove: a Tree Every 50 Waves
+
+Generalizes the single Wave-100 second tree into plantings at waves 50/100/150. Done LAST because the extra ceremonies move the session clock: Phase 26.2b/26.3 must be re-derived after it. Defaults (owner-overridable): each tree has its own HP with enemies targeting the nearest; waves 50/150 get a short 3-beat planting, wave 100 keeps the full 5-beat ceremony.
+
+### 32.1–32.4 Grove systems
+
+- [ ] Generalize `secondTreePlanted` into a planted-trees count with per-tree HP.
+- [ ] Trigger plantings at waves 50/100/150 (short 3-beat at 50/150 reusing the `PlantingCeremony` timeline, full 5-beat at 100).
+- [ ] Enemies target the nearest tree, the defeat siege destroys all standing trees, and the HUD shows grove HP.
+- [ ] Render N trees (site anchors, growth stages, aura) reusing the sapling atlas per site.
+
+### 32.5 Text + balance tail
+
+- [ ] Update tree-count-sensitive text (the Wave-125 "Two trees" reflection, Codex) and re-derive `docs/BALANCE.md` §26.2b + `docs/PROGRESSION_HOURS.md`, re-running every gate.
+
 ## Standing Rules (additions)
 
 - Every new system above must reuse existing rendered art, shaders, or UI layout patterns unless a checklist item explicitly says otherwise — no new Blender batch is authorized by this addendum.
