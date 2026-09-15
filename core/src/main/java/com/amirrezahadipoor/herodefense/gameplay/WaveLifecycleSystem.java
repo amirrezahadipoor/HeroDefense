@@ -77,11 +77,19 @@ public final class WaveLifecycleSystem {
         return result;
     }
 
-    /** Called when the planting ceremony ends: the second tree stands and wave 101 begins. */
+    /** Called when the planting ceremony ends: a new Heartwood stands and the next wave begins. */
     public boolean completePlantingCeremony(GameState state) {
         if (state == null || !state.ceremonyPending) return false;
         state.ceremonyPending = false;
-        state.secondTreePlanted = true;
+        // 32.1: generalize boolean to count with per-tree HP
+        if (state.plantedTreesCount < 3) {
+            state.plantedTreesCount++;
+            if (state.plantedTreeHealth == null) state.plantedTreeHealth = new java.util.ArrayList<>();
+            if (state.plantedTreeMaxHealth == null) state.plantedTreeMaxHealth = new java.util.ArrayList<>();
+            state.plantedTreeHealth.add(state.worldTreeMaxHealth);
+            state.plantedTreeMaxHealth.add(state.worldTreeMaxHealth);
+        }
+        state.secondTreePlanted = state.plantedTreesCount > 0;
         state.anchorHeroAtArenaCenter();
         return startCurrentWave(state);
     }

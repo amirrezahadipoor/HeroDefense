@@ -49,8 +49,14 @@ public final class GameState {
     public boolean runComplete;
     /** Set when Wave 100 is cleared; cleared once the ceremony has played (or been skipped). */
     public boolean ceremonyPending;
-    /** True once the second Heartwood stands; it is a monument, never a second loss condition. */
+    /** True once the second Heartwood stands; it is a monument, never a second loss condition. @deprecated use plantedTreesCount */
     public boolean secondTreePlanted;
+    /** Number of additional Heartwoods planted beyond the original (0..3 for waves 50/100/150). */
+    public int plantedTreesCount;
+    /** Health of each planted tree (size == plantedTreesCount, each entry 0..plantedTreeMaxHealth). */
+    public List<Float> plantedTreeHealth = new ArrayList<>();
+    /** Max health for each planted tree (mirrors worldTreeMaxHealth at planting time, per-tree). */
+    public List<Float> plantedTreeMaxHealth = new ArrayList<>();
     /** Counts down after the Hero dies while monsters destroy the trees; 0 = trees are gone. */
     public float treeSiegeRemainingSeconds;
     public long nextEntityId = 2L;
@@ -164,6 +170,38 @@ public final class GameState {
 
     public void destroyWorldTree() {
         worldTreeHealth = 0f;
+        for (int i = 0; i < plantedTreeHealth.size(); i++) {
+            plantedTreeHealth.set(i, 0f);
+        }
+    }
+
+    /** Total trees standing (original + planted). */
+    public int totalTrees() {
+        return 1 + Math.max(0, plantedTreesCount);
+    }
+
+    /** Health of a tree by index: 0 = original World Tree, 1..n = planted. */
+    public float getTreeHealth(int index) {
+        if (index == 0) return worldTreeHealth;
+        if (index > 0 && index <= plantedTreeHealth.size()) return plantedTreeHealth.get(index - 1);
+        return 0f;
+    }
+
+    /** Max health of a tree by index. */
+    public float getTreeMaxHealth(int index) {
+        if (index == 0) return worldTreeMaxHealth;
+        if (index > 0 && index <= plantedTreeMaxHealth.size()) return plantedTreeMaxHealth.get(index - 1);
+        return worldTreeMaxHealth;
+    }
+
+    /** Sets health of a tree by index, clamped to its max. */
+    public void setTreeHealth(int index, float health) {
+        if (index == 0) {
+            worldTreeHealth = Math.max(0f, Math.min(worldTreeMaxHealth, health));
+        } else if (index > 0 && index <= plantedTreeHealth.size()) {
+            float max = getTreeMaxHealth(index);
+            plantedTreeHealth.set(index - 1, Math.max(0f, Math.min(max, health)));
+        }
     }
 
     /** Enforces the stationary-defender rule every simulation tick. */
@@ -218,12 +256,45 @@ public final class GameState {
             destroyWorldTree();
         }
         if (hero.alive) treeSiegeRemainingSeconds = 0f;
+        // --- Grove 32.1: planted-trees count with per-tree HP ---
+        if (plantedTreeHealth == null) plantedTreeHealth = new ArrayList<>();
+        if (plantedTreeMaxHealth == null) plantedTreeMaxHealth = new ArrayList<>();
+        // Migrate old boolean save
+        if (plantedTreesCount == 0 && secondTreePlanted) {
+            plantedTreesCount = 1;
+            if (plantedTreeHealth.isEmpty()) plantedTreeHealth.add(worldTreeMaxHealth);
+            if (plantedTreeMaxHealth.isEmpty()) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+        }
+        // Clamp count to list sizes and to 0..3
+        plantedTreesCount = Math.max(0, Math.min(3, plantedTreesCount));
+        while (plantedTreeHealth.size() < plantedTreesCount) plantedTreeHealth.add(worldTreeMaxHealth);
+        while (plantedTreeHealth.size() > plantedTreesCount) plantedTreeHealth.remove(plantedTreeHealth.size() - 1);
+        while (plantedTreeMaxHealth.size() < plantedTreesCount) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+        while (plantedTreeMaxHealth.size() > plantedTreesCount) plantedTreeMaxHealth.remove(plantedTreeMaxHealth.size() - 1);
+        for (int i = 0; i < plantedTreesCount; i++) {
+            float max = Math.max(1f, plantedTreeMaxHealth.get(i));
+            plantedTreeMaxHealth.set(i, max);
+            float cur = plantedTreeHealth.get(i);
+            plantedTreeHealth.set(i, Math.max(0f, Math.min(max, cur)));
+        }
+        // Sync deprecated boolean
+        secondTreePlanted = plantedTreesCount > 0;
+        // Grove ceremony bookkeeping: ceremonyPending now covers any of 50/100/150, but for 32.1 keep single-wave logic
         if (waveNumber <= PLANTING_WAVE) {
             ceremonyPending = false;
-            secondTreePlanted = false;
+            plantedTreesCount = 0;
+            plantedTreeHealth.clear();
+            plantedTreeMaxHealth.clear();
         } else if (!ceremonyPending) {
-            secondTreePlanted = true;
+            if (plantedTreesCount == 0) {
+                plantedTreesCount = 1;
+                if (plantedTreeHealth.isEmpty()) plantedTreeHealth.add(worldTreeMaxHealth);
+                if (plantedTreeMaxHealth.isEmpty()) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+                while (plantedTreeHealth.size() < plantedTreesCount) plantedTreeHealth.add(worldTreeMaxHealth);
+                while (plantedTreeMaxHealth.size() < plantedTreesCount) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+            }
         }
+        secondTreePlanted = plantedTreesCount > 0;
         if (ceremonyPending) waveActive = false;
         if (aliveEnemies == null) aliveEnemies = new ArrayList<>();
         if (aliveBosses == null) aliveBosses = new ArrayList<>();
@@ -364,6 +435,9 @@ public final class GameState {
         this.runComplete = false;
         this.ceremonyPending = false;
         this.secondTreePlanted = false;
+        this.plantedTreesCount = 0;
+        this.plantedTreeHealth = new ArrayList<>();
+        this.plantedTreeMaxHealth = new ArrayList<>();
         this.treeSiegeRemainingSeconds = 0f;
         this.heroDiedThisRun = false;
         this.potionsUsedThisRun = 0;
