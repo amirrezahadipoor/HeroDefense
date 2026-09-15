@@ -949,7 +949,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 64 — Projectile True Arrow with Fletching Texture
 
-- [ ] Upgrade `projectile_arrow`: shaft wood grain texture, head metallic, fletching feather alpha texture with 3 variants (normal/crit/secondary). Rotate onto velocity vector, add head glint texture. Lock rotation math with tests.
+- [x] Upgrade `projectile_arrow`: shaft wood grain texture, head metallic, fletching feather alpha texture with 3 variants (normal/crit/secondary). Rotate onto velocity vector, add head glint texture. Lock rotation math with tests.
 
 ## Phase 65 — Ground Tiles Hand-Painted
 
