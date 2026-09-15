@@ -5804,6 +5804,317 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "armature": "hero_armature",
+      "atlas": "equipment/golemsbane_warbow.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_golemsbane_warbow.png",
+      "itemId": "golemsbane_warbow",
+      "key": "equipment_golemsbane_warbow",
+      "materialCount": 3,
+      "meshParts": 10,
+      "modelRevision": "bow-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "setId": "bastion_oath",
+      "sheet": "equipment/golemsbane_warbow.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/golemsbane_warbow.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "WEAPON",
+      "tier": "RARE",
+      "triangles": 600,
+      "visualKind": "weapon",
+      "visualQuality": "premium-v2",
+      "visualSlot": "weapon"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
       "atlas": "equipment/hawk_eye_band.atlas",
       "boneAnimated": true,
       "bones": [
@@ -11948,6 +12259,317 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "armature": "hero_armature",
+      "atlas": "equipment/thornwood_bow.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_thornwood_bow.png",
+      "itemId": "thornwood_bow",
+      "key": "equipment_thornwood_bow",
+      "materialCount": 3,
+      "meshParts": 10,
+      "modelRevision": "bow-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": false,
+      "setId": "",
+      "sheet": "equipment/thornwood_bow.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/thornwood_bow.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "WEAPON",
+      "tier": "COMMON",
+      "triangles": 600,
+      "visualKind": "weapon",
+      "visualQuality": "premium-v2",
+      "visualSlot": "weapon"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
       "atlas": "equipment/trail_boots.atlas",
       "boneAnimated": true,
       "bones": [
@@ -12872,6 +13494,317 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "armature": "hero_armature",
+      "atlas": "equipment/verdant_recurve.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_verdant_recurve.png",
+      "itemId": "verdant_recurve",
+      "key": "equipment_verdant_recurve",
+      "materialCount": 3,
+      "meshParts": 10,
+      "modelRevision": "bow-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": false,
+      "setId": "verdant_covenant",
+      "sheet": "equipment/verdant_recurve.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/verdant_recurve.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "WEAPON",
+      "tier": "UNCOMMON",
+      "triangles": 600,
+      "visualKind": "weapon",
+      "visualQuality": "premium-v2",
+      "visualSlot": "weapon"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
       "atlas": "equipment/windrunner_last_steps.atlas",
       "boneAnimated": true,
       "bones": [
@@ -13791,6 +14724,317 @@
       "tier": "LEGENDARY",
       "triangles": 368,
       "visualKind": "bow",
+      "visualQuality": "premium-v2",
+      "visualSlot": "weapon"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
+      "atlas": "equipment/yew_shortbow.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_yew_shortbow.png",
+      "itemId": "yew_shortbow",
+      "key": "equipment_yew_shortbow",
+      "materialCount": 3,
+      "meshParts": 10,
+      "modelRevision": "bow-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": false,
+      "setId": "",
+      "sheet": "equipment/yew_shortbow.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/yew_shortbow.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "WEAPON",
+      "tier": "COMMON",
+      "triangles": 600,
+      "visualKind": "weapon",
       "visualQuality": "premium-v2",
       "visualSlot": "weapon"
     },
@@ -19535,7 +20779,7 @@
     }
   ],
   "blenderVersion": "4.2.23",
-  "decodedCatalogBudgetBytes": 360000000,
+  "decodedCatalogBudgetBytes": 370000000,
   "decodedCombatResidencyBudgetBytes": 150000000,
   "engineVersion": "28.7-premium-v2-3x32-full",
   "frameRate": 12,

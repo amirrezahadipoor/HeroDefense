@@ -12,15 +12,14 @@ import java.util.Map;
 
 /**
  * Immutable runtime roster of 46 equipment variants. The Hero is a pure archer: every weapon
- * is a bow. Four bows introduced after the premium-v2 art batch borrow the reviewed atlas and
- * icon of a same-tier bow until their own art is rendered, and the six Mythics borrow
+ * is a bow. All bows now have own art per Phase 29.2 (no borrow), and the six Mythics
  * same-slot Rare/Legendary art until their own glow tier lands.
  */
 public final class EquipmentCatalog {
     private static final List<EquipmentDefinition> ALL = Collections.unmodifiableList(Arrays.asList(
         item("ashwood_bow", "Ashwood Bow", EquipmentSlot.WEAPON, ItemTier.COMMON, HeroStat.STRENGTH, 1, HeroStat.AGILITY, 0),
-        bow("yew_shortbow", "Yew Shortbow", ItemTier.COMMON, HeroStat.AGILITY, 1, HeroStat.STRENGTH, 0, "ashwood_bow"),
-        bow("thornwood_bow", "Thornwood Bow", ItemTier.COMMON, HeroStat.LUCK, 1, HeroStat.STRENGTH, 0, "ashwood_bow"),
+        bow("yew_shortbow", "Yew Shortbow", ItemTier.COMMON, HeroStat.AGILITY, 1, HeroStat.STRENGTH, 0, "yew_shortbow"),
+        bow("thornwood_bow", "Thornwood Bow", ItemTier.COMMON, HeroStat.LUCK, 1, HeroStat.STRENGTH, 0, "thornwood_bow"),
         item("leather_cap", "Leather Cap", EquipmentSlot.HELMET, ItemTier.COMMON, HeroStat.DODGE, 1, HeroStat.HEALTH, 0),
         item("scout_hood", "Scout Hood", EquipmentSlot.HELMET, ItemTier.COMMON, HeroStat.HEALTH, 1, HeroStat.DODGE, 0),
         item("padded_vest", "Padded Vest", EquipmentSlot.ARMOR, ItemTier.COMMON, HeroStat.HEALTH, 1, HeroStat.STRENGTH, 0),
@@ -33,7 +32,7 @@ public final class EquipmentCatalog {
         item("hunter_loop", "Hunter Loop", EquipmentSlot.RING_2, ItemTier.COMMON, HeroStat.LUCK, 1, HeroStat.AGILITY, 0),
         item("twine_circle", "Twine Circle", EquipmentSlot.RING_1, ItemTier.COMMON, HeroStat.LUCK, 1, HeroStat.DODGE, 0),
         item("moonwood_longbow", "Moonwood Longbow", EquipmentSlot.WEAPON, ItemTier.UNCOMMON, HeroStat.AGILITY, 2, HeroStat.STRENGTH, 0),
-        bow("verdant_recurve", "Verdant Recurve", ItemTier.UNCOMMON, HeroStat.STRENGTH, 2, HeroStat.AGILITY, 0, "moonwood_longbow", "verdant_covenant"),
+        bow("verdant_recurve", "Verdant Recurve", ItemTier.UNCOMMON, HeroStat.STRENGTH, 2, HeroStat.AGILITY, 0, "verdant_recurve", "verdant_covenant"),
         item("fern_guard", "Fern Guard", EquipmentSlot.HELMET, ItemTier.UNCOMMON, HeroStat.DODGE, 2, HeroStat.HEALTH, 0, "verdant_covenant"),
         item("antler_circlet", "Antler Circlet", EquipmentSlot.HELMET, ItemTier.UNCOMMON, HeroStat.HEALTH, 2, HeroStat.DODGE, 0),
         item("ranger_mail", "Ranger Mail", EquipmentSlot.ARMOR, ItemTier.UNCOMMON, HeroStat.HEALTH, 2, HeroStat.STRENGTH, 0),
@@ -45,7 +44,7 @@ public final class EquipmentCatalog {
         item("silver_briar_ring", "Silver Briar Ring", EquipmentSlot.RING_1, ItemTier.UNCOMMON, HeroStat.LUCK, 2, HeroStat.DODGE, 0),
         item("dewstone_loop", "Dewstone Loop", EquipmentSlot.RING_2, ItemTier.UNCOMMON, HeroStat.LUCK, 2, HeroStat.AGILITY, 0),
         item("starfall_bow", "Starfall Bow", EquipmentSlot.WEAPON, ItemTier.RARE, HeroStat.AGILITY, 3, HeroStat.STRENGTH, 1),
-        bow("golemsbane_warbow", "Golemsbane Warbow", ItemTier.RARE, HeroStat.STRENGTH, 3, HeroStat.AGILITY, 1, "starfall_bow", "bastion_oath"),
+        bow("golemsbane_warbow", "Golemsbane Warbow", ItemTier.RARE, HeroStat.STRENGTH, 3, HeroStat.AGILITY, 1, "golemsbane_warbow", "bastion_oath"),
         item("owlguard_helm", "Owlguard Helm", EquipmentSlot.HELMET, ItemTier.RARE, HeroStat.DODGE, 3, HeroStat.HEALTH, 1, "bastion_oath"),
         item("crystalbark_plate", "Crystalbark Plate", EquipmentSlot.ARMOR, ItemTier.RARE, HeroStat.HEALTH, 3, HeroStat.STRENGTH, 1, "bastion_oath"),
         item("shadeleaf_mantle", "Shadeleaf Mantle", EquipmentSlot.ARMOR, ItemTier.RARE, HeroStat.STRENGTH, 3, HeroStat.HEALTH, 1),

@@ -1,24 +1,3 @@
 {
-  "borrowed": [
-    {
-      "id": "golemsbane_warbow",
-      "artId": "starfall_bow",
-      "kind": "bow"
-    },
-    {
-      "id": "thornwood_bow",
-      "artId": "ashwood_bow",
-      "kind": "bow"
-    },
-    {
-      "id": "verdant_recurve",
-      "artId": "moonwood_longbow",
-      "kind": "bow"
-    },
-    {
-      "id": "yew_shortbow",
-      "artId": "ashwood_bow",
-      "kind": "bow"
-    }
-  ]
+  "borrowed": []
 }

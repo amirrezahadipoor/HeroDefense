@@ -9,7 +9,7 @@ CATALOG = ROOT / "core/src/main/java/com/amirrezahadipoor/herodefense/items/Equi
 ART_SHORTAGE_JSON = ROOT / "docs/ART_SHORTAGE.json"
 ART_SHORTAGE_MD = ROOT / "docs/ART_SHORTAGE.md"
 
-# After 29.1, 4 bows remain; after 29.2, 0. This test is dynamic — it checks that the JSON matches the catalog.
+# After 29.2, 0 borrowed. Dynamic audit check ensures JSON matches catalog.
 def catalog_borrowed():
     text = CATALOG.read_text(encoding="utf-8")
     borrowed = []
@@ -45,13 +45,10 @@ class ArtShortageTest(unittest.TestCase):
         for b in data["borrowed"]:
             self.assertIn(f"`{b['id']}`", md)
 
-    def test_after_29_1_only_bows_remain(self):
-        # After mythic fix, only 4 bows should remain
+    def test_after_29_2_empty(self):
+        # After 29.2, all 10 borrowed items have own art — shortage is 0.
         data = json.loads(ART_SHORTAGE_JSON.read_text(encoding="utf-8"))
-        ids = {b["id"] for b in data["borrowed"]}
-        self.assertEqual({"yew_shortbow","thornwood_bow","verdant_recurve","golemsbane_warbow"}, ids)
-        for b in data["borrowed"]:
-            self.assertEqual("bow", b["kind"])
+        self.assertEqual([], data["borrowed"], f"expected empty after 29.2, got {data['borrowed']}")
 
 if __name__ == "__main__":
     unittest.main()
