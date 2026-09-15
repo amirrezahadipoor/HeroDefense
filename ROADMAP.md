@@ -906,11 +906,9 @@ Continues directly from Phase 53 (studio-v4-vibrant). Goal: super strict 950+/10
 
 Current strict score: 637/1000 (studio-v3). After 34–53 vibrant: ~782/1000 predicted. This addendum closes the remaining 168 points to 950+.
 
-## Phase 54 — Frame Size Upgrade: 192→384 Hero/Boss/Tree, 96→192 Icons
-
-- [ ] In `tools/blender/hd_pipeline/config.py` → `FRAME_SIZE`: hero/boss/tree from 192/256 to 384, item icons from 96 to 192. Keep arena 720×1280. Update `FRAME_DIMENSIONS`.
-- [ ] In `config.py`: raise `MAX_ATLAS_SIZE` from 2048 to 4096, allow 2 pages for hero if needed, but enforce ASTC/ETC2 compression in Android to keep APK <100 MB.
-- [ ] Update `docs/VISUAL_STYLE_GUIDE.md` §5 camera scale stays same, but frame size doubled — hero now 300px on screen readable for high-detail reference like chibi green hair.
+- [x] In `tools/blender/hd_pipeline/config.py` → `FRAME_SIZE`: hero/boss/tree from 192/256 to 384, item icons from 96 to 192. Keep arena 720×1280. Update `FRAME_DIMENSIONS`.
+- [x] In `config.py`: raise `MAX_ATLAS_SIZE` from 2048 to 4096, allow 2 pages for hero if needed, but enforce ASTC/ETC2 compression in Android to keep APK <100 MB.
+- [x] Update `docs/VISUAL_STYLE_GUIDE.md` §5 camera scale stays same, but frame size doubled — hero now 300px on screen readable for high-detail reference like chibi green hair.
 
 ## Phase 55 — High-Poly Sculpt + Normal Bake
 

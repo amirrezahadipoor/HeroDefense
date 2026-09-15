@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from math import ceil
 
-MAX_ATLAS_SIZE = 2048
+MAX_ATLAS_SIZE = 4096  # Phase 54: 2048->4096 for 384px frames, ASTC compression keeps APK <100MB
 
 
 def plan_grid(

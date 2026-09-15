@@ -58,16 +58,16 @@ CAMERA_SHIFT_Y = {
     "vfx": 0.0,
 }
 FRAME_SIZE = {
-    "character": 192,
-    "boss": 256,
-    "item": 96,
-    "tree": 256,
+    "character": 384,  # Phase 54: 192->384 for 950 score, hero 300px on screen readable
+    "boss": 384,       # Phase 54: 256->384 boss sharper
+    "item": 192,       # Phase 54: 96->192 icons sharper
+    "tree": 384,       # Phase 54: 256->384 tree sharper
     "environment": 384,
     # The portrait backdrop retains frameSize for manifest compatibility while its
     # explicit frameWidth/frameHeight contract is defined below.
     "arena": 720,
-    "projectile": 64,
-    "vfx": 128,
+    "projectile": 128,  # Phase 54: 64->128 arrows sharper
+    "vfx": 256,         # Phase 54: 128->256 VFX sharper
 }
 FRAME_DIMENSIONS = {
     **{key: (size, size) for key, size in FRAME_SIZE.items()},
