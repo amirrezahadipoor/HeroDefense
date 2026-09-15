@@ -511,7 +511,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.4 New pipeline categories
 
-- [ ] Add `vfx` (skill effects, shockwaves, glows), `projectile` (arrows/bolts), and `equipment_overlay` (hero-worn boots/weapon only) categories with atlas-layout support plus review/promote scripts for each.
+- [x] Add `vfx` (skill effects, shockwaves, glows), `projectile` (arrows/bolts), and `equipment_overlay` (hero-worn boots/weapon only) categories with atlas-layout support plus review/promote scripts for each.
 
 ### 28.5 Validation + CI
 

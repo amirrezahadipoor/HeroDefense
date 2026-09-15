@@ -200,7 +200,7 @@ def create_shape_sheet(candidate: Path, by_key: dict, output: Path) -> None:
             x = 40 + index * (cell + 8)
             canvas.paste(small, (x, y + 16), small)
             ghost = silhouette_view(full).resize((cell, cell), Image.LANCZOS)
-            canvas.paste(ghost.convert("RGB"), (x, y + 20 + cell))
+            canvas.paste(ghost, (x, y + 20 + cell), ghost)
         y += per_effect
     grade = grade_row(frames_of(candidate, by_key[EXPECTED_KEYS[0]])[0])
     canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, y + 20))

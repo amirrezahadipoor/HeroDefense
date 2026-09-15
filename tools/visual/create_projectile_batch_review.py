@@ -163,7 +163,7 @@ def create_readability_sheet(candidate: Path, by_key: dict, output: Path) -> Pat
         x += panel.width + 24
     ghost = silhouette_view(sprite).resize((256, 256), Image.NEAREST)
     draw.text((20, 340), "silhouette", fill=(175, 197, 190))
-    canvas.paste(ghost.convert("RGB"), (20, 360))
+    canvas.paste(ghost, (20, 360), ghost)
     grade = grade_row(sprite)
     canvas.paste(grade.convert("RGB"), (300, 360 + (256 - grade.height) // 2))
     draw.text((300, 340), "stage grade", fill=(175, 197, 190))
