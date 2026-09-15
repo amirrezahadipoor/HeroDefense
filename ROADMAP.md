@@ -941,7 +941,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 62 — Fabric Detail: Stitching and Leather Texture
 
-- [ ] Add stitching geometry (tiny torus loops) and leather bump via normal map for belt, bracers, quiver. Update `models.py` belt/bracer builders. Keep tri budget within 6000.
+- [x] Add stitching geometry (tiny torus loops) and leather bump via normal map for belt, bracers, quiver. Update `models.py` belt/bracer builders. Keep tri budget within 6000.
 
 ## Phase 63 — VFX Authored Textures
 
