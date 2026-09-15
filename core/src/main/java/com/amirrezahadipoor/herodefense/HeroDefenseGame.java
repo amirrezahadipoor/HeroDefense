@@ -1125,7 +1125,15 @@ public final class HeroDefenseGame extends ApplicationAdapter {
     private void beginPlantingCeremony() {
         flow.transitionTo(GameScreenState.CINEMATIC);
         hitStopSystem.clear();
-        plantingCeremony.begin();
+        int groveIndex = Math.max(0, Math.min(2, gameState.plantedTreesCount));
+        if (gameState.ceremonyPending) {
+            int pendingWave = gameState.waveNumber - 1;
+            if (pendingWave == 50) groveIndex = 0;
+            else if (pendingWave == 100) groveIndex = 1;
+            else if (pendingWave == 150) groveIndex = 2;
+        }
+        boolean shortCeremony = groveIndex == 0 || groveIndex == 2;
+        plantingCeremony.begin(shortCeremony, groveIndex);
         gameState.anchorHeroAtArenaCenter();
     }
 

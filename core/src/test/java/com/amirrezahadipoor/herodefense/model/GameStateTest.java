@@ -66,13 +66,16 @@ final class GameStateTest {
         state.secondTreePlanted = false;
         state.validateAndRepair();
         assertTrue(state.secondTreePlanted);
+        assertTrue(state.plantedTreesCount >= 1);
 
         GameState midCeremony = new GameState();
         midCeremony.waveNumber = 101;
         midCeremony.ceremonyPending = true;
         midCeremony.validateAndRepair();
-        assertFalse(midCeremony.secondTreePlanted);
+        // At 101 with ceremony for 100 pending, only the 50 tree is planted so count is 1, secondTreePlanted true (grove has at least one)
+        assertTrue(midCeremony.secondTreePlanted);
         assertTrue(midCeremony.ceremonyPending);
+        assertEquals(1, midCeremony.plantedTreesCount);
     }
 
     @Test

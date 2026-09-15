@@ -104,6 +104,31 @@ final class PlantingCeremonyTest {
         assertEquals(0f, ceremony.lineAlpha());
     }
 
+    @Test
+    void shortCeremonySkipsWaterAndGrowAndIsDeterministic() {
+        PlantingCeremony shortCeremony = new PlantingCeremony();
+        shortCeremony.begin(true, 0);
+        assertTrue(shortCeremony.isShort());
+        assertEquals(PlantingCeremony.Phase.WALK_OUT, shortCeremony.phase());
+        advance(shortCeremony, PlantingCeremony.WALK_OUT_SECONDS + 0.01f);
+        assertEquals(PlantingCeremony.Phase.PLANT, shortCeremony.phase());
+        advance(shortCeremony, PlantingCeremony.PLANT_SECONDS + 0.01f);
+        assertEquals(PlantingCeremony.Phase.WALK_BACK, shortCeremony.phase());
+        assertFalse(shortCeremony.pouring());
+        // Should finish in short time
+        float shortTotal = PlantingCeremony.SHORT_TOTAL_SECONDS;
+        PlantingCeremony c = new PlantingCeremony();
+        c.begin(true, 0);
+        advance(c, shortTotal + 0.01f);
+        assertEquals(PlantingCeremony.Phase.DONE, c.phase());
+        // Full is longer
+        PlantingCeremony full = new PlantingCeremony();
+        full.begin(false, 1);
+        assertFalse(full.isShort());
+        advance(full, shortTotal + 0.01f);
+        assertTrue(full.phase() != PlantingCeremony.Phase.DONE);
+    }
+
     private static void advance(PlantingCeremony ceremony, float seconds) {
         float remaining = seconds;
         while (remaining > 0f) {

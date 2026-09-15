@@ -30,6 +30,8 @@ public final class PlantingCeremony {
     public static final float WALK_BACK_SECONDS = 1.6f;
     public static final float TOTAL_SECONDS =
         WALK_OUT_SECONDS + PLANT_SECONDS + WATER_SECONDS + GROW_SECONDS + WALK_BACK_SECONDS;
+    public static final float SHORT_TOTAL_SECONDS =
+        WALK_OUT_SECONDS + PLANT_SECONDS + WALK_BACK_SECONDS;
     /** Seed becomes visible at this fraction of the plant clip (the press frames). */
     public static final float SEED_PLANTED_AT = 0.55f;
     private static final float MAX_STEP_SECONDS = 0.10f;
@@ -42,18 +44,36 @@ public final class PlantingCeremony {
 
     private float elapsedSeconds;
     private boolean active;
+    private boolean shortMode;
+    private float standX = STAND_X;
+    private float standY = STAND_Y;
 
     public void begin() {
+        begin(false, 1);
+    }
+
+    /** Begins the ceremony, short (3-beat) for waves 50/150, full (5-beat) for 100. */
+    public void begin(boolean shortCeremony, int groveIndex) {
         elapsedSeconds = 0f;
         active = true;
+        shortMode = shortCeremony;
+        float treeX = WorldLayout.groveTreeX(groveIndex);
+        float treeY = WorldLayout.groveTreeY(groveIndex);
+        standX = treeX - 78f;
+        standY = treeY - 38f;
+    }
+
+    public boolean isShort() {
+        return shortMode;
     }
 
     /** Advances presentation time; returns true on the frame the ceremony completes. */
     public boolean update(float deltaSeconds) {
         if (!active) return false;
         float safe = Float.isFinite(deltaSeconds) ? Math.max(0f, Math.min(MAX_STEP_SECONDS, deltaSeconds)) : 0f;
-        elapsedSeconds = Math.min(TOTAL_SECONDS, elapsedSeconds + safe);
-        if (elapsedSeconds >= TOTAL_SECONDS) {
+        float total = shortMode ? SHORT_TOTAL_SECONDS : TOTAL_SECONDS;
+        elapsedSeconds = Math.min(total, elapsedSeconds + safe);
+        if (elapsedSeconds >= total) {
             active = false;
             return true;
         }
@@ -62,7 +82,7 @@ public final class PlantingCeremony {
 
     /** A touch skips straight to the end; the next update reports completion. */
     public void skip() {
-        if (active) elapsedSeconds = TOTAL_SECONDS;
+        if (active) elapsedSeconds = shortMode ? SHORT_TOTAL_SECONDS : TOTAL_SECONDS;
     }
 
     public boolean isActive() {
@@ -74,20 +94,27 @@ public final class PlantingCeremony {
     }
 
     public Phase phase() {
-        return phaseAt(elapsedSeconds, active);
+        return phaseAt(elapsedSeconds, active, shortMode);
     }
 
     static Phase phaseAt(float seconds, boolean active) {
+        return phaseAt(seconds, active, false);
+    }
+
+    static Phase phaseAt(float seconds, boolean active, boolean shortMode) {
+        float total = shortMode ? SHORT_TOTAL_SECONDS : TOTAL_SECONDS;
         if (!active && seconds <= 0f) return Phase.IDLE;
-        if (seconds >= TOTAL_SECONDS) return Phase.DONE;
+        if (seconds >= total) return Phase.DONE;
         float t = seconds;
         if (t < WALK_OUT_SECONDS) return Phase.WALK_OUT;
         t -= WALK_OUT_SECONDS;
         if (t < PLANT_SECONDS) return Phase.PLANT;
         t -= PLANT_SECONDS;
-        if (t < WATER_SECONDS) return Phase.WATER;
-        t -= WATER_SECONDS;
-        if (t < GROW_SECONDS) return Phase.GROW;
+        if (!shortMode) {
+            if (t < WATER_SECONDS) return Phase.WATER;
+            t -= WATER_SECONDS;
+            if (t < GROW_SECONDS) return Phase.GROW;
+        }
         return Phase.WALK_BACK;
     }
 
@@ -99,7 +126,8 @@ public final class PlantingCeremony {
             case PLANT: return t - WALK_OUT_SECONDS;
             case WATER: return t - WALK_OUT_SECONDS - PLANT_SECONDS;
             case GROW: return t - WALK_OUT_SECONDS - PLANT_SECONDS - WATER_SECONDS;
-            case WALK_BACK: return t - WALK_OUT_SECONDS - PLANT_SECONDS - WATER_SECONDS - GROW_SECONDS;
+            case WALK_BACK: return shortMode ? t - WALK_OUT_SECONDS - PLANT_SECONDS
+                : t - WALK_OUT_SECONDS - PLANT_SECONDS - WATER_SECONDS - GROW_SECONDS;
             default: return 0f;
         }
     }
@@ -147,18 +175,18 @@ public final class PlantingCeremony {
 
     public float heroX() {
         return switch (phase()) {
-            case WALK_OUT -> lerp(GameState.ARENA_CENTER_X, STAND_X, ease(phaseProgress()));
-            case PLANT, WATER, GROW -> STAND_X;
-            case WALK_BACK -> lerp(STAND_X, GameState.ARENA_CENTER_X, ease(phaseProgress()));
+            case WALK_OUT -> lerp(GameState.ARENA_CENTER_X, standX, ease(phaseProgress()));
+            case PLANT, WATER, GROW -> standX;
+            case WALK_BACK -> lerp(standX, GameState.ARENA_CENTER_X, ease(phaseProgress()));
             default -> GameState.ARENA_CENTER_X;
         };
     }
 
     public float heroY() {
         return switch (phase()) {
-            case WALK_OUT -> lerp(GameState.ARENA_CENTER_Y, STAND_Y, ease(phaseProgress()));
-            case PLANT, WATER, GROW -> STAND_Y;
-            case WALK_BACK -> lerp(STAND_Y, GameState.ARENA_CENTER_Y, ease(phaseProgress()));
+            case WALK_OUT -> lerp(GameState.ARENA_CENTER_Y, standY, ease(phaseProgress()));
+            case PLANT, WATER, GROW -> standY;
+            case WALK_BACK -> lerp(standY, GameState.ARENA_CENTER_Y, ease(phaseProgress()));
             default -> GameState.ARENA_CENTER_Y;
         };
     }
@@ -201,6 +229,12 @@ public final class PlantingCeremony {
 
     /** Frame of the grow clip: sprout until GROW starts, then the growth ramp, then fully grown. */
     public int saplingGrowFrame() {
+        if (shortMode) {
+            return switch (phase()) {
+                case WALK_BACK, DONE -> GROW_FRAMES - 1;
+                default -> 0;
+            };
+        }
         return switch (phase()) {
             case GROW -> Math.min(GROW_FRAMES - 1, (int) (phaseSeconds() * GROW_FPS));
             case WALK_BACK, DONE -> GROW_FRAMES - 1;
@@ -210,6 +244,7 @@ public final class PlantingCeremony {
 
     /** Water droplets fall during the pour hold (frames 4..8 of the water clip). */
     public boolean pouring() {
+        if (shortMode) return false;
         if (phase() != Phase.WATER) return false;
         int frame = heroFrame();
         return frame >= 4 && frame <= 8;

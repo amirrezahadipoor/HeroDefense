@@ -19,11 +19,17 @@ final class ContinuousWaveRunTest {
 
         for (int expectedWave = 2; expectedWave <= GameState.FINAL_WAVE; expectedWave++) {
             WaveCompletion completion = run.completeCurrentWave(state);
-            if (expectedWave == GameState.PLANTING_WAVE + 1) {
+            if (expectedWave == 51 || expectedWave == 101 || expectedWave == 151) {
                 assertEquals(WaveCompletion.PLANTING_CEREMONY, completion);
                 assertTrue(state.ceremonyPending);
                 state.ceremonyPending = false;
-                state.secondTreePlanted = true;
+                // Simulate ceremony completion: increment grove count
+                state.plantedTreesCount++;
+                if (state.plantedTreeHealth == null) state.plantedTreeHealth = new java.util.ArrayList<>();
+                if (state.plantedTreeMaxHealth == null) state.plantedTreeMaxHealth = new java.util.ArrayList<>();
+                state.plantedTreeHealth.add(state.worldTreeMaxHealth);
+                state.plantedTreeMaxHealth.add(state.worldTreeMaxHealth);
+                state.secondTreePlanted = state.plantedTreesCount > 0;
             } else {
                 assertEquals(WaveCompletion.NEXT_WAVE, completion);
             }

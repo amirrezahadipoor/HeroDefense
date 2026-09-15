@@ -100,6 +100,7 @@ final class WaveLifecycleSystemTest {
         early.validateAndRepair();
         assertFalse(early.ceremonyPending);
         assertFalse(early.secondTreePlanted);
+        assertEquals(0, early.plantedTreesCount);
     }
 
     @Test

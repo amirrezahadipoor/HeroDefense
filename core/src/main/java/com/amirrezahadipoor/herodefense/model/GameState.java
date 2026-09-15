@@ -204,6 +204,26 @@ public final class GameState {
         }
     }
 
+    /** Wave numbers that trigger a planting (50/100/150). */
+    public static boolean isGrovePlantingWave(int wave) {
+        return wave == 50 || wave == 100 || wave == 150;
+    }
+
+    /** Grove index for a planting wave (0->50, 1->100, 2->150). */
+    public static int groveIndexForPlantingWave(int wave) {
+        return switch (wave) {
+            case 50 -> 0;
+            case 100 -> 1;
+            case 150 -> 2;
+            default -> -1;
+        };
+    }
+
+    /** Whether this wave's ceremony is the short 3-beat (50/150) rather than full 5-beat (100). */
+    public static boolean isShortPlantingWave(int wave) {
+        return wave == 50 || wave == 150;
+    }
+
     /** Enforces the stationary-defender rule every simulation tick. */
     public void anchorHeroAtArenaCenter() {
         if (hero != null) {
@@ -279,19 +299,64 @@ public final class GameState {
         }
         // Sync deprecated boolean
         secondTreePlanted = plantedTreesCount > 0;
-        // Grove ceremony bookkeeping: ceremonyPending now covers any of 50/100/150, but for 32.1 keep single-wave logic
-        if (waveNumber <= PLANTING_WAVE) {
+        // Grove ceremony bookkeeping for 50/100/150
+        if (waveNumber <= 50) {
             ceremonyPending = false;
             plantedTreesCount = 0;
             plantedTreeHealth.clear();
             plantedTreeMaxHealth.clear();
-        } else if (!ceremonyPending) {
-            if (plantedTreesCount == 0) {
+        } else if (waveNumber <= 100) {
+            if (ceremonyPending) {
+                // pending for 50, count stays 0 until ceremony completes
+                plantedTreesCount = 0;
+                plantedTreeHealth.clear();
+                plantedTreeMaxHealth.clear();
+            } else {
+                if (plantedTreesCount < 1) {
+                    plantedTreesCount = 1;
+                    while (plantedTreeHealth.size() < plantedTreesCount) plantedTreeHealth.add(worldTreeMaxHealth);
+                    while (plantedTreeMaxHealth.size() < plantedTreesCount) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+                } else if (plantedTreesCount > 1) {
+                    plantedTreesCount = 1;
+                    while (plantedTreeHealth.size() > 1) plantedTreeHealth.remove(plantedTreeHealth.size() - 1);
+                    while (plantedTreeMaxHealth.size() > 1) plantedTreeMaxHealth.remove(plantedTreeMaxHealth.size() - 1);
+                }
+            }
+        } else if (waveNumber <= 150) {
+            if (ceremonyPending) {
                 plantedTreesCount = 1;
-                if (plantedTreeHealth.isEmpty()) plantedTreeHealth.add(worldTreeMaxHealth);
-                if (plantedTreeMaxHealth.isEmpty()) plantedTreeMaxHealth.add(worldTreeMaxHealth);
-                while (plantedTreeHealth.size() < plantedTreesCount) plantedTreeHealth.add(worldTreeMaxHealth);
-                while (plantedTreeMaxHealth.size() < plantedTreesCount) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+                while (plantedTreeHealth.size() > 1) plantedTreeHealth.remove(plantedTreeHealth.size() - 1);
+                while (plantedTreeMaxHealth.size() > 1) plantedTreeMaxHealth.remove(plantedTreeMaxHealth.size() - 1);
+                while (plantedTreeHealth.size() < 1) plantedTreeHealth.add(worldTreeMaxHealth);
+                while (plantedTreeMaxHealth.size() < 1) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+            } else {
+                if (plantedTreesCount < 2) {
+                    plantedTreesCount = 2;
+                    while (plantedTreeHealth.size() < plantedTreesCount) plantedTreeHealth.add(worldTreeMaxHealth);
+                    while (plantedTreeMaxHealth.size() < plantedTreesCount) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+                } else if (plantedTreesCount > 2) {
+                    plantedTreesCount = 2;
+                    while (plantedTreeHealth.size() > 2) plantedTreeHealth.remove(plantedTreeHealth.size() - 1);
+                    while (plantedTreeMaxHealth.size() > 2) plantedTreeMaxHealth.remove(plantedTreeMaxHealth.size() - 1);
+                }
+            }
+        } else {
+            if (ceremonyPending) {
+                plantedTreesCount = 2;
+                while (plantedTreeHealth.size() > 2) plantedTreeHealth.remove(plantedTreeHealth.size() - 1);
+                while (plantedTreeMaxHealth.size() > 2) plantedTreeMaxHealth.remove(plantedTreeMaxHealth.size() - 1);
+                while (plantedTreeHealth.size() < 2) plantedTreeHealth.add(worldTreeMaxHealth);
+                while (plantedTreeMaxHealth.size() < 2) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+            } else {
+                if (plantedTreesCount < 3) {
+                    plantedTreesCount = 3;
+                    while (plantedTreeHealth.size() < plantedTreesCount) plantedTreeHealth.add(worldTreeMaxHealth);
+                    while (plantedTreeMaxHealth.size() < plantedTreesCount) plantedTreeMaxHealth.add(worldTreeMaxHealth);
+                } else if (plantedTreesCount > 3) {
+                    plantedTreesCount = 3;
+                    while (plantedTreeHealth.size() > 3) plantedTreeHealth.remove(plantedTreeHealth.size() - 1);
+                    while (plantedTreeMaxHealth.size() > 3) plantedTreeMaxHealth.remove(plantedTreeMaxHealth.size() - 1);
+                }
             }
         }
         secondTreePlanted = plantedTreesCount > 0;
