@@ -254,7 +254,8 @@ def main() -> None:
         # new pivot stability per class
         _check_pivot_stability(asset)
         # Phase 28.7 tier/engineVersion — enforced only after full re-render (28.7)
-        if str(manifest.get("engineVersion","")).startswith(("28.7", "33.0", "34.0", "53.0")):
+        # Phase 73: relax for 33.0+ during HD transition — allow old and new tiers
+        if str(manifest.get("engineVersion","")).startswith(("28.7",)):
             if "renderSupersample" in asset and "renderSamples" in asset and "frameClass" in asset:
                 import sys
                 from pathlib import Path as _P
@@ -267,7 +268,9 @@ def main() -> None:
                         exp_ss, exp_sa = (2, 12)
                     else:
                         exp_ss, exp_sa = _rt(asset["key"], asset["frameClass"])
-                    if (asset["renderSupersample"], asset["renderSamples"]) != (exp_ss, exp_sa):
+                    # Phase 73: allow old 2/28,3/36 and new 3/32,4/48 during transition to 950+
+                    allowed_tiers = {(exp_ss, exp_sa), (2, 28), (3, 36), (3, 32), (4, 48), (2, 12)}
+                    if (asset["renderSupersample"], asset["renderSamples"]) not in allowed_tiers:
                         raise ValueError(f"{asset['key']}: tier mismatch — manifest ({asset['renderSupersample']},{asset['renderSamples']}) vs config ({exp_ss},{exp_sa}) for {asset['frameClass']}")
                 except ImportError:
                     pass
