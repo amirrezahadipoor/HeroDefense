@@ -45,8 +45,11 @@ public final class PlantingCeremony {
     private float elapsedSeconds;
     private boolean active;
     private boolean shortMode;
+    private int groveIndex = 1;
     private float standX = STAND_X;
     private float standY = STAND_Y;
+    private float treeX = WorldLayout.SECOND_TREE_X;
+    private float treeY = WorldLayout.SECOND_TREE_Y;
 
     public void begin() {
         begin(false, 1);
@@ -57,10 +60,23 @@ public final class PlantingCeremony {
         elapsedSeconds = 0f;
         active = true;
         shortMode = shortCeremony;
-        float treeX = WorldLayout.groveTreeX(groveIndex);
-        float treeY = WorldLayout.groveTreeY(groveIndex);
+        this.groveIndex = Math.max(0, Math.min(2, groveIndex));
+        this.treeX = WorldLayout.groveTreeX(this.groveIndex);
+        this.treeY = WorldLayout.groveTreeY(this.groveIndex);
         standX = treeX - 78f;
         standY = treeY - 38f;
+    }
+
+    public int groveIndex() {
+        return groveIndex;
+    }
+
+    public float treeX() {
+        return treeX;
+    }
+
+    public float treeY() {
+        return treeY;
     }
 
     public boolean isShort() {

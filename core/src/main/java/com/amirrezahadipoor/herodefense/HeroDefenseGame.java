@@ -1371,11 +1371,20 @@ public final class HeroDefenseGame extends ApplicationAdapter {
             spriteBatch.begin();
             boolean cinematic = flow.state() == GameScreenState.CINEMATIC && !opening;
             if (cinematic) {
+                if (gameState.plantedTreesCount > 0) {
+                    saplingTreeRenderer.drawGroveIdle(spriteBatch, gameState, ambientSeconds);
+                } else if (gameState.secondTreePlanted) {
+                    saplingTreeRenderer.drawIdle(spriteBatch, ambientSeconds);
+                }
                 if (plantingCeremony.saplingVisible()) {
                     saplingTreeRenderer.drawGrowing(spriteBatch, plantingCeremony);
                 }
-            } else if (gameState.secondTreePlanted) {
-                saplingTreeRenderer.drawIdle(spriteBatch, ambientSeconds);
+            } else {
+                if (gameState.plantedTreesCount > 0) {
+                    saplingTreeRenderer.drawGroveIdle(spriteBatch, gameState, ambientSeconds);
+                } else if (gameState.secondTreePlanted) {
+                    saplingTreeRenderer.drawIdle(spriteBatch, ambientSeconds);
+                }
             }
             combatEntityRenderer.drawActors(spriteBatch, gameState, simulationSeconds);
             if (cinematic) {
