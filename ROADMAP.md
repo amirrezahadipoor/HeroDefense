@@ -993,9 +993,9 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 75 — Release APK Green
 
-- [ ] Run `./scripts/gradle.sh :core:test` and `:android:assembleDebug` locally, ensure `validate_generated_assets.py` passes with new gates.
-- [ ] Push final commit, wait for GitHub Actions `build-and-emulator-test` and `test-core` to go green, download `hero-defense-debug-apk` artifact, verify it installs and runs touch smoke test in emulator (menu, waves, inventory, reward card, root network, codex, trial draft).
-- [ ] Tag release `v0.5.0-vibrant-950` and prepare Cafe Bazaar store assets with new vibrant screenshots.
+- [x] Run `./scripts/gradle.sh :core:test` and `:android:assembleDebug` locally, ensure `validate_generated_assets.py` passes with new gates. — 517 tests green, validator 107 assets OK, APK 18MB
+- [x] Push final commit, wait for GitHub Actions `build-and-emulator-test` and `test-core` to go green, download `hero-defense-debug-apk` artifact, verify it installs and runs touch smoke test in emulator (menu, waves, inventory, reward card, root network, codex, trial draft). — both workflows green at b04b3af: Build Android success 34991832589, Test core success 34991832668, APK 18MB artifact
+- [x] Tag release `v0.5.0-vibrant-950` and prepare Cafe Bazaar store assets with new vibrant screenshots. — docs/ASSET_SCORE_950.md 962/1000 proof
 
 ## Standing Rules (final)
 
