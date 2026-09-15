@@ -594,6 +594,151 @@ Generalizes the single Wave-100 second tree into plantings at waves 50/100/150. 
 - Every new numeric system (Ascension scaling, Trials, affixes, Elites, Focus/Ultimate, skill Evolutions) must pass through `BalanceSimulator`'s regression gate before being considered done, exactly like every Phase 14–19 system before it.
 - This addendum does not touch Cafe Bazaar/release packaging; Phases 15 and 19's release state is unchanged.
 
+# Hero Defense — Roadmap Addendum (Phase 33)
+
+Continues directly from `ROADMAP.md` Phase 32 (closed). Same repo, same `tools/blender` +
+`tools/visual` pipeline, same locked contracts. This phase upgrades render/shading/outline/material
+quality only — it explicitly does **not** touch frame dimensions, atlas layout, the 25-bone rig,
+pivot contracts, clip/frame counts, or any runtime code path. Everything downstream of the PNG
+files (libGDX loading, animation, hitboxes) keeps working unmodified; only what gets painted into
+those PNGs changes.
+
+**Reference bar.** The target look is commercial-grade 2D illustrated character art: a confident,
+weight-varying line (thicker on silhouette, thinner on interior creases — not one uniform stroke
+everywhere), real specular pop on metal/leather/hair/eyes rather than flat color, a saturated,
+deliberately-contrasted palette per character, and slightly more charismatic proportions (bigger
+expressive head/eyes) without changing scale, rig, or triangle budget. No reference artwork is
+copied into the repo or the pipeline — the bar below is written as technique and checkable
+criteria, the same way every prior style-guide section in this project already is.
+
+## Phase 33 — Studio-Tier Asset Engine
+
+Adds a new tier on top of the existing, already-shipped premium-v2 tier (`docs/VISUAL_STYLE_GUIDE.md`,
+`tools/blender/hd_pipeline/scene.py`'s `toon_material`/`_configure_freestyle`/`apply_alpha_outline`,
+`tools/blender/hd_pipeline/config.py`'s sample/supersample floors). Premium-v2 stays documented as
+history; studio-v3 is additive, following the exact review → accept → promote discipline already
+built for premium-v2.
+
+### 33.0 Studio-tier style guide amendment
+
+- [ ] Add a "Studio-v3" section to `docs/VISUAL_STYLE_GUIDE.md` (§0 sits above it as history, not
+  replaced) that names every rule this tier is allowed to exceed — most importantly §3's "specular
+  disabled except metal/glass" and "exactly three diffuse bands," and §4's single fixed outline
+  thickness — and states the new rule in each rule's place, in the same locked-table format the
+  existing guide uses.
+- [ ] Write the acceptance bar as checkable criteria (line-weight contrast ratio between silhouette
+  and interior lines, minimum/maximum highlight coverage as a percent of a material's area, palette
+  saturation/value-spacing rule), not as a picture to match — keep the guide entirely textual per
+  existing convention.
+
+### 33.1 Weighted outline system
+
+- [ ] Extend `_configure_freestyle` so silhouette/border lines render at a heavier width than
+  material-boundary/crease lines (currently one uniform `line_set.linestyle.thickness = 1.5` for
+  everything Freestyle draws), giving the silhouette the visual weight it currently lacks.
+- [ ] Extend `apply_alpha_outline`'s fixed dilation radius (`radius=3`, one flat `OUTLINE_RGBA`
+  fill) into a two-pass dilation: an outer silhouette pass at a slightly larger radius for the bold
+  exterior line, and the existing radius kept for interior/attachment seams — same function
+  signature, additional radius parameter, same `#142126` outline color so no palette rule breaks.
+
+### 33.2 Rim-light and highlight shader pass
+
+- [ ] Extend `toon_material()` (`scene.py`) with an optional fourth band: thread a `ShaderNodeFresnel`
+  or `ShaderNodeLayerWeight` into the existing `ShaderToRGB → ColorRamp` chain to drive a bright,
+  narrow rim contribution at grazing angles, mixed in only above the existing `light` band — additive
+  to the current shadow/mid/light bands, not a replacement for them.
+- [ ] Add a thresholded specular "pop": a `ShaderNodeBsdfGlossy` mixed in through the same
+  `ShaderToRGB` pipeline, gated by a `Layer Weight` facing factor so it reads as a small, deliberate
+  highlight dot/streak (matching the 33.0 coverage-percent rule) rather than a uniform sheen — enable
+  it per-material, starting with metal, leather straps, hair, and eyes, in that order, so cloth/skin/
+  wood keep their current matte read unless a specific material calls for more.
+- [ ] Keep `roughness`/`metallic` inputs driving how tight the rim/specular falloff is per material,
+  so wood stays broad and matte while metal and eyes stay tight and bright — reusing the existing
+  `metallic: bool` parameter on `MaterialSet.get()` rather than adding a new call signature everywhere.
+
+### 33.3 Palette and contrast audit
+
+- [ ] Re-audit the Locked Palette table in `docs/VISUAL_STYLE_GUIDE.md` for saturation and value
+  spacing per character (Hero, each enemy, each boss): every character should carry one saturated
+  "hero" color, one neutral leather/metal/stone tone, one skin/organic tone, and one accent, each a
+  clearly separated value step apart — tightening any hex pair that currently reads too close in
+  value once the new highlight/rim pass is in place (highlights make close-value palettes look
+  muddier, not cleaner, so this ordering matters).
+- [ ] Record the audited/adjusted hex values in the same locked-table format; anything changed
+  needs a before/after contact-sheet pair in the batch's review doc, exactly like every other
+  accepted change in this project.
+
+### 33.4 Secondary-shape and appeal pass (same rig, same budgets)
+
+- [ ] Within the existing Geometry Budgets table (`docs/VISUAL_STYLE_GUIDE.md` §2 — unchanged
+  numbers, not raised) and the existing 25-bone rig, refine `models.py`'s primitive construction for
+  Hero/enemies/bosses: slightly larger head-to-body proportion, more defined brow/eye shapes, and one
+  or two secondary silhouette details per character (a hair clump, a strap end, a fletching tuft) —
+  the kind of shape read that makes a character memorable in silhouette, not new geometry categories.
+- [ ] Treat this as a refinement pass on existing primitive calls (`add_ico`, cylinder/box builders
+  already in `models.py`), not a rebuild — no new bone, no new attachment socket, no change to any
+  existing pivot or frame size.
+
+### 33.5 Render precision re-tune
+
+- [ ] Re-check `config.py`'s `OPAQUE_RENDER_SAMPLES` (24) / `TOP_TIER_SAMPLES` (32) /
+  `OVERLAY_RENDER_SAMPLES` (8) against the new rim/highlight nodes, which are more prone to EEVEE
+  fireflies at low sample counts than the flat three-band diffuse ramp was; raise the floors only as
+  far as a before/after contact sheet shows a visible, needed improvement, and record the new
+  numbers in `render_tier()` the same way Phase 28.3 did.
+- [ ] Confirm `RENDER_SUPERSAMPLE`/`TOP_TIER_SUPERSAMPLE` are still sufficient once outline weight
+  varies by pass (33.1) — thin interior lines need enough working resolution to survive the
+  alpha-safe downsample without breaking up.
+
+### 33.6 Review-sheet and validator extension
+
+- [ ] Extend the existing `tools/visual/create_*_batch_review.py` family with a studio-tier contact
+  sheet mode: same side-by-side-against-baseline layout already used for premium-v2, with the
+  baseline now being the current premium-v2 output rather than the pre-premium-v2 one.
+- [ ] Extend `tools/visual/validate_generated_assets.py` with the new checkable criteria from 33.0
+  (line-weight ratio, highlight coverage bound) wherever they're automatable from the manifest or
+  pixel data, following the existing "manifest-only mode when Pillow is unavailable" fallback.
+- [ ] Bump the manifest's `assets[].visualQuality` value path to a new `"studio-v3"` string once a
+  batch is promoted, alongside the existing `pipelineVersion`/`engineVersion`/`renderSupersample`/
+  `renderSamples` provenance fields — mirroring exactly how premium-v2 is recorded today.
+
+### 33.7 Pilot validation (gate before touching any shipped asset)
+
+- [ ] Render a Hero-only studio-v3 pilot into a disposable candidate directory (matching the
+  existing `premium-pilot` pattern in `tools/blender/README.md`), run it through the 33.6 review
+  sheet and validator, and only continue to 33.8 once that single pilot is explicitly accepted —
+  do not run the full re-render until one character has been reviewed and approved on the new
+  engine.
+
+### 33.8 Full re-render on the new engine, replacing every existing asset
+
+- [ ] Once 33.7 is accepted, re-render every batch (`pilot`, `enemies`, `bosses`, `characters`,
+  `world-tree`, `equipment`, `equipment_overlay`, `arena`, `environment`, `ui`, `ui-supplement`,
+  `skill-icons`, `ceremony`, `vfx`, `projectile`) headlessly on the finished studio-v3 engine —
+  the same full category list Phase 28.7 already re-rendered once before.
+- [ ] Pass every batch through its 33.6 review sheet and the 33.6 validator extension, then promote
+  each through its existing `promote_*_batch.py` script into `android/assets/generated`, exactly as
+  Phase 28.7 did, so no premium-v2 (or earlier) asset remains in the shipped build.
+- [ ] Prove it the same way Phase 28.7 did: a manifest audit confirming every `assets[]` entry now
+  reads `visualQuality: "studio-v3"` and passes `render_tier()`'s tier-correctness check, plus the
+  full Phase 33 style-guide (0.7-equivalent) gate list — atlas-page, decoded-memory, APK-size, and
+  startup/residency measurements — so the visual upgrade is confirmed not to have regressed any
+  existing performance budget.
+
+## Standing Rules (additions)
+
+- No frame dimension, pivot, atlas-page limit, bone count, clip contract, or runtime code path
+  changes anywhere in this phase — every checklist item above is render/shading/material/outline/
+  geometry-detail only, gated by the existing contract tests.
+- Every rule this phase exceeds must be named explicitly in `docs/VISUAL_STYLE_GUIDE.md` (33.0)
+  before it's used anywhere else — no silent divergence from a "locked" rule.
+- No reference image from outside the project is copied, embedded, or committed anywhere in the
+  repository or its docs; the quality bar is defined entirely as text criteria, as with every other
+  section of the style guide.
+- Follow the same complete → verify → update `ROADMAP.md` → commit → push discipline as every prior
+  phase, one checklist item at a time.
+
+
 ---
 
 ## Appendix — Story Content (Phases 20, 21, 23, 25)
