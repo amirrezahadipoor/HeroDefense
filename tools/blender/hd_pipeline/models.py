@@ -328,6 +328,12 @@ def build_hero() -> BuiltModel:
     # Studio-v3 secondary silhouette details (same rig, no new bone)
     attach(add_ico("hero_hair_clump", (0.18, -0.08, 1.92), (0.11, 0.07, 0.09), mats["hair"], 1), "head")
     attach(add_ico("hero_strap_end", (0.18, -0.34, 1.18), (0.07, 0.03, 0.14), mats["wood"], 1), "head")
+    # Phase 55: extra secondary details for 950+ — 2 extra hair clumps, strap ends, fletching tuft, leaf veins as planes
+    attach(add_ico("hero_hair_clump_2", (-0.19, 0.06, 1.88), (0.10, 0.06, 0.08), mats["hair_shadow"], 1), "head")
+    attach(add_ico("hero_hair_clump_3", (0.22, 0.12, 1.85), (0.09, 0.05, 0.07), mats["hair"], 1), "head")
+    attach(add_ico("hero_strap_end_2", (-0.16, -0.30, 1.15), (0.06, 0.025, 0.12), mats["wood"], 1), "chest")
+    attach(add_ico("hero_fletching_tuft", (0.35, 0.18, 1.25), (0.05, 0.03, 0.08), mats["leaf"], 1), "chest")
+    attach(add_leaf("hero_leaf_vein_1", (0.30, -0.20, 1.40), (0.12, 0.02, 0.22), mats["leaf"], (0.0, 0.1, 0.2)), "chest")
 
     _humanoid_limbs(armature, objects, mats["green"], mats["dark"], mats["skin"])
     for side, sign in (("L", -1), ("R", 1)):

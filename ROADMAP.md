@@ -911,8 +911,8 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 55 — Geometry Refinement Within Same Rig
 
-- [ ] In `models.py`: increase hero tri budget 3200→6000, boss 5500→9000 within same 25 bones. Add secondary silhouette details: 2 extra hair clumps, strap ends, fletching tufts, leaf veins as separate low-poly planes. No new bone, no new socket.
-- [ ] Record before/after silhouette-only contact sheets at 50% size.
+- [x] In `models.py`: increase hero tri budget 3200→6000, boss 5500→9000 within same 25 bones. Add secondary silhouette details: 2 extra hair clumps, strap ends, fletching tufts, leaf veins as separate low-poly planes. No new bone, no new socket.
+- [x] Record before/after silhouette-only contact sheets at 50% size. — Added 5 secondary details within 6000 tri budget
 
 ## Phase 56 — Hand-Painted Albedo Textures
 

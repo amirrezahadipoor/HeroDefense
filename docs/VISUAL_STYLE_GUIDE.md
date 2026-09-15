@@ -111,11 +111,11 @@ Budgets count **triangles after modifiers** at render time.
 
 | Asset | Target | Hard maximum |
 |---|---:|---:|
-| Hero body/hair/base clothing | 3,200 | 5,000 |
-| One Hero equipment attachment | 250–600 | 900 |
-| Fully equipped Hero | 6,500 | 9,000 |
-| Regular enemy | 2,200 | 4,000 |
-| Boss | 5,500 | 10,000 |
+| Hero body/hair/base clothing | 6,000 | 9,000 |  <!-- Phase 55: 3200->6000 for 950+ detail -->
+| One Hero equipment attachment | 400–800 | 1,200 |  <!-- Phase 55: 250-600->400-800 -->
+| Fully equipped Hero | 9,500 | 14,000 |  <!-- Phase 55: 6500->9500 -->
+| Regular enemy | 3,200 | 5,500 |  <!-- Phase 55: 2200->3200 -->
+| Boss | 9,000 | 15,000 |  <!-- Phase 55: 5500->9000 -->
 | World Tree | 7,500 | 14,000 |
 | Ground tile | 350 | 600 |
 | Arena prop | 700 | 2,200 |
