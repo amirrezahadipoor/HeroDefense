@@ -785,6 +785,165 @@ Long before the first wave, something did not grow here — it fell here. The Ho
 | §7 Mythic flavor | 23.3 Mythic item |
 | §8 Optionals | 21.1 optional items (Silent Rootling, Idle whisper) |
 
+# Hero Defense — Roadmap Addendum (Phases 34–53) — Vibrant Color Explosion
+
+Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blender` + `tools/visual` pipeline, same 25-bone rig, same frame dimensions, same atlas layout, same clip contracts. This addendum upgrades **color, light, and material only** — no rig, no geometry budget, no pivot, no new bone, no new attachment socket. The goal is a stunning, eye-catching, commercial-grade vibrant look while keeping the existing 3D pipeline.
+
+## Block 1 — Color Explosion (Phases 34–38) — Like swapping the crayon box
+
+### Phase 34 — New Palette: Vibrant Box
+
+- [ ] In `tools/blender/hd_pipeline/config.py` → `PALETTE`: change Hero green from `#1E8A4E` to `#2ECC71` (phosphorescent, like the reference), gold from `#E8B84B` to `#FFD700` metallic glossy, leaf from `#8BF27A` to `#A8FF53` phosphorescent. Raise saturation from ~0.6 to 0.85. Keep outline `#142126` for now. Update `docs/VISUAL_STYLE_GUIDE.md` Locked Palette table with before/after.
+- [ ] Verify with `tools/visual/validate_generated_assets.py` that palette passes saturation/value-spacing gates.
+
+### Phase 35 — 5-Band Toon Ramp Instead of 3-Band
+
+- [ ] In `tools/blender/hd_pipeline/scene.py` → `toon_material()`: extend the 3-band ramp (shadow 0.55 / mid 0.82 / light 1.08) to 5 bands: shadow 0.45, shadow-mid 0.75, mid 0.95, light 1.15, highlight 1.55. This gives 5 steps from dark to bright instead of 3. Keep `CONSTANT` interpolation for now.
+- [ ] Record before/after contact sheet in `docs/art_reviews/` for Hero pilot.
+
+### Phase 36 — Soft Gradient for Hair and Skin
+
+- [ ] In `scene.py` → `toon_material()`: for materials whose name contains `hair` or `skin`, change `ramp.color_ramp.interpolation` from `CONSTANT` to `EASE`. Hair and skin become soft like the reference, not chunky. Cloth/wood stay `CONSTANT`.
+- [ ] Validate that hair highlight coverage stays within the 33.0 percent rule.
+
+### Phase 37 — Colored Outline
+
+- [ ] In `config.py` → `OUTLINE_RGBA`: keep global `#142126` but add per-category outline override: Hero `#0F2A1A` dark green, Bosses `#3A0F1A` dark red, Enemies `#1A1426` dark violet. Extend `apply_alpha_outline()` to accept an optional `outline_color` param, defaulting to `OUTLINE_RGBA` so existing calls keep working.
+- [ ] Review silhouette readability at 50% size and grayscale.
+
+### Phase 38 — True Metallic Gold
+
+- [ ] In `scene.py` → `toon_material()`: for gold/metal materials, raise `metallic` from 0.28 to 0.85 and lower `Roughness` from 0.72 to 0.25. Gold bow shines like the reference. Keep wood at 0.72 roughness.
+- [ ] Add a contact-sheet pair showing gold before/after.
+
+## Block 2 — Studio Lighting (Phases 39–43) — Like bringing 2 new projectors to a photo shoot
+
+### Phase 39 — Stronger Key Light
+
+- [ ] In `scene.py` → `configure_scene()`: raise `HD_KEY` from 900W to 1500W and change its color from `#FFF3DF` to `#FFF8E7` warmer. Exposure stays 0.0.
+- [ ] Verify no EEVEE fireflies at new energy; raise samples if needed.
+
+### Phase 40 — Phosphorescent Rim Light
+
+- [ ] Raise `HD_RIM` from 450W to 800W and change color from `#D8FFD2` to `#A8FFB0` phosphorescent green. The character edge gets a green glow like the reference. Keep `size 3.0m`.
+- [ ] Check rim coverage percent per material.
+
+### Phase 41 — Fourth Amber Back Light
+
+- [ ] Add a fourth area light `HD_BACK` at `(0.0, 8.0, 2.0)`, 600W, size `2.5m`, color `#FFD27A` amber. It creates a golden halo behind the Hero. Implement in `_add_area_light()` calls inside `configure_scene()`.
+- [ ] Ensure it does not blow out the alpha or create double shadows.
+
+### Phase 42 — Brighter World
+
+- [ ] Raise world Background Strength from 0.25 to 0.45 in `configure_scene()`. Shadows become less dead, colors pop more.
+- [ ] Validate that dark forest mood is kept, not washed out.
+
+### Phase 43 — Punchy Color Management
+
+- [ ] In `configure_scene()`: change `view_settings.look` from `AgX - Medium High Contrast` to `AgX - Punchy` (fallback to `Very High Contrast` if Punchy label not available in this Blender patch). Whole image becomes ~20% more saturated without touching textures.
+- [ ] Record before/after color-grade strip on every review sheet.
+
+## Block 3 — Glossy Material (Phases 44–48) — Like waxing a car
+
+### Phase 44 — Highlight Pop for All Clothes
+
+- [ ] In `scene.py` → `toon_material()`: expand `is_highlight` heuristic from only `hair/metal/eye/...` to also include `green/leaf/cloth/tunic/armor`. Every piece gets a small specular pop, not just metal/hair. Keep factor at 0.35 for cloth vs 1.0 for metal so cloth stays restrained.
+
+### Phase 45 — Bigger Highlights
+
+- [ ] Change `highlight_ramp` position from 0.92 to 0.85. Highlights become larger and more eye-catching. Keep `CONSTANT` interpolation.
+- [ ] Ensure highlight coverage stays within max percent rule from 33.0.
+
+### Phase 46 — Emission Glow for Leaves and Gold
+
+- [ ] Raise `emission.inputs["Strength"]` from 1.0 to 1.4 for leaf and gold materials. Leaves and gold glow slightly even at night, matching the sparkle in the reference. Wood/stone stay at 1.0.
+- [ ] Verify that emission does not blow out the alpha-dilated outline.
+
+### Phase 47 — Eye Material with Double White Highlights
+
+- [ ] Create a dedicated eye material path in `models.py`/`scene.py`: eyes get two small white highlight dots (upper-left and lower-right) like the reference, not just a black dot. Implement as two tiny glossy pops driven by LayerWeight. Keep eye base color dark.
+
+### Phase 48 — Emissive Environment Crystals
+
+- [ ] In `tools/blender/hd_pipeline/environment.py`: give crystal props an emissive component (strength 1.2, color per crystal type cyan/amber/violet) so they look like colorful jewels, not grey stones. Reuse existing crystal meshes, no new geometry.
+
+## Block 4 — Stunning Final Render (Phases 49–53)
+
+### Phase 49 — Higher Render Precision
+
+- [ ] In `config.py`: raise `TOP_TIER_SUPERSAMPLE` from 3 to 4 and `TOP_TIER_SAMPLES` from 36 to 48. Edges become sharper, colors cleaner. Keep `RENDER_SUPERSAMPLE` 2→3 for regular enemies. Record new numbers in `render_tier()`.
+
+### Phase 50 — Bloom in EEVEE Compositor
+
+- [ ] In `scene.py` → `configure_scene()`: enable EEVEE bloom (`use_bloom = True`, threshold 0.8, intensity 0.4, radius 0.6) for top-tier assets. This creates the sparkle around bow and arrows seen in the reference. Add a guard so Workbench overlays ignore bloom.
+
+### Phase 51 — Stronger Ambient Occlusion
+
+- [ ] Enable/strengthen AO in EEVEE: `scene.eevee.use_gtao = True`, `gtao_distance 0.6`, `gtao_factor 1.2`. Clothing folds become deeper and more readable.
+
+### Phase 52 — Legendary Rarity Glow Upgrade
+
+- [ ] In `core/src/main/java/.../render/RarityGlowRenderer.java` and `VisualRarity.java`: upgrade Legendary/Mythic glow from single halo to double halo + tiny particle specks. Gold for Legendary, cyan-purple for Mythic. Keep it as runtime shader, not baked.
+
+### Phase 53 — Full Re-render on Vibrant Engine
+
+- [ ] Re-render every batch (`hero`, `enemies`, `bosses`, `world-tree`, `equipment`, `arena`, `environment`, `ui`, `skill-icons`, `ceremony`, `vfx`, `projectile`) headlessly with the finished vibrant engine (Phases 34–52), pass each through its review sheet + validator, and promote into `android/assets/generated` so no studio-v3-only asset remains.
+- [ ] Prove with manifest audit: every `assets[]` entry reads `visualQuality: "studio-v4-vibrant"` and passes `render_tier()` check, plus atlas-page, decoded-memory, APK-size gates — confirming stunning look without performance regression.
+
+## Standing Rules for Phases 34–53
+
+- No rig, bone count, frame dimension, pivot, atlas-page limit, or clip contract changes — color/light/material/render only.
+- Complete → verify → update `ROADMAP.md` → commit → push for every checklist item; never batch items. Push frequently.
+- Keep workspace under 128 MB; SDKs, Blender, caches, helpers in `/tmp` or CI only.
+- Review every Blender-rendered batch before accepting it.
+- Treat `docs/VISUAL_STYLE_GUIDE.md` as non-negotiable; every palette/outlook change must be recorded there with before/after.
+
+---
+
+## Appendix — Story Content (Phases 20, 21, 23, 25)
+
+Full narrative text wired to the systems above. Two voices: Hero (white, terse, present-tense) and Tree (leaf-green, reflective, Codex only).
+
+### World Premise
+
+Long before the first wave, something did not grow here — it fell here. The Hollow is that unmaking's name — four bosses are its four ways of touching the world: stone (Golem), root/thorn (Matriarch), fire (Wyrm), shadow (Void Knight). World Tree is the one root never swallowed.
+
+### 1. Opening Cinematics by Ascension Tier
+
+- Tier 0 (shipped): "Can you protect the World Tree?!" / "Can you?" / "Are you sure?!"
+- Tier 1: "Again, the dark comes." / "Again, I stand." / "This time — further."
+- Tier 2: "The Hollow remembers me now." / "Good. Let it be afraid." / "Roots first. Then flesh. Then the Tree. Not today."
+- Tier 3+: "Another dawn. Another siege." / "The Tree does not ask twice." / "Neither do I."
+
+### 2. Mid-Run Story Beats
+
+- Boss first-encounter title cards (once per identity)
+- Reflection lines: Wave 25, 50, 75, 125, 150, 175
+- Wave 100 Planting Ceremony 5 lines synced to timeline
+- Wave 200 Ascension transition 2 lines
+
+(Exact wording: `docs/STORY_CONTENT.md` §2 — wired by the Phase 21.2 epilogue item for §2.5 and the Phase 21.3 items for §2.1–§2.4.)
+
+### 3-8. Codex, Epilogues, Mythic Flavor
+
+30 Codex entries, 5 epilogues (Flawless/Hard-Fought/Early/Middle/Late Fall), 6 Mythic flavor passives, Elite Whispering Wounds fragments — full text in `docs/STORY_CONTENT.md` (shipped).
+
+### Story Wiring Map (which roadmap item owns each story section — nothing unowned, nothing twice)
+
+| Story section | Owning roadmap item |
+|---|---|
+| §1 Opening by tier | 21.2 opening item |
+| §2.1 Boss title cards | 21.3 title-card item |
+| §2.2 + §2.4 Reflections | 21.3 reflection item |
+| §2.3 Ceremony lines | 21.3 ceremony item |
+| §2.5 Ascension transition | 21.2 epilogue item (wins only) |
+| §3 Boss bios | 21.1 bio item (2nd paragraph of entries 9–12) |
+| §4 Elite fragments | 25.2 Elite item |
+| §5 Codex 1–30 | 21.1 catalog/unlock/screen items |
+| §6 Epilogues A–E | 21.2 epilogue item |
+| §7 Mythic flavor | 23.3 Mythic item |
+| §8 Optionals | 21.1 optional items (Silent Rootling, Idle whisper) |
+
 ## Standing Rules (final)
 
 - Complete → verify → update this file → commit → push for every checklist item; never batch items.
@@ -793,4 +952,5 @@ Long before the first wave, something did not grow here — it fell here. The Ho
 - Review every Blender-rendered batch before accepting it.
 - Treat the visual style guide as non-negotiable.
 - Use touch/tap/drag everywhere, including automated tests; no keyboard or mouse-only paths.
+- Keep workspace under 128 MB at all times.
 
