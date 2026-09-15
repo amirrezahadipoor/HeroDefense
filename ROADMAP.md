@@ -957,7 +957,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 66 — Crystal Refraction and Inner Glow
 
-- [ ] Crystal props: add refraction shader (IOR 1.45) + inner emissive core with gradient (cyan/amber/violet) + outer glow. Update `environment.py` `build_crystal_prop()` to use emissive core strength 1.8 and add inner point light.
+- [x] Crystal props: add refraction shader (IOR 1.45) + inner emissive core with gradient (cyan/amber/violet) + outer glow. Update `environment.py` `build_crystal_prop()` to use emissive core strength 1.8 and add inner point light.
 
 ## Phase 67 — Arena Backdrop HD Hand-Painted
 
