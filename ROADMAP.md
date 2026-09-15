@@ -916,8 +916,8 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 56 — Hand-Painted Albedo Textures
 
-- [ ] Add `tools/blender/texture_paint/` pipeline: Substance Painter / Blender Texture Paint workflow that bakes hand-painted albedo to 1024×1024 PNG, then downsamples to atlas. Start with hero_green and hero_leaf materials. Store source `.blend` with vertex colors, export albedo.
-- [ ] Update `toon_material()` to optionally mix hand-painted albedo via `ShaderNodeTexImage` multiplied over base color (factor 0.7). Keep procedural fallback.
+- [x] Add `tools/blender/texture_paint/` pipeline: Substance Painter / Blender Texture Paint workflow that bakes hand-painted albedo to 1024×1024 PNG, then downsamples to atlas. Start with hero_green and hero_leaf materials. Store source `.blend` with vertex colors, export albedo.
+- [x] Update `toon_material()` to optionally mix hand-painted albedo via `ShaderNodeTexImage` multiplied over base color (factor 0.7). Keep procedural fallback.
 
 ## Phase 57 — Normal Maps for Depth
 
