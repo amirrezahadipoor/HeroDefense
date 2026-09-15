@@ -969,7 +969,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 69 — Blender Post-Process: LUT + Bloom Tuned + Color Grading
 
-- [ ] In `configure_scene()`: add compositor LUT (AgX Punchy → custom LUT for vibrant), bloom threshold 0.8→0.75 intensity 0.4→0.6 for stronger sparkle, add subtle vignette 0.15. Keep transparent film.
+- [x] In `configure_scene()`: add compositor LUT (AgX Punchy → custom LUT for vibrant), bloom threshold 0.8→0.75 intensity 0.4→0.6 for stronger sparkle, add subtle vignette 0.15. Keep transparent film.
 
 ## Phase 70 — Runtime Post-Process in libGDX: Vignette + Bloom + LUT
 
