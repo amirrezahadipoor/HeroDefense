@@ -245,6 +245,18 @@ def configure_scene(
             pass
     scene.view_settings.exposure = 0.0
     scene.view_settings.gamma = 1.0
+    # Phase 51: stronger AO for deeper clothing folds
+    try:
+        scene.eevee.use_gtao = True
+        scene.eevee.gtao_distance = 0.6
+        scene.eevee.gtao_factor = 1.2
+        scene.eevee.use_gtao_bent_normals = True
+    except AttributeError:
+        # Older EEVEE API
+        try:
+            scene.eevee.use_gtao = True
+        except AttributeError:
+            pass
 
     world = bpy.data.worlds.get("World") or bpy.data.worlds.new("World")
     scene.world = world

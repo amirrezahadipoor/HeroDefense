@@ -879,7 +879,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 51 — Stronger Ambient Occlusion
 
-- [ ] Enable/strengthen AO in EEVEE: `scene.eevee.use_gtao = True`, `gtao_distance 0.6`, `gtao_factor 1.2`. Clothing folds become deeper and more readable.
+- [x] Enable/strengthen AO in EEVEE: `scene.eevee.use_gtao = True`, `gtao_distance 0.6`, `gtao_factor 1.2`. Clothing folds become deeper and more readable.
 
 ### Phase 52 — Legendary Rarity Glow Upgrade
 
