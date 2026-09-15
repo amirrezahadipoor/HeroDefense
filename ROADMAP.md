@@ -985,7 +985,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 73 — Full Re-render All Batches on Studio-V5-HD-PBR Engine
 
-- [ ] Re-render every batch (`hero`, `rootling`, `stonekin`, `gloom_wolf`, `fungal_brute`, `ancient_golem`, `thorn_matriarch`, `ember_wyrm`, `void_knight`, `world_tree_*`, `equipment_*`, `arena`, `environment`, `ui`, `skill-icons`, `ceremony`, `vfx`, `projectile`) on final studio-v5-hd-pbr engine (Phases 54–72). Promote to `android/assets/generated` with `visualQuality: "studio-v5-hd-pbr"` and `engineVersion: "75.0-studio-v5-hd-pbr-4x48-pbr"`. Prove with manifest audit.
+- [x] Re-render every batch (`hero`, `rootling`, `stonekin`, `gloom_wolf`, `fungal_brute`, `ancient_golem`, `thorn_matriarch`, `ember_wyrm`, `void_knight`, `world_tree_*`, `equipment_*`, `arena`, `environment`, `ui`, `skill-icons`, `ceremony`, `vfx`, `projectile`) on final studio-v5-hd-pbr engine (Phases 54–72). Promote to `android/assets/generated` with `visualQuality: "studio-v5-hd-pbr"` and `engineVersion: "75.0-studio-v5-hd-pbr-4x48-pbr"`. Prove with manifest audit.
 
 ## Phase 74 — Manual Review and 950+ Score Proof
 
