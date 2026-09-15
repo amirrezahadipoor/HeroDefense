@@ -521,6 +521,10 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 - [ ] Write `docs/ASSET_ENGINE.md`: how to run the pipeline, accept/reject checklist, and engine version recorded per batch in the asset manifest.
 
+### 28.7 Full re-render on the new engine
+
+- [ ] Re-render every batch (`pilot`, `premium-pilot`, `enemies`, `bosses`, `characters`, `world-tree`, `equipment`, `arena`, `environment`, `ui`, `ui-supplement`, `skill-icons`, `ceremony`) headlessly with the finished Phase 28 engine, pass each through the 28.2 review sheets + 28.5 validation, and promote the output into `android/assets/generated` so no old-engine asset remains; prove it with a manifest audit showing the tier/engine-version fields on every batch.
+
 ## Phase 29 — Missing Art + Hero Wearables
 
 Rebuilds every icon/item with a real shortage (no more borrowed art) and reduces the hero's worn look to boots + weapon only.
