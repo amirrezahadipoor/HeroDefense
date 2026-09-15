@@ -681,12 +681,12 @@ built for premium-v2.
 
 ### 33.5 Render precision re-tune
 
-- [ ] Re-check `config.py`'s `OPAQUE_RENDER_SAMPLES` (24) / `TOP_TIER_SAMPLES` (32) /
+- [x] Re-check `config.py`'s `OPAQUE_RENDER_SAMPLES` (24) / `TOP_TIER_SAMPLES` (32) /
   `OVERLAY_RENDER_SAMPLES` (8) against the new rim/highlight nodes, which are more prone to EEVEE
   fireflies at low sample counts than the flat three-band diffuse ramp was; raise the floors only as
   far as a before/after contact sheet shows a visible, needed improvement, and record the new
   numbers in `render_tier()` the same way Phase 28.3 did.
-- [ ] Confirm `RENDER_SUPERSAMPLE`/`TOP_TIER_SUPERSAMPLE` are still sufficient once outline weight
+- [x] Confirm `RENDER_SUPERSAMPLE`/`TOP_TIER_SUPERSAMPLE` are still sufficient once outline weight
   varies by pass (33.1) — thin interior lines need enough working resolution to survive the
   alpha-safe downsample without breaking up.
 

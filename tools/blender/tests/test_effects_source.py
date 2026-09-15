@@ -30,9 +30,9 @@ class EffectCategoryConfigTest(unittest.TestCase):
             self.assertIn(frame_class, CAMERA_SHIFT_Y)
 
     def test_new_categories_render_mid_tier(self) -> None:
-        self.assertEqual((2, 24), render_tier("projectile_arrow", "projectile"))
-        self.assertEqual((2, 24), render_tier("vfx_impact_flash", "vfx"))
-        self.assertEqual((2, 24), render_tier("vfx_shockwave_ring", "vfx"))
+        self.assertEqual((2, 28), render_tier("projectile_arrow", "projectile"))
+        self.assertEqual((2, 28), render_tier("vfx_impact_flash", "vfx"))
+        self.assertEqual((2, 28), render_tier("vfx_shockwave_ring", "vfx"))
 
     def test_proof_asset_sets(self) -> None:
         self.assertEqual(("projectile_arrow",), tuple(a.key for a in PROJECTILES))

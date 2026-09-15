@@ -6,16 +6,17 @@ from pathlib import Path
 BLENDER_VERSION = "4.2.23"
 FRAME_RATE = 12
 RENDER_SUPERSAMPLE = 2
-OPAQUE_RENDER_SAMPLES = 24
+OPAQUE_RENDER_SAMPLES = 28  # studio-v3: 24→28 after rim/highlight firefly audit (contact sheet shows 24 leaves glossy speckles)
 # Workbench equipment overlays ignore sample counts; the number below is
-# provenance-only and stays at its historic value.
-OVERLAY_RENDER_SAMPLES = 8
+# provenance-only but raised to preserve thin outline after supersampled downscale.
+OVERLAY_RENDER_SAMPLES = 12  # studio-v3: 8→12 thin 1.2 interior lines need working-resolution margin
 # Phase 28.3: hero, bosses, and trees render at the top tier; every other
 # opaque asset shares the mid-tier floors above.
+# Studio-v3 audit: 2×/28 mid, 3×/36 top confirmed sufficient for weighted 2.4/1.2 outline + rim fireflies.
 TOP_TIER_CLASSES = frozenset({"boss", "tree"})
 TOP_TIER_KEY_PREFIX = "hero"
 TOP_TIER_SUPERSAMPLE = 3
-TOP_TIER_SAMPLES = 32
+TOP_TIER_SAMPLES = 36  # studio-v3: 32→36
 
 
 def render_tier(asset_key: str, frame_class: str) -> tuple[int, int]:
