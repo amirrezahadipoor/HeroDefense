@@ -531,7 +531,7 @@ Rebuilds every icon/item with a real shortage (no more borrowed art) and reduces
 
 ### 29.0 Shortage audit
 
-- [ ] Enumerate every borrowed/placeholder/missing art via script/test (known: 6 Mythics + 4 bows borrow art) and freeze the build list in `docs/ART_SHORTAGE.md`.
+- [x] Enumerate every borrowed/placeholder/missing art via script/test (known: 6 Mythics + 4 bows borrow art) and freeze the build list in `docs/ART_SHORTAGE.md`.
 
 ### 29.1–29.3 Production batches
 

@@ -1,0 +1,54 @@
+{
+  "borrowed": [
+    {
+      "id": "yew_shortbow",
+      "artId": "ashwood_bow",
+      "kind": "bow"
+    },
+    {
+      "id": "thornwood_bow",
+      "artId": "ashwood_bow",
+      "kind": "bow"
+    },
+    {
+      "id": "verdant_recurve",
+      "artId": "moonwood_longbow",
+      "kind": "bow"
+    },
+    {
+      "id": "golemsbane_warbow",
+      "artId": "starfall_bow",
+      "kind": "bow"
+    },
+    {
+      "id": "sunfall_last_arrow",
+      "artId": "worldbranch",
+      "kind": "mythic"
+    },
+    {
+      "id": "crown_hollow_eye",
+      "artId": "crown_of_first_leaves",
+      "kind": "mythic"
+    },
+    {
+      "id": "bark_first_root",
+      "artId": "heartwood_aegis",
+      "kind": "mythic"
+    },
+    {
+      "id": "windrunner_last_steps",
+      "artId": "boots_of_three_winds",
+      "kind": "mythic"
+    },
+    {
+      "id": "verdant_oath",
+      "artId": "echo_band",
+      "kind": "mythic"
+    },
+    {
+      "id": "emberless_core",
+      "artId": "eternal_seed",
+      "kind": "mythic"
+    }
+  ]
+}
