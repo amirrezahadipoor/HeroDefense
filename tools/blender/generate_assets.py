@@ -1143,6 +1143,22 @@ def _read_existing_manifest(output: Path) -> list[dict]:
         return []
 
 
+def _git_commit() -> str:
+    try:
+        import subprocess
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            cwd=pathlib.Path(__file__).resolve().parents[2],
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()[:12]
+    except Exception:
+        pass
+    return os.environ.get("GITHUB_SHA", "unknown")[:12]
+
 def _fresh_directory(path: Path) -> None:
     if path.exists():
         shutil.rmtree(path)
