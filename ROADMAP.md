@@ -965,7 +965,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 68 — Lighting Upgrade: HDRI + Light Probes + Contact Shadows
 
-- [ ] In `scene.py`: add HDRI small studio map for ambient, add irradiance volume for light probes, enable contact shadows for all area lights (size 5.0→3.5 for sharper shadows). Keep 4 lights (Key/Fill/Rim/Back) but tune.
+- [x] In `scene.py`: add HDRI small studio map for ambient, add irradiance volume for light probes, enable contact shadows for all area lights (size 5.0→3.5 for sharper shadows). Keep 4 lights (Key/Fill/Rim/Back) but tune.
 
 ## Phase 69 — Blender Post-Process: LUT + Bloom Tuned + Color Grading
 
