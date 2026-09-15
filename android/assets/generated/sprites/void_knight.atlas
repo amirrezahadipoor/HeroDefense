@@ -1,5 +1,5 @@
 void_knight.png
-size: 3072,1536
+size: 3840,1536
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -47,154 +47,154 @@ void_knight_idle
   index: 5
 void_knight_attack
   rotate: false
-  xy: 2304, 0
-  size: 384, 384
-  orig: 384, 384
-  offset: 0, 0
-  index: 0
-void_knight_attack
-  rotate: false
-  xy: 2688, 0
-  size: 384, 384
-  orig: 384, 384
-  offset: 0, 0
-  index: 1
-void_knight_attack
-  rotate: false
   xy: 0, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 2
+  index: 0
 void_knight_attack
   rotate: false
   xy: 384, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 3
+  index: 1
 void_knight_attack
   rotate: false
   xy: 768, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 4
+  index: 2
 void_knight_attack
   rotate: false
   xy: 1152, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 5
+  index: 3
 void_knight_attack
   rotate: false
   xy: 1536, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 6
+  index: 4
 void_knight_attack
   rotate: false
   xy: 1920, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 7
-void_knight_hit
+  index: 5
+void_knight_attack
   rotate: false
   xy: 2304, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 0
-void_knight_hit
+  index: 6
+void_knight_attack
   rotate: false
   xy: 2688, 384
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 1
+  index: 7
 void_knight_hit
   rotate: false
   xy: 0, 768
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 2
+  index: 0
 void_knight_hit
   rotate: false
   xy: 384, 768
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 3
-void_knight_death
+  index: 1
+void_knight_hit
   rotate: false
   xy: 768, 768
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 0
-void_knight_death
+  index: 2
+void_knight_hit
   rotate: false
   xy: 1152, 768
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 1
-void_knight_death
-  rotate: false
-  xy: 1536, 768
-  size: 384, 384
-  orig: 384, 384
-  offset: 0, 0
-  index: 2
-void_knight_death
-  rotate: false
-  xy: 1920, 768
-  size: 384, 384
-  orig: 384, 384
-  offset: 0, 0
   index: 3
-void_knight_death
-  rotate: false
-  xy: 2304, 768
-  size: 384, 384
-  orig: 384, 384
-  offset: 0, 0
-  index: 4
-void_knight_death
-  rotate: false
-  xy: 2688, 768
-  size: 384, 384
-  orig: 384, 384
-  offset: 0, 0
-  index: 5
 void_knight_death
   rotate: false
   xy: 0, 1152
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 6
+  index: 0
 void_knight_death
   rotate: false
   xy: 384, 1152
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 7
+  index: 1
 void_knight_death
   rotate: false
   xy: 768, 1152
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
-  index: 8
+  index: 2
 void_knight_death
   rotate: false
   xy: 1152, 1152
+  size: 384, 384
+  orig: 384, 384
+  offset: 0, 0
+  index: 3
+void_knight_death
+  rotate: false
+  xy: 1536, 1152
+  size: 384, 384
+  orig: 384, 384
+  offset: 0, 0
+  index: 4
+void_knight_death
+  rotate: false
+  xy: 1920, 1152
+  size: 384, 384
+  orig: 384, 384
+  offset: 0, 0
+  index: 5
+void_knight_death
+  rotate: false
+  xy: 2304, 1152
+  size: 384, 384
+  orig: 384, 384
+  offset: 0, 0
+  index: 6
+void_knight_death
+  rotate: false
+  xy: 2688, 1152
+  size: 384, 384
+  orig: 384, 384
+  offset: 0, 0
+  index: 7
+void_knight_death
+  rotate: false
+  xy: 3072, 1152
+  size: 384, 384
+  orig: 384, 384
+  offset: 0, 0
+  index: 8
+void_knight_death
+  rotate: false
+  xy: 3456, 1152
   size: 384, 384
   orig: 384, 384
   offset: 0, 0
