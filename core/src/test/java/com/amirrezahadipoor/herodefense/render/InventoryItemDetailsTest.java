@@ -47,9 +47,9 @@ final class InventoryItemDetailsTest {
             state, EquipmentCatalog.byId("bark_first_root").createItem()
         );
         assertEquals("PASSIVE: Every 10th hit taken heals 20%", mythic.passiveLine());
+        // Updated flavor to match current MythicEffects.java
         assertEquals(
-            "Cut from the World Tree's own outer bark, back when it "
-                + "could still spare the wood. It remembers how to close a wound.",
+            "Cut from the World Tree's bark when it could spare wood. It knows how to close a wound.",
             mythic.flavorLine()
         );
 
