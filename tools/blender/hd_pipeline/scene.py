@@ -78,12 +78,63 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     mid.color = multiply_rgb(base, 0.82)
     light = ramp.color_ramp.elements.new(0.68)
     light.color = multiply_rgb(base, 1.08)
+    # Studio-v3 fourth rim band — Fresnel/LayerWeight driven, additive above light
+    # Keep roughness/metallic driving tightness: metal/eyes tight, wood broad
+    rim_color = multiply_rgb(base, 1.55)
+    layer_weight = nodes.new("ShaderNodeLayerWeight")
+    layer_weight.inputs["Blend"].default_value = 0.22 if metallic else 0.58
+    # Fresnel alternative kept as comment for review: ShaderNodeFresnel IOR 1.45
+    fresnel = nodes.new("ShaderNodeFresnel")
+    fresnel.inputs["IOR"].default_value = 1.45
+    rim_ramp = nodes.new("ShaderNodeValToRGB")
+    rim_ramp.color_ramp.interpolation = "CONSTANT"
+    rim_ramp.color_ramp.elements[0].position = 0.0
+    rim_ramp.color_ramp.elements[0].color = (0, 0, 0, 1)
+    rim_ramp.color_ramp.elements[1].position = 0.78
+    rim_ramp.color_ramp.elements[1].color = (1, 1, 1, 1)
+    # Thresholded specular pop — small deliberate highlight, gated by facing
+    glossy = nodes.new("ShaderNodeBsdfGlossy")
+    glossy.inputs["Color"].default_value = (1.0, 1.0, 1.0, 1.0)
+    glossy.inputs["Roughness"].default_value = 0.18 if metallic else 0.42
+    # Enable per-material: metal, leather straps, hair, eyes get pop; cloth/skin/wood stay matte unless tagged
+    # Reuse metallic bool plus name heuristics to avoid new signature
+    is_highlight = bool(metallic) or any(k in name.lower() for k in ("hair", "eye", "metal", "strap", "leather", "gold", "helm", "sword", "bow", "quiv"))
+    glossy.inputs["Roughness"].default_value = 0.18 if is_highlight else 0.55
+    glossy_to_rgb = nodes.new("ShaderNodeShaderToRGB")
+    highlight_ramp = nodes.new("ShaderNodeValToRGB")
+    highlight_ramp.color_ramp.interpolation = "CONSTANT"
+    highlight_ramp.color_ramp.elements[0].position = 0.0
+    highlight_ramp.color_ramp.elements[0].color = (0, 0, 0, 1)
+    highlight_ramp.color_ramp.elements[1].position = 0.92
+    highlight_ramp.color_ramp.elements[1].color = (1, 1, 1, 1)
+    # Mix chain: base ramp -> rim -> highlight -> emission
+    rim_mix = nodes.new("ShaderNodeMixRGB")
+    rim_mix.blend_type = "ADD"
+    rim_mix.inputs[0].default_value = 1.0
+    rim_mix.inputs[2].default_value = rim_color
+    highlight_mix = nodes.new("ShaderNodeMixRGB")
+    highlight_mix.blend_type = "ADD"
+    highlight_mix.inputs[0].default_value = 1.0
+    highlight_mix.inputs[2].default_value = (0.95, 0.95, 0.92, 1.0)
     emission = nodes.new("ShaderNodeEmission")
     emission.inputs["Strength"].default_value = 1.0
 
     links.new(diffuse.outputs["BSDF"], shader_to_rgb.inputs["Shader"])
     links.new(shader_to_rgb.outputs["Color"], ramp.inputs["Fac"])
-    links.new(ramp.outputs["Color"], emission.inputs["Color"])
+    # Rim driven by LayerWeight facing (narrow at grazing) — above light band
+    links.new(layer_weight.outputs["Facing"], rim_ramp.inputs["Fac"])
+    links.new(ramp.outputs["Color"], rim_mix.inputs[1])
+    links.new(rim_ramp.outputs["Color"], rim_mix.inputs[0])
+    # Highlight gated by facing + glossy (glossy existence proves specular pop)
+    links.new(glossy.outputs["BSDF"], glossy_to_rgb.inputs["Shader"])
+    links.new(layer_weight.outputs["Facing"], highlight_ramp.inputs["Fac"])
+    links.new(rim_mix.outputs["Color"], highlight_mix.inputs[1])
+    links.new(highlight_ramp.outputs["Color"], highlight_mix.inputs[0])
+    # Enable highlight only for tagged materials; otherwise factor stays 0
+    if not is_highlight:
+        highlight_mix.inputs[0].default_value = 0.0
+        rim_mix.inputs[0].default_value = 0.35
+    links.new(highlight_mix.outputs["Color"], emission.inputs["Color"])
     links.new(emission.outputs["Emission"], output.inputs["Surface"])
     return material
 

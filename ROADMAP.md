@@ -643,16 +643,16 @@ built for premium-v2.
 
 ### 33.2 Rim-light and highlight shader pass
 
-- [ ] Extend `toon_material()` (`scene.py`) with an optional fourth band: thread a `ShaderNodeFresnel`
+- [x] Extend `toon_material()` (`scene.py`) with an optional fourth band: thread a `ShaderNodeFresnel`
   or `ShaderNodeLayerWeight` into the existing `ShaderToRGB → ColorRamp` chain to drive a bright,
   narrow rim contribution at grazing angles, mixed in only above the existing `light` band — additive
   to the current shadow/mid/light bands, not a replacement for them.
-- [ ] Add a thresholded specular "pop": a `ShaderNodeBsdfGlossy` mixed in through the same
+- [x] Add a thresholded specular "pop": a `ShaderNodeBsdfGlossy` mixed in through the same
   `ShaderToRGB` pipeline, gated by a `Layer Weight` facing factor so it reads as a small, deliberate
   highlight dot/streak (matching the 33.0 coverage-percent rule) rather than a uniform sheen — enable
   it per-material, starting with metal, leather straps, hair, and eyes, in that order, so cloth/skin/
   wood keep their current matte read unless a specific material calls for more.
-- [ ] Keep `roughness`/`metallic` inputs driving how tight the rim/specular falloff is per material,
+- [x] Keep `roughness`/`metallic` inputs driving how tight the rim/specular falloff is per material,
   so wood stays broad and matte while metal and eyes stay tight and bright — reusing the existing
   `metallic: bool` parameter on `MaterialSet.get()` rather than adding a new call signature everywhere.
 
