@@ -58,12 +58,12 @@ public final class EquipmentCatalog {
         item("heartwood_aegis", "Heartwood Aegis", EquipmentSlot.ARMOR, ItemTier.LEGENDARY, HeroStat.HEALTH, 5, HeroStat.STRENGTH, 2),
         item("boots_of_three_winds", "Boots Of Three Winds", EquipmentSlot.BOOTS, ItemTier.LEGENDARY, HeroStat.DODGE, 5, HeroStat.AGILITY, 2),
         item("eternal_seed", "Eternal Seed", EquipmentSlot.RING_2, ItemTier.LEGENDARY, HeroStat.LUCK, 5, HeroStat.AGILITY, 2),
-        mythic("sunfall_last_arrow", "Sunfall, the Last Arrow", EquipmentSlot.WEAPON, HeroStat.AGILITY, 2, HeroStat.STRENGTH, 1, "worldbranch"),
-        mythic("crown_hollow_eye", "Crown of the Hollow Eye", EquipmentSlot.HELMET, HeroStat.HEALTH, 2, HeroStat.DODGE, 1, "crown_of_first_leaves"),
-        mythic("bark_first_root", "Bark of the First Root", EquipmentSlot.ARMOR, HeroStat.HEALTH, 2, HeroStat.STRENGTH, 1, "heartwood_aegis"),
-        mythic("windrunner_last_steps", "Windrunner's Last Steps", EquipmentSlot.BOOTS, HeroStat.DODGE, 2, HeroStat.AGILITY, 1, "boots_of_three_winds"),
-        mythic("verdant_oath", "Verdant Oath", EquipmentSlot.RING_1, HeroStat.LUCK, 2, HeroStat.STRENGTH, 1, "echo_band"),
-        mythic("emberless_core", "Emberless Core", EquipmentSlot.RING_2, HeroStat.LUCK, 2, HeroStat.AGILITY, 1, "eternal_seed")
+        mythic("sunfall_last_arrow", "Sunfall, the Last Arrow", EquipmentSlot.WEAPON, HeroStat.AGILITY, 2, HeroStat.STRENGTH, 1, "sunfall_last_arrow"),
+        mythic("crown_hollow_eye", "Crown of the Hollow Eye", EquipmentSlot.HELMET, HeroStat.HEALTH, 2, HeroStat.DODGE, 1, "crown_hollow_eye"),
+        mythic("bark_first_root", "Bark of the First Root", EquipmentSlot.ARMOR, HeroStat.HEALTH, 2, HeroStat.STRENGTH, 1, "bark_first_root"),
+        mythic("windrunner_last_steps", "Windrunner's Last Steps", EquipmentSlot.BOOTS, HeroStat.DODGE, 2, HeroStat.AGILITY, 1, "windrunner_last_steps"),
+        mythic("verdant_oath", "Verdant Oath", EquipmentSlot.RING_1, HeroStat.LUCK, 2, HeroStat.STRENGTH, 1, "verdant_oath"),
+        mythic("emberless_core", "Emberless Core", EquipmentSlot.RING_2, HeroStat.LUCK, 2, HeroStat.AGILITY, 1, "emberless_core")
     ));
     private static final Map<String, EquipmentDefinition> BY_ID = indexById();
 

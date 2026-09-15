@@ -1801,6 +1801,316 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "armature": "hero_armature",
+      "atlas": "equipment/bark_first_root.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_bark_first_root.png",
+      "itemId": "bark_first_root",
+      "key": "equipment_bark_first_root",
+      "materialCount": 4,
+      "meshParts": 12,
+      "modelRevision": "mythic-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "sheet": "equipment/bark_first_root.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/bark_first_root.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "ARMOR",
+      "tier": "MYTHIC",
+      "triangles": 800,
+      "visualKind": "armor",
+      "visualQuality": "premium-v2",
+      "visualSlot": "armor"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
       "atlas": "equipment/bark_tunic.atlas",
       "boneAnimated": true,
       "bones": [
@@ -3030,6 +3340,316 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "armature": "hero_armature",
+      "atlas": "equipment/crown_hollow_eye.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_crown_hollow_eye.png",
+      "itemId": "crown_hollow_eye",
+      "key": "equipment_crown_hollow_eye",
+      "materialCount": 4,
+      "meshParts": 12,
+      "modelRevision": "mythic-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "sheet": "equipment/crown_hollow_eye.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/crown_hollow_eye.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "HELMET",
+      "tier": "MYTHIC",
+      "triangles": 800,
+      "visualKind": "helmet",
+      "visualQuality": "premium-v2",
+      "visualSlot": "helmet"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
       "atlas": "equipment/crown_of_first_leaves.atlas",
       "boneAnimated": true,
       "bones": [
@@ -4255,6 +4875,316 @@
       "visualKind": "ring1",
       "visualQuality": "premium-v2",
       "visualSlot": "ring1"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
+      "atlas": "equipment/emberless_core.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_emberless_core.png",
+      "itemId": "emberless_core",
+      "key": "equipment_emberless_core",
+      "materialCount": 4,
+      "meshParts": 12,
+      "modelRevision": "mythic-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "sheet": "equipment/emberless_core.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/emberless_core.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "RING_2",
+      "tier": "MYTHIC",
+      "triangles": 800,
+      "visualKind": "ring",
+      "visualQuality": "premium-v2",
+      "visualSlot": "ring"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -10708,6 +11638,316 @@
     {
       "alphaMode": "STRAIGHT_RGBA",
       "armature": "hero_armature",
+      "atlas": "equipment/sunfall_last_arrow.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_sunfall_last_arrow.png",
+      "itemId": "sunfall_last_arrow",
+      "key": "equipment_sunfall_last_arrow",
+      "materialCount": 4,
+      "meshParts": 12,
+      "modelRevision": "mythic-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "sheet": "equipment/sunfall_last_arrow.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/sunfall_last_arrow.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "WEAPON",
+      "tier": "MYTHIC",
+      "triangles": 800,
+      "visualKind": "weapon",
+      "visualQuality": "premium-v2",
+      "visualSlot": "weapon"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
       "atlas": "equipment/trail_boots.atlas",
       "boneAnimated": true,
       "bones": [
@@ -11318,6 +12558,626 @@
       "visualKind": "ring1",
       "visualQuality": "premium-v2",
       "visualSlot": "ring1"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
+      "atlas": "equipment/verdant_oath.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_verdant_oath.png",
+      "itemId": "verdant_oath",
+      "key": "equipment_verdant_oath",
+      "materialCount": 4,
+      "meshParts": 12,
+      "modelRevision": "mythic-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "sheet": "equipment/verdant_oath.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/verdant_oath.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "RING_1",
+      "tier": "MYTHIC",
+      "triangles": 800,
+      "visualKind": "ring",
+      "visualQuality": "premium-v2",
+      "visualSlot": "ring"
+    },
+    {
+      "alphaMode": "STRAIGHT_RGBA",
+      "armature": "hero_armature",
+      "atlas": "equipment/windrunner_last_steps.atlas",
+      "boneAnimated": true,
+      "bones": [
+        "armor_socket",
+        "boot_socket.L",
+        "boot_socket.R",
+        "chest",
+        "foot.L",
+        "foot.R",
+        "forearm.L",
+        "forearm.R",
+        "hand.L",
+        "hand.R",
+        "head",
+        "helmet_socket",
+        "neck",
+        "pelvis",
+        "ring_socket.L",
+        "ring_socket.R",
+        "root",
+        "shin.L",
+        "shin.R",
+        "spine",
+        "thigh.L",
+        "thigh.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "weapon_socket"
+      ],
+      "categoryReview": {
+        "category": "equipment",
+        "document": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
+        "status": "accepted"
+      },
+      "clips": {
+        "attack": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 192
+          }
+        ],
+        "death": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 1536,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 1728,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 6,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 7,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 8,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 384
+          },
+          {
+            "height": 192,
+            "index": 9,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 384
+          }
+        ],
+        "hit": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 1152,
+            "y": 192
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 1344,
+            "y": 192
+          }
+        ],
+        "idle": [
+          {
+            "height": 192,
+            "index": 0,
+            "page": 0,
+            "width": 192,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 1,
+            "page": 0,
+            "width": 192,
+            "x": 192,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 2,
+            "page": 0,
+            "width": 192,
+            "x": 384,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 3,
+            "page": 0,
+            "width": 192,
+            "x": 576,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 4,
+            "page": 0,
+            "width": 192,
+            "x": 768,
+            "y": 0
+          },
+          {
+            "height": 192,
+            "index": 5,
+            "page": 0,
+            "width": 192,
+            "x": 960,
+            "y": 0
+          }
+        ]
+      },
+      "engineVersion": "28.7-premium-v2-3x32-full",
+      "family": "equipment",
+      "frameClass": "character",
+      "frameRate": 12,
+      "frameSize": 192,
+      "icon": "icons/equipment_windrunner_last_steps.png",
+      "itemId": "windrunner_last_steps",
+      "key": "equipment_windrunner_last_steps",
+      "materialCount": 4,
+      "meshParts": 12,
+      "modelRevision": "mythic-premium-v1",
+      "pivot": {
+        "units": "normalized-bottom-left",
+        "x": 0.5,
+        "y": 0.12
+      },
+      "renderSamples": 8,
+      "renderSupersample": 2,
+      "rigBoneCount": 25,
+      "rigProfile": "hero-socket-v2",
+      "runtimeGlow": true,
+      "sheet": "equipment/windrunner_last_steps.png",
+      "sheetHeight": 768,
+      "sheetWidth": 1920,
+      "sheets": [
+        {
+          "decodedBytes": 5898240,
+          "file": "equipment/windrunner_last_steps.png",
+          "height": 768,
+          "width": 1920
+        }
+      ],
+      "slot": "BOOTS",
+      "tier": "MYTHIC",
+      "triangles": 800,
+      "visualKind": "boots",
+      "visualQuality": "premium-v2",
+      "visualSlot": "boots"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17675,8 +19535,8 @@
     }
   ],
   "blenderVersion": "4.2.23",
-  "decodedCatalogBudgetBytes": 335544320,
-  "decodedCombatResidencyBudgetBytes": 134217728,
+  "decodedCatalogBudgetBytes": 360000000,
+  "decodedCombatResidencyBudgetBytes": 150000000,
   "engineVersion": "28.7-premium-v2-3x32-full",
   "frameRate": 12,
   "generatedAt": "2026-09-15T10:13:05Z",
