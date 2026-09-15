@@ -23,16 +23,18 @@ from hd_pipeline.config import (
 
 class EffectCategoryConfigTest(unittest.TestCase):
     def test_new_frame_classes_have_size_and_camera(self) -> None:
-        self.assertEqual(64, FRAME_SIZE["projectile"])
-        self.assertEqual(128, FRAME_SIZE["vfx"])
+        # Phase 54: projectile 64->128, vfx 128->256 for 950+ readability
+        self.assertEqual(128, FRAME_SIZE["projectile"])
+        self.assertEqual(256, FRAME_SIZE["vfx"])
         for frame_class in ("projectile", "vfx"):
             self.assertIn(frame_class, CAMERA_SCALE)
             self.assertIn(frame_class, CAMERA_SHIFT_Y)
 
     def test_new_categories_render_mid_tier(self) -> None:
-        self.assertEqual((2, 28), render_tier("projectile_arrow", "projectile"))
-        self.assertEqual((2, 28), render_tier("vfx_impact_flash", "vfx"))
-        self.assertEqual((2, 28), render_tier("vfx_shockwave_ring", "vfx"))
+        # Phase 54-55: mid tier 2,28 -> 3,32
+        self.assertEqual((3, 32), render_tier("projectile_arrow", "projectile"))
+        self.assertEqual((3, 32), render_tier("vfx_impact_flash", "vfx"))
+        self.assertEqual((3, 32), render_tier("vfx_shockwave_ring", "vfx"))
 
     def test_proof_asset_sets(self) -> None:
         self.assertEqual(("projectile_arrow",), tuple(a.key for a in PROJECTILES))
@@ -43,12 +45,14 @@ class EffectCategoryConfigTest(unittest.TestCase):
 
     def test_vfx_strip_packs_one_bounded_page(self) -> None:
         pages, regions = plan_grid(VFX_CLIPS, FRAME_SIZE["vfx"])
-        self.assertEqual([{"index": 0, "width": 1024, "height": 128}], pages)
+        # Phase 54: vfx 128->256, so 8*256=2048 width, height 256
+        self.assertEqual([{"index": 0, "width": 2048, "height": 256}], pages)
         self.assertEqual(list(range(8)), [f["index"] for f in regions["play"]])
 
     def test_projectile_single_frame_packs_exact(self) -> None:
         pages, regions = plan_grid({"idle": 1}, FRAME_SIZE["projectile"])
-        self.assertEqual([{"index": 0, "width": 64, "height": 64}], pages)
+        # Phase 54: projectile 64->128
+        self.assertEqual([{"index": 0, "width": 128, "height": 128}], pages)
         self.assertEqual(0, regions["idle"][0]["page"])
 
 

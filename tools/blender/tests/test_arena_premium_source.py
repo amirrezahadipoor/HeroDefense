@@ -96,9 +96,10 @@ class ArenaPremiumSourceTest(unittest.TestCase):
             "crystal_moss_leaf_",
         ):
             self.assertIn(landmark, source)
-        self.assertIn('"runtimeGlow": False', source)
-        self.assertIn('"arena-crystal-premium-v2"', source)
-        self.assertNotIn("emission", source.lower())
+        # Phase 48/66: crystal now has runtime glow emissive jewel
+        self.assertIn('"runtimeGlow": True', source)
+        self.assertTrue('"arena-crystal-premium-v2"' in source or '"arena-crystal-premium-v4-vibrant"' in source)
+        # Emission allowed for crystal inner glow
 
     def test_static_manifest_records_reviewable_complexity_and_render_contract(self) -> None:
         function = self._function(self.generator_tree, "render_static_model")
