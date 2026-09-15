@@ -499,7 +499,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.1 Color script + shape language (the modern-game bar, written down)
 
-- [ ] Add Color-script and Shape-language sections to `docs/VISUAL_STYLE_GUIDE.md`: palette discipline + grading mood per run stage, rarity color language, and silhouette-first shape rules per asset category with checkable gates (real size, 50%, grayscale, silhouette-only).
+- [x] Add Color-script and Shape-language sections to `docs/VISUAL_STYLE_GUIDE.md`: palette discipline + grading mood per run stage, rarity color language, and silhouette-first shape rules per asset category with checkable gates (real size, 50%, grayscale, silhouette-only).
 
 ### 28.2 Review-sheet upgrade
 

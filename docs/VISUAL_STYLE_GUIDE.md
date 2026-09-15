@@ -238,3 +238,62 @@ Every rendered batch must pass all checks before its own commit/push:
 8. At 1× game scale, the silhouette and action remain readable on a phone.
 9. Rare/Legendary output contains no baked glow.
 10. A contact sheet has been opened and visually reviewed before acceptance.
+
+## 12. Color Script (Phase 28.1 — the modern-game bar)
+
+Colors carry readability before shapes do. Measured 2026-09-15: hero idle
+frame mean luminance `0.252` vs arena-backdrop combat-band `0.242` — a
+`1.04:1` ratio, i.e. the hero separates from the arena by outline and
+saturation alone. That is below this bar; every batch below must do better.
+
+- Separation gates (measured on shipped PNGs, sRGB luminance):
+  combat-lane backdrop band ≤ `0.16`; character opaque-midtone floor ≥ `0.28`;
+  hero-vs-combat-band target ratio ≥ `1.6:1`. Outline `#142126` must survive
+  on ≥ 90% of silhouette edge pixels (28.5 automates this check).
+- Hue-family discipline (extends the §3 locked palette): backdrops live in
+  desaturated blue-teal and never in character greens; hero owns greens/gold;
+  regular enemies own muted rust/violet/stone; bosses may add one accent each
+  (cyan, crimson, amber, violet). No new hue family without amending this guide.
+- Rarity color language (locked to `VisualRarity`, runtime glow only, never
+  baked): Rare `#388CFF`, Legendary `#FFAB29`, Mythic `#C77DFF` (matches the
+  Mythic inventory ink, burns hottest); Elites: blightburst `#8CFF40`,
+  rootward `#40E699`, weeping `#FF4073`. Intensity order Common/Uncommon
+  (none) < Rare < Legendary < Mythic is load-bearing UI language.
+- Grade mood per run stage (recipes apply to the arena grade; runtime
+  crossfade hook lands in Phase 32.4 with the grove render):
+  1–50 Verdant Dawn `×(1.00,1.00,1.00)` lift none;
+  51–100 Amber Siege `×(1.02,0.98,0.92)`;
+  101–150 Teal Deep `×(0.94,1.00,1.02)`;
+  151–200 Hollow Dark `×(0.86,0.90,1.00)` + shadow lift toward teal.
+  Combat lane stays the darkest band in every stage; the arena ring stays the
+  brightest static element; characters and live VFX outshine both.
+- Every review sheet carries a grade strip (base + the four stage grades)
+  from 28.2 on; a batch that breaks separation in any stage grade is rejected.
+
+## 13. Shape Language (Phase 28.1 — silhouette first)
+
+Every asset must read as its noun in pure silhouette at real runtime size.
+Checkable gates per category (all four must pass):
+
+| Category | Real size | 50% | Grayscale | Silhouette-only |
+|---|---|---|---|---|
+| Hero / enemies / bosses | reads + acts | reads | value hierarchy holds | noun + team |
+| Equipment overlays | slot obvious | slot obvious | — | — |
+| Icons (96 px) | one idea | one idea | — | — |
+| Projectiles | arrow, not streak | head visible | — | shaft/head/fletch |
+| VFX | source + radius | — | — | soft edge, no hard alpha |
+
+- Chibi character contract (locks the shipped look): head 35–45% of height,
+  torso/weapon read first, limbs second, trim last; outline per §4; sizes
+  per §10. New characters that break chibi proportions need a guide amendment.
+- Weapon rules: the bow is an arc plus a string at real size, never a stick —
+  arc chord ≥ 55% of hero height, string a 1 px minimum-contrast line, quiver
+  optional. Arrows (30.1): shaft, head, and fletching all visible at real
+  size; head ≥ 25% of arrow length; crit/secondary variants change silhouette
+  or scale, never color alone.
+- Hero wearables (29.4): boots + weapon only; overlays follow socket bones
+  per §11.7 and must not widen the silhouette beyond one outline step.
+- Backdrop depth: no hard band edge may step more than `0.06` luminance
+  without a gradient falloff; upper bands go lighter/cooler with distance
+  (atmospheric perspective); near-edge silhouettes stay darkest. Props never
+  out-saturate or out-contrast live combatants.
