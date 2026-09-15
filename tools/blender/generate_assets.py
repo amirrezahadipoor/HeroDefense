@@ -87,7 +87,7 @@ from hd_pipeline.scene import (  # noqa: E402
 )
 
 PIPELINE_VERSION = 3
-ENGINE_VERSION = "28.6-premium-v2-runbook"
+ENGINE_VERSION = "28.7-premium-v2-3x32-full"
 ISOLATED_RENDERING = False
 PREMIUM_PILOT_EQUIPMENT_IDS = {
     "worldbranch",

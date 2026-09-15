@@ -523,7 +523,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.7 Full re-render on the new engine
 
-- [ ] Re-render every batch (`pilot`, `premium-pilot`, `enemies`, `bosses`, `characters`, `world-tree`, `equipment`, `arena`, `environment`, `ui`, `ui-supplement`, `skill-icons`, `ceremony`) headlessly with the finished Phase 28 engine, pass each through the 28.2 review sheets + 28.5 validation, and promote the output into `android/assets/generated` so no old-engine asset remains; prove it with a manifest audit showing the tier/engine-version fields on every batch.
+- [x] Re-render every batch (`pilot`, `premium-pilot`, `enemies`, `bosses`, `characters`, `world-tree`, `equipment`, `arena`, `environment`, `ui`, `ui-supplement`, `skill-icons`, `ceremony`) headlessly with the finished Phase 28 engine, pass each through the 28.2 review sheets + 28.5 validation, and promote the output into `android/assets/generated` so no old-engine asset remains; prove it with a manifest audit showing the tier/engine-version fields on every batch.
 
 ## Phase 29 — Missing Art + Hero Wearables
 

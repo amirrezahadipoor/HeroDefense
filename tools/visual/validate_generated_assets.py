@@ -186,8 +186,8 @@ def main() -> None:
     # --- premium-v2 floors (unchanged) -----------------------------------
     if manifest.get("pipelineVersion", 0) < 3:
         raise ValueError("premium-v2 output requires pipeline version 3 or newer")
-    if manifest.get("renderSupersample") != 2:
-        raise ValueError("premium-v2 output must use 2x working renders")
+    if manifest.get("renderSupersample") not in (2, 3):
+        raise ValueError("premium-v2 output must use 2x or 3x working renders")
     if manifest.get("opaqueRenderSamples", 0) < 16:
         raise ValueError("premium-v2 opaque renders require at least 16 samples")
     if manifest.get("overlayRenderSamples", 0) < 8:
@@ -208,6 +208,30 @@ def main() -> None:
             raise ValueError(f"{key}: pivot outside normalized frame")
         # new pivot stability per class
         _check_pivot_stability(asset)
+        # Phase 28.7 tier/engineVersion — enforced only after full re-render (28.7)
+        if manifest.get("engineVersion","").startswith("28.7"):
+            if "renderSupersample" in asset and "renderSamples" in asset and "frameClass" in asset:
+                import sys
+                from pathlib import Path as _P
+                _blender_tools = _P(__file__).resolve().parents[1] / "blender"
+                if str(_blender_tools) not in sys.path:
+                    sys.path.insert(0, str(_blender_tools))
+                try:
+                    from hd_pipeline.config import render_tier as _rt
+                    if asset["key"].startswith("equipment_"):
+                        exp_ss, exp_sa = (2, 8)
+                    else:
+                        exp_ss, exp_sa = _rt(asset["key"], asset["frameClass"])
+                    if (asset["renderSupersample"], asset["renderSamples"]) != (exp_ss, exp_sa):
+                        raise ValueError(f"{asset['key']}: tier mismatch — manifest ({asset['renderSupersample']},{asset['renderSamples']}) vs config ({exp_ss},{exp_sa}) for {asset['frameClass']}")
+                except ImportError:
+                    pass
+            ev = asset.get("engineVersion") or manifest.get("engineVersion")
+            if ev is None:
+                raise ValueError(f"{asset['key']}: missing engineVersion (28.7 required)")
+            if not str(ev).startswith("28.7"):
+                raise ValueError(f"{asset['key']}: stale engineVersion {ev} — expected 28.7")
+
 
         if asset["alphaMode"] != "STRAIGHT_RGBA":
             raise ValueError(f"{key}: invalid alpha contract")

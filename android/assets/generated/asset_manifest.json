@@ -273,7 +273,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -288,8 +288,8 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
       "rigProfile": "premium-heavy-humanoid-v2",
@@ -340,7 +340,7 @@
       },
       "compositionProfile": "portrait-clear-lane-v2",
       "depthBands": 5,
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "arena",
       "frameHeight": 1280,
@@ -355,7 +355,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/arena_backdrop.png",
@@ -394,7 +394,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -411,7 +411,7 @@
         "y": 0.5
       },
       "prop": "azure-waystone-fan",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
@@ -458,7 +458,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -474,7 +474,7 @@
         "y": 0.5
       },
       "prop": "violet-moon-geode",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
@@ -521,7 +521,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -537,7 +537,7 @@
         "y": 0.5
       },
       "prop": "amber-root-lantern",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
@@ -836,7 +836,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -850,8 +850,8 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
       "rigProfile": "premium-winged-wyrm-mapped-v2",
@@ -1148,7 +1148,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1455,7 +1455,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1762,7 +1762,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2069,7 +2069,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2376,7 +2376,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2683,7 +2683,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2991,7 +2991,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3298,7 +3298,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3606,7 +3606,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3913,7 +3913,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4220,7 +4220,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4527,7 +4527,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4835,7 +4835,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5142,7 +5142,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5449,7 +5449,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5757,7 +5757,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6064,7 +6064,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6371,7 +6371,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6678,7 +6678,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6985,7 +6985,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7292,7 +7292,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7599,7 +7599,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7906,7 +7906,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8213,7 +8213,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8520,7 +8520,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8827,7 +8827,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9134,7 +9134,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9441,7 +9441,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9748,7 +9748,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10055,7 +10055,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10362,7 +10362,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10669,7 +10669,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10976,7 +10976,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11283,7 +11283,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11590,7 +11590,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11897,7 +11897,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -12207,7 +12207,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -12222,7 +12222,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -12515,7 +12515,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -12530,7 +12530,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -12571,7 +12571,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -12588,7 +12588,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_0.png",
@@ -12629,7 +12629,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -12646,7 +12646,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_1.png",
@@ -12687,7 +12687,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -12704,7 +12704,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_2.png",
@@ -12746,7 +12746,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12763,7 +12763,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_1.png",
@@ -12804,7 +12804,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12821,7 +12821,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_2.png",
@@ -12862,7 +12862,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12879,7 +12879,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_3.png",
@@ -12920,7 +12920,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12937,7 +12937,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_4.png",
@@ -12978,7 +12978,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -12995,7 +12995,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_5.png",
@@ -13036,7 +13036,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -13054,7 +13054,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_6.png",
@@ -13346,7 +13346,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "hero",
       "frameClass": "character",
       "frameRate": 12,
@@ -13358,8 +13358,8 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "rigProfile": "premium-humanoid-v2",
       "sheet": "sprites/hero.png",
@@ -13651,7 +13651,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "hero",
       "frameClass": "character",
       "frameRate": 12,
@@ -13670,8 +13670,8 @@
         "seed",
         "watering_can"
       ],
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
       "rigProfile": "premium-humanoid-v2",
@@ -13963,7 +13963,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -13979,7 +13979,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -14272,7 +14272,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -14287,7 +14287,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -14580,7 +14580,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -14594,8 +14594,8 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
       "rigProfile": "premium-rooted-caster-v2",
@@ -14642,7 +14642,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14658,7 +14658,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_agility.png",
@@ -14704,7 +14704,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14720,7 +14720,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_close.png",
@@ -14766,7 +14766,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14782,7 +14782,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_coin.png",
@@ -14828,7 +14828,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14844,7 +14844,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_continue.png",
@@ -14890,7 +14890,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14906,7 +14906,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_dodge.png",
@@ -14952,7 +14952,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -14973,7 +14973,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_disabled.png",
@@ -15015,7 +15015,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15036,7 +15036,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_normal.png",
@@ -15078,7 +15078,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15099,7 +15099,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_pressed.png",
@@ -15141,7 +15141,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15162,7 +15162,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_selected.png",
@@ -15204,7 +15204,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15225,7 +15225,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_disabled.png",
@@ -15267,7 +15267,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15288,7 +15288,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_normal.png",
@@ -15330,7 +15330,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15351,7 +15351,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_pressed.png",
@@ -15393,7 +15393,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15414,7 +15414,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_selected.png",
@@ -15456,7 +15456,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15477,7 +15477,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_disabled.png",
@@ -15519,7 +15519,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15540,7 +15540,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_normal.png",
@@ -15582,7 +15582,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15603,7 +15603,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_pressed.png",
@@ -15645,7 +15645,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15666,7 +15666,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_selected.png",
@@ -15709,7 +15709,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15725,7 +15725,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_general_power.png",
@@ -15771,7 +15771,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15787,7 +15787,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_health.png",
@@ -15833,7 +15833,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15850,7 +15850,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_inventory.png",
@@ -15897,7 +15897,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15913,7 +15913,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_lifesteal.png",
@@ -15959,7 +15959,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15975,7 +15975,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_luck.png",
@@ -16021,7 +16021,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16037,7 +16037,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_new_game.png",
@@ -16083,7 +16083,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16099,7 +16099,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_pause.png",
@@ -16145,7 +16145,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16161,7 +16161,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_restart.png",
@@ -16207,7 +16207,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16223,7 +16223,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_settings.png",
@@ -16269,7 +16269,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16285,7 +16285,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_shop.png",
@@ -16332,7 +16332,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16348,7 +16348,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_chain_lightning.png",
@@ -16395,7 +16395,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16411,7 +16411,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_critical_mastery.png",
@@ -16458,7 +16458,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16474,7 +16474,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_long_range.png",
@@ -16521,7 +16521,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16537,7 +16537,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_multi_shot.png",
@@ -16584,7 +16584,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16600,7 +16600,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_stun_chance.png",
@@ -16646,7 +16646,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16662,7 +16662,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_speed.png",
@@ -16708,7 +16708,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16724,7 +16724,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_strength.png",
@@ -16770,7 +16770,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16786,7 +16786,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 16,
+      "renderSamples": 24,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_wave.png",
@@ -17084,7 +17084,7 @@
           }
         ]
       },
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -17098,8 +17098,8 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
       "rigProfile": "premium-armored-humanoid-v2",
@@ -17286,7 +17286,7 @@
         ]
       },
       "destructionClip": "destroy",
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -17300,8 +17300,8 @@
         "x": 0.5,
         "y": 0.06
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 13,
       "rigProfile": "segmented-world-tree-v2",
@@ -17407,7 +17407,7 @@
         ]
       },
       "destructionClip": null,
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -17421,8 +17421,8 @@
         "x": 0.5,
         "y": 0.06
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 13,
       "rigProfile": "segmented-world-tree-v2",
@@ -17629,7 +17629,7 @@
         ]
       },
       "destructionClip": null,
-      "engineVersion": "28.6-premium-v2-runbook",
+      "engineVersion": "28.7-premium-v2-3x32-full",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -17644,8 +17644,8 @@
         "x": 0.5,
         "y": 0.06
       },
-      "renderSamples": 16,
-      "renderSupersample": 2,
+      "renderSamples": 32,
+      "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 13,
       "rigProfile": "segmented-world-tree-v2",
@@ -17677,13 +17677,13 @@
   "blenderVersion": "4.2.23",
   "decodedCatalogBudgetBytes": 335544320,
   "decodedCombatResidencyBudgetBytes": 134217728,
-  "engineVersion": "28.6-premium-v2-runbook",
+  "engineVersion": "28.7-premium-v2-3x32-full",
   "frameRate": 12,
-  "generatedAt": "2026-09-15T10:11:58Z",
+  "generatedAt": "2026-09-15T10:13:05Z",
   "generatedBatch": "ceremony",
-  "generatedCommit": "b2c6cacca6d8858f08d0e4edf2be98bf90e75647",
+  "generatedCommit": "6591ba984ab7796f952ca730efb4a2dcb194582a",
   "maxAtlasPageSize": 2048,
-  "opaqueRenderSamples": 16,
+  "opaqueRenderSamples": 24,
   "overlayRenderSamples": 8,
   "palette": {
     "amber": "#E19C3B",
@@ -17703,6 +17703,15 @@
   },
   "pipelineVersion": 3,
   "renderSupersample": 2,
+  "renderTierTop": [
+    3,
+    32
+  ],
+  "renderTierTopClasses": [
+    "boss",
+    "tree"
+  ],
+  "renderTierTopKeyPrefix": "hero",
   "requiredBones": [
     "root",
     "pelvis",
