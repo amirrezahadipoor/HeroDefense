@@ -63,6 +63,9 @@ public final class CombatEntityRenderer implements AutoCloseable {
     private final Map<String, Texture> dropTextures = new HashMap<>();
     private final RarityGlowRenderer dropGlowRenderer = new RarityGlowRenderer();
     private final Texture pixel;
+    private final Texture arrowNormal;
+    private final Texture arrowCrit;
+    private final Texture arrowSecondary;
 
     public CombatEntityRenderer() {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -70,6 +73,57 @@ public final class CombatEntityRenderer implements AutoCloseable {
         pixmap.fill();
         pixel = new Texture(pixmap);
         pixmap.dispose();
+        arrowNormal = createArrowTexture(26, 6, 0.545f, 0.353f, 0.169f, 0.78f, 0.78f, 0.82f, 0.85f, 0.78f, 0.57f);
+        arrowCrit = createArrowTexture(30, 8, 0.545f, 0.353f, 0.169f, 1f, 0.84f, 0.31f, 0.35f, 0.92f, 0.96f);
+        arrowSecondary = createArrowTexture(20, 5, 0.30f, 0.36f, 0.23f, 0.72f, 0.75f, 0.78f, 0.48f, 0.80f, 0.52f);
+    }
+
+    /** Arrow rotation in degrees for a velocity vector; 0 is +X. */
+    static float projectileRotation(float vx, float vy) {
+        return com.badlogic.gdx.math.MathUtils.atan2(vy, vx) * com.badlogic.gdx.math.MathUtils.radiansToDegrees;
+    }
+
+    // True arrow sprite: shaft/head/fletching, head >=25% length, silhouette distinct per variant.
+    private static Texture createArrowTexture(int w, int h,
+                                              float shaftR, float shaftG, float shaftB,
+                                              float headR, float headG, float headB,
+                                              float fletchR, float fletchG, float fletchB) {
+        Pixmap pm = new Pixmap(w, h, Pixmap.Format.RGBA8888);
+        pm.setBlending(Pixmap.Blending.None);
+        // shaft
+        int shaftX0 = Math.max(1, (int) (w * 0.18f));
+        int shaftX1 = (int) (w * 0.74f);
+        int shaftY0 = h / 2 - Math.max(1, h / 6);
+        int shaftY1 = h / 2 + Math.max(1, h / 6);
+        pm.setColor(shaftR, shaftG, shaftB, 1f);
+        pm.fillRectangle(shaftX0, shaftY0, shaftX1 - shaftX0, shaftY1 - shaftY0 + 1);
+        // head triangle pointed +X, head is >=25% of length
+        pm.setColor(headR, headG, headB, 1f);
+        int headBase = shaftX1;
+        int tipX = w - 1;
+        int mid = h / 2;
+        for (int x = headBase; x <= tipX; x++) {
+            float t = (x - headBase) / (float) Math.max(1, tipX - headBase);
+            int half = (int) ((1f - t) * (h * 0.5f));
+            int y0 = mid - half;
+            int y1 = mid + half;
+            int hh = Math.max(1, y1 - y0 + 1);
+            pm.fillRectangle(x, y0, 1, hh);
+        }
+        // fletching: two small feathers at tail
+        pm.setColor(fletchR, fletchG, fletchB, 1f);
+        int f0 = 1;
+        int f1 = shaftX0;
+        int featherH = Math.max(2, h / 3);
+        pm.fillRectangle(f0, 0, f1 - f0, featherH);
+        pm.fillRectangle(f0, h - featherH, f1 - f0, featherH);
+        // small notch
+        pm.setColor(0f, 0f, 0f, 0f);
+        pm.fillRectangle(f0, mid, 1, 1);
+        Texture tex = new Texture(pm);
+        pm.dispose();
+        tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        return tex;
     }
 
     public void drawActors(SpriteBatch batch, GameState state, float runTimeSeconds) {
@@ -149,62 +203,75 @@ public final class CombatEntityRenderer implements AutoCloseable {
         float goldBlue = 0.25f + (0.75f - 0.25f) * heat;
         for (Projectile projectile : state.projectiles) {
             if (projectile == null || !projectile.active) continue;
-            float angle = MathUtils.atan2(projectile.velocityY, projectile.velocityX)
-                * MathUtils.radiansToDegrees;
+            float angle = projectileRotation(projectile.velocityX, projectile.velocityY);
             float speed = (float) Math.sqrt(
                 projectile.velocityX * projectile.velocityX
                     + projectile.velocityY * projectile.velocityY
             );
             float nx = speed <= 0f ? 1f : projectile.velocityX / speed;
             float ny = speed <= 0f ? 0f : projectile.velocityY / speed;
+            // Fletching streak + head glint trail, rotated onto velocity
             for (int step = 1; step <= PROJECTILE_TRAIL_STEPS; step++) {
                 float back = step * 9f;
                 float alpha = projectileTrailAlpha(step, power);
                 if (projectile.critical) {
-                    batch.setColor(0.35f, 0.92f, 0.96f, alpha);
+                    batch.setColor(0.35f, 0.92f, 0.96f, alpha * 0.72f);
                 } else if (projectile.secondary) {
-                    batch.setColor(0.62f, 0.86f, 0.58f, alpha * 0.9f);
+                    batch.setColor(0.62f, 0.86f, 0.58f, alpha * 0.65f);
                 } else {
-                    batch.setColor(goldRed, goldGreen, goldBlue, alpha);
+                    batch.setColor(goldRed * 0.92f, goldGreen * 0.92f, goldBlue, alpha * 0.78f);
                 }
-                float size = (projectile.secondary ? 6f : 5f) - step + power * 0.25f;
+                float streakW = 9f - step * 1.6f;
+                float streakH = 3.0f;
+                float sx = projectile.x - nx * back;
+                float sy = projectile.y - ny * back;
                 batch.draw(
                     pixel,
-                    projectile.x - nx * back - size * 0.5f,
-                    projectile.y - ny * back - size * 0.5f,
-                    size,
-                    size
+                    sx - streakW * 0.5f, sy - streakH * 0.5f,
+                    streakW * 0.5f, streakH * 0.5f,
+                    streakW, streakH,
+                    1f, 1f,
+                    angle,
+                    0, 0, 1, 1, false, false
                 );
             }
+            // Real arrow sprite rotated onto velocity vector
+            Texture arrowTex;
+            float arrowW, arrowH;
             if (projectile.critical) {
-                batch.setColor(0.35f, 0.92f, 0.96f, 1f);
+                arrowTex = arrowCrit;
+                arrowW = 30f;
+                arrowH = 8f;
             } else if (projectile.secondary) {
-                batch.setColor(0.72f, 0.90f, 0.62f, 1f);
+                arrowTex = arrowSecondary;
+                arrowW = 20f;
+                arrowH = 5f;
             } else {
-                batch.setColor(0.93f, 0.71f, 0.25f, 1f);
+                arrowTex = arrowNormal;
+                arrowW = 26f;
+                arrowH = 6f;
             }
-            float length = projectile.critical ? 26f : 22f;
-            float thickness = projectile.critical ? 7f : 6f;
+            batch.setColor(1f, 1f, 1f, 1f);
             batch.draw(
-                pixel,
-                projectile.x - length * 0.5f,
-                projectile.y - thickness * 0.5f,
-                length * 0.5f,
-                thickness * 0.5f,
-                length,
-                thickness,
+                arrowTex,
+                projectile.x - arrowW * 0.5f,
+                projectile.y - arrowH * 0.5f,
+                arrowW * 0.5f,
+                arrowH * 0.5f,
+                arrowW,
+                arrowH,
                 1f,
                 1f,
                 angle,
-                0,
-                0,
-                1,
-                1,
-                false,
-                false
+                0, 0,
+                (int) arrowW, (int) arrowH,
+                false, false
             );
-            batch.setColor(1f, 1f, 1f, 0.85f);
-            batch.draw(pixel, projectile.x + nx * 6f - 2f, projectile.y + ny * 6f - 2f, 4f, 4f);
+            // Head glint at tip
+            batch.setColor(1f, 1f, 1f, 0.92f);
+            float glint = projectile.critical ? 5f : projectile.secondary ? 3f : 4f;
+            batch.draw(pixel, projectile.x + nx * (arrowW * 0.5f + 1f) - glint * 0.5f,
+                projectile.y + ny * (arrowW * 0.5f + 1f) - glint * 0.5f, glint, glint);
         }
         batch.setColor(1f, 1f, 1f, 1f);
     }
@@ -571,6 +638,9 @@ public final class CombatEntityRenderer implements AutoCloseable {
         dropTextures.clear();
         dropGlowRenderer.close();
         pixel.dispose();
+        arrowNormal.dispose();
+        arrowCrit.dispose();
+        arrowSecondary.dispose();
     }
 
     private static final class EntityClips {

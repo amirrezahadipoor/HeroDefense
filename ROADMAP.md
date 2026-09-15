@@ -549,7 +549,7 @@ Brings in-combat visuals up to real-game standard: projectiles must be unmistaka
 
 ### 30.1 True arrows
 
-- [ ] Replace the stretched-pixel projectiles with real arrow sprites (shaft/head/fletching; normal/crit/secondary variants) rotated onto the velocity vector, with a rewritten trail (fletching streak + head glint); lock the rotation math with tests.
+- [x] Replace the stretched-pixel projectiles with real arrow sprites (shaft/head/fletching; normal/crit/secondary variants) rotated onto the velocity vector, with a rewritten trail (fletching streak + head glint); lock the rotation math with tests.
 
 ### 30.2–30.5 Skill feel
 
