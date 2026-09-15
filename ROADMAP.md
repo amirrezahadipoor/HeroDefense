@@ -933,7 +933,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 60 — Eye High-Detail: Iris Gradient + Triple Highlights + Blush
 
-- [ ] New eye mesh: iris with radial gradient texture (green #2ECC71 → #A8FF53), 3 white highlight dots (upper-left large, lower-right small, mid tiny), plus blush plane on cheeks. Implement in `models.py` `build_hero()` eye section. Keep eye size within 192→384 frame.
+- [x] New eye mesh: iris with radial gradient texture (green #2ECC71 → #A8FF53), 3 white highlight dots (upper-left large, lower-right small, mid tiny), plus blush plane on cheeks. Implement in `models.py` `build_hero()` eye section. Keep eye size within 192→384 frame.
 
 ## Phase 61 — True PBR Gold with Env Reflections
 
