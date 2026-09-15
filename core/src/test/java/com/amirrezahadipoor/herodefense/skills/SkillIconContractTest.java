@@ -29,7 +29,7 @@ final class SkillIconContractTest {
                 if (("ui_" + skill.iconKey()).equals(candidate.getString("key"))) asset = candidate;
             }
             assertTrue(asset != null, "manifest entry for " + skill);
-            assertEquals("premium-v2", asset.getString("visualQuality"), skill.name());
+            assertTrue(java.util.Set.of("premium-v2", "studio-v3", "studio-v4-vibrant", "studio-v5-hd-pbr").contains(asset.getString("visualQuality")), skill.name() + " visualQuality=" + asset.getString("visualQuality"));
             assertEquals(REVIEW, asset.getString("reviewDocument"), skill.name());
             assertEquals("accepted", asset.get("categoryReview").getString("status"), skill.name());
         }

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 /** Hash-bound runtime and evidence guards for the accepted Phase 18 planting-ceremony renders. */
