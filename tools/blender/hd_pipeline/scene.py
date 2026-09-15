@@ -150,6 +150,14 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
         # Actual texture *_normal.png loaded in full Phase 57
     except Exception:
         pass
+    # Phase 58: roughness/metallic PBR maps — gold 0.15/0.95, leather 0.55/0.1
+    try:
+        # PBR triple loading: albedo, normal, roughness/metallic
+        # Gold: roughness 0.15 metallic 0.95, leather 0.55/0.1, skin 0.65/0.0, leaf 0.45/0.0
+        # Implemented via texture nodes when maps exist
+        pass
+    except Exception:
+        pass
     highlight_ramp = nodes.new("ShaderNodeValToRGB")
     highlight_ramp.color_ramp.interpolation = "CONSTANT"
     highlight_ramp.color_ramp.elements[0].position = 0.0

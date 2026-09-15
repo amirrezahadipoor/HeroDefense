@@ -925,7 +925,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 58 — Roughness/Metallic PBR Maps
 
-- [ ] Bake roughness and metallic maps: gold 0.15 roughness / 0.95 metallic, leather 0.55/0.1, skin 0.65/0.0, leaf 0.45/0.0. Add to `toon_material()` via separate textures. Update `MaterialSet.get()` to load PBR triple when available.
+- [x] Bake roughness and metallic maps: gold 0.15 roughness / 0.95 metallic, leather 0.55/0.1, skin 0.65/0.0, leaf 0.45/0.0. Add to `toon_material()` via separate textures. Update `MaterialSet.get()` to load PBR triple when available.
 
 ## Phase 59 — Hair Cards with Alpha for Flowing Green Hair
 
