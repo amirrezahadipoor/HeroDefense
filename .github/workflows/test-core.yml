@@ -37,6 +37,9 @@ jobs:
       - name: Test deterministic atlas page planning
         run: python3 -m unittest discover -s tools/blender/tests -v
 
+      - name: Install Pillow for review-strip tests
+        run: python3 -m pip install --break-system-packages pillow
+
       - name: Test review-strip helpers
         run: python3 -m unittest discover -s tools/visual/tests -v
 
