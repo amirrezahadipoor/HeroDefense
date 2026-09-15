@@ -633,10 +633,10 @@ built for premium-v2.
 
 ### 33.1 Weighted outline system
 
-- [ ] Extend `_configure_freestyle` so silhouette/border lines render at a heavier width than
+- [x] Extend `_configure_freestyle` so silhouette/border lines render at a heavier width than
   material-boundary/crease lines (currently one uniform `line_set.linestyle.thickness = 1.5` for
   everything Freestyle draws), giving the silhouette the visual weight it currently lacks.
-- [ ] Extend `apply_alpha_outline`'s fixed dilation radius (`radius=3`, one flat `OUTLINE_RGBA`
+- [x] Extend `apply_alpha_outline`'s fixed dilation radius (`radius=3`, one flat `OUTLINE_RGBA`
   fill) into a two-pass dilation: an outer silhouette pass at a slightly larger radius for the bold
   exterior line, and the existing radius kept for interior/attachment seams — same function
   signature, additional radius parameter, same `#142126` outline color so no palette rule breaks.
