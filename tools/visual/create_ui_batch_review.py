@@ -11,6 +11,8 @@ from PIL import Image, ImageDraw, ImageOps
 
 from create_character_animation_review import canvas_base, checker, text
 
+from review_strips import grade_row, silhouette_view
+
 ICON_KEYS = (
     "ui_health", "ui_wave", "ui_coin", "ui_pause", "ui_speed",
     "ui_inventory", "ui_shop", "ui_settings", "ui_restart",
@@ -232,14 +234,15 @@ def validate_metadata(entry: dict, key: str) -> None:
 
 
 def create_icon_lineup(baseline: Path, candidate: Path, output: Path) -> None:
-    width, height = 1900, 1040
+    rows = (len(ICON_KEYS) + 3) // 4
+    width, height = 1900, 110 + rows * 400 + 290
     canvas = canvas_base(width, height, "ALL UI CONTROL ICONS — BASELINE VS HEARTWOOD MEDALLIONS")
     draw = ImageDraw.Draw(canvas)
     for index, key in enumerate(ICON_KEYS):
         column = index % 4
         row = index // 4
         x = 48 + column * 465
-        y = 110 + row * 220
+        y = 110 + row * 400
         text(draw, (x + 212, y - 15), key.removeprefix("ui_").replace("_", " ").upper(),
              17, bold=True, anchor="ma")
         for offset, (label, root) in enumerate((("BEFORE", baseline), ("AFTER", candidate))):
@@ -249,14 +252,25 @@ def create_icon_lineup(baseline: Path, candidate: Path, output: Path) -> None:
             px = x + offset * 218
             canvas.paste(card.convert("RGB"), (px, y))
             text(draw, (px + 75, y + 174), label, 14, bold=True, anchor="ma")
+        shape = checker(130, 130)
+        shape.alpha_composite(
+            silhouette_view(asset_image(candidate, key)).resize((130, 130), Image.Resampling.LANCZOS))
+        canvas.paste(shape.convert("RGB"), (x + 119, y + 200))
+        text(draw, (x + 184, y + 352), "SHAPE", 14, bold=True, anchor="ma")
+    grade = grade_row(asset_image(candidate, ICON_KEYS[0]))
+    grade_y = 110 + rows * 400 + 55
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, grade_y))
+    text(draw, (width // 2, grade_y - 18), f"STAGE GRADE — {ICON_KEYS[0].removeprefix('ui_').upper()}",
+         17, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_icon_readability(candidate: Path, output: Path) -> None:
-    width, height = 1880, 800
+    width, height = 1880, 1235
     canvas = canvas_base(width, height, "UI ICONS — 58 PX RUNTIME, LIGHT/DARK & GRAYSCALE")
     draw = ImageDraw.Draw(canvas)
-    backgrounds = (("DARK", (16, 35, 31)), ("LIGHT", (202, 206, 191)), ("VALUE", (55, 55, 55)))
+    backgrounds = (("DARK", (16, 35, 31)), ("LIGHT", (202, 206, 191)), ("VALUE", (55, 55, 55)),
+                   ("SHAPE", (16, 35, 31)))
     for row, (label, color) in enumerate(backgrounds):
         y = 120 + row * 205
         text(draw, (34, y + 56), label, 18, bold=True, anchor="lm")
@@ -264,6 +278,8 @@ def create_icon_readability(candidate: Path, output: Path) -> None:
             sprite = asset_image(candidate, key)
             if row == 2:
                 sprite = ImageOps.grayscale(sprite).convert("RGBA")
+            elif row == 3:
+                sprite = silhouette_view(sprite)
             panel = Image.new("RGBA", (98, 130), (*color, 255))
             panel.alpha_composite(sprite.resize((58, 58), Image.Resampling.LANCZOS), (20, 18))
             x = 150 + index * 106
@@ -271,11 +287,15 @@ def create_icon_readability(candidate: Path, output: Path) -> None:
             if row == 0:
                 text(draw, (x + 49, y + 105), key[3:].replace("_", "\n"), 11,
                      anchor="ma", color="#C7D4CE")
+    grade = grade_row(asset_image(candidate, ICON_KEYS[0]))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 935))
+    text(draw, (width // 2, 917), f"STAGE GRADE — {ICON_KEYS[0].removeprefix('ui_').upper()}",
+         17, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_skin_matrix(candidate: Path, output: Path) -> None:
-    width, height = 1580, 1060
+    width, height = 1580, 1290
     canvas = canvas_base(width, height, "REUSABLE UI FRAME SKINS — COMPLETE STATE MATRIX")
     draw = ImageDraw.Draw(canvas)
     for row, kind in enumerate(KINDS):
@@ -288,11 +308,14 @@ def create_skin_matrix(candidate: Path, output: Path) -> None:
             card.alpha_composite(sprite.resize((220, 220), Image.Resampling.NEAREST))
             canvas.paste(card.convert("RGB"), (x, y))
             text(draw, (x + 110, y - 18), state.upper(), 18, bold=True, anchor="ma")
+    grade = grade_row(asset_image(candidate, "ui_frame_panel_normal", family="ui"))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 960))
+    text(draw, (width // 2, 942), "STAGE GRADE — PANEL", 17, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_nine_patch_stretch(candidate: Path, output: Path) -> None:
-    width, height = 1740, 1040
+    width, height = 1740, 1270
     canvas = canvas_base(width, height, "NINE-PATCH STRETCH — CORNERS STAY FIXED, CENTERS SCALE")
     draw = ImageDraw.Draw(canvas)
     dimensions = {"button": (520, 130), "panel": (410, 250), "slot": (560, 105)}
@@ -309,11 +332,15 @@ def create_nine_patch_stretch(candidate: Path, output: Path) -> None:
             panel.alpha_composite(shown, ((340 - shown.width) // 2, (220 - shown.height) // 2))
             canvas.paste(panel.convert("RGB"), (x, y))
             text(draw, (x + 170, y + 244), state.upper(), 15, anchor="ma", color="#C7D4CE")
+    stretched = nine_patch(asset_image(candidate, "ui_frame_panel_normal", family="ui"), 410, 250)
+    grade = grade_row(stretched)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 950))
+    text(draw, (width // 2, 932), "STAGE GRADE — STRETCHED PANEL", 17, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_state_construction(candidate: Path, output: Path) -> None:
-    width, height = 1700, 650
+    width, height = 1700, 880
     canvas = canvas_base(width, height, "BUTTON STATE CONSTRUCTION — NOT RECOLOR-ONLY")
     draw = ImageDraw.Draw(canvas)
     captions = (
@@ -328,13 +355,16 @@ def create_state_construction(candidate: Path, output: Path) -> None:
         canvas.paste(shown, (x, 125), shown)
         text(draw, (x + 150, 92), state.upper(), 21, bold=True, anchor="ma")
         text(draw, (x + 150, 470), caption, 16, anchor="ma", color="#AFC5BE")
-    text(draw, (width // 2, 585), "Pressed, selected, and disabled remain legible without changing the semantic icon glyph.",
+    grade = grade_row(asset_image(candidate, "ui_frame_button_normal", family="ui"))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 620))
+    text(draw, (width // 2, 602), "STAGE GRADE — BUTTON", 17, bold=True, anchor="ma")
+    text(draw, (width // 2, 830), "Pressed, selected, and disabled remain legible without changing the semantic icon glyph.",
          19, bold=True, anchor="ma", color="#F2D58A")
     canvas.save(output, optimize=True)
 
 
 def create_integrated_surfaces(candidate: Path, output: Path) -> None:
-    width, height = 1800, 1030
+    width, height = 1800, 1260
     canvas = canvas_base(width, height, "PREMIUM UI ASSETS — INTEGRATED MENU, HUD & INVENTORY")
     draw = ImageDraw.Draw(canvas)
     menu = Image.new("RGBA", (520, 820), (12, 33, 30, 255))
@@ -370,6 +400,9 @@ def create_integrated_surfaces(candidate: Path, output: Path) -> None:
         canvas.paste(panel_image.convert("RGB"), (x, y))
         draw.rectangle((x, y, x + 520, y + 820), outline="#728A83", width=3)
         text(draw, (x + 260, y - 18), label, 20, bold=True, anchor="ma")
+    grade = grade_row(menu)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 960))
+    text(draw, (width // 2, 942), "STAGE GRADE — MAIN MENU", 17, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 

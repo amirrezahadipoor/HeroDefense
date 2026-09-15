@@ -37,6 +37,9 @@ jobs:
       - name: Test deterministic atlas page planning
         run: python3 -m unittest discover -s tools/blender/tests -v
 
+      - name: Test review-strip helpers
+        run: python3 -m unittest discover -s tools/visual/tests -v
+
       - name: Validate committed generated-asset metadata
         run: python3 tools/visual/validate_generated_assets.py android/assets/generated
 

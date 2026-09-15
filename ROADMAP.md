@@ -503,7 +503,7 @@ Massively upgrades the asset pipeline in `tools/blender` + `tools/visual`. The b
 
 ### 28.2 Review-sheet upgrade
 
-- [ ] Extend the `tools/visual/create_*_review.py` flow with silhouette-only views and a color-grade strip on every sheet, so appeal/color/shape regressions are visible before promotion, not after.
+- [x] Extend the `tools/visual/create_*_review.py` flow with silhouette-only views and a color-grade strip on every sheet, so appeal/color/shape regressions are visible before promotion, not after.
 
 ### 28.3 Pipeline precision
 

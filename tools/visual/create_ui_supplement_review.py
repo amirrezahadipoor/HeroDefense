@@ -9,6 +9,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
+from review_strips import grade_row, silhouette_view
+
 POTION_KEYS = tuple(f"health_potion_{tier}" for tier in range(1, 7))
 NEW_REWARD_KEYS = ("ui_general_power", "ui_lifesteal")
 EXPECTED_KEYS = (*POTION_KEYS, *NEW_REWARD_KEYS)
@@ -250,30 +252,36 @@ def expected_payload(candidate: Path) -> tuple[str, ...]:
 
 
 def create_potion_lineup(baseline: Path, candidate: Path, output: Path) -> None:
-    canvas = base(1900, 720, "ALL SIX HEARTWOOD ELIXIRS — BEFORE / PREMIUM-V2")
+    canvas = base(1900, 1210, "ALL SIX HEARTWOOD ELIXIRS — BEFORE / PREMIUM-V2")
     draw = ImageDraw.Draw(canvas)
     for index, key in enumerate(POTION_KEYS):
         x = 66 + index * 305
         label = f"TIER {index + 1}"
         text(draw, (x + 120, 102), label, 23, True, "ma")
-        for row, (caption, root) in enumerate((("BEFORE", baseline), ("AFTER", candidate))):
+        for row, (caption, root) in enumerate((("BEFORE", baseline), ("AFTER", candidate), ("SHAPE", candidate))):
             card = checker(220, 220)
             icon = asset(root, key).resize((188, 188), Image.Resampling.LANCZOS)
+            if caption == "SHAPE":
+                icon = silhouette_view(icon)
             card.alpha_composite(icon, (16, 16))
             y = 132 + row * 260
             canvas.paste(card.convert("RGB"), (x, y))
             text(draw, (x + 110, y + 242), caption, 16, True, "ma")
+    grade = grade_row(asset(candidate, POTION_KEYS[0]))
+    canvas.paste(grade.convert("RGB"), ((1900 - grade.width) // 2, 920))
+    text(draw, (950, 902), "STAGE GRADE — TIER 1", 17, True, "ma")
     canvas.save(output, optimize=True)
 
 
 def create_reward_lineup(baseline: Path, candidate: Path, output: Path) -> None:
-    canvas = base(1900, 780, "EVERY REWARD CARD — ONE DISTINCT SEMANTIC MEDALLION")
+    rows = (len(REWARD_ICONS) + 3) // 4
+    canvas = base(1900, 135 + rows * 480 + 260, "EVERY REWARD CARD — ONE DISTINCT SEMANTIC MEDALLION")
     draw = ImageDraw.Draw(canvas)
     for index, (title, key) in enumerate(REWARD_ICONS):
         column = index % 4
         row = index // 4
         x = 100 + column * 450
-        y = 135 + row * 300
+        y = 135 + row * 480
         root = candidate if key in NEW_REWARD_KEYS else baseline
         medallion = asset(root, key).resize((168, 168), Image.Resampling.LANCZOS)
         card = Image.new("RGBA", (360, 220), (13, 38, 32, 255))
@@ -283,6 +291,17 @@ def create_reward_lineup(baseline: Path, candidate: Path, output: Path) -> None:
         canvas.paste(card.convert("RGB"), (x, y))
         text(draw, (x + 180, y + 250), title, 17, True, "ma")
         text(draw, (x + 180, y + 276), key.removeprefix("ui_"), 14, False, "ma")
+        shape = checker(150, 150)
+        shape.alpha_composite(
+            silhouette_view(asset(root, key)).resize((150, 150), Image.Resampling.LANCZOS))
+        canvas.paste(shape.convert("RGB"), (x + 105, y + 300))
+        text(draw, (x + 180, y + 458), "SHAPE", 13, True, "ma")
+    first_key = REWARD_ICONS[0][1]
+    first_root = candidate if first_key in NEW_REWARD_KEYS else baseline
+    grade = grade_row(asset(first_root, first_key))
+    grade_y = 135 + rows * 480 + 40
+    canvas.paste(grade.convert("RGB"), ((1900 - grade.width) // 2, grade_y))
+    text(draw, (950, grade_y - 18), "STAGE GRADE — FIRST MEDALLION", 17, True, "ma")
     canvas.save(output, optimize=True)
 
 
@@ -290,9 +309,10 @@ def create_readability(baseline: Path, candidate: Path, output: Path) -> None:
     entries = [(f"P{tier}", key, candidate) for tier, key in enumerate(POTION_KEYS, 1)]
     entries += [(title.split()[0], key, candidate if key in NEW_REWARD_KEYS else baseline)
                 for title, key in REWARD_ICONS]
-    canvas = base(1900, 790, "54 PX RUNTIME — DARK / LIGHT / GRAYSCALE READABILITY")
+    canvas = base(1900, 1225, "54 PX RUNTIME — DARK / LIGHT / GRAYSCALE READABILITY")
     draw = ImageDraw.Draw(canvas)
-    row_specs = (("DARK", (12, 34, 29)), ("LIGHT", (207, 209, 193)), ("VALUE", (52, 52, 52)))
+    row_specs = (("DARK", (12, 34, 29)), ("LIGHT", (207, 209, 193)), ("VALUE", (52, 52, 52)),
+                   ("SHAPE", (12, 34, 29)))
     for row, (row_name, color) in enumerate(row_specs):
         y = 135 + row * 205
         text(draw, (76, y + 70), row_name, 19, True, "lm")
@@ -302,14 +322,19 @@ def create_readability(baseline: Path, candidate: Path, output: Path) -> None:
             icon = asset(root, key).resize((68, 68), Image.Resampling.LANCZOS)
             if row_name == "VALUE":
                 icon = ImageOps.grayscale(icon).convert("RGBA")
+            elif row_name == "SHAPE":
+                icon = silhouette_view(icon)
             card.alpha_composite(icon, (22, 16))
             canvas.paste(card.convert("RGB"), (x, y))
             text(draw, (x + 56, y + 119), label, 11, False, "ma")
+    grade = grade_row(asset(candidate, POTION_KEYS[0]))
+    canvas.paste(grade.convert("RGB"), ((1900 - grade.width) // 2, 905))
+    text(draw, (950, 887), "STAGE GRADE — TIER 1", 17, True, "ma")
     canvas.save(output, optimize=True)
 
 
 def create_value_progression(candidate: Path, output: Path) -> None:
-    canvas = base(1900, 690, "POTION TIERS — SILHOUETTE ESCALATION WITHOUT HUE DEPENDENCE")
+    canvas = base(1900, 920, "POTION TIERS — SILHOUETTE ESCALATION WITHOUT HUE DEPENDENCE")
     draw = ImageDraw.Draw(canvas)
     constructions = (
         "clean vial", "one collar leaf", "paired leaves",
@@ -329,11 +354,14 @@ def create_value_progression(candidate: Path, output: Path) -> None:
             canvas.paste(card.convert("RGB"), (x, 130 + row * 250))
         text(draw, (x + 120, 105), f"TIER {index + 1}", 20, True, "ma")
         text(draw, (x + 120, 625), constructions[index], 13, False, "ma")
+    grade = grade_row(asset(candidate, POTION_KEYS[0]))
+    canvas.paste(grade.convert("RGB"), ((1900 - grade.width) // 2, 678))
+    text(draw, (950, 660), "STAGE GRADE — TIER 1", 17, True, "ma")
     canvas.save(output, optimize=True)
 
 
 def create_integrated_surface(baseline: Path, candidate: Path, output: Path) -> None:
-    canvas = base(1900, 1000, "INTEGRATED REWARDS & PICKUPS — RESTRAINED PREMIUM HIERARCHY")
+    canvas = base(1900, 1210, "INTEGRATED REWARDS & PICKUPS — RESTRAINED PREMIUM HIERARCHY")
     draw = ImageDraw.Draw(canvas)
     # Three representative reward cards.
     cards = (("MIGHT OF OAK", "ui_strength", "+2 Strength"),
@@ -370,7 +398,11 @@ def create_integrated_surface(baseline: Path, candidate: Path, output: Path) -> 
             ))
         draw.line(points, fill=(102, 172, 124), width=3)
         draw.polygon(((end_x, end_y), (end_x - 17, end_y + 6), (end_x - 8, end_y + 20)), fill=GOLD)
-    text(draw, (1410, 875), "Each tier rests visibly before a clear collection arc.", 18, False, "ma")
+    medal_root = candidate if "ui_strength" in NEW_REWARD_KEYS else baseline
+    grade = grade_row(asset(medal_root, "ui_strength"))
+    canvas.paste(grade.convert("RGB"), ((1900 - grade.width) // 2, 900))
+    text(draw, (950, 882), "STAGE GRADE — MIGHT MEDALLION", 17, True, "ma")
+    text(draw, (1410, 1155), "Each tier rests visibly before a clear collection arc.", 18, False, "ma")
     canvas.save(output, optimize=True)
 
 

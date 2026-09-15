@@ -17,6 +17,8 @@ from create_character_animation_review import (
     text,
 )
 
+from review_strips import grade_row
+
 TREES = (
     (
         "world_tree_healthy",
@@ -345,7 +347,7 @@ def create_motion_sheet(
     gap = 9
     max_frames = max(len(frames.metadata["clips"][clip]) for clip in clips)
     width = left + max_frames * (frame_size + gap) + 30
-    height = 112 + len(clips) * (frame_size + 46) + 24
+    height = 112 + len(clips) * (frame_size + 46) + 274
     canvas = canvas_base(width, height, title)
     draw = ImageDraw.Draw(canvas)
     text(
@@ -370,11 +372,16 @@ def create_motion_sheet(
                                    outline="#58706A", width=2)
             text(draw, (x + 128, y + 276), f"F{index:02d}", 15,
                  anchor="ma", color="#C7D4CE")
+    grade = grade_row(frames.frame(clips[0], 0))
+    grade_y = 112 + len(clips) * (frame_size + 46) + 38
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, grade_y))
+    text(draw, (width // 2, grade_y - 18), f"STAGE GRADE — {clips[0].upper()} F00", 19,
+         bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_state_lineup(baseline: Path, candidate: Path, audit: dict, output: Path) -> None:
-    width, height = 1920, 840
+    width, height = 2230, 1010
     canvas = canvas_base(width, height, "WORLD TREE — PREMIUM V2 STATE CONTINUITY")
     draw = ImageDraw.Draw(canvas)
     old_healthy = CharacterFrames(baseline, "world_tree_healthy")
@@ -388,11 +395,13 @@ def create_state_lineup(baseline: Path, candidate: Path, audit: dict, output: Pa
         ("PREMIUM WOUNDED", damaged.frame("idle", 0)),
         ("CORE FLARE", damaged.frame("destroy", 3)),
         ("FINAL FALLEN HOLD", damaged.frame("destroy", 9)),
+        ("PREMIUM HEALTHY SHAPE", healthy.frame("idle", 0)),
     )
-    for index, (caption, sprite) in enumerate(panels):
+    modes = ("checker", "checker", "checker", "checker", "checker", "checker", "silhouette")
+    for index, ((caption, sprite), mode) in enumerate(zip(panels, modes)):
         x = 55 + index * 310
         y = 135
-        card = presentation_card(sprite, "checker", 280, 490)
+        card = presentation_card(sprite, mode, 280, 490)
         canvas.paste(card.convert("RGB"), (x, y))
         draw.rounded_rectangle((x, y, x + 280, y + 490), 12, outline="#58706A", width=2)
         text(draw, (x + 140, y - 17), caption, 17, bold=True, anchor="ma")
@@ -400,7 +409,7 @@ def create_state_lineup(baseline: Path, candidate: Path, audit: dict, output: Pa
     continuity = audit["destructionContinuity"]
     text(
         draw,
-        (width // 2, 690),
+        (width // 2, 870),
         f"{summary['minimumTriangles']:,}–{summary['maximumTriangles']:,} triangles  •  "
         f"{summary['minimumMeshParts']}+ parts  •  {summary['minimumMaterialCount']}+ materials  •  13-bone segmented rig",
         19,
@@ -410,7 +419,7 @@ def create_state_lineup(baseline: Path, candidate: Path, audit: dict, output: Pa
     )
     text(
         draw,
-        (width // 2, 730),
+        (width // 2, 910),
         f"22/22 frames audited  •  crown drops {continuity['crownTopDropPixels']} px  •  "
         f"final opaque height {continuity['finalOpaqueHeight']} px  •  one-shot final hold",
         17,
@@ -419,17 +428,21 @@ def create_state_lineup(baseline: Path, candidate: Path, audit: dict, output: Pa
     )
     text(
         draw,
-        (width // 2, 770),
+        (width // 2, 950),
         "Healthy and wounded states retain the same roots, heart aperture, guardian boughs, and crown identity.",
         17,
         anchor="ma",
         color="#AFC5BE",
     )
+    grade = grade_row(healthy.frame("idle", 0))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 668))
+    text(draw, (width // 2, 650), "STAGE GRADE — PREMIUM HEALTHY", 19,
+         bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_readability_sheet(baseline: Path, candidate: Path, output: Path) -> None:
-    width, height = 1810, 1120
+    width, height = 1810, 1350
     canvas = canvas_base(width, height, "WORLD TREE — SILHOUETTE, MATERIAL & CONTRAST REVIEW")
     draw = ImageDraw.Draw(canvas)
     old = CharacterFrames(baseline, "world_tree_healthy")
@@ -465,9 +478,13 @@ def create_readability_sheet(baseline: Path, candidate: Path, output: Path) -> N
         draw.rounded_rectangle((x, y, x + card_width, y + card_height), 12,
                                outline="#58706A", width=2)
         text(draw, (x + card_width // 2, y - 15), caption, 19, bold=True, anchor="ma")
+    grade = grade_row(state_frames["healthy"])
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 1100))
+    text(draw, (width // 2, 1082), "STAGE GRADE — HEALTHY", 19,
+         bold=True, anchor="ma")
     text(
         draw,
-        (width // 2, 1070),
+        (width // 2, 1300),
         "Nearest-neighbor review only: no smoothing, painted cleanup, or baked post-process glow.",
         17,
         anchor="ma",
@@ -477,7 +494,7 @@ def create_readability_sheet(baseline: Path, candidate: Path, output: Path) -> N
 
 
 def create_destruction_timeline(damaged: CharacterFrames, output: Path) -> None:
-    width, height = 2090, 560
+    width, height = 2090, 790
     canvas = canvas_base(width, height, "WORLD TREE — COMPLETE ONE-SHOT DESTRUCTION TIMELINE")
     draw = ImageDraw.Draw(canvas)
     captions = (
@@ -492,9 +509,13 @@ def create_destruction_timeline(damaged: CharacterFrames, output: Path) -> None:
         draw.rounded_rectangle((x, y, x + 184, y + 320), 10, outline="#58706A", width=2)
         text(draw, (x + 92, 106), f"F{index:02d}  {captions[index]}", 15,
              bold=True, anchor="ma", color="#F2D58A" if index in (3, 7) else "#E7E1CF")
+    grade = grade_row(damaged.frame("destroy", 3))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 520))
+    text(draw, (width // 2, 502), "STAGE GRADE — CORE FLARE", 17,
+         bold=True, anchor="ma")
     text(
         draw,
-        (width // 2, 505),
+        (width // 2, 735),
         "Presentation time continues after simulation stop; the non-looping final frame remains held on Game Over.",
         18,
         anchor="ma",
@@ -504,7 +525,7 @@ def create_destruction_timeline(damaged: CharacterFrames, output: Path) -> None:
 
 
 def create_arena_scale_sheet(baseline: Path, candidate: Path, output: Path) -> None:
-    width, height = 2240, 690
+    width, height = 2240, 920
     canvas = canvas_base(width, height, "WORLD TREE — 720×1280 REFERENCE-SCALE HERO HIERARCHY")
     draw = ImageDraw.Draw(canvas)
     hero = CharacterFrames(baseline, "hero").frame("idle", 0)
@@ -535,9 +556,13 @@ def create_arena_scale_sheet(baseline: Path, candidate: Path, output: Path) -> N
         draw.rounded_rectangle((x, y, x + panel_width, y + panel_height), 12,
                                outline="#58706A", width=2)
         text(draw, (x + panel_width // 2, y - 16), caption, 18, bold=True, anchor="ma")
+    grade = grade_row(healthy)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 700))
+    text(draw, (width // 2, 682), "STAGE GRADE — PREMIUM HEALTHY", 17,
+         bold=True, anchor="ma")
     text(
         draw,
-        (width // 2, 662),
+        (width // 2, 872),
         "Tree sprite box 330 reference units; Hero box 170. The Hero remains the foreground combat read.",
         17,
         anchor="ma",

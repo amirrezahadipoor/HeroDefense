@@ -19,6 +19,8 @@ from create_character_animation_review import (
     text,
 )
 
+from review_strips import grade_row
+
 ENEMIES = (
     ("rootling", "Rootling", "rootling-thorn-scout-v2", "premium-humanoid-v2", "rootling-skirmisher-v2"),
     ("stonekin", "Stonekin", "stonekin-rune-bulwark-v2", "premium-heavy-humanoid-v2", "stonekin-juggernaut-v2"),
@@ -253,7 +255,7 @@ def validate_metadata(
 
 
 def create_lineup_sheet(baseline: Path, candidate: Path, audit: dict, output: Path) -> None:
-    width, height = 1_900, 930
+    width, height = 1_900, 1_390
     canvas = canvas_base(width, height, "REGULAR ENEMIES — PREMIUM V2 LINEUP & GAMEPLAY HIERARCHY")
     draw = ImageDraw.Draw(canvas)
     text(
@@ -264,8 +266,8 @@ def create_lineup_sheet(baseline: Path, candidate: Path, audit: dict, output: Pa
         anchor="ma",
         color="#AFC5BE",
     )
-    row_labels = ("BASELINE", "PREMIUM IDLE", "ATTACK IMPACT")
-    row_positions = (150, 380, 610)
+    row_labels = ("BASELINE", "PREMIUM IDLE", "ATTACK IMPACT", "SILHOUETTE")
+    row_positions = (150, 380, 610, 840)
     for label, y in zip(row_labels, row_positions):
         text(draw, (30, y + 100), label, 18, bold=True, anchor="lm", color="#F2D58A")
     audit_by_key = {entry["key"]: entry for entry in audit["assets"]}
@@ -275,14 +277,15 @@ def create_lineup_sheet(baseline: Path, candidate: Path, audit: dict, output: Pa
         x = 200 + column * 420
         text(draw, (x + 180, 128), label.upper(), 22, bold=True, anchor="ma")
         frames = (old.frame("idle", 0), new.frame("idle", 0), new.frame("attack", 4))
-        for y, sprite in zip(row_positions, frames):
-            card = presentation_card(sprite, "checker", 360, 205)
+        modes = ("checker", "checker", "checker", "silhouette")
+        for y, sprite, mode in zip(row_positions, frames + (frames[1],), modes):
+            card = presentation_card(sprite, mode, 360, 205)
             canvas.paste(card.convert("RGB"), (x, y))
             draw.rounded_rectangle((x, y, x + 360, y + 205), 10, outline="#58706A", width=2)
         record = audit_by_key[key]
         text(
             draw,
-            (x + 180, 852),
+            (x + 180, 1302),
             f"{record['triangles']:,} triangles  •  {record['meshParts']} purposeful parts",
             15,
             anchor="ma",
@@ -290,12 +293,16 @@ def create_lineup_sheet(baseline: Path, candidate: Path, audit: dict, output: Pa
         )
         text(
             draw,
-            (x + 180, 877),
+            (x + 180, 1327),
             f"{record['materialCount']} coherent materials  •  25-bone animated rig",
             15,
             anchor="ma",
             color="#AFC5BE",
         )
+    grade = grade_row(CharacterFrames(candidate, ENEMIES[0][0]).frame("idle", 0))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 1075))
+    text(draw, ((width // 2), 1060), f"STAGE GRADE — {ENEMIES[0][1].upper()} (REPRESENTATIVE)",
+         16, bold=True, anchor="ma", color="#F2D58A")
     canvas.save(output, optimize=True)
 
 

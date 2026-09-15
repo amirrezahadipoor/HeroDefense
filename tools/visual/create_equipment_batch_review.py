@@ -10,6 +10,8 @@ from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageStat
 
+from review_strips import grade_row, silhouette_view
+
 CLIPS = ("idle", "attack", "hit", "death")
 POSES = (
     ("Idle", "idle", 0),
@@ -402,12 +404,12 @@ def create_icon_sheets(
         tier_items = [item for item in items if item["tier"] == tier]
         columns = 4
         rows = (len(tier_items) + columns - 1) // columns
-        width, height = 1370, 100 + rows * 245 + 25
+        width, height = 1370, 100 + rows * 435 + 255
         canvas = base_canvas(width, height, f"{tier} EQUIPMENT — BEFORE / PREMIUM-V2 ICONS")
         draw = ImageDraw.Draw(canvas)
         for index, item in enumerate(tier_items):
             column, row = index % columns, index // columns
-            x, y = 30 + column * 335, 88 + row * 245
+            x, y = 30 + column * 335, 88 + row * 435
             text(draw, (x + 155, y), title(item["id"]), 18, bold=True, anchor="ma")
             before = Image.open(
                 baseline / "icons" / f"equipment_{item['id']}.png"
@@ -419,6 +421,16 @@ def create_icon_sheets(
             paste_card(canvas, after, x + 165, y + 18, 145, 175)
             text(draw, (x + 72, y + 215), "Before", 15, anchor="ma", color="#AFC5BE")
             text(draw, (x + 237, y + 215), "Premium", 15, anchor="ma", color="#AFC5BE")
+            paste_card(canvas, silhouette_view(after), x + 82, y + 232, 145, 175)
+            text(draw, (x + 155, y + 422), "Shape", 15, anchor="ma", color="#AFC5BE")
+        first_after = Image.open(
+            candidate / "icons" / f"equipment_{tier_items[0]['id']}.png"
+        ).convert("RGBA")
+        grade = grade_row(first_after)
+        grade_y = 100 + rows * 435 + 65
+        canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, grade_y))
+        text(draw, (width // 2, grade_y - 18), f"STAGE GRADE — {title(tier_items[0]['id'])}",
+             18, bold=True, anchor="ma")
         canvas.save(output / f"equipment_icons_{tier.lower()}.png", optimize=True)
 
 
@@ -432,7 +444,7 @@ def create_composite_sheets(
     for page_start in range(0, len(items), page_size):
         page_items = items[page_start : page_start + page_size]
         page_number = page_start // page_size + 1
-        width, height = 1590, 1090
+        width, height = 1590, 1320
         canvas = base_canvas(
             width,
             height,
@@ -450,21 +462,34 @@ def create_composite_sheets(
                 bold=True,
             )
             overlay = Frames(candidate, "equipment", f"equipment_{item['id']}")
-            for pose_index, (caption, clip, frame_index) in enumerate(POSES):
-                composite = Image.alpha_composite(
-                    hero.frame(clip, frame_index),
-                    overlay.frame(clip, frame_index),
-                )
-                card_x = x + pose_index * 145
-                paste_card(canvas, composite, card_x, y + 28, 132, 165)
+            shots = []
+            for caption, clip, frame_index in POSES:
+                shots.append((
+                    caption,
+                    Image.alpha_composite(
+                        hero.frame(clip, frame_index),
+                        overlay.frame(clip, frame_index),
+                    ),
+                ))
+            shots.append(("Shape", silhouette_view(shots[2][1])))
+            for pose_index, (caption, composite) in enumerate(shots):
+                card_x = x + pose_index * 120
+                paste_card(canvas, composite, card_x, y + 28, 110, 165)
                 text(
                     draw,
-                    (card_x + 66, y + 215),
+                    (card_x + 55, y + 215),
                     caption,
                     13,
                     anchor="ma",
                     color="#AFC5BE",
                 )
+        first_overlay = Frames(candidate, "equipment", f"equipment_{page_items[0]['id']}")
+        first_impact = Image.alpha_composite(
+            hero.frame("attack", 4), first_overlay.frame("attack", 4))
+        grade = grade_row(first_impact)
+        canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 1100))
+        text(draw, (width // 2, 1082),
+             f"STAGE GRADE — {title(page_items[0]['id'])} IMPACT", 18, bold=True, anchor="ma")
         canvas.save(output / f"equipment_composites_{page_number}.png", optimize=True)
 
 

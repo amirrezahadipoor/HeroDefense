@@ -8,6 +8,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+from review_strips import grade_row, silhouette_view
+
 EQUIPMENT = (
     "boots_of_three_winds",
     "heartwood_aegis",
@@ -42,10 +44,11 @@ def character_sheet(baseline: Path, candidate: Path, output: Path) -> None:
         ("Death hold", "death", 8, False),
     )
     rows = (("Hero", "hero"), ("Rootling", "rootling"), ("Ancient Golem", "ancient_golem"))
-    canvas = new_canvas(1680, 1050, "PREMIUM-V2 CHARACTER & ANIMATION PILOT")
+    canvas = new_canvas(1930, 1270, "PREMIUM-V2 CHARACTER & ANIMATION PILOT")
     draw = ImageDraw.Draw(canvas)
     for column, (label, _, _, _) in enumerate(columns):
         text(draw, (305 + column * 242, 82), label, 22, bold=True, anchor="ma")
+    text(draw, (305 + 6 * 242, 82), "Shape", 22, bold=True, anchor="ma")
     for row, (label, key) in enumerate(rows):
         y = 145 + row * 290
         text(draw, (20, y + 120), label, 20, bold=True, anchor="lm")
@@ -53,11 +56,16 @@ def character_sheet(baseline: Path, candidate: Path, output: Path) -> None:
             root = baseline if use_baseline else candidate
             frame = animation_frame(root, "sprites", key, clip, index)
             paste_card(canvas, frame, 190 + column * 242, y, 230, 250)
+        impact = animation_frame(candidate, "sprites", key, "attack", 4)
+        paste_card(canvas, silhouette_view(impact), 190 + 6 * 242, y, 230, 250)
+    grade = grade_row(animation_frame(candidate, "sprites", "hero", "attack", 4))
+    canvas.paste(grade.convert("RGB"), ((1930 - grade.width) // 2, 1000))
+    text(draw, (1930 // 2, 982), "STAGE GRADE — HERO IMPACT", 20, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def equipment_sheet(baseline: Path, candidate: Path, output: Path) -> None:
-    canvas = new_canvas(1680, 990, "VERDANT COVENANT EQUIPMENT PILOT")
+    canvas = new_canvas(1680, 1170, "VERDANT COVENANT EQUIPMENT PILOT")
     draw = ImageDraw.Draw(canvas)
     previews = (
         ("Baseline equipped", baseline, "idle", 0),
@@ -81,11 +89,17 @@ def equipment_sheet(baseline: Path, candidate: Path, output: Path) -> None:
         paste_card(canvas, after, x + 155, 575, 135, 170)
         text(draw, (x + 67, 760), "Before", 18, anchor="ma")
         text(draw, (x + 222, 760), "After", 18, anchor="ma")
+        paste_card(canvas, silhouette_view(after), x + 85, 775, 120, 120)
+        text(draw, (x + 145, 906), "Shape", 16, anchor="ma")
+    pilot_after = Image.open(candidate / "icons" / f"equipment_{EQUIPMENT[0]}.png").convert("RGBA")
+    grade = grade_row(pilot_after)
+    canvas.paste(grade.convert("RGB"), ((1680 - grade.width) // 2, 948))
+    text(draw, (1680 // 2, 930), "STAGE GRADE — FIRST PILOT ICON", 18, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def supporting_sheet(baseline: Path, candidate: Path, output: Path) -> None:
-    canvas = new_canvas(1320, 980, "DROP, ENVIRONMENT PROP & LIVE UI PILOT")
+    canvas = new_canvas(1320, 1190, "DROP, ENVIRONMENT PROP & LIVE UI PILOT")
     draw = ImageDraw.Draw(canvas)
     rows = (
         ("Tier-6 potion drop", "icons", "health_potion_6.png"),
@@ -94,6 +108,7 @@ def supporting_sheet(baseline: Path, candidate: Path, output: Path) -> None:
     )
     text(draw, (515, 85), "Baseline", 24, bold=True, anchor="ma")
     text(draw, (900, 85), "Premium-v2", 24, bold=True, anchor="ma")
+    text(draw, (1165, 85), "Shape", 24, bold=True, anchor="ma")
     for row, (label, folder, filename) in enumerate(rows):
         y = 125 + row * 275
         text(draw, (35, y + 110), label, 24, bold=True, anchor="lm")
@@ -101,7 +116,11 @@ def supporting_sheet(baseline: Path, candidate: Path, output: Path) -> None:
         after = Image.open(candidate / folder / filename).convert("RGBA")
         paste_card(canvas, before, 390, y, 250, 235)
         paste_card(canvas, after, 775, y, 250, 235)
-    text(draw, (40, 945),
+        paste_card(canvas, silhouette_view(after), 1040, y, 250, 235)
+    grade = grade_row(Image.open(candidate / "icons" / "health_potion_6.png").convert("RGBA"))
+    canvas.paste(grade.convert("RGB"), ((1320 - grade.width) // 2, 960))
+    text(draw, (1320 // 2, 942), "STAGE GRADE — POTION DROP", 18, bold=True, anchor="ma")
+    text(draw, (40, 1155),
          "Checkerboards expose alpha edges; all previews retain actual runtime frame dimensions.",
          18)
     canvas.save(output, optimize=True)

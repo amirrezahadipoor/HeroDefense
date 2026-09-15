@@ -8,6 +8,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
+from review_strips import grade_row
+
 CLIP_ORDER = ("idle", "attack", "hit", "death")
 FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 BOLD_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
@@ -69,7 +71,7 @@ def create_motion_sheet(character: CharacterFrames, label: str, output: Path) ->
     max_frames = max(len(character.metadata["clips"][clip]) for clip in CLIP_ORDER)
     width = left + max_frames * card_step + 30
     row_step = frame_size + 42
-    height = 105 + len(CLIP_ORDER) * row_step + 25
+    height = 105 + len(CLIP_ORDER) * row_step + 275
     canvas = canvas_base(width, height, f"{label.upper()} — COMPLETE NATIVE-SIZE MOTION REVIEW")
     draw = ImageDraw.Draw(canvas)
     text(draw, (width // 2, 74),
@@ -91,6 +93,11 @@ def create_motion_sheet(character: CharacterFrames, label: str, output: Path) ->
                                    outline="#58706A", width=2)
             text(draw, (x + frame_size // 2, y + frame_size + 17), f"F{index:02d}", 15,
                  anchor="ma", color="#C7D4CE")
+    grade = grade_row(character.frame("attack", 4))
+    grade_y = 105 + len(CLIP_ORDER) * row_step + 45
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, grade_y))
+    text(draw, (width // 2, grade_y - 18), "STAGE GRADE — ATTACK IMPACT", 19,
+         bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
@@ -100,7 +107,7 @@ def create_readability_sheet(
     label: str,
     output: Path,
 ) -> None:
-    width, height = 1660, 860
+    width, height = 1660, 1070
     canvas = canvas_base(width, height, f"{label.upper()} — SILHOUETTE, MATERIAL & CONTRAST REVIEW")
     draw = ImageDraw.Draw(canvas)
     panels = (
@@ -124,7 +131,11 @@ def create_readability_sheet(
         draw.rounded_rectangle((x, y, x + card_width, y + card_height), 12,
                                outline="#58706A", width=2)
         text(draw, (x + card_width // 2, y - 14), caption, 20, bold=True, anchor="ma")
-    text(draw, (width // 2, 817),
+    grade = grade_row(candidate.frame("idle", 0))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 810))
+    text(draw, (width // 2, 792), "STAGE GRADE — PREMIUM IDLE", 19,
+         bold=True, anchor="ma")
+    text(draw, (width // 2, 1020),
          "Nearest-neighbor zoom preserves runtime pixels; no smoothing or painted cleanup is applied.",
          17, anchor="ma", color="#AFC5BE")
     canvas.save(output, optimize=True)

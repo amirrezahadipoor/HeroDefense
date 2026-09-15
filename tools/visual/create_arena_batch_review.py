@@ -17,6 +17,8 @@ from create_character_animation_review import (
     text,
 )
 
+from review_strips import grade_row, silhouette_view
+
 EXPECTED_KEYS = (
     "arena_backdrop",
     "ground_tile_0",
@@ -313,7 +315,7 @@ def validate_metadata(entry: dict, key: str) -> None:
 
 
 def create_integrated_composition(baseline: Path, candidate: Path, output: Path) -> None:
-    width, height = 1640, 1490
+    width, height = 1640, 1720
     canvas = canvas_base(width, height, "ARENA ENVIRONMENT — 720×1280 INTEGRATED COMPOSITION")
     draw = ImageDraw.Draw(canvas)
     old = compose_arena(baseline, candidate=False)
@@ -325,8 +327,12 @@ def create_integrated_composition(baseline: Path, candidate: Path, output: Path)
         canvas.paste(scene.convert("RGB"), (x, y))
         draw.rectangle((x, y, x + 720, y + 1280), outline="#728A83", width=3)
         text(draw, (x + 360, y - 20), label, 22, bold=True, anchor="ma")
+    grade = grade_row(new)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 1430))
+    text(draw, (width // 2, 1412), "STAGE GRADE — CANDIDATE SCENE", 18,
+         bold=True, anchor="ma")
     text(
-        draw, (width // 2, 1450),
+        draw, (width // 2, 1650),
         "Reference viewport at 1× • Hero and World Tree remain primary • edge landmarks frame, never crowd, the combat lane",
         18, anchor="ma", color="#AFC5BE",
     )
@@ -336,7 +342,7 @@ def create_integrated_composition(baseline: Path, candidate: Path, output: Path)
 def create_backdrop_value_sheet(candidate: Path, audit: dict, output: Path) -> None:
     image = asset_image(candidate, "arena_backdrop")
     grayscale = ImageOps.grayscale(image.convert("RGB")).convert("RGBA")
-    width, height = 1540, 930
+    width, height = 1540, 1160
     canvas = canvas_base(width, height, "ARENA BACKDROP — NATIVE DETAIL & VALUE HIERARCHY")
     draw = ImageDraw.Draw(canvas)
     panels = (
@@ -353,8 +359,12 @@ def create_backdrop_value_sheet(candidate: Path, audit: dict, output: Path) -> N
         # Show the central 40% audit lane without obscuring the rendered evidence.
         draw.rectangle((x + 135, y + 120, x + 315, y + 720), outline="#D6AD4C", width=2)
     record = next(value for value in audit["assets"] if value["key"] == "arena_backdrop")
+    grade = grade_row(image)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 920))
+    text(draw, (width // 2, 902), "STAGE GRADE — BACKDROP", 18,
+         bold=True, anchor="ma")
     text(
-        draw, (width // 2, 890),
+        draw, (width // 2, 1120),
         f"mean value {record['meanValue']:.1f} • lane {record['centerLaneMeanValue']:.1f} • edges {record['edgeMeanValue']:.1f} • full-bleed alpha {record['fullBleedMinimumEdgeAlpha']}",
         18, bold=True, anchor="ma", color="#F2D58A",
     )
@@ -362,7 +372,7 @@ def create_backdrop_value_sheet(candidate: Path, audit: dict, output: Path) -> N
 
 
 def create_ground_lineup(baseline: Path, candidate: Path, audit: dict, output: Path) -> None:
-    width, height = 1710, 820
+    width, height = 1710, 1170
     canvas = canvas_base(width, height, "GROUND PATCHES — BASELINE VS PREMIUM V2")
     draw = ImageDraw.Draw(canvas)
     for variant in range(3):
@@ -384,15 +394,24 @@ def create_ground_lineup(baseline: Path, candidate: Path, audit: dict, output: P
                 scene.alpha_composite(patch, (-35 + column * 155 + row * 24, -10 + row * 90))
         canvas.paste(scene.convert("RGB"), (x, 450))
         text(draw, (x + 242, 724), "STAGGERED OVERLAP", 16, anchor="ma", color="#AFC5BE")
+        shape = checker(230, 150)
+        shape.alpha_composite(
+            silhouette_view(sprite).resize((230, 150), Image.Resampling.LANCZOS))
+        canvas.paste(shape.convert("RGB"), (x + 127, 700))
+    text(draw, (width // 2, 862), "SILHOUETTE ROW", 16, bold=True, anchor="ma")
+    first = asset_image(candidate, "ground_tile_0")
+    grade = grade_row(first)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 910))
+    text(draw, (width // 2, 892), "STAGE GRADE — TILE 0", 17, bold=True, anchor="ma")
     summary = audit["summary"]
-    text(draw, (width // 2, 780),
+    text(draw, (width // 2, 1115),
          f"3/3 variants • minimum transparent margin {summary['minimumTransparentAssetMargin']} px • all under 600 triangles",
          18, anchor="ma", color="#F2D58A")
     canvas.save(output, optimize=True)
 
 
 def create_crystal_lineup(baseline: Path, candidate: Path, audit: dict, output: Path) -> None:
-    width, height = 1710, 760
+    width, height = 1710, 970
     canvas = canvas_base(width, height, "CRYSTAL LANDMARKS — CONSTRUCTION, SILHOUETTE, MATERIAL")
     draw = ImageDraw.Draw(canvas)
     for variant in range(3):
@@ -410,15 +429,18 @@ def create_crystal_lineup(baseline: Path, candidate: Path, audit: dict, output: 
         canvas.paste(silhouette.convert("RGB"), (x, 520))
         text(draw, (x + 242, 716), "IDENTITY AT SILHOUETTE SCALE", 15,
              anchor="ma", color="#AFC5BE")
+    grade = grade_row(asset_image(candidate, "crystal_prop_0"))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 760))
+    text(draw, (width // 2, 742), "STAGE GRADE — CRYSTAL 0", 17, bold=True, anchor="ma")
     canvas.save(output, optimize=True)
 
 
 def create_runtime_readability(candidate: Path, output: Path) -> None:
-    width, height = 1580, 780
+    width, height = 1580, 1195
     canvas = canvas_base(width, height, "ARENA PROPS — RUNTIME SCALE READABILITY")
     draw = ImageDraw.Draw(canvas)
     backgrounds = (("DARK ARENA", (19, 37, 32)), ("LIGHT CHECK", (198, 204, 190)),
-                   ("GRAYSCALE", (57, 57, 57)))
+                   ("GRAYSCALE", (57, 57, 57)), ("SHAPE", (19, 37, 32)))
     sizes = (172, 148, 136)
     for row, (label, color) in enumerate(backgrounds):
         y = 120 + row * 205
@@ -427,6 +449,8 @@ def create_runtime_readability(candidate: Path, output: Path) -> None:
             sprite = asset_image(candidate, f"crystal_prop_{variant}")
             if row == 2:
                 sprite = ImageOps.grayscale(sprite).convert("RGBA")
+            elif row == 3:
+                sprite = silhouette_view(sprite)
             size = sizes[variant]
             panel = Image.new("RGBA", (380, 180), (*color, 255))
             shown = sprite.resize((size, size), Image.Resampling.LANCZOS)
@@ -436,7 +460,10 @@ def create_runtime_readability(candidate: Path, output: Path) -> None:
             if row == 0:
                 text(draw, (x + 190, y - 16), f"{CRYSTAL_IDENTITIES[variant]} • {size}px draw box",
                      16, anchor="ma", color="#C7D4CE")
-    text(draw, (width // 2, 748), "No baked glow • crystal accents stay below Hero/Tree contrast • hue is not the only identity cue",
+    grade = grade_row(asset_image(candidate, "crystal_prop_0"))
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 935))
+    text(draw, (width // 2, 917), "STAGE GRADE — CRYSTAL 0", 17, bold=True, anchor="ma")
+    text(draw, (width // 2, 1130), "No baked glow • crystal accents stay below Hero/Tree contrast • hue is not the only identity cue",
          18, anchor="ma", color="#F2D58A")
     canvas.save(output, optimize=True)
 
@@ -445,7 +472,7 @@ def create_depth_hierarchy(candidate: Path, output: Path) -> None:
     scene = compose_arena(candidate, candidate=True)
     value = ImageOps.grayscale(scene.convert("RGB"))
     blurred = value.resize((180, 320), Image.Resampling.BILINEAR).resize(VIEWPORT, Image.Resampling.BILINEAR)
-    width, height = 1640, 1430
+    width, height = 1640, 1640
     canvas = canvas_base(width, height, "ARENA DEPTH TREATMENT — CLEAN LANE & BROAD VALUES")
     draw = ImageDraw.Draw(canvas)
     panels = (("FULL COLOR", scene.convert("RGB")), ("VALUE MASSES", blurred.convert("RGB")))
@@ -455,7 +482,10 @@ def create_depth_hierarchy(candidate: Path, output: Path) -> None:
         canvas.paste(panel, (x, y))
         draw.rectangle((x + 162, y + 110, x + 558, y + 1160), outline="#D6AD4C", width=3)
         text(draw, (x + 360, y - 16), label, 20, bold=True, anchor="ma")
-    text(draw, (width // 2, 1410),
+    grade = grade_row(scene)
+    canvas.paste(grade.convert("RGB"), ((width - grade.width) // 2, 1420))
+    text(draw, (width // 2, 1402), "STAGE GRADE — SCENE", 18, bold=True, anchor="ma")
+    text(draw, (width // 2, 1610),
          "Gold box marks the protected center 55% • upper props reduce in scale/value • near-edge forms remain peripheral",
          18, anchor="ma", color="#AFC5BE")
     canvas.save(output, optimize=True)
