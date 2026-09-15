@@ -216,6 +216,7 @@ def configure_scene(
     _add_area_light("HD_KEY", (-4.0, -4.5, 8.0), 1500.0, 5.0, "#FFF8E7")  # Phase 39: 900->1500W warmer
     _add_area_light("HD_FILL", (5.0, -1.5, 4.5), 280.0, 4.0, "#C7DEFF")
     _add_area_light("HD_RIM", (0.0, 5.0, 6.5), 800.0, 3.0, "#A8FFB0")  # Phase 40: 450->800W phosphorescent green
+    _add_area_light("HD_BACK", (0.0, 8.0, 2.0), 600.0, 2.5, "#FFD27A")  # Phase 41: fourth amber back light for golden halo
     _configure_freestyle(scene)
     return scene
 

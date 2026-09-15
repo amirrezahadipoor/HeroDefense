@@ -830,8 +830,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 41 — Fourth Amber Back Light
 
-- [ ] Add a fourth area light `HD_BACK` at `(0.0, 8.0, 2.0)`, 600W, size `2.5m`, color `#FFD27A` amber. It creates a golden halo behind the Hero. Implement in `_add_area_light()` calls inside `configure_scene()`.
-- [ ] Ensure it does not blow out the alpha or create double shadows.
+- [x] Add a fourth area light `HD_BACK` at `(0.0, 8.0, 2.0)`, 600W, size `2.5m`, color `#FFD27A` amber. It creates a golden halo behind the Hero. Implement in `_add_area_light()` calls inside `configure_scene()`.
+- [x] Ensure it does not blow out the alpha or create double shadows. — 600W amber halo behind hero, no alpha blowout
 
 ### Phase 42 — Brighter World
 
