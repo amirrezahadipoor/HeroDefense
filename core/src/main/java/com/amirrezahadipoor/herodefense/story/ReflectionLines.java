@@ -11,12 +11,12 @@ public final class ReflectionLines {
     /** The reflection line for a wave start, or null on waves without one. */
     public static String lineForWave(int waveNumber) {
         return switch (waveNumber) {
-            case 25 -> "The wolves run from something deeper than me. That should worry me more than it does.";
-            case 50 -> "Half of what I've killed today, I might have known once. I try not to think about that.";
-            case 75 -> "The ground past the tree line doesn't feel like ground anymore.";
-            case 125 -> "Two trees now. Twice as much to lose. I don't recommend the trade, but I'd make it again.";
-            case 150 -> "It doesn't send its strongest first anymore. It's stopped being patient.";
-            case 175 -> "Whatever's left out there, it's the last of it. Or it wants me to think that.";
+            case 25 -> "Wolves fear something deeper than me. That should scare me more.";
+            case 50 -> "Half of what I killed, I once knew. I try not to think of it.";
+            case 75 -> "Ground past the tree line feels wrong. Not ground at all.";
+            case 125 -> "Two trees now. Twice to lose. Bad trade. I would still make it.";
+            case 150 -> "It no longer sends weak first. It is done waiting.";
+            case 175 -> "What is left may be the last. Or it wants me to think so.";
             default -> null;
         };
     }

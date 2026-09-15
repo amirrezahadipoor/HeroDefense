@@ -16,10 +16,10 @@ public final class BossTitleCards {
             return null;
         }
         return switch (bossType) {
-            case "ANCIENT_GOLEM" -> "ANCIENT GOLEM — the forest's oldest guardian, still standing because it has forgotten how to stop.";
-            case "THORN_MATRIARCH" -> "THORN MATRIARCH — she planted half of what now attacks you.";
-            case "EMBER_WYRM" -> "EMBER WYRM — the Hollow's arrival left an ember. It never learned to go out.";
-            case "VOID_KNIGHT" -> "VOID KNIGHT — it does not remember what it was. Only that it fell.";
+            case "ANCIENT_GOLEM" -> "ANCIENT GOLEM — old guard who still stands.";
+            case "THORN_MATRIARCH" -> "THORN MATRIARCH — she grew half your foes.";
+            case "EMBER_WYRM" -> "EMBER WYRM — a fire that never went out.";
+            case "VOID_KNIGHT" -> "VOID KNIGHT — he fell and forgot the rest.";
             default -> null;
         };
     }

@@ -72,18 +72,18 @@ final class OpeningCinematicTest {
     @Test
     void eachAscensionTierSpeaksItsOwnBeats() {
         assertTierLines(0, "Can you protect the World Tree?!", "Can you?", "Are you sure?!");
-        assertTierLines(1, "Again, the dark comes.", "Again, I stand.", "This time — further.");
+        assertTierLines(1, "Dark comes again.", "I stand again.", "This time I go far.");
         assertTierLines(
             2,
-            "The Hollow remembers me now.",
-            "Good. Let it be afraid.",
-            "Roots first. Then flesh. Then the Tree. Not today."
+            "The Hollow knows me now.",
+            "Good. Let it fear.",
+            "Roots first. Then flesh. Then Tree. Not today."
         );
         assertTierLines(
             3,
-            "Another dawn. Another siege.",
-            "The Tree does not ask twice.",
-            "Neither do I."
+            "New dawn. New fight.",
+            "The Tree asks once.",
+            "So do I."
         );
     }
 

@@ -35,19 +35,19 @@ Tier 0 is the shipped text, included only for reference — do not rewrite it.
 3. "Are you sure?!"
 
 **Tier 1**
-1. "Again, the dark comes."
-2. "Again, I stand."
-3. "This time — further."
+1. "Dark comes again."
+2. "I stand again."
+3. "This time I go far."
 
 **Tier 2**
-1. "The Hollow remembers me now."
-2. "Good. Let it be afraid."
-3. "Roots first. Then flesh. Then the Tree. Not today."
+1. "The Hollow knows me now."
+2. "Good. Let it fear."
+3. "Roots first. Then flesh. Then Tree. Not today."
 
 **Tier 3 and every tier after (reused as-is — do not author one set per tier)**
-1. "Another dawn. Another siege."
-2. "The Tree does not ask twice."
-3. "Neither do I."
+1. "New dawn. New fight."
+2. "The Tree asks once."
+3. "So do I."
 
 ## 2. Mid-Run Story Beats
 
@@ -59,47 +59,39 @@ skippable on tap, exactly like the opening.
 
 Shown once only, the very first time each identity is fought (not on every repeat appearance):
 
-- **Ancient Golem**, first meeting: *"ANCIENT GOLEM — the forest's oldest guardian, still standing
-  because it has forgotten how to stop."*
-- **Thorn Matriarch**, first meeting: *"THORN MATRIARCH — she planted half of what now attacks
-  you."*
-- **Ember Wyrm**, first meeting: *"EMBER WYRM — the Hollow's arrival left an ember. It never
-  learned to go out."*
-- **Void Knight**, first meeting: *"VOID KNIGHT — it does not remember what it was. Only that it
-  fell."*
+- **Ancient Golem**, first meeting: *"ANCIENT GOLEM — old guard who still stands."*
+- **Thorn Matriarch**, first meeting: *"THORN MATRIARCH — she grew half your foes."*
+- **Ember Wyrm**, first meeting: *"EMBER WYRM — a fire that never went out."*
+- **Void Knight**, first meeting: *"VOID KNIGHT — he fell and forgot the rest."*
 
 ### 2.2 Between-boss reflection lines (Hero voice, one line, quiet)
 
-- **Wave 25:** "The wolves run from something deeper than me. That should worry me more than it
-  does."
-- **Wave 50:** "Half of what I've killed today, I might have known once. I try not to think about
-  that."
-- **Wave 75:** "The ground past the tree line doesn't feel like ground anymore."
+- **Wave 25:** "Wolves fear something deeper than me. That should scare me more."
+- **Wave 50:** "Half of what I killed, I once knew. I try not to think of it."
+- **Wave 75:** "Ground past the tree line feels wrong. Not ground at all."
 
 ### 2.3 Wave 100 — the Planting Ceremony (spoken lines, synced to the existing timeline)
 
 Matches the shipped `PlantingCeremony` beats one-to-one — walk, plant, water, growth, return.
 
-1. *(Hero walks toward the World Tree)* "One root should not have to hold back all of this alone."
-2. *(planting the seed)* "A second one, then. Grow angry, if you have to."
-3. *(watering)* "I'll hold the line. That part's mine."
-4. *(the sapling grows — shown in the Tree's tint, not the Hero's)* "The grove remembers what you
-   have given it."
-5. *(Hero turns back to the anchor point)* "Now — hold both."
+1. *(Hero walks toward the World Tree)* "One root should not hold this alone."
+2. *(planting the seed)* "Then a second one. Grow angry if you must."
+3. *(watering)* "I will hold the line. That is my job."
+4. *(the sapling grows — shown in the Tree's tint, not the Hero's)* "The grove remembers your gift."
+5. *(Hero turns back to the anchor point)* "Now hold both."
 
 ### 2.4 Second-half reflection lines
 
-- **Wave 125:** "Two trees now. Twice as much to lose. I don't recommend the trade, but I'd make it
-  again."
-- **Wave 150:** "It doesn't send its strongest first anymore. It's stopped being patient."
-- **Wave 175:** "Whatever's left out there, it's the last of it. Or it wants me to think that."
+- **Wave 125:** "Two trees now. Twice to lose. Bad trade. I would still make it."
+- **Wave 150:** "It no longer sends weak first. It is done waiting."
+- **Wave 175:** "What is left may be the last. Or it wants me to think so."
 
 ### 2.5 Wave 200 — Ascension transition (shown after the epilogue, before the Ascend prompt)
 
 Tier-independent, always the same:
 
-- "The Hollow isn't gone. It's only quiet — for as long as it takes to remember how to fall again."
-- "Rise again? The Tree will still be standing when you do."
+- "The Hollow is not gone. It is quiet while it learns to fall again."
+- "Rise again. The Tree will still stand."
 
 ## 3. Boss Lore (bios for the Codex, one paragraph each)
 
@@ -235,30 +227,30 @@ implementation clarity only — display them unsorted-by-category once unlocked,
 ## 6. Branching Epilogues (shown at run end, before the Ascension transition on a win)
 
 **A — Flawless Victory** *(Wave 200 cleared, Hero never died this run)*
-1. "Two hundred waves. Not one step lost."
-2. "The Hollow will need a better plan than waves."
-3. "Until it finds one — the Tree stands, and so do I."
+1. "Two hundred waves. No step lost."
+2. "The Hollow needs a new plan."
+3. "Till then, the Tree and I stand."
 
 **B — Hard-Fought Victory** *(Wave 200 cleared, Hero died and was revived by the run's normal
 recovery, or finished under a defined HP/potion-usage threshold)*
-1. "Two hundred waves. Every one of them close."
-2. "I don't remember all of it clearly. I remember not letting go."
-3. "That's enough. It has to be."
+1. "Two hundred waves. All were close."
+2. "I do not recall it all. I recall not letting go."
+3. "That is enough. It has to be."
 
 **C — Early Fall** *(Game Over before Wave 50)*
-1. "Not even to the middle."
-2. "The Tree falls quietly, when it falls this early. Almost gently."
-3. "It will not be this quiet next time."
+1. "Not to the middle."
+2. "The Tree falls soft and quiet this early."
+3. "Next time it will be loud."
 
 **D — Middle Fall** *(Game Over, Wave 50–149)*
-1. "So close to the second root."
-2. "I got further than the fall before. That is not the same as far enough."
-3. "Again, then."
+1. "Close to the second root."
+2. "I went farther than last time. Far is not far enough."
+3. "Again."
 
 **E — Late Fall** *(Game Over, Wave 150–199)*
-1. "One tree still stood when I fell. That has to count for something."
-2. "The Hollow paid for every wave past a hundred. It just outlasted me by a few."
-3. "Next time, it pays for all two hundred."
+1. "One tree stood when I fell. That must count."
+2. "The Hollow paid past wave one hundred. It just lasted a bit more."
+3. "Next time it pays for all."
 
 ## 7. Mythic Item Flavor (one per equipment slot)
 

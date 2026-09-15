@@ -38,48 +38,48 @@ final class EpilogueTest {
     void textMatchesStoryContentVerbatim() {
         assertEquals(
             List.of(
-                "Two hundred waves. Not one step lost.",
-                "The Hollow will need a better plan than waves.",
-                "Until it finds one — the Tree stands, and so do I."
+                "Two hundred waves. No step lost.",
+                "The Hollow needs a new plan.",
+                "Till then, the Tree and I stand."
             ),
             Epilogue.A.lines()
         );
         assertEquals(
             List.of(
-                "Two hundred waves. Every one of them close.",
-                "I don't remember all of it clearly. I remember not letting go.",
-                "That's enough. It has to be."
+                "Two hundred waves. All were close.",
+                "I do not recall it all. I recall not letting go.",
+                "That is enough. It has to be."
             ),
             Epilogue.B.lines()
         );
         assertEquals(
             List.of(
-                "Not even to the middle.",
-                "The Tree falls quietly, when it falls this early. Almost gently.",
-                "It will not be this quiet next time."
+                "Not to the middle.",
+                "The Tree falls soft and quiet this early.",
+                "Next time it will be loud."
             ),
             Epilogue.C.lines()
         );
         assertEquals(
             List.of(
-                "So close to the second root.",
-                "I got further than the fall before. That is not the same as far enough.",
-                "Again, then."
+                "Close to the second root.",
+                "I went farther than last time. Far is not far enough.",
+                "Again."
             ),
             Epilogue.D.lines()
         );
         assertEquals(
             List.of(
-                "One tree still stood when I fell. That has to count for something.",
-                "The Hollow paid for every wave past a hundred. It just outlasted me by a few.",
-                "Next time, it pays for all two hundred."
+                "One tree stood when I fell. That must count.",
+                "The Hollow paid past wave one hundred. It just lasted a bit more.",
+                "Next time it pays for all."
             ),
             Epilogue.E.lines()
         );
         assertEquals(
             List.of(
-                "The Hollow isn't gone. It's only quiet — for as long as it takes to remember how to fall again.",
-                "Rise again? The Tree will still be standing when you do."
+                "The Hollow is not gone. It is quiet while it learns to fall again.",
+                "Rise again. The Tree will still stand."
             ),
             Epilogue.TRANSITION
         );

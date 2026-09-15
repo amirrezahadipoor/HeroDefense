@@ -9,27 +9,27 @@ final class ReflectionLinesTest {
     @Test
     void reflectionsMatchStoryContentVerbatim() {
         assertEquals(
-            "The wolves run from something deeper than me. That should worry me more than it does.",
+            "Wolves fear something deeper than me. That should scare me more.",
             ReflectionLines.lineForWave(25)
         );
         assertEquals(
-            "Half of what I've killed today, I might have known once. I try not to think about that.",
+            "Half of what I killed, I once knew. I try not to think of it.",
             ReflectionLines.lineForWave(50)
         );
         assertEquals(
-            "The ground past the tree line doesn't feel like ground anymore.",
+            "Ground past the tree line feels wrong. Not ground at all.",
             ReflectionLines.lineForWave(75)
         );
         assertEquals(
-            "Two trees now. Twice as much to lose. I don't recommend the trade, but I'd make it again.",
+            "Two trees now. Twice to lose. Bad trade. I would still make it.",
             ReflectionLines.lineForWave(125)
         );
         assertEquals(
-            "It doesn't send its strongest first anymore. It's stopped being patient.",
+            "It no longer sends weak first. It is done waiting.",
             ReflectionLines.lineForWave(150)
         );
         assertEquals(
-            "Whatever's left out there, it's the last of it. Or it wants me to think that.",
+            "What is left may be the last. Or it wants me to think so.",
             ReflectionLines.lineForWave(175)
         );
     }

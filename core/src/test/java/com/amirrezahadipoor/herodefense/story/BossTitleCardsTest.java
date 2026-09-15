@@ -15,19 +15,19 @@ final class BossTitleCardsTest {
     @Test
     void titlesMatchStoryContentVerbatim() {
         assertEquals(
-            "ANCIENT GOLEM — the forest's oldest guardian, still standing because it has forgotten how to stop.",
+            "ANCIENT GOLEM — old guard who still stands.",
             BossTitleCards.titleFor("ANCIENT_GOLEM")
         );
         assertEquals(
-            "THORN MATRIARCH — she planted half of what now attacks you.",
+            "THORN MATRIARCH — she grew half your foes.",
             BossTitleCards.titleFor("THORN_MATRIARCH")
         );
         assertEquals(
-            "EMBER WYRM — the Hollow's arrival left an ember. It never learned to go out.",
+            "EMBER WYRM — a fire that never went out.",
             BossTitleCards.titleFor("EMBER_WYRM")
         );
         assertEquals(
-            "VOID KNIGHT — it does not remember what it was. Only that it fell.",
+            "VOID KNIGHT — he fell and forgot the rest.",
             BossTitleCards.titleFor("VOID_KNIGHT")
         );
         assertNull(BossTitleCards.titleFor("MUD_IMP"));

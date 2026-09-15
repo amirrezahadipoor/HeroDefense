@@ -12,23 +12,23 @@ final class CeremonyLinesTest {
     @Test
     void beatsMatchStoryContentVerbatim() {
         assertEquals(
-            "One root should not have to hold back all of this alone.",
+            "One root should not hold this alone.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.WALK_OUT)
         );
         assertEquals(
-            "A second one, then. Grow angry, if you have to.",
+            "Then a second one. Grow angry if you must.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.PLANT)
         );
         assertEquals(
-            "I'll hold the line. That part's mine.",
+            "I will hold the line. That is my job.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.WATER)
         );
         assertEquals(
-            "The grove remembers what you have given it.",
+            "The grove remembers your gift.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.GROW)
         );
         assertEquals(
-            "Now — hold both.",
+            "Now hold both.",
             CeremonyLines.lineFor(PlantingCeremony.Phase.WALK_BACK)
         );
         assertNull(CeremonyLines.lineFor(PlantingCeremony.Phase.IDLE));
