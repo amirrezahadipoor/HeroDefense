@@ -41,6 +41,11 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Validate generated assets (edge safety, pivot, silhouette, grade — fails fast)
+        run: |
+          python3 -m pip install --break-system-packages pillow
+          python3 tools/visual/validate_generated_assets.py android/assets/generated
+
       - name: Assemble debug APK
         run: ./scripts/gradle.sh :android:assembleDebug --stacktrace
 

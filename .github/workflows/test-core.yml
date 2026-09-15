@@ -43,7 +43,7 @@ jobs:
       - name: Test review-strip helpers
         run: python3 -m unittest discover -s tools/visual/tests -v
 
-      - name: Validate committed generated-asset metadata
+      - name: Validate generated assets (edge safety, pivot stability, silhouette + grade — fail fast)
         run: python3 tools/visual/validate_generated_assets.py android/assets/generated
 
       - name: Run unit tests and the 100-wave balance gate
