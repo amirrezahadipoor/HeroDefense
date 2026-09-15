@@ -900,6 +900,114 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ---
 
+# Hero Defense — Roadmap Addendum (Phases 54–70) — Path to 950/1000 AAA Assets
+
+Continues directly from Phase 53 (studio-v4-vibrant). Goal: super strict 950+/1000 asset score. This addendum **does** allow frame-dimension, geometry, texture, and atlas changes that were forbidden before, but still keeps the 25-bone rig contract and clip counts. Every phase must keep APK buildable and under 100 MB.
+
+Current strict score: 637/1000 (studio-v3). After 34–53 vibrant: ~782/1000 predicted. This addendum closes the remaining 168 points to 950+.
+
+## Phase 54 — Frame Size Upgrade: 192→384 Hero/Boss/Tree, 96→192 Icons
+
+- [ ] In `tools/blender/hd_pipeline/config.py` → `FRAME_SIZE`: hero/boss/tree from 192/256 to 384, item icons from 96 to 192. Keep arena 720×1280. Update `FRAME_DIMENSIONS`.
+- [ ] In `config.py`: raise `MAX_ATLAS_SIZE` from 2048 to 4096, allow 2 pages for hero if needed, but enforce ASTC/ETC2 compression in Android to keep APK <100 MB.
+- [ ] Update `docs/VISUAL_STYLE_GUIDE.md` §5 camera scale stays same, but frame size doubled — hero now 300px on screen readable for high-detail reference like chibi green hair.
+
+## Phase 55 — High-Poly Sculpt + Normal Bake
+
+- [ ] In `tools/blender/hd_pipeline/models.py`: for Hero, create high-poly sculpt (10k–12k tris) with multires, then bake normal map to low-poly (3200 tris) via `bpy.ops.object.bake`. Store normal as 384×384 PNG, pack into atlas alpha or separate normal atlas.
+- [ ] Extend `toon_material()` to use normal map via `ShaderNodeNormalMap` mixed into diffuse, keeping toon ramp but adding surface detail like fabric weave, leaf veins, gold filigree.
+
+## Phase 56 — Hand-Painted Diffuse Textures
+
+- [ ] Replace flat `PALETTE` color with hand-painted diffuse texture per material: base color + hand-painted shadows/highlights in texture. Implement via `ShaderNodeTexImage` → multiply with `PALETTE` base.
+- [ ] For Hero green, paint leaf veins, fabric folds, leather stitching. For gold, paint filigree ornament like reference bow. Keep procedural as fallback if texture missing.
+
+## Phase 57 — Hair Cards with Alpha for Flowing Hair
+
+- [ ] Replace cone hair locks (`hero_hair_lock_*`) with alpha cards: planes with hand-painted hair strand texture + alpha. Use `transparent_material()` with alpha clip.
+- [ ] Hair now flows like reference green long hair, not faceted cones. Keep same bone attachment (`head` bone), no new bone.
+
+## Phase 58 — Eye Shader: Iris Gradient + Double Highlights
+
+- [ ] Create dedicated eye texture: iris green gradient `#2ECC71`→`#A8FF53`, pupil black, sclera white with slight pink, two white specular dots (upper-left 0.9, lower-right 0.6) like reference.
+- [ ] In `models.py`: eye mesh UV unwrapped, eye material uses eye texture + glossy pop roughness 0.05. Add `eye_highlight` empty for specular position.
+
+## Phase 59 — PBR Workflow: Metallic/Roughness/AO Maps
+
+- [ ] For all materials, add metallic map (gold 0.95, cloth 0.05), roughness map (gold 0.15, cloth 0.45, skin 0.35), AO map baked from high-poly.
+- [ ] Extend `toon_material()` to mix PBR maps with toon ramp: PBR drives micro-detail, toon drives macro bands.
+
+## Phase 60 — Cloth Sculpted Folds
+
+- [ ] Replace simple cone tunic/cuirass/skirt with sculpted folds using `add_cube` + subdivision + sculpt, then retopo to low-poly. Folds readable at 384px.
+- [ ] Keep triangle budget: hero body 3200→5000 (raise hard max 9000), still within 9k.
+
+## Phase 61 — Equipment High-Detail Sculpts
+
+- [ ] For each of 40 equipment items, create high-poly sculpt (1k tris) then bake to low-poly 300 tris overlay. Gold filigree, leaf veins, leather stitching visible at 384px.
+- [ ] Update `tools/blender/equipment_visuals.json` with normal map paths.
+
+## Phase 62 — Environment High-Detail
+
+- [ ] Ground tiles: add micro detail (grass tufts, pebbles) via hand-painted normal + color variation per tile, not flat.
+- [ ] Crystals: add refraction via `ShaderNodeRefraction` + emissive core 1.5 + bloom, like jewels. Each variant distinct shape language beyond hue.
+
+## Phase 63 — VFX Authored Textures
+
+- [ ] Replace `ParticleSystem` ShapeRenderer polygons with authored sprite sheets: impact flash, shockwave ring, chain lightning texture, stun stars texture. Render via `vfx` batch with real textures, not procedural polygons.
+- [ ] Add 8-frame VFX atlas 512×512 with additive blending.
+
+## Phase 64 — Advanced Studio Lighting + Shadows
+
+- [ ] In `scene.py`: add HDRI studio light (softbox) + contact shadows enabled (`use_contact_shadow True`), soft shadows size 0.3m for key, light linking so rim only affects hero edge.
+- [ ] Add ground catcher with shadow catcher material for contact shadow PNG.
+
+## Phase 65 — Post-Processing: LUT + Bloom + Vignette
+
+- [ ] Add color LUT (AgX Punchy + custom vibrant LUT) in compositor, bloom already in Phase 50 but raise intensity to 0.6 for gold, vignette 0.15 for focus.
+- [ ] Ensure post-process does not break alpha premultiplication.
+
+## Phase 66 — Atlas Optimization: ASTC + Streaming + Memory Budget
+
+- [ ] In `android/build.gradle`: enable ASTC 6×6, ETC2 fallback, mipmaps false for characters (keep crisp), true for environment.
+- [ ] Implement texture streaming: only hero + current wave enemies + boss resident, others disposed. Target decoded residency <80 MB at wave 50 with boss (was 69 MB if all loaded, now with 384px would be 4× → need streaming to stay <100 MB).
+- [ ] Add performance test `TextureResidencyTest` measuring `Texture` count and estimated bytes at wave 50.
+
+## Phase 67 — Performance Measurement & Optimization
+
+- [ ] Add instrumented run: startup ms, 1% low frame time, `Texture` count at wave 50, APK size. Record in `docs/art_reviews/STUDIO_V4_VIBRANT_PERF.md`.
+- [ ] Optimize: downsample equipment sheets from 1920×768 to 1280×512 for non-equipped (hero only 160px on screen → 2× oversampled is enough), keep 384px for equipped.
+- [ ] Ensure 60 FPS on mid-range device (Adreno 610 / Mali G57) with new 384px assets.
+
+## Phase 68 — APK Health: Minify, Shrink, Sign, <100 MB
+
+- [ ] In `android/build.gradle`: `minifyEnabled true`, `shrinkResources true`, R8 full mode, keep only `com.amirrezahadipoor.herodefense.**`.
+- [ ] `allowBackup false`, add `schemaVersion` migration, handle Android Back `Gdx.input.setCatchKey(BACK)`.
+- [ ] Build release APK via `./scripts/gradle.sh :android:assembleRelease`, verify APK <100 MB, no `libgdx` debug, no Blender files.
+- [ ] Run `./scripts/balance-check.sh` and `:core:test` — must stay green after all art changes.
+
+## Phase 69 — Final Art Review with 950 Gates
+
+- [ ] Define 950/1000 gates in `docs/VISUAL_STYLE_GUIDE.md`: head 40% of height, eye highlight double, hair flow alpha, gold filigree readable at 50% size + grayscale + silhouette, palette S≥85 V≥80 for hero, value step ≥0.18, normal map detail visible at 384px, no faceting, no oversampling waste.
+- [ ] Re-render every batch on final engine, pass through `create_*_batch_review.py` with 950 gates, promote to `android/assets/generated` with `visualQuality: "studio-v5-aaa-950"`.
+- [ ] Manifest audit: every asset `visualQuality: "studio-v5-aaa-950"`, `render_tier()` 4×/48 top, 3×/32 mid, engine `70.0-studio-v5-aaa-950`.
+
+## Phase 70 — Release APK: Healthy & Verified
+
+- [ ] Build final signed APK with vibrant AAA assets, run AndroidTouchSmokeTest on emulator API 35 with touch only, capture all surfaces.
+- [ ] Verify APK installs, runs, no crash on Root Network, Codex, Trial Draft, Shop, Inventory, 200 waves.
+- [ ] Output `android/build/outputs/apk/release/android-release.apk` <100 MB, healthy, ready for Cafe Bazaar. Record SHA-256 in `docs/CAFE_BAZAAR_RELEASE.md`.
+
+## Standing Rules for Phases 54–70
+
+- Rig stays 25-bone, clip counts stay 6/8/4/10, pivot stays (0.5,0.12), but frame size, geometry, textures, atlas size may change.
+- Complete → verify → commit → push each checklist item separately. Push frequently.
+- Keep workspace under 128 MB; Blender/cache in `/tmp` only.
+- Every batch must pass 950 gates before promotion.
+- Final APK must be healthy, <100 MB, minified, and pass all core tests + balance-check + touch smoke.
+
+---
+
 ## Appendix — Story Content (Phases 20, 21, 23, 25)
 
 Full narrative text wired to the systems above. Two voices: Hero (white, terse, present-tense) and Tree (leaf-green, reflective, Codex only).
