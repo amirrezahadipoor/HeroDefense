@@ -820,8 +820,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 39 — Stronger Key Light
 
-- [ ] In `scene.py` → `configure_scene()`: raise `HD_KEY` from 900W to 1500W and change its color from `#FFF3DF` to `#FFF8E7` warmer. Exposure stays 0.0.
-- [ ] Verify no EEVEE fireflies at new energy; raise samples if needed.
+- [x] In `scene.py` → `configure_scene()`: raise `HD_KEY` from 900W to 1500W and change its color from `#FFF3DF` to `#FFF8E7` warmer. Exposure stays 0.0.
+- [x] Verify no EEVEE fireflies at new energy; raise samples if needed. — 1500W tested, samples 36 sufficient
 
 ### Phase 40 — Phosphorescent Rim Light
 

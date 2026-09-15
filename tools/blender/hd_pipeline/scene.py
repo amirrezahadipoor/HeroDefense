@@ -213,7 +213,7 @@ def configure_scene(
     background.inputs["Strength"].default_value = 0.25
 
     _add_camera(frame_class)
-    _add_area_light("HD_KEY", (-4.0, -4.5, 8.0), 900.0, 5.0, "#FFF3DF")
+    _add_area_light("HD_KEY", (-4.0, -4.5, 8.0), 1500.0, 5.0, "#FFF8E7")  # Phase 39: 900->1500W warmer
     _add_area_light("HD_FILL", (5.0, -1.5, 4.5), 280.0, 4.0, "#C7DEFF")
     _add_area_light("HD_RIM", (0.0, 5.0, 6.5), 450.0, 3.0, "#D8FFD2")
     _configure_freestyle(scene)
