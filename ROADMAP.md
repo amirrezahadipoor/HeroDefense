@@ -906,8 +906,8 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 54 — HD Frame Size: 192→384 Hero, 256→512 Boss
 
-- [ ] In `config.py` → `FRAME_SIZE`: hero 192→384, boss 256→512, item 96→192. Keep `FRAME_DIMENSIONS` logic. Update `RENDER_SUPERSAMPLE` floors to handle 2× runtime: top-tier 4→3 at new size (effective 1152px working), mid-tier 3→2 (768px). This doubles on-screen readability from 150px to 300px hero height at 720×1280.
-- [ ] Update `docs/VISUAL_STYLE_GUIDE.md` §5 camera scale and §2 triangle budgets unchanged but note new texel density gate: ≥2.5 texels per screen pixel at reference.
+- [x] In `config.py` → `FRAME_SIZE`: hero 192→384, boss 256→512, item 96→192. Keep `FRAME_DIMENSIONS` logic. Update `RENDER_SUPERSAMPLE` floors to handle 2× runtime: top-tier 4→3 at new size (effective 1152px working), mid-tier 3→2 (768px). This doubles on-screen readability from 150px to 300px hero height at 720×1280.
+- [x] Update `docs/VISUAL_STYLE_GUIDE.md` §5 camera scale and §2 triangle budgets unchanged but note new texel density gate: ≥2.5 texels per screen pixel at reference.
 
 ## Phase 55 — Geometry Refinement Within Same Rig
 
