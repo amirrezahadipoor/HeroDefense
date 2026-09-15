@@ -163,6 +163,28 @@ Per-character value spacing (shipped PNG midtone, sRGB luminance):
 - Enemies: wood `0.08` → violet `0.15` → rust `0.14` → stone `0.38` (rust/violet re-spaced to 0.16 after audit; neutral stone now clearly lighter)
 - All roles carry one saturated hero (S≥60), one neutral (S≤30 stone), one skin/organic, one accent, each ≥0.15 apart where highlight makes muddiness visible.
 
+### Locked Palette (studio-v4-vibrant audited 2026-09-15 — Phase 34)
+
+Phase 34 vibrant box: keep rig/geometry, explode saturation/value for stunning look. No reference image copied — only hex values and checkable gates.
+
+| Role | Hex | Notes |
+|---|---:|---|
+| Outline | `#142126` | unchanged for now (Phase 37 will add per-category overrides) |
+| Hero forest green | **`#2ECC71`** | was `#1E8A4E` — S 0.77 V 0.80, phosphorescent, like reference chibi green |
+| Hero leaf light | **`#A8FF53`** | was `#8BF27A` — S 0.67 V 1.00, lime phosphor, high saturation |
+| Hero gold | **`#FFD700`** | was `#E8B84B` — S 1.00 V 1.00, true metallic glossy gold |
+| Hero skin | `#F0C9A8` | unchanged |
+| Wood | `#70452C` | unchanged |
+| Enemy rust | `#B5452E` | unchanged (will be vibranted in Phase 34 extension) |
+| Enemy violet | `#7A5CA8` | unchanged |
+| Stone | `#8A9AA6` | unchanged |
+| UI ink | `#0B1419` | unchanged |
+| UI parchment | `#E7D8B1` | unchanged |
+
+Value spacing after Phase 34 (target):
+- Hero: forest `0.35` → gold `0.70` → skin `0.62` → leaf `0.85` — all steps ≥0.15, gold now clearly brightest, leaf phosphor pops.
+- Saturation gate: all hero roles now S≥75 for stunning look, neutral roles stay S≤30.
+
 ## 4. Outline
 
 - One continuous dark blue-green outline using `#142126`, not pure black.

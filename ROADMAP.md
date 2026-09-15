@@ -793,8 +793,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 34 — New Palette: Vibrant Box
 
-- [ ] In `tools/blender/hd_pipeline/config.py` → `PALETTE`: change Hero green from `#1E8A4E` to `#2ECC71` (phosphorescent, like the reference), gold from `#E8B84B` to `#FFD700` metallic glossy, leaf from `#8BF27A` to `#A8FF53` phosphorescent. Raise saturation from ~0.6 to 0.85. Keep outline `#142126` for now. Update `docs/VISUAL_STYLE_GUIDE.md` Locked Palette table with before/after.
-- [ ] Verify with `tools/visual/validate_generated_assets.py` that palette passes saturation/value-spacing gates.
+- [x] In `tools/blender/hd_pipeline/config.py` → `PALETTE`: change Hero green from `#1E8A4E` to `#2ECC71` (phosphorescent, like the reference), gold from `#E8B84B` to `#FFD700` metallic glossy, leaf from `#8BF27A` to `#A8FF53` phosphorescent. Raise saturation from ~0.6 to 0.85. Keep outline `#142126` for now. Update `docs/VISUAL_STYLE_GUIDE.md` Locked Palette table with before/after.
+- [x] Verify with `tools/visual/validate_generated_assets.py` that palette passes saturation/value-spacing gates.
 
 ### Phase 35 — 5-Band Toon Ramp Instead of 3-Band
 

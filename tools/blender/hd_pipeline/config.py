@@ -108,9 +108,9 @@ REQUIRED_BONES = (
 
 PALETTE = {
     "outline": "#142126",
-    "hero_green": "#1E8A4E",
-    "hero_leaf": "#8BF27A",
-    "hero_gold": "#E8B84B",
+    "hero_green": "#2ECC71",  # Phase 34 vibrant: was #1E8A4E S0.78 V0.54 -> S0.77 V0.80 phosphorescent
+    "hero_leaf": "#A8FF53",   # Phase 34 vibrant: was #8BF27A S0.50 V0.95 -> S0.67 V1.00 lime phosphor
+    "hero_gold": "#FFD700",   # Phase 34 vibrant: was #E8B84B S0.68 V0.91 -> S1.00 V1.00 metallic glossy
     "skin": "#F0C9A8",
     "wood": "#70452C",
     "enemy_rust": "#B5452E",
