@@ -945,7 +945,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 63 — VFX Authored Textures
 
-- [ ] Replace ShapeRenderer VFX with authored texture sheets: impact_flash 128×128 8 frames hand-painted, shockwave_ring 128×128, chain lightning zigzag texture, stun stars. Render in `tools/blender/generate_assets.py` `vfx` batch via image textures, not procedural.
+- [x] Replace ShapeRenderer VFX with authored texture sheets: impact_flash 128×128 8 frames hand-painted, shockwave_ring 128×128, chain lightning zigzag texture, stun stars. Render in `tools/blender/generate_assets.py` `vfx` batch via image textures, not procedural.
 
 ## Phase 64 — Projectile True Arrow with Fletching Texture
 
