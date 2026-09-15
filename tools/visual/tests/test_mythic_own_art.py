@@ -24,8 +24,8 @@ class MythicOwnArtPythonTest(unittest.TestCase):
             self.assertIn(f"equipment_{m}", keys)
             asset=[a for a in manifest["assets"] if a["key"]==f"equipment_{m}"][0]
             self.assertEqual("MYTHIC", asset["tier"])
-            self.assertEqual("premium-v2", asset["visualQuality"])
-            self.assertTrue(asset["engineVersion"].startswith("28.7"))
+            self.assertEqual("studio-v3", asset["visualQuality"])
+            self.assertTrue(asset["engineVersion"].startswith("33.0"))
             self.assertIn("icon", asset)
 
     def test_mythic_sheets_not_copied_from_borrow(self):
