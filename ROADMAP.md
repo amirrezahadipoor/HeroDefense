@@ -658,13 +658,13 @@ built for premium-v2.
 
 ### 33.3 Palette and contrast audit
 
-- [ ] Re-audit the Locked Palette table in `docs/VISUAL_STYLE_GUIDE.md` for saturation and value
+- [x] Re-audit the Locked Palette table in `docs/VISUAL_STYLE_GUIDE.md` for saturation and value
   spacing per character (Hero, each enemy, each boss): every character should carry one saturated
   "hero" color, one neutral leather/metal/stone tone, one skin/organic tone, and one accent, each a
   clearly separated value step apart — tightening any hex pair that currently reads too close in
   value once the new highlight/rim pass is in place (highlights make close-value palettes look
   muddier, not cleaner, so this ordering matters).
-- [ ] Record the audited/adjusted hex values in the same locked-table format; anything changed
+- [x] Record the audited/adjusted hex values in the same locked-table format; anything changed
   needs a before/after contact-sheet pair in the batch's review doc, exactly like every other
   accepted change in this project.
 

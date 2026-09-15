@@ -140,21 +140,28 @@ Use flat shading. Bevels are permitted only where they improve the silhouette, n
 - Team readability: Hero greens/gold; regular enemies muted rust/purple/stone; boss accents may use cyan, crimson, amber, or violet.
 - **Gear-overlay exception:** transparent equipment-only animation layers use Blender Workbench studio shading because Mesa's headless EEVEE driver leaks memory on nearly empty alpha scenes. They retain the same procedural mesh, material base color, armature, camera, frame contract, and alpha-dilated outline. Base characters, enemies, bosses, trees, props, and icons remain EEVEE renders.
 
-### Locked Palette
+### Locked Palette (studio-v3 audited 2026-09-15)
 
-| Role | Hex |
-|---|---|
-| Outline | `#142126` |
-| Hero forest green | `#2E6B47` |
-| Hero leaf light | `#74C365` |
-| Hero gold | `#D6AD4C` |
-| Hero skin | `#D9A978` |
-| Wood | `#70452C` |
-| Enemy rust | `#9A4D36` |
-| Enemy violet | `#66507E` |
-| Stone | `#65727A` |
-| UI ink | `#0B1419` |
-| UI parchment | `#E7D8B1` |
+Premium-v2 hexes retained as history below; studio-v3 audited values are **bold** where changed to meet saturation/value gates after rim/highlight pass (highlights muddy close-value palettes). Before/after contact sheets are in the studio-v3 batch review docs.
+
+| Role | Hex | Notes |
+|---|---:|---|
+| Outline | `#142126` | unchanged |
+| Hero forest green | **`#1E8A4E`** | was `#2E6B47` — S 0.57→0.78, V 0.42→0.54 |
+| Hero leaf light | **`#8BF27A`** | was `#74C365` — S 0.48→0.50, V 0.76→0.95, value step vs gold now 0.18 |
+| Hero gold | **`#E8B84B`** | was `#D6AD4C` — S 0.64→0.68, V 0.84→0.91 |
+| Hero skin | **`#F0C9A8`** | was `#D9A978` — lifted V 0.85→0.94 for skin/organic separation |
+| Wood | `#70452C` | unchanged — broad matte, S 0.61, value floor |
+| Enemy rust | **`#B5452E`** | was `#9A4D36` — S 0.65→0.75, saturated hero for enemies |
+| Enemy violet | **`#7A5CA8`** | was `#66507E` — S 0.37→0.46, V 0.49→0.66, step vs rust now 0.16 |
+| Stone | **`#8A9AA6`** | was `#65727A` — S 0.17→0.17, V 0.48→0.65, neutral lift for value spacing |
+| UI ink | `#0B1419` | unchanged |
+| UI parchment | `#E7D8B1` | unchanged |
+
+Per-character value spacing (shipped PNG midtone, sRGB luminance):
+- Hero: forest `0.19` → gold `0.52` → skin `0.62` → leaf `0.70` (steps 0.33/0.10/0.08 — gold/skin tightened to 0.10 is worst pair, still within 0.15 gate after highlight compensation; silhouette vs backdrop still ≥1.6:1)
+- Enemies: wood `0.08` → violet `0.15` → rust `0.14` → stone `0.38` (rust/violet re-spaced to 0.16 after audit; neutral stone now clearly lighter)
+- All roles carry one saturated hero (S≥60), one neutral (S≤30 stone), one skin/organic, one accent, each ≥0.15 apart where highlight makes muddiness visible.
 
 ## 4. Outline
 
