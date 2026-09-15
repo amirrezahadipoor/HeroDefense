@@ -293,14 +293,14 @@ def build_hero() -> BuiltModel:
     attach(add_leaf("hero_skirt_panel_right", (0.20, -0.14, 0.61),
                     (0.22, 0.07, 0.37), mats["deep_leaf"], (0, 0.10, 0.08)), "pelvis")
 
-    head = add_ico("hero_head", (0, -0.015, 1.75), (0.30, 0.26, 0.34), mats["skin"], 2)
+    head = add_ico("hero_head", (0, -0.015, 1.75), (0.32, 0.28, 0.36), mats["skin"], 2)  # studio-v3 larger head 6%
     attach(head, "head")
     eye_material = MATERIALS.get("hero_eye", "#102129")
     for side, sign in (("L", -1), ("R", 1)):
         attach(add_ico(f"hero_eye_{side}", (0.09 * sign, -0.260, 1.80),
-                       (0.034, 0.017, 0.046), eye_material, 1), "head")
+                       (0.038, 0.020, 0.052), eye_material, 1), "head")  # studio-v3 more defined brow/eye
         brow = add_cube(f"hero_brow_{side}", (0.09 * sign, -0.272, 1.865),
-                        (0.115, 0.022, 0.025), mats["hair_shadow"], 0.008)
+                        (0.125, 0.026, 0.028), mats["hair_shadow"], 0.008)  # studio-v3 larger brow
         brow.rotation_euler.y = 0.12 * sign
         attach(brow, "head")
     attach(add_cone("hero_nose", (0, -0.275, 1.765), 0.035, 0.008, 0.105,
@@ -325,6 +325,9 @@ def build_hero() -> BuiltModel:
         )
         ear.rotation_euler.y *= sign
         attach(ear, "head")
+    # Studio-v3 secondary silhouette details (same rig, no new bone)
+    attach(add_ico("hero_hair_clump", (0.18, -0.08, 1.92), (0.11, 0.07, 0.09), mats["hair"], 1), "head")
+    attach(add_ico("hero_strap_end", (0.18, -0.34, 1.18), (0.07, 0.03, 0.14), mats["wood"], 1), "head")
 
     _humanoid_limbs(armature, objects, mats["green"], mats["dark"], mats["skin"])
     for side, sign in (("L", -1), ("R", 1)):
@@ -394,7 +397,7 @@ def _basic_humanoid(
     if head_shape == "cube":
         head = add_cube(f"{name}_head", (0, 0, 1.74), (0.52, 0.46, 0.48), body, 0.07)
     else:
-        head = add_ico(f"{name}_head", (0, 0, 1.74), (0.33, 0.30, 0.34), body, 1)
+        head = add_ico(f"{name}_head", (0, 0, 1.74), (0.35, 0.32, 0.36), body, 1)  # studio-v3 larger head
     _bone_part(head, armature, "head", objects)
     _humanoid_limbs(armature, objects, body, dark, accent, body_scale)
     return armature, objects, {"body": body, "accent": accent, "dark": dark}

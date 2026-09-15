@@ -670,12 +670,12 @@ built for premium-v2.
 
 ### 33.4 Secondary-shape and appeal pass (same rig, same budgets)
 
-- [ ] Within the existing Geometry Budgets table (`docs/VISUAL_STYLE_GUIDE.md` §2 — unchanged
+- [x] Within the existing Geometry Budgets table (`docs/VISUAL_STYLE_GUIDE.md` §2 — unchanged
   numbers, not raised) and the existing 25-bone rig, refine `models.py`'s primitive construction for
   Hero/enemies/bosses: slightly larger head-to-body proportion, more defined brow/eye shapes, and one
   or two secondary silhouette details per character (a hair clump, a strap end, a fletching tuft) —
   the kind of shape read that makes a character memorable in silhouette, not new geometry categories.
-- [ ] Treat this as a refinement pass on existing primitive calls (`add_ico`, cylinder/box builders
+- [x] Treat this as a refinement pass on existing primitive calls (`add_ico`, cylinder/box builders
   already in `models.py`), not a rebuild — no new bone, no new attachment socket, no change to any
   existing pivot or frame size.
 
