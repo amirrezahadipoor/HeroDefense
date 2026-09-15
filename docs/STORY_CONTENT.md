@@ -1,5 +1,7 @@
 # Hero Defense — Story Content
 
+> **Voice rules are frozen in `docs/STORY_VOICE.md`:** short lines, common words, one idea per line. Hero = terse-white, Tree = leaf-green. Every line below follows those rules since Phase 31.
+
 Full narrative text to drop straight into the systems described in Phases 20, 21, 23, and 25 of
 the roadmap addendum. Two voices only, kept distinct on purpose:
 

@@ -564,7 +564,7 @@ Simplifies every story dialogue/text so a ~12-year-old understands it on first r
 
 ### 31.0 Readability rules
 
-- [ ] Freeze the plain-language rules (short lines, common words, one idea per line; Hero stays terse-white, Tree stays leaf-green) in `docs/STORY_CONTENT.md`'s header or a new `docs/STORY_VOICE.md`.
+- [x] Freeze the plain-language rules (short lines, common words, one idea per line; Hero stays terse-white, Tree stays leaf-green) in `docs/STORY_CONTENT.md`'s header or a new `docs/STORY_VOICE.md`.
 
 ### 31.1–31.3 Rewrite passes
 
