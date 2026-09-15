@@ -847,7 +847,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 44 — Highlight Pop for All Clothes
 
-- [ ] In `scene.py` → `toon_material()`: expand `is_highlight` heuristic from only `hair/metal/eye/...` to also include `green/leaf/cloth/tunic/armor`. Every piece gets a small specular pop, not just metal/hair. Keep factor at 0.35 for cloth vs 1.0 for metal so cloth stays restrained.
+- [x] In `scene.py` → `toon_material()`: expand `is_highlight` heuristic from only `hair/metal/eye/...` to also include `green/leaf/cloth/tunic/armor`. Every piece gets a small specular pop, not just metal/hair. Keep factor at 0.35 for cloth vs 1.0 for metal so cloth stays restrained.
 
 ### Phase 45 — Bigger Highlights
 

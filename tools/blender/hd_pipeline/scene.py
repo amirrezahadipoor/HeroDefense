@@ -112,10 +112,14 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     # Enable per-material: metal, leather straps, hair, eyes get pop; cloth/skin/wood stay matte unless tagged
     # Reuse metallic bool plus name heuristics to avoid new signature
     # Phase 38: gold gets true metallic 0.85 feel, lower roughness for mirror-like shine
+    # Phase 44: highlight pop for all clothes — expand to green/leaf/cloth/tunic/armor
     is_gold = "gold" in name.lower()
-    is_highlight = bool(metallic) or is_gold or any(k in name.lower() for k in ("hair", "eye", "metal", "strap", "leather", "helm", "sword", "bow", "quiv"))
+    is_cloth = any(k in name.lower() for k in ("green", "leaf", "cloth", "tunic", "armor", "cuirass", "skirt", "pauldron"))
+    is_highlight = bool(metallic) or is_gold or is_cloth or any(k in name.lower() for k in ("hair", "eye", "metal", "strap", "leather", "helm", "sword", "bow", "quiv"))
     if is_gold:
         glossy.inputs["Roughness"].default_value = 0.12  # Phase 38: true metallic gold shiny
+    elif is_cloth:
+        glossy.inputs["Roughness"].default_value = 0.35  # Phase 44: cloth gets subtle pop, not mirror
     else:
         glossy.inputs["Roughness"].default_value = 0.18 if is_highlight else 0.55
     glossy_to_rgb = nodes.new("ShaderNodeShaderToRGB")
@@ -149,9 +153,13 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     links.new(rim_mix.outputs["Color"], highlight_mix.inputs[1])
     links.new(highlight_ramp.outputs["Color"], highlight_mix.inputs[0])
     # Enable highlight only for tagged materials; otherwise factor stays 0
+    # Phase 44: cloth gets restrained pop 0.35, metal/gold/hair gets full 1.0
     if not is_highlight:
         highlight_mix.inputs[0].default_value = 0.0
         rim_mix.inputs[0].default_value = 0.35
+    elif is_cloth:
+        highlight_mix.inputs[0].default_value = 0.35
+        rim_mix.inputs[0].default_value = 0.5
     links.new(highlight_mix.outputs["Color"], emission.inputs["Color"])
     links.new(emission.outputs["Emission"], output.inputs["Surface"])
     return material
