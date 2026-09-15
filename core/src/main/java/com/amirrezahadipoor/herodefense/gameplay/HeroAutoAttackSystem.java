@@ -190,6 +190,9 @@ public final class HeroAutoAttackSystem {
     }
 
     private ImpactCounts updateProjectiles(GameState state, float deltaSeconds) {
+        // Decay hit-flash
+        for (Enemy e : state.aliveEnemies) if (e != null && e.hitFlashSeconds > 0f) e.hitFlashSeconds = Math.max(0f, e.hitFlashSeconds - deltaSeconds);
+        for (Boss b : state.aliveBosses) if (b != null && b.hitFlashSeconds > 0f) b.hitFlashSeconds = Math.max(0f, b.hitFlashSeconds - deltaSeconds);
         int hits = 0;
         int criticalHits = 0;
         int chainArcs = 0;
@@ -224,6 +227,7 @@ public final class HeroAutoAttackSystem {
                     projectile.damage * MythicEffects.crownMarkDamageMultiplier(target)
                         * SkillEffects.starfallVictimMultiplier(state, target)
                 );
+                target.hitFlashSeconds = 0.14f;
                 hits++;
                 impactX = target.x;
                 impactY = target.y;

@@ -74,6 +74,32 @@ public final class ParticleSystem {
         }
     }
 
+    /** Per-type death bursts: each enemy type has a distinct color/scale burst. */
+    public void emitDeath(float x, float y, String enemyType) {
+        // Type-specific burst
+        switch (enemyType) {
+            case "STONEKIN" -> {
+                add(ParticleType.DEATH_RING, x, y - 12f, 0f, 0f, 0.36f, 48f);
+                emitBurst(ParticleType.DEATH, x, y, 12, 95f, 0.48f, 8f);
+                emitBurst(ParticleType.BOSS_DUST, x, y, 4, 60f, 0.30f, 5f);
+            }
+            case "GLOOM_WOLF" -> {
+                add(ParticleType.DEATH_RING, x, y - 12f, 0f, 0f, 0.36f, 36f);
+                emitBurst(ParticleType.DEATH, x, y, 8, 110f, 0.45f, 6f);
+                emitBurst(ParticleType.HIT, x, y, 3, 80f, 0.22f, 4f);
+            }
+            case "FUNGAL_BRUTE" -> {
+                add(ParticleType.DEATH_RING, x, y - 12f, 0f, 0f, 0.36f, 44f);
+                emitBurst(ParticleType.DEATH, x, y, 10, 88f, 0.50f, 7.5f);
+                emitBurst(ParticleType.TREE_LEAF, x, y, 3, 42f, 0.60f, 6f);
+            }
+            default -> {
+                add(ParticleType.DEATH_RING, x, y - 12f, 0f, 0f, 0.36f, 40f);
+                emitBurst(ParticleType.DEATH, x, y, 10, 95f, 0.48f, 7f);
+            }
+        }
+    }
+
     /** Collapse dust plus one soft ground ring so every kill reads at phone scale. */
     public void emitDeath(float x, float y) {
         add(ParticleType.DEATH_RING, x, y - 12f, 0f, 0f, 0.36f, 40f);

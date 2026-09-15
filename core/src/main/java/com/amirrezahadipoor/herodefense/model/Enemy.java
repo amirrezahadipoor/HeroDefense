@@ -20,6 +20,8 @@ public class Enemy extends ArenaEntity {
     public float stunRemainingSeconds;
     /** Seconds the Crown of the Hollow Eye's mark lasts; marked foes take +25%. */
     public float markRemainingSeconds;
+    /** Brief white hit-flash after taking damage for readability. */
+    public float hitFlashSeconds;
     /**
      * Silent Rootling watcher (Codex entry 5, "The Quiet Ones"): stands at the tree line and
      * never moves, attacks, or pays out; targeting, wave-clear counts, and drops all skip it.

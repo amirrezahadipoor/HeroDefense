@@ -162,7 +162,10 @@ public final class CombatEntityRenderer implements AutoCloseable {
         float feetRatio = boss ? BOSS_FEET_RATIO : REGULAR_FEET_RATIO;
         float x = enemy.x - size * 0.5f;
         float y = enemy.y - size * feetRatio;
-        if (!enemy.alive) batch.setColor(0.62f, 0.62f, 0.70f, 0.72f);
+        if (enemy.hitFlashSeconds > 0f) {
+            float flash = Math.max(0f, enemy.hitFlashSeconds / 0.14f);
+            batch.setColor(1f, 1f, 1f, 0.85f + 0.15f * flash);
+        } else if (!enemy.alive) batch.setColor(0.62f, 0.62f, 0.70f, 0.72f);
         if (!boss && enemy.eliteAffix != null && enemy.alive) {
             dropGlowRenderer.draw(
                 batch, frames.get(frameIndex), x, y, size, size,

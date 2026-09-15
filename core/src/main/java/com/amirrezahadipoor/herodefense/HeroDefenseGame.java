@@ -997,7 +997,12 @@ public final class HeroDefenseGame extends ApplicationAdapter {
         if (boss) {
             particleSystem.emitBossDeath(enemy.x, enemy.y + 40f);
         } else {
-            particleSystem.emitDeath(enemy.x, enemy.y + 30f);
+            // Per-type death burst for readability
+            try {
+                particleSystem.emitDeath(enemy.x, enemy.y + 30f, enemy.enemyType);
+            } catch (Exception ignored) {
+                particleSystem.emitDeath(enemy.x, enemy.y + 30f);
+            }
         }
         particleSystem.emitCoins(enemy.x, enemy.y + 50f);
     }

@@ -39,21 +39,22 @@ public final class FloatingDamageText {
 
     public float y() {
         float p = progress();
-        return originY + FloatingDamageTextSystem.RISE_DISTANCE * (1f - (1f - p) * (1f - p));
+        float rise = style == Style.CRITICAL ? FloatingDamageTextSystem.RISE_DISTANCE + 18f : FloatingDamageTextSystem.RISE_DISTANCE;
+        return originY + rise * (1f - (1f - p) * (1f - p));
     }
 
-    /** Criticals punch in oversized and settle; others ease in briefly. */
+    /** Criticals punch in oversized and settle; others ease in briefly. Larger arc for crits. */
     public float scale() {
         float p = progress();
         float base = switch (style) {
-            case CRITICAL -> 1.35f;
+            case CRITICAL -> 1.52f;
             case STUN -> 1.05f;
             case CHAIN -> 0.92f;
             case SECONDARY -> 0.78f;
             case NORMAL -> 0.88f;
             case COIN -> 0.96f;
         };
-        float punch = style == Style.CRITICAL ? 0.45f : 0.18f;
+        float punch = style == Style.CRITICAL ? 0.58f : 0.18f;
         float pop = p < 0.12f ? 1f + punch * (1f - p / 0.12f) : 1f;
         return base * pop;
     }
