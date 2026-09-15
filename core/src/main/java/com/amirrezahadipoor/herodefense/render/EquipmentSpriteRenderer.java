@@ -16,12 +16,9 @@ import java.util.Set;
 
 /** Lazily draws only the currently equipped, Hero-rig-aligned attachment sheets. */
 public final class EquipmentSpriteRenderer implements AutoCloseable {
+    // Phase 29.4: only boots + weapon render on the hero for silhouette readability.
     private static final EquipmentSlot[] LAYER_ORDER = {
         EquipmentSlot.BOOTS,
-        EquipmentSlot.ARMOR,
-        EquipmentSlot.RING_1,
-        EquipmentSlot.RING_2,
-        EquipmentSlot.HELMET,
         EquipmentSlot.WEAPON
     };
 

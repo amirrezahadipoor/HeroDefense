@@ -541,7 +541,7 @@ Rebuilds every icon/item with a real shortage (no more borrowed art) and reduces
 
 ### 29.4 Hero wears boots + weapon only
 
-- [ ] Drop ARMOR/HELMET/RING_1/RING_2 from the hero `LAYER_ORDER` so only boots + weapon render on the hero; re-pose those overlays for silhouette readability at real size and update the renderer tests.
+- [x] Drop ARMOR/HELMET/RING_1/RING_2 from the hero `LAYER_ORDER` so only boots + weapon render on the hero; re-pose those overlays for silhouette readability at real size and update the renderer tests.
 
 ## Phase 30 — Combat FX & True Arrows
 
