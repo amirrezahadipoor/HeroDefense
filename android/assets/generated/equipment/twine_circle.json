@@ -269,6 +269,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "equipment",
   "frameClass": "character",
   "frameSize": 192,
@@ -281,7 +282,7 @@
     "x": 0.5,
     "y": 0.12
   },
-  "renderSamples": 8,
+  "renderSamples": 12,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
   "rigProfile": "hero-socket-v2",
@@ -301,6 +302,6 @@
   "tier": "COMMON",
   "triangles": 212,
   "visualKind": "ring1",
-  "visualQuality": "premium-v2",
+  "visualQuality": "studio-v3",
   "visualSlot": "ring1"
 }

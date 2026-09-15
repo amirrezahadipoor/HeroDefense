@@ -178,6 +178,7 @@
     ]
   },
   "destructionClip": null,
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "world_tree",
   "frameClass": "tree",
   "frameRate": 12,
@@ -192,8 +193,8 @@
     "x": 0.5,
     "y": 0.06
   },
-  "renderSamples": 16,
-  "renderSupersample": 2,
+  "renderSamples": 36,
+  "renderSupersample": 3,
   "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
   "rigBoneCount": 13,
   "rigProfile": "segmented-world-tree-v2",
@@ -219,5 +220,5 @@
   "state": "healthy",
   "surfaceLanguage": "layered heartwood plates, moss vines, emerald crown, restrained cyan heart",
   "triangles": 4840,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

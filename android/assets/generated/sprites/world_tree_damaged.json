@@ -159,6 +159,7 @@
     ]
   },
   "destructionClip": "destroy",
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "world_tree",
   "frameClass": "tree",
   "frameRate": 12,
@@ -172,8 +173,8 @@
     "x": 0.5,
     "y": 0.06
   },
-  "renderSamples": 16,
-  "renderSupersample": 2,
+  "renderSamples": 36,
+  "renderSupersample": 3,
   "reviewDocument": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
   "rigBoneCount": 13,
   "rigProfile": "segmented-world-tree-v2",
@@ -198,5 +199,5 @@
   "state": "damaged",
   "surfaceLanguage": "charred heartwood, broken bough, sparse wilted crown, restrained wound runes",
   "triangles": 4180,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

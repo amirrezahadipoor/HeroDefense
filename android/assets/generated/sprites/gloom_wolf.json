@@ -271,6 +271,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "enemy",
   "frameClass": "character",
   "frameRate": 12,
@@ -285,7 +286,7 @@
     "x": 0.5,
     "y": 0.12
   },
-  "renderSamples": 16,
+  "renderSamples": 28,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
   "rigBoneCount": 25,
@@ -303,5 +304,5 @@
   ],
   "silhouette": "low four-legged wedge, tall alert ears, deep neck ruff, and a long swept tail",
   "triangles": 1030,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

@@ -19,6 +19,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "environment",
   "frameClass": "environment",
   "frameHeight": 384,
@@ -35,7 +36,7 @@
     "x": 0.5,
     "y": 0.5
   },
-  "renderSamples": 16,
+  "renderSamples": 28,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
   "sheet": "environment/ground_tile_1.png",
@@ -53,5 +54,5 @@
   "tileable": false,
   "triangles": 524,
   "variant": 1,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

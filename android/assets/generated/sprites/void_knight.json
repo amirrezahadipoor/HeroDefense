@@ -271,6 +271,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "boss",
   "frameClass": "boss",
   "frameRate": 12,
@@ -284,8 +285,8 @@
     "x": 0.5,
     "y": 0.12
   },
-  "renderSamples": 16,
-  "renderSupersample": 2,
+  "renderSamples": 36,
+  "renderSupersample": 3,
   "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
   "rigBoneCount": 25,
   "rigProfile": "premium-armored-humanoid-v2",
@@ -309,5 +310,5 @@
   "surfaceLanguage": "layered gunmetal plate, silver edges, old gold, restrained violet abyss glow",
   "triangles": 2082,
   "unique_attack": "void_charge",
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

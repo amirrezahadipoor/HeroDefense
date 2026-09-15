@@ -19,6 +19,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "icons",
   "frameClass": "item",
   "frameHeight": 96,
@@ -34,7 +35,7 @@
     "x": 0.5,
     "y": 0.5
   },
-  "renderSamples": 16,
+  "renderSamples": 28,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
   "sheet": "icons/ui_wave.png",
@@ -57,5 +58,5 @@
   "touchOnlyUI": true,
   "triangles": 460,
   "uiIcon": "wave",
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

@@ -273,7 +273,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -288,7 +288,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -313,7 +313,7 @@
       "surfaceLanguage": "faceted basalt strata, restrained moss, cyan rune seams",
       "triangles": 3442,
       "unique_attack": "ground_slam",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -340,7 +340,7 @@
       },
       "compositionProfile": "portrait-clear-lane-v2",
       "depthBands": 5,
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "arena",
       "frameHeight": 1280,
@@ -355,7 +355,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/arena_backdrop.png",
@@ -371,7 +371,7 @@
       ],
       "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
       "triangles": 1704,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -394,7 +394,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -411,7 +411,7 @@
         "y": 0.5
       },
       "prop": "azure-waystone-fan",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
@@ -435,7 +435,7 @@
       "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
       "triangles": 868,
       "variant": 0,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -458,7 +458,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -474,7 +474,7 @@
         "y": 0.5
       },
       "prop": "violet-moon-geode",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
@@ -498,7 +498,7 @@
       "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
       "triangles": 1080,
       "variant": 1,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -521,7 +521,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -537,7 +537,7 @@
         "y": 0.5
       },
       "prop": "amber-root-lantern",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "runtimeGlow": false,
@@ -561,7 +561,7 @@
       "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
       "triangles": 896,
       "variant": 2,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -836,7 +836,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -850,7 +850,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -875,7 +875,7 @@
       "surfaceLanguage": "obsidian scales, crimson membranes, gold belly plates, restrained emissive flame",
       "triangles": 2324,
       "unique_attack": "flame_sweep",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -1148,7 +1148,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1161,7 +1161,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -1181,7 +1181,7 @@
       "tier": "COMMON",
       "triangles": 272,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -1455,7 +1455,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1468,7 +1468,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -1488,7 +1488,7 @@
       "tier": "UNCOMMON",
       "triangles": 224,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -1762,7 +1762,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -1775,7 +1775,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -1795,7 +1795,7 @@
       "tier": "COMMON",
       "triangles": 176,
       "visualKind": "bow",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -2069,7 +2069,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -2085,7 +2085,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -2105,7 +2105,7 @@
       "tier": "MYTHIC",
       "triangles": 800,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -2379,7 +2379,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2392,7 +2392,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -2412,7 +2412,7 @@
       "tier": "COMMON",
       "triangles": 176,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -2686,7 +2686,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -2699,7 +2699,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -2719,7 +2719,7 @@
       "tier": "RARE",
       "triangles": 208,
       "visualKind": "ring2",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring2"
     },
     {
@@ -2993,7 +2993,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3007,7 +3007,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -3027,7 +3027,7 @@
       "tier": "LEGENDARY",
       "triangles": 400,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -3301,7 +3301,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3314,7 +3314,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -3334,7 +3334,7 @@
       "tier": "COMMON",
       "triangles": 116,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -3608,7 +3608,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -3624,7 +3624,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -3644,7 +3644,7 @@
       "tier": "MYTHIC",
       "triangles": 800,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -3918,7 +3918,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -3932,7 +3932,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -3952,7 +3952,7 @@
       "tier": "LEGENDARY",
       "triangles": 276,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -4226,7 +4226,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4239,7 +4239,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -4259,7 +4259,7 @@
       "tier": "RARE",
       "triangles": 204,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -4533,7 +4533,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4546,7 +4546,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -4566,7 +4566,7 @@
       "tier": "UNCOMMON",
       "triangles": 136,
       "visualKind": "ring2",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring2"
     },
     {
@@ -4840,7 +4840,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -4853,7 +4853,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -4873,7 +4873,7 @@
       "tier": "RARE",
       "triangles": 288,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -5147,7 +5147,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -5163,7 +5163,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -5183,7 +5183,7 @@
       "tier": "MYTHIC",
       "triangles": 800,
       "visualKind": "ring",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring"
     },
     {
@@ -5457,7 +5457,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5471,7 +5471,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -5491,7 +5491,7 @@
       "tier": "LEGENDARY",
       "triangles": 216,
       "visualKind": "ring2",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring2"
     },
     {
@@ -5765,7 +5765,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -5778,7 +5778,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -5798,7 +5798,7 @@
       "tier": "UNCOMMON",
       "triangles": 288,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -6072,7 +6072,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -6088,7 +6088,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -6109,7 +6109,7 @@
       "tier": "RARE",
       "triangles": 600,
       "visualKind": "weapon",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -6383,7 +6383,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6396,7 +6396,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -6416,7 +6416,7 @@
       "tier": "UNCOMMON",
       "triangles": 232,
       "visualKind": "ring2",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring2"
     },
     {
@@ -6690,7 +6690,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -6704,7 +6704,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -6724,7 +6724,7 @@
       "tier": "LEGENDARY",
       "triangles": 308,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -6998,7 +6998,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7011,7 +7011,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -7031,7 +7031,7 @@
       "tier": "COMMON",
       "triangles": 248,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -7305,7 +7305,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7318,7 +7318,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -7338,7 +7338,7 @@
       "tier": "COMMON",
       "triangles": 126,
       "visualKind": "ring2",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring2"
     },
     {
@@ -7612,7 +7612,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7625,7 +7625,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -7645,7 +7645,7 @@
       "tier": "UNCOMMON",
       "triangles": 136,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -7919,7 +7919,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -7932,7 +7932,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -7952,7 +7952,7 @@
       "tier": "COMMON",
       "triangles": 120,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -8226,7 +8226,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8239,7 +8239,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -8259,7 +8259,7 @@
       "tier": "UNCOMMON",
       "triangles": 324,
       "visualKind": "bow",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -8533,7 +8533,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8546,7 +8546,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -8566,7 +8566,7 @@
       "tier": "UNCOMMON",
       "triangles": 180,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -8840,7 +8840,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -8853,7 +8853,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -8873,7 +8873,7 @@
       "tier": "RARE",
       "triangles": 360,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -9147,7 +9147,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9160,7 +9160,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -9180,7 +9180,7 @@
       "tier": "COMMON",
       "triangles": 168,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -9454,7 +9454,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9467,7 +9467,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -9487,7 +9487,7 @@
       "tier": "UNCOMMON",
       "triangles": 708,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -9761,7 +9761,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -9774,7 +9774,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -9794,7 +9794,7 @@
       "tier": "COMMON",
       "triangles": 220,
       "visualKind": "ring2",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring2"
     },
     {
@@ -10068,7 +10068,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10081,7 +10081,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -10101,7 +10101,7 @@
       "tier": "UNCOMMON",
       "triangles": 208,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -10375,7 +10375,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10388,7 +10388,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -10408,7 +10408,7 @@
       "tier": "RARE",
       "triangles": 216,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -10682,7 +10682,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -10695,7 +10695,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -10715,7 +10715,7 @@
       "tier": "COMMON",
       "triangles": 240,
       "visualKind": "helmet",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "helmet"
     },
     {
@@ -10989,7 +10989,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11002,7 +11002,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -11022,7 +11022,7 @@
       "tier": "RARE",
       "triangles": 228,
       "visualKind": "armor",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "armor"
     },
     {
@@ -11296,7 +11296,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11309,7 +11309,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -11329,7 +11329,7 @@
       "tier": "UNCOMMON",
       "triangles": 120,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -11603,7 +11603,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11616,7 +11616,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -11636,7 +11636,7 @@
       "tier": "RARE",
       "triangles": 344,
       "visualKind": "bow",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -11910,7 +11910,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -11923,7 +11923,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -11943,7 +11943,7 @@
       "tier": "RARE",
       "triangles": 400,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -12217,7 +12217,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -12233,7 +12233,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -12253,7 +12253,7 @@
       "tier": "MYTHIC",
       "triangles": 800,
       "visualKind": "weapon",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -12527,7 +12527,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -12543,7 +12543,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -12564,7 +12564,7 @@
       "tier": "COMMON",
       "triangles": 600,
       "visualKind": "weapon",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -12838,7 +12838,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -12851,7 +12851,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -12871,7 +12871,7 @@
       "tier": "COMMON",
       "triangles": 368,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -13145,7 +13145,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -13158,7 +13158,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -13178,7 +13178,7 @@
       "tier": "COMMON",
       "triangles": 212,
       "visualKind": "ring1",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring1"
     },
     {
@@ -13452,7 +13452,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -13468,7 +13468,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -13488,7 +13488,7 @@
       "tier": "MYTHIC",
       "triangles": 800,
       "visualKind": "ring",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "ring"
     },
     {
@@ -13762,7 +13762,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -13778,7 +13778,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -13799,7 +13799,7 @@
       "tier": "UNCOMMON",
       "triangles": 600,
       "visualKind": "weapon",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -14073,7 +14073,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -14089,7 +14089,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -14109,7 +14109,7 @@
       "tier": "MYTHIC",
       "triangles": 800,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -14383,7 +14383,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -14396,7 +14396,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -14416,7 +14416,7 @@
       "tier": "UNCOMMON",
       "triangles": 360,
       "visualKind": "boots",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "boots"
     },
     {
@@ -14690,7 +14690,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameSize": 192,
@@ -14704,7 +14704,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/EQUIPMENT_PREMIUM_V2_REVIEW.md",
       "rigProfile": "hero-socket-v2",
@@ -14724,7 +14724,7 @@
       "tier": "LEGENDARY",
       "triangles": 368,
       "visualKind": "bow",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -14998,7 +14998,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "equipment",
       "frameClass": "character",
       "frameRate": 12,
@@ -15014,7 +15014,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 8,
+      "renderSamples": 12,
       "renderSupersample": 2,
       "rigBoneCount": 25,
       "rigProfile": "hero-socket-v2",
@@ -15035,7 +15035,7 @@
       "tier": "COMMON",
       "triangles": 600,
       "visualKind": "weapon",
-      "visualQuality": "premium-v2",
+      "visualQuality": "studio-v3",
       "visualSlot": "weapon"
     },
     {
@@ -15311,7 +15311,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -15326,7 +15326,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -15344,7 +15344,7 @@
       ],
       "silhouette": "oversized layered cap, barrel stalk body, knotted arms, root feet, and asymmetric shoulder buds",
       "triangles": 1984,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15619,7 +15619,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -15634,7 +15634,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -15652,7 +15652,7 @@
       ],
       "silhouette": "low four-legged wedge, tall alert ears, deep neck ruff, and a long swept tail",
       "triangles": 1030,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15675,7 +15675,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -15692,7 +15692,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_0.png",
@@ -15710,7 +15710,7 @@
       "tileable": false,
       "triangles": 504,
       "variant": 0,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15733,7 +15733,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -15750,7 +15750,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_1.png",
@@ -15768,7 +15768,7 @@
       "tileable": false,
       "triangles": 524,
       "variant": 1,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15791,7 +15791,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "environment",
       "frameClass": "environment",
       "frameHeight": 384,
@@ -15808,7 +15808,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
       "sheet": "environment/ground_tile_2.png",
@@ -15826,7 +15826,7 @@
       "tileable": false,
       "triangles": 504,
       "variant": 2,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15850,7 +15850,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15867,7 +15867,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_1.png",
@@ -15884,7 +15884,7 @@
       "tier": 1,
       "tierConstruction": "clean faceted vial",
       "triangles": 450,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15908,7 +15908,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15925,7 +15925,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_2.png",
@@ -15942,7 +15942,7 @@
       "tier": 2,
       "tierConstruction": "single collar leaf",
       "triangles": 470,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -15966,7 +15966,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -15983,7 +15983,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_3.png",
@@ -16000,7 +16000,7 @@
       "tier": 3,
       "tierConstruction": "paired collar leaves",
       "triangles": 490,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16024,7 +16024,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16041,7 +16041,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_4.png",
@@ -16058,7 +16058,7 @@
       "tier": 4,
       "tierConstruction": "paired leaves and foot ring",
       "triangles": 586,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16082,7 +16082,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16099,7 +16099,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_5.png",
@@ -16116,7 +16116,7 @@
       "tier": 5,
       "tierConstruction": "seeded shoulders and foot ring",
       "triangles": 626,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16140,7 +16140,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -16158,7 +16158,7 @@
         "y": 0.5
       },
       "potionFamily": "heartwood-elixir",
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/health_potion_6.png",
@@ -16175,7 +16175,7 @@
       "tier": 6,
       "tierConstruction": "legendary cradle rails and living stopper",
       "triangles": 686,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16450,7 +16450,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "hero",
       "frameClass": "character",
       "frameRate": 12,
@@ -16462,7 +16462,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
       "rigProfile": "premium-humanoid-v2",
@@ -16479,7 +16479,7 @@
       ],
       "silhouette": "premium_elf_archer",
       "triangles": 1508,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -16755,7 +16755,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "hero",
       "frameClass": "character",
       "frameRate": 12,
@@ -16774,7 +16774,7 @@
         "seed",
         "watering_can"
       ],
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -16792,7 +16792,7 @@
       ],
       "silhouette": "premium_elf_archer",
       "triangles": 1812,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17067,7 +17067,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -17083,7 +17083,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -17101,7 +17101,7 @@
       ],
       "silhouette": "wiry thorn crown with asymmetric leaf mantle and rooted feet",
       "triangles": 1052,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17376,7 +17376,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "enemy",
       "frameClass": "character",
       "frameRate": 12,
@@ -17391,7 +17391,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/ENEMIES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -17409,7 +17409,7 @@
       ],
       "silhouette": "broad asymmetrical crag shoulders, broken crown, massive fists, and slab feet",
       "triangles": 1800,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17684,7 +17684,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -17698,7 +17698,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -17723,7 +17723,7 @@
       "surfaceLanguage": "layered heartwood, emerald leaves, blood-petal crown, ivory thorns",
       "triangles": 2008,
       "unique_attack": "thorn_cage",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17746,7 +17746,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -17762,7 +17762,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_agility.png",
@@ -17785,7 +17785,7 @@
       "touchOnlyUI": true,
       "triangles": 664,
       "uiIcon": "agility",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17808,7 +17808,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -17824,7 +17824,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_close.png",
@@ -17847,7 +17847,7 @@
       "touchOnlyUI": true,
       "triangles": 488,
       "uiIcon": "close",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17870,7 +17870,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -17886,7 +17886,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_coin.png",
@@ -17909,7 +17909,7 @@
       "touchOnlyUI": true,
       "triangles": 488,
       "uiIcon": "coin",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17932,7 +17932,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -17948,7 +17948,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_continue.png",
@@ -17971,7 +17971,7 @@
       "touchOnlyUI": true,
       "triangles": 454,
       "uiIcon": "continue",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -17994,7 +17994,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18010,7 +18010,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_dodge.png",
@@ -18033,7 +18033,7 @@
       "touchOnlyUI": true,
       "triangles": 524,
       "uiIcon": "dodge",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18056,7 +18056,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18077,7 +18077,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_disabled.png",
@@ -18096,7 +18096,7 @@
       "triangles": 528,
       "uiSkin": "button",
       "uiState": "disabled",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18119,7 +18119,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18140,7 +18140,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_normal.png",
@@ -18159,7 +18159,7 @@
       "triangles": 484,
       "uiSkin": "button",
       "uiState": "normal",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18182,7 +18182,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18203,7 +18203,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_pressed.png",
@@ -18222,7 +18222,7 @@
       "triangles": 528,
       "uiSkin": "button",
       "uiState": "pressed",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18245,7 +18245,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18266,7 +18266,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_button_selected.png",
@@ -18285,7 +18285,7 @@
       "triangles": 524,
       "uiSkin": "button",
       "uiState": "selected",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18308,7 +18308,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18329,7 +18329,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_disabled.png",
@@ -18348,7 +18348,7 @@
       "triangles": 528,
       "uiSkin": "panel",
       "uiState": "disabled",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18371,7 +18371,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18392,7 +18392,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_normal.png",
@@ -18411,7 +18411,7 @@
       "triangles": 484,
       "uiSkin": "panel",
       "uiState": "normal",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18434,7 +18434,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18455,7 +18455,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_pressed.png",
@@ -18474,7 +18474,7 @@
       "triangles": 528,
       "uiSkin": "panel",
       "uiState": "pressed",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18497,7 +18497,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18518,7 +18518,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_panel_selected.png",
@@ -18537,7 +18537,7 @@
       "triangles": 524,
       "uiSkin": "panel",
       "uiState": "selected",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18560,7 +18560,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18581,7 +18581,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_disabled.png",
@@ -18600,7 +18600,7 @@
       "triangles": 528,
       "uiSkin": "slot",
       "uiState": "disabled",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18623,7 +18623,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18644,7 +18644,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_normal.png",
@@ -18663,7 +18663,7 @@
       "triangles": 484,
       "uiSkin": "slot",
       "uiState": "normal",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18686,7 +18686,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18707,7 +18707,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_pressed.png",
@@ -18726,7 +18726,7 @@
       "triangles": 528,
       "uiSkin": "slot",
       "uiState": "pressed",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18749,7 +18749,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "ui",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18770,7 +18770,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "ui/ui_frame_slot_selected.png",
@@ -18789,7 +18789,7 @@
       "triangles": 524,
       "uiSkin": "slot",
       "uiState": "selected",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18813,7 +18813,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18829,7 +18829,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_general_power.png",
@@ -18852,7 +18852,7 @@
       "touchOnlyUI": true,
       "triangles": 656,
       "uiIcon": "general_power",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18875,7 +18875,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18891,7 +18891,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_health.png",
@@ -18914,7 +18914,7 @@
       "touchOnlyUI": true,
       "triangles": 454,
       "uiIcon": "health",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -18937,7 +18937,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -18954,7 +18954,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_inventory.png",
@@ -18977,7 +18977,7 @@
       "touchOnlyUI": true,
       "triangles": 904,
       "uiIcon": "inventory",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19001,7 +19001,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19017,7 +19017,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_lifesteal.png",
@@ -19040,7 +19040,7 @@
       "touchOnlyUI": true,
       "triangles": 534,
       "uiIcon": "lifesteal",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19063,7 +19063,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19079,7 +19079,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_luck.png",
@@ -19102,7 +19102,7 @@
       "touchOnlyUI": true,
       "triangles": 524,
       "uiIcon": "luck",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19125,7 +19125,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19141,7 +19141,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_new_game.png",
@@ -19164,7 +19164,7 @@
       "touchOnlyUI": true,
       "triangles": 596,
       "uiIcon": "new_game",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19187,7 +19187,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19203,7 +19203,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_pause.png",
@@ -19226,7 +19226,7 @@
       "touchOnlyUI": true,
       "triangles": 488,
       "uiIcon": "pause",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19249,7 +19249,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19265,7 +19265,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_restart.png",
@@ -19288,7 +19288,7 @@
       "touchOnlyUI": true,
       "triangles": 506,
       "uiIcon": "restart",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19311,7 +19311,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19327,7 +19327,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_settings.png",
@@ -19350,7 +19350,7 @@
       "touchOnlyUI": true,
       "triangles": 848,
       "uiIcon": "settings",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19373,7 +19373,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19389,7 +19389,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_shop.png",
@@ -19412,7 +19412,7 @@
       "touchOnlyUI": true,
       "triangles": 664,
       "uiIcon": "shop",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19436,7 +19436,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19452,7 +19452,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_chain_lightning.png",
@@ -19475,7 +19475,7 @@
       "touchOnlyUI": true,
       "triangles": 590,
       "uiIcon": "skill_chain_lightning",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19499,7 +19499,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19515,7 +19515,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_critical_mastery.png",
@@ -19538,7 +19538,7 @@
       "touchOnlyUI": true,
       "triangles": 728,
       "uiIcon": "skill_critical_mastery",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19562,7 +19562,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19578,7 +19578,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_long_range.png",
@@ -19601,7 +19601,7 @@
       "touchOnlyUI": true,
       "triangles": 698,
       "uiIcon": "skill_long_range",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19625,7 +19625,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19641,7 +19641,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_multi_shot.png",
@@ -19664,7 +19664,7 @@
       "touchOnlyUI": true,
       "triangles": 582,
       "uiIcon": "skill_multi_shot",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19688,7 +19688,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19704,7 +19704,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/SKILL_ICONS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_skill_stun_chance.png",
@@ -19727,7 +19727,7 @@
       "touchOnlyUI": true,
       "triangles": 444,
       "uiIcon": "skill_stun_chance",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19750,7 +19750,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19766,7 +19766,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_speed.png",
@@ -19789,7 +19789,7 @@
       "touchOnlyUI": true,
       "triangles": 508,
       "uiIcon": "speed",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19812,7 +19812,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19828,7 +19828,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_strength.png",
@@ -19851,7 +19851,7 @@
       "touchOnlyUI": true,
       "triangles": 508,
       "uiIcon": "strength",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -19874,7 +19874,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "icons",
       "frameClass": "item",
       "frameHeight": 96,
@@ -19890,7 +19890,7 @@
         "x": 0.5,
         "y": 0.5
       },
-      "renderSamples": 24,
+      "renderSamples": 28,
       "renderSupersample": 2,
       "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
       "sheet": "icons/ui_wave.png",
@@ -19913,7 +19913,7 @@
       "touchOnlyUI": true,
       "triangles": 460,
       "uiIcon": "wave",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -20188,7 +20188,7 @@
           }
         ]
       },
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "boss",
       "frameClass": "boss",
       "frameRate": 12,
@@ -20202,7 +20202,7 @@
         "x": 0.5,
         "y": 0.12
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 25,
@@ -20227,7 +20227,7 @@
       "surfaceLanguage": "layered gunmetal plate, silver edges, old gold, restrained violet abyss glow",
       "triangles": 2082,
       "unique_attack": "void_charge",
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -20390,7 +20390,7 @@
         ]
       },
       "destructionClip": "destroy",
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -20404,7 +20404,7 @@
         "x": 0.5,
         "y": 0.06
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 13,
@@ -20430,7 +20430,7 @@
       "state": "damaged",
       "surfaceLanguage": "charred heartwood, broken bough, sparse wilted crown, restrained wound runes",
       "triangles": 4180,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -20511,7 +20511,7 @@
         ]
       },
       "destructionClip": null,
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -20525,7 +20525,7 @@
         "x": 0.5,
         "y": 0.06
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/WORLD_TREE_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 13,
@@ -20551,7 +20551,7 @@
       "state": "healthy",
       "surfaceLanguage": "layered heartwood plates, moss vines, emerald crown, restrained cyan heart",
       "triangles": 4840,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     },
     {
       "alphaMode": "STRAIGHT_RGBA",
@@ -20733,7 +20733,7 @@
         ]
       },
       "destructionClip": null,
-      "engineVersion": "28.7-premium-v2-3x32-full",
+      "engineVersion": "33.0-studio-v3-3x36-full",
       "family": "world_tree",
       "frameClass": "tree",
       "frameRate": 12,
@@ -20748,7 +20748,7 @@
         "x": 0.5,
         "y": 0.06
       },
-      "renderSamples": 32,
+      "renderSamples": 36,
       "renderSupersample": 3,
       "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
       "rigBoneCount": 13,
@@ -20775,20 +20775,20 @@
       "state": "healthy",
       "surfaceLanguage": "layered heartwood plates, moss vines, emerald crown, restrained cyan heart",
       "triangles": 4840,
-      "visualQuality": "premium-v2"
+      "visualQuality": "studio-v3"
     }
   ],
   "blenderVersion": "4.2.23",
   "decodedCatalogBudgetBytes": 370000000,
   "decodedCombatResidencyBudgetBytes": 150000000,
-  "engineVersion": "28.7-premium-v2-3x32-full",
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "frameRate": 12,
   "generatedAt": "2026-09-15T10:13:05Z",
   "generatedBatch": "ceremony",
   "generatedCommit": "6591ba984ab7796f952ca730efb4a2dcb194582a",
   "maxAtlasPageSize": 2048,
-  "opaqueRenderSamples": 24,
-  "overlayRenderSamples": 8,
+  "opaqueRenderSamples": 28,
+  "overlayRenderSamples": 12,
   "palette": {
     "amber": "#E19C3B",
     "crimson": "#B84245",
@@ -20809,7 +20809,7 @@
   "renderSupersample": 2,
   "renderTierTop": [
     3,
-    32
+    36
   ],
   "renderTierTopClasses": [
     "boss",

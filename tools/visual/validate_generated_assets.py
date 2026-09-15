@@ -247,7 +247,7 @@ def main() -> None:
                 try:
                     from hd_pipeline.config import render_tier as _rt
                     if asset["key"].startswith("equipment_"):
-                        exp_ss, exp_sa = (2, 8)
+                        exp_ss, exp_sa = (2, 12)
                     else:
                         exp_ss, exp_sa = _rt(asset["key"], asset["frameClass"])
                     if (asset["renderSupersample"], asset["renderSamples"]) != (exp_ss, exp_sa):

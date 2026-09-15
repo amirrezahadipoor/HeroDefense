@@ -23,6 +23,7 @@
   },
   "compositionProfile": "portrait-clear-lane-v2",
   "depthBands": 5,
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "environment",
   "frameClass": "arena",
   "frameHeight": 1280,
@@ -37,7 +38,7 @@
     "x": 0.5,
     "y": 0.5
   },
-  "renderSamples": 16,
+  "renderSamples": 28,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
   "sheet": "environment/arena_backdrop.png",
@@ -53,5 +54,5 @@
   ],
   "surfaceLanguage": "broad forest value bands, distant trunks, sanctuary rings, restrained edge leaves",
   "triangles": 1704,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

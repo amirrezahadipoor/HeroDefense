@@ -272,6 +272,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "hero",
   "frameClass": "character",
   "frameRate": 12,
@@ -290,8 +291,8 @@
     "seed",
     "watering_can"
   ],
-  "renderSamples": 16,
-  "renderSupersample": 2,
+  "renderSamples": 36,
+  "renderSupersample": 3,
   "reviewDocument": "docs/art_reviews/CEREMONY_PREMIUM_V2_REVIEW.md",
   "rigBoneCount": 25,
   "rigProfile": "premium-humanoid-v2",
@@ -308,5 +309,5 @@
   ],
   "silhouette": "premium_elf_archer",
   "triangles": 1812,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

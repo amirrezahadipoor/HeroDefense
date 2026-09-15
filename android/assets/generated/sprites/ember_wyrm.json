@@ -271,6 +271,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "boss",
   "frameClass": "boss",
   "frameRate": 12,
@@ -284,8 +285,8 @@
     "x": 0.5,
     "y": 0.12
   },
-  "renderSamples": 16,
-  "renderSupersample": 2,
+  "renderSamples": 36,
+  "renderSupersample": 3,
   "reviewDocument": "docs/art_reviews/BOSSES_PREMIUM_V2_REVIEW.md",
   "rigBoneCount": 25,
   "rigProfile": "premium-winged-wyrm-mapped-v2",
@@ -309,5 +310,5 @@
   "surfaceLanguage": "obsidian scales, crimson membranes, gold belly plates, restrained emissive flame",
   "triangles": 2324,
   "unique_attack": "flame_sweep",
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

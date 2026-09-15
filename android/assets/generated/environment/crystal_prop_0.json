@@ -19,6 +19,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "environment",
   "frameClass": "environment",
   "frameHeight": 384,
@@ -35,7 +36,7 @@
     "y": 0.5
   },
   "prop": "azure-waystone-fan",
-  "renderSamples": 16,
+  "renderSamples": 28,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/ARENA_PREMIUM_V2_REVIEW.md",
   "runtimeGlow": false,
@@ -59,5 +60,5 @@
   "surfaceLanguage": "dark stone cradle, controlled crystal value facets, sparse moss, no baked glow",
   "triangles": 868,
   "variant": 0,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

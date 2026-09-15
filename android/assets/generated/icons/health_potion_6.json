@@ -20,6 +20,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "icons",
   "frameClass": "item",
   "frameHeight": 96,
@@ -37,7 +38,7 @@
     "y": 0.5
   },
   "potionFamily": "heartwood-elixir",
-  "renderSamples": 16,
+  "renderSamples": 28,
   "renderSupersample": 2,
   "reviewDocument": "docs/art_reviews/UI_ASSETS_PREMIUM_V2_REVIEW.md",
   "sheet": "icons/health_potion_6.png",
@@ -54,5 +55,5 @@
   "tier": 6,
   "tierConstruction": "legendary cradle rails and living stopper",
   "triangles": 686,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

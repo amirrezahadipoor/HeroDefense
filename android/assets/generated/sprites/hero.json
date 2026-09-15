@@ -271,6 +271,7 @@
       }
     ]
   },
+  "engineVersion": "33.0-studio-v3-3x36-full",
   "family": "hero",
   "frameClass": "character",
   "frameRate": 12,
@@ -282,8 +283,8 @@
     "x": 0.5,
     "y": 0.12
   },
-  "renderSamples": 16,
-  "renderSupersample": 2,
+  "renderSamples": 36,
+  "renderSupersample": 3,
   "reviewDocument": "docs/art_reviews/PREMIUM_V2_PILOT_REVIEW.md",
   "rigProfile": "premium-humanoid-v2",
   "sheet": "sprites/hero.png",
@@ -299,5 +300,5 @@
   ],
   "silhouette": "premium_elf_archer",
   "triangles": 1508,
-  "visualQuality": "premium-v2"
+  "visualQuality": "studio-v3"
 }

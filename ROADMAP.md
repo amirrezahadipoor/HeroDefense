@@ -712,14 +712,14 @@ built for premium-v2.
 
 ### 33.8 Full re-render on the new engine, replacing every existing asset
 
-- [ ] Once 33.7 is accepted, re-render every batch (`pilot`, `enemies`, `bosses`, `characters`,
+- [x] Once 33.7 is accepted, re-render every batch (`pilot`, `enemies`, `bosses`, `characters`,
   `world-tree`, `equipment`, `equipment_overlay`, `arena`, `environment`, `ui`, `ui-supplement`,
   `skill-icons`, `ceremony`, `vfx`, `projectile`) headlessly on the finished studio-v3 engine —
   the same full category list Phase 28.7 already re-rendered once before.
-- [ ] Pass every batch through its 33.6 review sheet and the 33.6 validator extension, then promote
+- [x] Pass every batch through its 33.6 review sheet and the 33.6 validator extension, then promote
   each through its existing `promote_*_batch.py` script into `android/assets/generated`, exactly as
   Phase 28.7 did, so no premium-v2 (or earlier) asset remains in the shipped build.
-- [ ] Prove it the same way Phase 28.7 did: a manifest audit confirming every `assets[]` entry now
+- [x] Prove it the same way Phase 28.7 did: a manifest audit confirming every `assets[]` entry now
   reads `visualQuality: "studio-v3"` and passes `render_tier()`'s tier-correctness check, plus the
   full Phase 33 style-guide (0.7-equivalent) gate list — atlas-page, decoded-memory, APK-size, and
   startup/residency measurements — so the visual upgrade is confirmed not to have regressed any
