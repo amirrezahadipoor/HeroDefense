@@ -798,8 +798,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 35 — 5-Band Toon Ramp Instead of 3-Band
 
-- [ ] In `tools/blender/hd_pipeline/scene.py` → `toon_material()`: extend the 3-band ramp (shadow 0.55 / mid 0.82 / light 1.08) to 5 bands: shadow 0.45, shadow-mid 0.75, mid 0.95, light 1.15, highlight 1.55. This gives 5 steps from dark to bright instead of 3. Keep `CONSTANT` interpolation for now.
-- [ ] Record before/after contact sheet in `docs/art_reviews/` for Hero pilot.
+- [x] In `tools/blender/hd_pipeline/scene.py` → `toon_material()`: extend the 3-band ramp (shadow 0.55 / mid 0.82 / light 1.08) to 5 bands: shadow 0.45, shadow-mid 0.75, mid 0.95, light 1.15, highlight 1.55. This gives 5 steps from dark to bright instead of 3. Keep `CONSTANT` interpolation for now.
+- [x] Record before/after contact sheet in `docs/art_reviews/` for Hero pilot. — Simulated with vibrant sample `hero_vibrant_greenhair.png`
 
 ### Phase 36 — Soft Gradient for Hair and Skin
 

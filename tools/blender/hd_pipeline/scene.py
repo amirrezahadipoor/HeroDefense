@@ -71,16 +71,21 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     ramp.color_ramp.interpolation = "CONSTANT"
     base = hex_rgba(color_hex)
     ramp.color_ramp.elements.remove(ramp.color_ramp.elements[1])
+    # Phase 35: 5-band toon ramp for stunning vibrant look — was 3 bands 0.55/0.82/1.08
     shadow = ramp.color_ramp.elements[0]
     shadow.position = 0.0
-    shadow.color = multiply_rgb(base, 0.55)
-    mid = ramp.color_ramp.elements.new(0.32)
-    mid.color = multiply_rgb(base, 0.82)
-    light = ramp.color_ramp.elements.new(0.68)
-    light.color = multiply_rgb(base, 1.08)
+    shadow.color = multiply_rgb(base, 0.45)  # deep shadow
+    shadow_mid = ramp.color_ramp.elements.new(0.22)
+    shadow_mid.color = multiply_rgb(base, 0.75)  # shadow-mid
+    mid = ramp.color_ramp.elements.new(0.44)
+    mid.color = multiply_rgb(base, 0.95)  # mid
+    light = ramp.color_ramp.elements.new(0.66)
+    light.color = multiply_rgb(base, 1.15)  # light
+    highlight = ramp.color_ramp.elements.new(0.88)
+    highlight.color = multiply_rgb(base, 1.55)  # highlight pop
     # Studio-v3 fourth rim band — Fresnel/LayerWeight driven, additive above light
     # Keep roughness/metallic driving tightness: metal/eyes tight, wood broad
-    rim_color = multiply_rgb(base, 1.55)
+    rim_color = multiply_rgb(base, 1.65)  # Phase 35: bumped 1.55->1.65 for extra pop
     layer_weight = nodes.new("ShaderNodeLayerWeight")
     layer_weight.inputs["Blend"].default_value = 0.22 if metallic else 0.58
     # Fresnel alternative kept as comment for review: ShaderNodeFresnel IOR 1.45

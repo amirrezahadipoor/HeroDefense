@@ -130,11 +130,13 @@ Use flat shading. Bevels are permitted only where they improve the silhouette, n
 
 - Render engine: **EEVEE**, transparent film, ambient occlusion enabled.
 - Color management: AgX, `Medium High Contrast`, exposure `0`, gamma `1`.
-- Every opaque character material uses exactly three diffuse value bands:
-  - shadow: base color × `0.55`;
-  - midtone: base color × `0.82`;
-  - light: base color × `1.08`, clamped.
-- Ramp thresholds: `0.32` and `0.68`; interpolation is constant.
+- Every opaque character material uses **five** diffuse value bands (Phase 35 vibrant, was three):
+  - shadow: base color × `0.45` at `0.00`;
+  - shadow-mid: base color × `0.75` at `0.22`;
+  - midtone: base color × `0.95` at `0.44`;
+  - light: base color × `1.15` at `0.66`;
+  - highlight: base color × `1.55` at `0.88`, clamped.
+- Ramp thresholds: `0.22` / `0.44` / `0.66` / `0.88`; interpolation is `CONSTANT` except hair/skin `EASE` (Phase 36).
 - Specular is disabled except metal (`0.28`) and potion glass (`0.4`). Roughness is `0.72` for cloth/skin/wood and `0.38` for metal.
 - No photo textures, gradients, procedural noise smaller than four output pixels, or realistic skin shaders.
 - Team readability: Hero greens/gold; regular enemies muted rust/purple/stone; boss accents may use cyan, crimson, amber, or violet.
