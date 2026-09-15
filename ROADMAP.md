@@ -883,7 +883,7 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 52 — Legendary Rarity Glow Upgrade
 
-- [ ] In `core/src/main/java/.../render/RarityGlowRenderer.java` and `VisualRarity.java`: upgrade Legendary/Mythic glow from single halo to double halo + tiny particle specks. Gold for Legendary, cyan-purple for Mythic. Keep it as runtime shader, not baked.
+- [x] In `core/src/main/java/.../render/RarityGlowRenderer.java` and `VisualRarity.java`: upgrade Legendary/Mythic glow from single halo to double halo + tiny particle specks. Gold for Legendary, cyan-purple for Mythic. Keep it as runtime shader, not baked.
 
 ### Phase 53 — Full Re-render on Vibrant Engine
 

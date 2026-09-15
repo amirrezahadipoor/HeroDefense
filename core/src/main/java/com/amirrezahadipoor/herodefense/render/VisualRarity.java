@@ -4,10 +4,10 @@ package com.amirrezahadipoor.herodefense.render;
 public enum VisualRarity {
     COMMON(false, 0f, 0f, 0f, 0f),
     UNCOMMON(false, 0f, 0f, 0f, 0f),
-    RARE(true, 0.22f, 0.55f, 1.0f, 0.82f),
-    LEGENDARY(true, 1.0f, 0.67f, 0.16f, 1.0f),
+    RARE(true, 0.22f, 0.55f, 1.0f, 0.90f), // Phase 52: 0.82->0.90 stronger
+    LEGENDARY(true, 1.0f, 0.80f, 0.15f, 1.25f), // Phase 52: 0.67->0.80 gold brighter, 1.0->1.25 double halo
     /** Violet aura matching the Mythic inventory ink, burning hottest of all. */
-    MYTHIC(true, 0.78f, 0.49f, 1.0f, 1.3f),
+    MYTHIC(true, 0.85f, 0.45f, 1.0f, 1.55f), // Phase 52: 1.3->1.55 stunning mythic
     /** Sickly chartreuse for blightburst Elites. */
     ELITE_BLIGHTBURST(true, 0.55f, 1.0f, 0.25f, 1.05f),
     /** Deep root-teal for rootward Elites. */
