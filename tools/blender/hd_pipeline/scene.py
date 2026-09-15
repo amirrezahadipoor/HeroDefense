@@ -127,7 +127,7 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     highlight_ramp.color_ramp.interpolation = "CONSTANT"
     highlight_ramp.color_ramp.elements[0].position = 0.0
     highlight_ramp.color_ramp.elements[0].color = (0, 0, 0, 1)
-    highlight_ramp.color_ramp.elements[1].position = 0.92
+    highlight_ramp.color_ramp.elements[1].position = 0.85  # Phase 45: 0.92->0.85 bigger highlights
     highlight_ramp.color_ramp.elements[1].color = (1, 1, 1, 1)
     # Mix chain: base ramp -> rim -> highlight -> emission
     rim_mix = nodes.new("ShaderNodeMixRGB")

@@ -851,8 +851,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 45 — Bigger Highlights
 
-- [ ] Change `highlight_ramp` position from 0.92 to 0.85. Highlights become larger and more eye-catching. Keep `CONSTANT` interpolation.
-- [ ] Ensure highlight coverage stays within max percent rule from 33.0.
+- [x] Change `highlight_ramp` position from 0.92 to 0.85. Highlights become larger and more eye-catching. Keep `CONSTANT` interpolation.
+- [x] Ensure highlight coverage stays within max percent rule from 33.0. — 0.85 bigger highlights still within gate
 
 ### Phase 46 — Emission Glow for Leaves and Gold
 
