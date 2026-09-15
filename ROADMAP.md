@@ -977,7 +977,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 71 — Performance Diet: ETC2 + Mipmaps + Atlas Optimization
 
-- [ ] Optimize all atlases: compress PNG to ETC2 via `etc2comp`, generate mipmaps, pack to 2048×2048 max, keep decoded residency <50MB (was 69MB). Update `android/build.gradle` to use `aaptOptions { cruncherEnabled false }` for already compressed. Measure startup ms, frame time, texture count at wave 50 with boss — record in `docs/art_reviews/`.
+- [x] Optimize all atlases: compress PNG to ETC2 via `etc2comp`, generate mipmaps, pack to 2048×2048 max, keep decoded residency <50MB (was 69MB). Update `android/build.gradle` to use `aaptOptions { cruncherEnabled false }` for already compressed. Measure startup ms, frame time, texture count at wave 50 with boss — record in `docs/art_reviews/`.
 
 ## Phase 72 — Validation Upgrade for 950+ Gates
 
