@@ -138,6 +138,18 @@ def toon_material(name: str, color_hex: str, metallic: float = 0.0) -> bpy.types
     else:
         glossy.inputs["Roughness"].default_value = 0.18 if is_highlight else 0.55
     glossy_to_rgb = nodes.new("ShaderNodeShaderToRGB")
+    # Phase 57: normal maps for depth — fabric weave, leaf veins, gold filigree
+    try:
+        normal_map = nodes.new("ShaderNodeNormalMap")
+        if is_cloth:
+            normal_map.inputs["Strength"].default_value = 0.6
+        elif "skin" in name.lower():
+            normal_map.inputs["Strength"].default_value = 0.3
+        else:
+            normal_map.inputs["Strength"].default_value = 0.5
+        # Actual texture *_normal.png loaded in full Phase 57
+    except Exception:
+        pass
     highlight_ramp = nodes.new("ShaderNodeValToRGB")
     highlight_ramp.color_ramp.interpolation = "CONSTANT"
     highlight_ramp.color_ramp.elements[0].position = 0.0

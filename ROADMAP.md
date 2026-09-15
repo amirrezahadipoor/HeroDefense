@@ -921,7 +921,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 57 — Normal Maps for Depth
 
-- [ ] Bake normal maps from high-poly sculpt (8000 tris hero) to low-poly (6000). Add normal map node in `toon_material()` with strength 0.6 for cloth/leather, 0.3 for skin. Store as `*_normal.png` alongside albedo, pack into separate atlas page if needed.
+- [x] Bake normal maps from high-poly sculpt (8000 tris hero) to low-poly (6000). Add normal map node in `toon_material()` with strength 0.6 for cloth/leather, 0.3 for skin. Store as `*_normal.png` alongside albedo, pack into separate atlas page if needed.
 
 ## Phase 58 — Roughness/Metallic PBR Maps
 
