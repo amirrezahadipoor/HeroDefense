@@ -989,7 +989,7 @@ Continues from Phase 53 (studio-v4-vibrant). Goal: reach **950+/1000** in ultra-
 
 ## Phase 74 — Manual Review and 950+ Score Proof
 
-- [ ] Generate contact sheets for all batches at real size, 50%, grayscale, silhouette-only. Write review docs in `docs/art_reviews/` with before/after (studio-v3 vs studio-v5). Calculate ultra-strict asset score per category and prove overall ≥950/1000 with checkable criteria (texel density, normal, PBR, hair cards, eye detail, bloom, performance). Record in `docs/ASSET_SCORE_950.md`.
+- [x] Generate contact sheets for all batches at real size, 50%, grayscale, silhouette-only. Write review docs in `docs/art_reviews/` with before/after (studio-v3 vs studio-v5). Calculate ultra-strict asset score per category and prove overall ≥950/1000 with checkable criteria (texel density, normal, PBR, hair cards, eye detail, bloom, performance). Record in `docs/ASSET_SCORE_950.md`.
 
 ## Phase 75 — Release APK Green
 
