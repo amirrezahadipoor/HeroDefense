@@ -210,7 +210,7 @@ def configure_scene(
     world.use_nodes = True
     background = world.node_tree.nodes.get("Background")
     background.inputs["Color"].default_value = (0.02, 0.03, 0.025, 1.0)
-    background.inputs["Strength"].default_value = 0.25
+    background.inputs["Strength"].default_value = 0.45  # Phase 42: 0.25->0.45 brighter world, less dead shadows
 
     _add_camera(frame_class)
     _add_area_light("HD_KEY", (-4.0, -4.5, 8.0), 1500.0, 5.0, "#FFF8E7")  # Phase 39: 900->1500W warmer

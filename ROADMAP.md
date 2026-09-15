@@ -835,8 +835,8 @@ Continues directly from Phase 33 (studio-v3 closed). Same repo, same `tools/blen
 
 ### Phase 42 — Brighter World
 
-- [ ] Raise world Background Strength from 0.25 to 0.45 in `configure_scene()`. Shadows become less dead, colors pop more.
-- [ ] Validate that dark forest mood is kept, not washed out.
+- [x] Raise world Background Strength from 0.25 to 0.45 in `configure_scene()`. Shadows become less dead, colors pop more.
+- [x] Validate that dark forest mood is kept, not washed out. — 0.45 keeps mood but pops colors
 
 ### Phase 43 — Punchy Color Management
 
