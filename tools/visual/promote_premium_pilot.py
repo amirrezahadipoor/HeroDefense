@@ -47,16 +47,14 @@ def main() -> None:
     by_key = {asset["key"]: asset for asset in catalog["assets"]}
     for key, asset in candidate_assets.items():
         asset["visualQuality"] = "premium-v2"
-        asset["renderSupersample"] = 2
-        asset["renderSamples"] = 8 if asset["family"] == "equipment" else 16
+        # Tier fields stay exactly as the candidate rendered them (Phase 28.3):
+        # top-tier hero/bosses at 3x/32, mid tier at 2x/24, overlays at 2x/8.
         asset["reviewDocument"] = REVIEW_DOCUMENT
         by_key[key] = asset
         json_path = _asset_json_path(destination, asset)
         json_data = json.loads(json_path.read_text(encoding="utf-8"))
         json_data.update({
             "visualQuality": asset["visualQuality"],
-            "renderSupersample": asset["renderSupersample"],
-            "renderSamples": asset["renderSamples"],
             "reviewDocument": REVIEW_DOCUMENT,
         })
         _write_json(json_path, json_data)
@@ -65,7 +63,7 @@ def main() -> None:
         "pipelineVersion": 3,
         "generatedBatch": "premium-pilot",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 16,
+        "opaqueRenderSamples": 24,
         "overlayRenderSamples": 8,
     })
     catalog["assets"] = [by_key[key] for key in sorted(by_key)]

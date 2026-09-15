@@ -75,7 +75,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         "pipelineVersion": 3,
         "generatedBatch": "ui-supplement",
         "renderSupersample": 2,
-        "opaqueRenderSamples": 16,
+        "opaqueRenderSamples": 24,
+        "renderTierTop": [3, 32],
         "maxAtlasPageSize": 2048,
     }.items():
         if candidate_manifest.get(field) != expected:
@@ -188,7 +189,7 @@ def validate_metadata(asset: dict, key: str) -> None:
         "pivot": EXPECTED_PIVOT,
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 16,
+        "renderSamples": 24,
         "visualQuality": "premium-v2",
     }
     if key in POTION_KEYS:

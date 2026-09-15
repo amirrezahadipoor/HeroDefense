@@ -230,8 +230,8 @@ def validate_asset(asset: dict, key: str) -> None:
         "atlas": f"sprites/{key}.atlas",
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
-        "renderSupersample": 2,
-        "renderSamples": 16,
+        "renderSupersample": 3,
+        "renderSamples": 32,
         "boneAnimated": True,
         "visualQuality": "premium-v2",
     })

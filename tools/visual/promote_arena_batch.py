@@ -108,7 +108,8 @@ def validate_candidate_payload(
         "generatedBatch": "arena",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 16,
+        "opaqueRenderSamples": 24,
+        "renderTierTop": [3, 32],
         "overlayRenderSamples": 8,
         "maxAtlasPageSize": 2048,
     }
@@ -203,7 +204,7 @@ def validate_asset_contract(asset: dict, key: str) -> None:
         "pivot": {"units": "normalized-bottom-left", "x": 0.5, "y": 0.5},
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 16,
+        "renderSamples": 24,
     }
     expected.update(common)
     for field, expected_value in expected.items():

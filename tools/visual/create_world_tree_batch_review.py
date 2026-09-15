@@ -119,7 +119,8 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         "generatedBatch": "world-tree",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 16,
+        "opaqueRenderSamples": 24,
+        "renderTierTop": [3, 32],
         "maxAtlasPageSize": 2048,
     }
     for field, expected in expected_global.items():
@@ -297,8 +298,8 @@ def validate_metadata(entry: dict, key: str, revision: str, animation_profile: s
         "pivot": EXPECTED_PIVOT,
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
-        "renderSupersample": 2,
-        "renderSamples": 16,
+        "renderSupersample": 3,
+        "renderSamples": 32,
         "rigBoneCount": 13,
         "bones": EXPECTED_BONES,
         "boneAnimated": True,

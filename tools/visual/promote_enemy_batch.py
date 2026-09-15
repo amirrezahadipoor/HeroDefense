@@ -116,7 +116,8 @@ def validate_candidate_payload(
         "generatedBatch": "enemies",
         "frameRate": 12,
         "renderSupersample": 2,
-        "opaqueRenderSamples": 16,
+        "opaqueRenderSamples": 24,
+        "renderTierTop": [3, 32],
         "overlayRenderSamples": 8,
         "maxAtlasPageSize": 2048,
     }
@@ -146,7 +147,7 @@ def validate_candidate_payload(
             "alphaMode": "STRAIGHT_RGBA",
             "frameRate": 12,
             "renderSupersample": 2,
-            "renderSamples": 16,
+            "renderSamples": 24,
             "rigBoneCount": 25,
             "boneAnimated": True,
             "visualQuality": "premium-v2",

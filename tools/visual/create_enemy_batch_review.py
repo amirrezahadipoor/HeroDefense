@@ -80,8 +80,10 @@ def audit_batch(baseline: Path, candidate: Path) -> dict:
         raise ValueError("Candidate frame rate must remain 12 fps")
     if candidate_manifest.get("renderSupersample") != 2:
         raise ValueError("Candidate must use 2x supersampling")
-    if candidate_manifest.get("opaqueRenderSamples") != 16:
-        raise ValueError("Candidate must use 16 opaque samples")
+    if candidate_manifest.get("opaqueRenderSamples") != 24:
+        raise ValueError("Candidate must use 24 opaque samples")
+    if candidate_manifest.get("renderTierTop") != [3, 32]:
+        raise ValueError("Candidate must carry the Phase 28.3 tier fingerprint")
 
     required_bones = candidate_manifest.get("requiredBones", [])
     if len(required_bones) != 25 or len(set(required_bones)) != 25:
@@ -228,7 +230,7 @@ def validate_metadata(
         "alphaMode": "STRAIGHT_RGBA",
         "frameRate": 12,
         "renderSupersample": 2,
-        "renderSamples": 16,
+        "renderSamples": 24,
         "boneAnimated": True,
         "visualQuality": "premium-v2",
         "modelRevision": revision,

@@ -105,7 +105,7 @@ def validate_asset(asset: dict, key: str) -> None:
         "sheetHeight": 96,
         "alphaMode": "STRAIGHT_RGBA",
         "renderSupersample": 2,
-        "renderSamples": 16,
+        "renderSamples": 24,
         "visualQuality": "premium-v2",
         "touchOnlyUI": True,
         "uiIcon": key.removeprefix("ui_"),
